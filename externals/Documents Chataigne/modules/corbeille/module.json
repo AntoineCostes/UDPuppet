@@ -1,0 +1,187 @@
+{
+  "name":"Corbeille",
+  "type":"OSC",
+  "path":"Sans Gravité",
+
+  "version":"1.0.0",
+  "description":"Contrôle simplifiée d\'une corbeille animatronique ",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":true,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":10003
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":" ",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+      "Carte SD Detectee":
+      {
+        "type":"Boolean",
+        "readOnly":true
+      },
+    "Vitesse Max":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 500,
+      "default": 30
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "corbeille.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
+    "Stop":
+    {
+      "type":"Trigger"
+    },
+    "Moteur Gauche":
+    {
+      "type":"Float",
+      "min":-1,
+      "max":1,
+      "default":0
+    },
+    "Moteur Droit":
+    {
+      "type":"Float",
+      "min":-1,
+      "max":1,
+      "default":0
+    }
+  },
+
+  "commands":
+  {
+    "Moteur Gauche":
+    {
+      "callback":"left",
+      "parameters":
+      {
+        "Direction":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+      "Moteur Droit":
+      {
+        "callback":"right",
+        "parameters":
+        {
+          "Vitesse":
+          {
+            "type":"Float",
+            "min":-1,
+            "max":1,
+            "default":0
+          }
+        }
+      },
+    "Avant/Arriere":
+    {
+      "menu":"Mouvement",
+      "callback":"forward",
+      "parameters":
+      {
+        "Vitesse":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Rotation":
+    {
+      "menu":"Mouvement",
+      "callback":"rotation",
+      "parameters":
+      {
+        "Vitesse":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Stop":
+    {
+      "menu":"Mouvement",
+      "callback":"stop",
+      "parameters":
+      {
+        "type":"Trigger"
+      }
+    },
+      "Lancer Sequence":
+      {
+        "menu":"Sequence",
+        "callback":"playSequence",
+        "parameters":
+        {
+          "Name":
+          {
+            "type":"String"
+          },
+          "FPS":
+          {
+            "type":"Integer",
+            "min":0,
+            "max":200,
+            "default":30
+          }
+        }
+      },
+        "Arrêter Sequence":
+        {
+          "menu":"Sequence",
+          "callback":"stopSequence",
+          "parameters":
+          {
+          }
+        }
+  }
+}

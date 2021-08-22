@@ -1,0 +1,205 @@
+{
+  "name":"Base",
+  "type":"OSC",
+  "path":"Sans Gravité",
+
+  "version":"1.0.0",
+  "description":"Contrôle simplifiée d\'une lampe animatronique ",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":true,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "oscInput":
+    {
+      "localPort":10001
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":" ",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    },
+    "Cou Min":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 180,
+      "default": 0
+    },
+    "Cou Max":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 180,
+      "default": 180
+    },
+    "Pied Min":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 180,
+      "default": 0
+    },
+    "Pied Max":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 180,
+      "default": 180
+    },
+    "Vitesse Rotation":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 3000,
+      "default": 1000
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "base.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
+    "Cou":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
+    },
+    "Pied":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
+    },
+    "Stop Rotation":
+    {
+      "type":"Trigger"
+    },
+    "Rotation":
+    {
+      "type":"Enum",
+      "options":{ "<<":-2, "<":-1, "stop":0, ">":1, ">>":2},
+      "default":">"
+    },
+    "Position":
+    {
+      "type":"Integer",
+      "min":-1000,
+      "max":1000,
+      "default":0
+    }
+  },
+
+  "commands":
+  {
+    "Rotation Cou":
+    {
+      "menu":"Base",
+      "callback":"setElbow",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Rotation Pied":
+    {
+      "menu":"Base",
+      "callback":"setShoulder",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Set Base Rotation":
+    {
+      "menu":"Base",
+      "callback":"setBaseRotation",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Enum",
+          "options":{ "<<":"<<", "<":"<", "stop":"stop", ">":">", ">>":">>"},
+        }
+      }
+    },
+      "Lancer Sequence":
+      {
+        "menu":"Sequence",
+        "callback":"playSequence",
+        "parameters":
+        {
+          "Name":
+          {
+            "type":"String"
+          },
+          "FPS":
+          {
+            "type":"Integer",
+            "min":0,
+            "max":200,
+            "default":30
+          }
+        }
+      },
+        "Arrêter Sequence":
+        {
+          "menu":"Sequence",
+          "callback":"stopSequence",
+          "parameters":
+          {
+          }
+        }
+
+  }
+}

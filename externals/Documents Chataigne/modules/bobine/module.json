@@ -1,0 +1,133 @@
+{
+  "name":"Bobine",
+  "type":"OSC",
+  "path":"Sans Gravité",
+
+  "version":"1.0.0",
+  "description":"Contrôle simplifiée d\'une bobine animatronique ",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":true,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":10002
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":" ",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Vitesse Max":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 5000,
+      "default": 1000
+    },
+    "Acceleration":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 5000,
+      "default": 300
+    },
+    "Set Reference":
+    {
+      "type":"Trigger"
+    },
+    "Position Min":
+    {
+      "type":"Integer",
+      "min": -10000,
+      "max": 0,
+      "default": -1000
+    },
+  "Position Max":
+  {
+    "type":"Integer",
+    "min": 0,
+    "max": 10000,
+    "default": 10000
+  }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "bobine.js"
+  ],
+
+  "values":
+  {
+    "Position Actuelle Absolue":
+    {
+      "type":"Integer",
+      "min":-50000,
+      "max":50000,
+      "default":0,
+      "readOnly":true
+    },
+    "Stop":
+    {
+      "type":"Trigger"
+    },
+    "Position Cible Relative":
+    {
+      "type":"Integer",
+      "min":-1000,
+      "max":1000,
+      "default":0
+    },
+    "Rejoindre Cible":
+    {
+      "type":"Trigger"
+    },
+    "Vitesse":
+    {
+      "type":"Integer",
+      "min":-5000,
+      "max":5000,
+      "default":0
+    },
+    "Position Relative Cible":
+    {
+      "type":"Float",
+      "min":-1,
+      "max":1,
+      "default":0
+    },
+    "Vitesse Relative":
+    {
+      "type":"Float",
+      "min":-1,
+      "max":1,
+      "default":0
+    }
+  },
+
+  "commands":
+  {
+
+  }
+}
