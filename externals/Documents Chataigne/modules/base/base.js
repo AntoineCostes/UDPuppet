@@ -3,6 +3,12 @@ function init() {
   yo();
 }
 
+function update()
+{
+  local.values.cou.set(local.values.cou.get() + local.parameters.vitesseCou.get()*0.0001);
+  local.values.pied.set(local.values.pied.get() + local.parameters.vitessePied.get()*0.0001);
+}
+
 // TODO set defaults PARAMETERS
 function yo()
 {
@@ -19,30 +25,9 @@ function moduleParameterChanged(param)
   {
     yo();
   }
-  if (param.name == "couMin")
-  {
-    // TODO check min max
-      local.send("/servo/min", 0, param.get());
-  }
-  if (param.name == "couMax")
-  {
-    // TODO check min max
-      local.send("/servo/max", 0, param.get());
-  }
-  if (param.name == "piedMin")
-  {
-    // TODO check min max
-      local.send("/servo/mikn", 1, param.get());
-  }
-  if (param.name == "piedMax")
-  {
-    // TODO check min max
-      local.send("/servo/max", 1, param.get());
-  }
   if (param.name == "vitesseRotation")
   {
-    // TODO check min max
-      local.send("/stepper/maxSpeed", 0, param.get());
+    local.send("/stepper/maxspeed", 0, 1.0*param.get());
   }
 }
 
@@ -54,15 +39,11 @@ function moduleValueChanged(value) {
   }
   if (value.name == "pied")
   {
-    local.send("/servo", 1, 1 -value.get());
-  }
-  if (value.name == "stopRotation")
-  {
-    local.parameters.vitesse.set("stop");
+    local.send("/servo", 1, 1 - value.get());
   }
   if (value.name == "rotation")
   {
-    local.send("/stepper/speed", 0, value.get()*local.parameters.vitesseRotation.get()*0.5);
+    local.send("/stepper/pos", 0, value.get());
   }
 }
 
@@ -88,19 +69,24 @@ function oscEvent(address, args)
 }
 
 // COMMANDS
-function setElbow(val) {
+function setNeck(val) {
   script.log("Set cou: " + val);
   local.values.cou.set(val);
 }
 
-function setShoulder(val) {
+function rotateNeck(val) {
+  script.log("Set vitesse cou: " + val);
+  local.parameters.vitesseCou.set(val);
+}
+
+function setFoot(val) {
   script.log("Set pied: " + val);
   local.values.pied.set(val);
 }
 
-function setBaseRotation(val) {
-  script.log("Set base: " + val);
-  local.values.rotation.set(val);
+function rotateFoot(val) {
+  script.log("Set vitesse pied: " + val);
+  local.parameters.vitessePied.set(val);
 }
 
 function playSequence(name, fps) {

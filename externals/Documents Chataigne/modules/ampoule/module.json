@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.0.0",
+  "version":"1.0.1",
   "description":"Contrôle simplifiée d\'une lampe animatronique ",
 
 
@@ -50,12 +50,19 @@
     {
       "type":"Boolean"
     },
-    "Intensite":
+    "Intensite Couleur":
     {
       "type":"Float",
       "min": 0,
       "max": 1,
       "default": 0.5
+    },
+    "Vitesse Rotation":
+    {
+      "type":"Integer",
+      "min": -1000,
+      "max": 1000,
+      "default": 0
     }
   },
 
@@ -104,10 +111,10 @@
         }
       }
     },
-    "Rotation Tete":
+    "Angle":
     {
       "menu":"Tete",
-      "callback":"setHeadRotation",
+      "callback":"setHeadAngle",
       "parameters":
       {
         "Value":
@@ -115,6 +122,21 @@
           "type":"Float",
           "min":0,
           "max":1,
+          "default":0
+        }
+      }
+    },
+    "Vitesse Rotation":
+    {
+      "menu":"Tete",
+      "callback":"rotateSpeed",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Integer",
+          "min":-1000,
+          "max":1000,
           "default":0
         }
       }

@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.0.0",
+  "version":"1.0.1",
   "description":"Contrôle simplifiée d\'une lampe animatronique ",
 
 
@@ -42,40 +42,26 @@
       "type":"Boolean",
       "readOnly":true
     },
-    "Cou Min":
+    "Vitesse Cou":
     {
       "type":"Integer",
-      "min": 0,
-      "max": 180,
+      "min": -1000,
+      "max": 1000,
       "default": 0
     },
-    "Cou Max":
+    "Vitesse Pied":
     {
       "type":"Integer",
-      "min": 0,
-      "max": 180,
-      "default": 180
-    },
-    "Pied Min":
-    {
-      "type":"Integer",
-      "min": 0,
-      "max": 180,
+      "min": -1000,
+      "max": 1000,
       "default": 0
     },
-    "Pied Max":
+    "Vitesse Max Rotation":
     {
       "type":"Integer",
       "min": 0,
-      "max": 180,
-      "default": 180
-    },
-    "Vitesse Rotation":
-    {
-      "type":"Integer",
-      "min": 0,
-      "max": 3000,
-      "default": 1000
+      "max": 1000,
+      "default": 0
     }
   },
 
@@ -109,31 +95,21 @@
       "max":1,
       "default":0.5
     },
-    "Stop Rotation":
+    "Vitesse Rotation":
     {
-      "type":"Trigger"
-    },
-    "Rotation":
-    {
-      "type":"Enum",
-      "options":{ "<<":-2, "<":-1, "stop":0, ">":1, ">>":2},
-      "default":">"
-    },
-    "Position":
-    {
-      "type":"Integer",
-      "min":-1000,
-      "max":1000,
+      "type":"Float",
+      "min":-1,
+      "max":1,
       "default":0
     }
   },
 
   "commands":
   {
-    "Rotation Cou":
+    "Angle Cou":
     {
-      "menu":"Base",
-      "callback":"setElbow",
+      "menu":"Position",
+      "callback":"setNeck",
       "parameters":
       {
         "Value":
@@ -145,10 +121,25 @@
         }
       }
     },
-    "Rotation Pied":
+    "Vitesse Cou":
     {
-      "menu":"Base",
-      "callback":"setShoulder",
+      "menu":"Vitesse",
+      "callback":"rotateNeck",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Integer",
+          "min":-1000,
+          "max":1000,
+          "default":0
+        }
+      }
+    },
+    "Angle Pied":
+    {
+      "menu":"Position",
+      "callback":"setFoot",
       "parameters":
       {
         "Value":
@@ -160,16 +151,18 @@
         }
       }
     },
-    "Set Base Rotation":
+    "Vitesse Pied":
     {
-      "menu":"Base",
-      "callback":"setBaseRotation",
+      "menu":"Vitesse",
+      "callback":"rotateFoot",
       "parameters":
       {
         "Value":
         {
-          "type":"Enum",
-          "options":{ "<<":"<<", "<":"<", "stop":"stop", ">":">", ">>":">>"},
+          "type":"Integer",
+          "min":-1000,
+          "max":1000,
+          "default":0
         }
       }
     },

@@ -53,6 +53,7 @@ function bake()
 			{
 				var layer = oLayers[j];
 				var layerType = layer.getType();
+
 				if(layerType == "Color")
 				{
 					var col = layer.colors.getColorAtPosition(t);
@@ -61,7 +62,13 @@ function bake()
 					o.data.push(parseInt(col[2]*255));
 				} else if(layerType == "Mapping")
 				{
+
 					var val = layer.automation.getValueAtPosition(t);
+						var range = layer.automation.range.get();
+						script.log(val);
+						val = (val - range[0])/(range[1] - range[0]);
+						script.log(val);
+						script.log("-");
 					o.data.push(parseInt(val*255));
 				}
 			}

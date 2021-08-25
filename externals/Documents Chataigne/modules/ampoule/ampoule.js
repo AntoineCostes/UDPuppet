@@ -3,6 +3,11 @@ function init() {
   yo();
 }
 
+function update()
+{
+  local.values.rotation.set(local.values.rotation.get() + local.parameters.vitesseRotation.get()*0.0001);
+}
+
 // TODO set defaults PARAMETERS
 function yo()
 {
@@ -15,11 +20,10 @@ local.sendTo("192.168.43.255", 9000, "/yo", 0);
 // PARAMETERS
 function moduleParameterChanged(param)
 {
-  script.log(local.values.couleur.get()[0]);
-  script.log(local.values.couleur.get()[1]);
-  script.log(local.values.couleur.get()[2]);
-  // TODO change to param.get()
-//    script.log(" param");
+  //script.log(local.values.couleur.get()[0]);
+  //script.log(local.values.couleur.get()[1]);
+  //script.log(local.values.couleur.get()[2]);
+
   if (param.name == "invocation")
   {
     yo();
@@ -28,21 +32,11 @@ function moduleParameterChanged(param)
   {
     local.send("/debug", param.get());
   }
-  if (param.name == "intensite")
+  if (param.name == "intensiteCouleur")
   {
     local.send("/led/brightness", 0, param.get());
     color = local.values.couleur.get();
     local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
-  }
-  if (param.name == "rotationMin")
-  {
-    local.parameters.rotationMax.setMin(param.get()); // FIXME
-      local.send("/servo/min", 0, param.get());
-  }
-  if (param.name == "rotationMax")
-  {
-    //local.parameters.rotationMin.max = param.get(); FIXME
-      local.send("/servo/max", 0, param.get());
   }
 }
 
@@ -52,12 +46,6 @@ function moduleValueChanged(value) {
   {
     local.send("/led/color", 0, value.get()[0]*value.get()[3], value.get()[1]*value.get()[3], value.get()[2]*value.get()[3]);
   }
-  //if (value.is(local.values.intensite))
-  //{
-  //  color = local.values.couleur.get();
-  //  color[3] = value.get();
-  //  local.values.couleur.set(color);
-  //}
   if (value.is(local.values.rotation))
   {
     local.send("/servo", 0, value.get());
@@ -74,7 +62,7 @@ function oscEvent(address, args)
   {
       local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
 
-      local.send("/led/brightness", 0, local.parameters.intensite.get());
+      local.send("/led/brightness", 0, local.parameters.intensiteCouleur.get());
       color = local.values.couleur.get();
       local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
   }
@@ -95,9 +83,13 @@ function setColor(val) {
   local.values.couleur.set(val);
 }
 
-function setHeadRotation(val) {
+function setHeadAngle(val) {
   script.log("Set tete: " + val);
   local.values.rotation.set(val);
+}
+
+function rotateSpeed(val) {
+  local.parameters.vitesseRotation.set(val);
 }
 
 function playSequence(name, fps) {
