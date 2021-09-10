@@ -282,8 +282,8 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
         servo.setServoRel(0, e.data[3] / 255.0f);
 #elif defined BASE
-        servo.setServoRel(1, e.data[0] / 255.0f);
-        servo.setServoRel(2, e.data[1] / 255.0f);
+        servo.setServoRel(1, e.data[0] / 255.0f); // foot
+        servo.setServoRel(0, e.data[1] / 255.0f); // neck
         motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
         motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
