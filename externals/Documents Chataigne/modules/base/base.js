@@ -1,3 +1,5 @@
+var REVOLUTION_STEPS = 2050;
+
 function init() {
   local.values.batterie.set(false);
   yo();
@@ -41,9 +43,13 @@ function moduleValueChanged(value) {
   {
     local.send("/servo", 1, 1 - value.get());
   }
-  if (value.name == "rotation")
+  if (value.name == "vitesseRotation")
   {
-    local.send("/stepper/pos", 0, value.get());
+    local.send("/stepper/speedrel", 0, value.get());
+  }
+  if (value.name == "stopRotation")
+  {
+    local.send("/stepper/speedrel", 0, 0);
   }
 }
 
@@ -66,6 +72,10 @@ function oscEvent(address, args)
   {
       local.parameters.carteSDDetectee.set(args[1]>0);
   }
+  if (address == "/stepper/pos")
+  {
+      local.parameters.positionStepper.set(args[1]/REVOLUTION_STEPS);
+  }
 }
 
 // COMMANDS
@@ -87,6 +97,21 @@ function setFoot(val) {
 function rotateFoot(val) {
   script.log("Set vitesse pied: " + val);
   local.parameters.vitessePied.set(val);
+}
+
+function stepperGo(val) {
+  script.log("Set rotation pos: " + val);
+    local.send("/stepper/go", 0, parseInt(val*REVOLUTION_STEPS));
+}
+
+function stepperMove(val) {
+  script.log("Set rotation pos: " + val);
+    local.send("/stepper/move", 0, parseInt(val*REVOLUTION_STEPS));
+}
+
+function setRotationSpeed(val) {
+  script.log("Set rotation speed: " + val);
+  local.values.vitesseRotation.set(val);
 }
 
 function playSequence(name, fps) {
