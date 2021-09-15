@@ -2,12 +2,12 @@
 
 StepperMotor::StepperMotor(byte id, AccelStepper *stepper) : Component("stepper_" + String(id)),
                                                              stepper(stepper),
-                                                             maxSpeed(1000),
-                                                             acceleration(300),
                                                              mode(SPEED)
 {
-    floatParameters["maxSpeed"] = maxSpeed;
-    floatParameters["acceleration"] = acceleration;
+    // TODO values in constructor ?
+    // FIXME maximum values for motorwing ?
+    floatParameters["maxSpeed"] = 100; 
+    floatParameters["acceleration"] = 1000;
     mode = SPEED;
 }
 
@@ -16,9 +16,8 @@ void StepperMotor::initComponent(bool serialDebug)
     Component::initComponent(serialDebug);
     // setSpeed(5000.0f);
     //moveTo(500.0f);
-    startValue = stepper->currentPosition();
-    stepper->setMaxSpeed(maxSpeed);
-    stepper->setAcceleration(acceleration);
+    stepper->setMaxSpeed(floatParameters["maxSpeed"]);
+    stepper->setAcceleration(floatParameters["acceleration"]);
 }
 
 void StepperMotor::update()
@@ -47,16 +46,6 @@ void StepperMotor::goTo(long value)
     stepper->moveTo(value);
 }
 
-void StepperMotor::goToFromStart(long value)
-{
-    if (!checkInit())
-        return;
-
-    mode = POSITION;
-    stepper->moveTo(value +  startValue);
-    compDebug("go to " + String(value));
-}
-
 void StepperMotor::moveTo(long value)
 {
     if (!checkInit())
@@ -72,8 +61,11 @@ void StepperMotor::reset()
     if (!checkInit())
         return;
 
-    startValue = stepper->currentPosition();
-    compDebug("reset ");
+    // TODO restore previous state ? 
+    //float speed = stepper->speed();
+    stepper->setCurrentPosition(0);
+    //stepper->setSpeed(speed); // does not work
+    compDebug("reset");
 }
 
 void StepperMotor::setSpeed(float value)
@@ -143,4 +135,9 @@ long StepperMotor::currentPosition()
 float StepperMotor::currentSpeed()
 {
    return stepper->speed();
+}
+
+float StepperMotor::maxSpeed()
+{
+   return stepper->maxSpeed();
 }

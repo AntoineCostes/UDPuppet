@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-#include "config/Base.h"
+#include "config/Bobine.h"
 
 const String WIFI_SSID = "LeNet";
 const String WIFI_PASSWORD = "connectemoi";

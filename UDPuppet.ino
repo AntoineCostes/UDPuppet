@@ -53,13 +53,12 @@ void setup()
   master.motorwing.registerStepper(0, 14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
   master.motorwing.stepperSetAccel(0, 250.0f);
-  #define REVOLUTION_STEPS 1025
+  // TODO #define REVOLUTION_STEPS 1025 ?
 #endif
 
 #ifdef BOBINE
   master.led.registerLedStrip(0, 23, 10, NEO_GRB + NEO_KHZ800);
   master.motorwing.registerShieldv2Stepper(0, 200, MotorShield2Manager::StepperPort::M3_M4);
-  //master.motorwing.stepperSetSpeed(0, 20.0f);
 #endif
 
 #ifdef CORBEILLE

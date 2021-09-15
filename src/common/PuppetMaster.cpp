@@ -3,6 +3,7 @@
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
+// OSC_DEBUG_SEND et OSC_DEBUG_REVEICE
 // override
 // rename init
 // managers indépendants
@@ -33,7 +34,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " - v" + "1.2.2")
+                               osc(&wifi, BOARD_NAME + " - v" + "1.2.3")
 {
     switch (BOARD_TYPE)
     {
@@ -243,10 +244,13 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     if (!osc.isConnected)
         return;
 
+    //compDebug("stepper event");
+
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
     msg.add((int)e.position);
     msg.add((int)e.speed);
+    msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
 

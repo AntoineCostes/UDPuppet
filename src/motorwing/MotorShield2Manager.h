@@ -16,7 +16,8 @@ public:
     int index;
     long position;
     long speed;
-    StepperEvent(Type type, int index, long position, long speed) : type(type), index(index), position(position), speed(speed) {}
+    float maxSpeed;
+    StepperEvent(Type type, int index, long position, long speed, float maxSpeed) : type(type), index(index), position(position), speed(speed), maxSpeed(maxSpeed) {}
 };
 
 class MotorShield2Manager : public Manager,

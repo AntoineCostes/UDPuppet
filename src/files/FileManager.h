@@ -10,7 +10,6 @@
 #define DBG(msg) Serial.println(msg)
 #define NDBG(msg) Serial.println(msg)
 
-#define ESP32
 #define HAS_FILES
 
 #define SDSPEED 27000000

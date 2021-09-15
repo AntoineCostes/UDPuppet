@@ -39,35 +39,67 @@
     },
     "Vitesse Max":
     {
-      "type":"Integer",
+      "type":"Float",
       "min": 0,
-      "max": 5000,
-      "default": 1000
+      "max": 1,
+      "default": 1
     },
     "Acceleration":
     {
-      "type":"Integer",
+      "type":"Float",
       "min": 0,
-      "max": 5000,
-      "default": 300
+      "max": 1,
+      "default": 1
     },
-    "Set Reference":
-    {
-      "type":"Trigger"
-    },
-    "Position Min":
-    {
-      "type":"Integer",
-      "min": -10000,
-      "max": 0,
-      "default": -1000
-    },
-  "Position Max":
+  "Reset position":
+  {
+    "type":"Trigger"
+  },
+  "Position Absolue":
+  {
+    "type":"Float",
+    "default":0,
+    "readOnly":true
+  },
+  "Position Abs en Pas":
   {
     "type":"Integer",
-    "min": 0,
-    "max": 10000,
-    "default": 10000
+    "default":0,
+    "readOnly":true
+  },
+  "Position Min":
+  {
+    "type":"Integer",
+    "min": -1000,
+    "max": 0,
+    "default": -10
+  },
+"Position Max":
+{
+  "type":"Integer",
+  "min": 0,
+  "max": 1000,
+  "default": 10
+},
+  "Position Relative":
+  {
+    "type":"Float",
+    "min":0,
+    "max":1,
+    "default":0.5,
+    "readOnly":true
+  },
+  "Rejoindre Position Cible":
+  {
+    "type":"Trigger"
+  },
+  "Deplacement Cible":
+  {
+    "type":"Trigger"
+  },
+  "Stop":
+  {
+    "type":"Trigger"
   }
   },
 
@@ -80,54 +112,112 @@
 
   "values":
   {
-    "Position Actuelle Absolue":
+    "Position Cible":
     {
-      "type":"Integer",
-      "min":-50000,
-      "max":50000,
-      "default":0,
-      "readOnly":true
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
     },
-    "Stop":
+    "Deplacement Cible":
     {
-      "type":"Trigger"
-    },
-    "Position Cible Relative":
-    {
-      "type":"Integer",
-      "min":-1000,
-      "max":1000,
+      "type":"Float",
+      "min":-5,
+      "max":5,
       "default":0
-    },
-    "Rejoindre Cible":
-    {
-      "type":"Trigger"
     },
     "Vitesse":
     {
-      "type":"Integer",
-      "min":-5000,
-      "max":5000,
-      "default":0
-    },
-    "Position Relative Cible":
-    {
       "type":"Float",
-      "min":-1,
-      "max":1,
-      "default":0
-    },
-    "Vitesse Relative":
-    {
-      "type":"Float",
-      "min":-1,
-      "max":1,
+      "min":-0.2,
+      "max":0.2,
       "default":0
     }
   },
 
   "commands":
   {
-
+    "Aller à":
+    {
+      "menu":"Mouvement",
+      "callback":"goTo",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        }
+      }
+    },
+    "Bouger de":
+    {
+      "menu":"Mouvement",
+      "callback":"moveTo",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Integer",
+          "min":-100,
+          "max":100,
+          "default":0
+        }
+      }
+    },
+    "Vitesse":
+    {
+      "menu":"Mouvement",
+      "callback":"setSpeed",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":-0.2,
+          "max":0.2,
+          "default":0
+        }
+      }
+    },
+    "Stop":
+    {
+      "menu":"Mouvement",
+      "callback":"stop",
+    },
+    "Reset Position":
+    {
+      "menu":"Statut",
+      "callback":"resetPosition",
+    },
+    "Lancer Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        },
+        "FPS":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":200,
+          "default":30
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
   }
 }

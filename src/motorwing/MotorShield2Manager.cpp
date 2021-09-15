@@ -22,11 +22,14 @@ void MotorShield2Manager::update()
         pair.second->update();
         long newPos = pair.second->currentPosition();
         float speed = pair.second->currentSpeed();
+        float maxSpeed = pair.second->maxSpeed();
 
         if (pos != newPos)
-            sendEvent(StepperEvent(StepperEvent::Type::MOVED, pair.first, newPos, speed));
+            sendEvent(StepperEvent(StepperEvent::Type::MOVED, pair.first, newPos, speed, maxSpeed));
+    
+        // TODO : other types of event ? changed parameter ?
     }
-}
+}   
 
 void MotorShield2Manager::addDCMotor(DCPort port)
 {
@@ -92,7 +95,7 @@ void MotorShield2Manager::dcMaxSpeed(DCPort port, int value)
     }
     dcMotors[port]->setMaxSpeed(value);
 
-    // compDebug("set DC#" + String(port) + " max speed " + String(value));
+    if (MOTORS_DEBUG) compDebug("set DC#" + String(port) + " max speed " + String(value));
 }
 
 void MotorShield2Manager::dcStopAll()
@@ -210,22 +213,7 @@ void MotorShield2Manager::stepperGoTo(byte index, long value)
     }
 
     steppers[index]->goTo(value);
-    // compDebug("stepper " + String(index) + " move to " + String(value));
-}
-
-void MotorShield2Manager::stepperGoToFromStart(byte index, long value)
-{
-    if (!checkInit())
-        return;
-
-    if (steppers.count(index) == 0)
-    {
-        compError("no stepper on " + String(index));
-        return;
-    }
-
-    steppers[index]->goToFromStart(value);
-    // compDebug("stepper " + String(index) + " move to " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " move to " + String(value));
 }
 
 void MotorShield2Manager::stepperMove(byte index, long value)
@@ -241,7 +229,7 @@ void MotorShield2Manager::stepperMove(byte index, long value)
 
     // REFACTOR make StepperMotor methods
     steppers[index]->moveTo(value);
-    // compDebug("stepper " + String(index) + " move relative " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " move relative " + String(value));
 }
 
 void MotorShield2Manager::stepperReset(byte index)
@@ -257,7 +245,7 @@ void MotorShield2Manager::stepperReset(byte index)
 
     // REFACTOR make StepperMotor methods
     steppers[index]->reset();
-    // compDebug("stepper " + String(index) + " reset ");
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " reset ");
 }
 
 void MotorShield2Manager::stepperSetSpeed(byte index, float value)
@@ -272,7 +260,7 @@ void MotorShield2Manager::stepperSetSpeed(byte index, float value)
     }
 
     steppers[index]->setSpeed(value);
-    // compDebug("stepper " + String(index) + " set speed " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed " + String(value));
 }
 
 void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
@@ -287,7 +275,7 @@ void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
     }
 
     steppers[index]->setSpeedRel(value);
-    // compDebug("stepper " + String(index) + " set speed rel " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed rel " + String(value));
 }
 
 void MotorShield2Manager::stepperSetAccel(byte index, float value)
@@ -302,7 +290,7 @@ void MotorShield2Manager::stepperSetAccel(byte index, float value)
     }
 
     steppers[index]->setAcceleration(value);
-    // compDebug("stepper " + String(index) + " set accel " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set accel " + String(value));
 }
 
 void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
@@ -317,7 +305,7 @@ void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
     }
 
     steppers[index]->setMaxSpeed(value);
-    // compDebug("stepper " + String(index) + " set max speed " + String(value));
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set max speed " + String(value));
 }
 
 void MotorShield2Manager::forward1()
@@ -416,7 +404,7 @@ bool MotorShield2Manager::handleCommand(OSCMessage &command)
         {
             int index = command.getInt(0);
             int value = command.getInt(1);
-            stepperGoToFromStart(index, value);
+            stepperGoTo(index, value);
             return true;
         }
     }
