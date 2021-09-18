@@ -66,6 +66,8 @@ protected:
   Adafruit_MotorShield AFMS;
   std::set<DCPort> usedPorts;
   void registerStepper(byte index, byte id, AccelStepper *stepper);
+  long lastEventTime;
+  long lastEventPos;
 
   std::map<byte, StepperMotor *> steppers;
   // std::map<byte, Adafruit_DCMotor *> dc;

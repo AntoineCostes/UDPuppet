@@ -42,8 +42,19 @@ void StepperMotor::goTo(long value)
     if (!checkInit())
         return;
 
-    mode = POSITION;
+    // ensure the stepper moves
+    if (stepper->targetPosition() == value)
+        stepper->moveTo(value+100);
+
+
+    // make sure previous speed does not interfere
+    if (mode != POSITION)
+    {
+        stepper->setSpeed(0);
+        mode = POSITION;
+    }
     stepper->moveTo(value);
+    compDebug("go to " + String(value));
 }
 
 void StepperMotor::moveTo(long value)
@@ -51,8 +62,14 @@ void StepperMotor::moveTo(long value)
     if (!checkInit())
         return;
 
-    mode = POSITION;
-    stepper->moveTo(stepper->currentPosition() + value);
+    
+    // make sure previous speed does not interfere
+    if (mode != POSITION)
+    {
+        stepper->setSpeed(0);
+        mode = POSITION;
+    }
+    stepper->move(value);
     compDebug("move to " + String(value));
 }
 
@@ -104,6 +121,11 @@ void StepperMotor::setAcceleration(float value)
         compError("can't set acceleration, incorrect value: " + String(value));
         return;
     }
+
+    // setAcceleration triggers run to position
+    if (stepper->speed() == 0)
+        stepper->move(0); // cancel target position
+
     compDebug("set accel " + String(value));
     stepper->setAcceleration(value);
     floatParameters["acceleration"] = value;
@@ -120,6 +142,10 @@ void StepperMotor::setMaxSpeed(float value)
         compError("can't set max speed, incorrect value: " + String(value));
         return;
     }
+    
+    // setMaxSpeed triggers run to position
+    if (stepper->speed() == 0)
+        stepper->move(0); // cancel target position
 
     compDebug("set max speed " + String(value));
     stepper->setMaxSpeed(value);

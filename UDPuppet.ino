@@ -16,6 +16,7 @@
 // remove index and add pin bypass
 
 PuppetMaster master;
+long lastLoopTime = 0;
 
 void setup()
 {
@@ -72,5 +73,10 @@ void setup()
 void loop()
 {
   master.update();
-  delay(1);
+  if (millis() == lastLoopTime)
+  {
+    delay(1);
+    lastLoopTime = millis();
+  }
+  
 }

@@ -34,7 +34,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " - v" + "1.2.3")
+                               osc(&wifi, BOARD_NAME + " - v" + "1.2.4")
 {
     switch (BOARD_TYPE)
     {

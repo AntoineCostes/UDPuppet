@@ -70,9 +70,9 @@ function oscEvent(address, args)
   if (address == "/stepper/pos")
   {
     local.parameters.positionAbsEnPas.set(args[1]);
-    pos = args[1]/REVOLUTION_STEPS;
+    var pos = args[1]/REVOLUTION_STEPS;
     local.parameters.positionAbsolue.set(pos);
-    relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
+    var relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
     local.parameters.positionRelative.set(relPos);
   }
 }
@@ -87,33 +87,33 @@ function moduleValueChanged(value) {
 	}
   if (value.is(local.values.vitesse))
   {
-    local.send("/stepper/speed", STEPPER_INDEX, value.get()*REVOLUTION_STEPS);//local.parameters.vitesseMax.get()*value.get()*REVOLUTION_STEPS*0.5);
+    local.send("/stepper/speed", STEPPER_INDEX, local.parameters.vitesseMax.get()*value.get()*REVOLUTION_STEPS*10);//local.parameters.vitesseMax.get()*value.get()*REVOLUTION_STEPS*0.5);
   }
 }
 
 function setMaxSpeed() {
   // FIXME motorwing can't go faster, why ?
-  local.send("/stepper/maxspeed", STEPPER_INDEX, local.parameters.vitesseMax.get()*REVOLUTION_STEPS*0.5);
+  local.send("/stepper/maxspeed", STEPPER_INDEX, local.parameters.vitesseMax.get()*REVOLUTION_STEPS*10);//*0.5);
 }
 
 function setAcceleration() {
   // FIXME motorwing can't go faster, why ?
-  local.send("/stepper/accel", STEPPER_INDEX, local.parameters.acceleration.get()*REVOLUTION_STEPS*5);
+  local.send("/stepper/accel", STEPPER_INDEX, local.parameters.acceleration.get()*REVOLUTION_STEPS*100);//*5);
 }
 
 function goTo(val) {
-//  local.send("/stepper/speed", 0, 0);
-local.values.positionCible.set(val);
-//val = val/2 + 0.5; if -1 to 1
-pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
-local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*REVOLUTION_STEPS));
+  //  local.send("/stepper/speed", 0, 0);
+  local.values.positionCible.set(val);
+  //val = val/2 + 0.5; if -1 to 1
+  var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
+  local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*REVOLUTION_STEPS));
   script.log("go to "+pos);
 }
 
 function moveTo(val) {
   local.values.deplacementCible.set(val);
   local.send("/stepper/move", STEPPER_INDEX, parseInt(val*REVOLUTION_STEPS));
-    script.log("move to "+val);
+  script.log("move to "+val);
 }
 
 function setSpeed(val) {
@@ -128,6 +128,9 @@ function resetPosition() {
   local.send("/stepper/reset", STEPPER_INDEX);
   local.parameters.positionAbsolue.set(0);
   local.parameters.positionAbsEnPas.set(0);
+
+  var relPos = (0 - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
+  local.parameters.positionRelative.set(relPos);
 }
 
 function playSequence(name, fps) {
@@ -135,5 +138,5 @@ function playSequence(name, fps) {
 }
 
 function stopSequence() {
-    local.send("/player/stop");
+  local.send("/player/stop");
 }

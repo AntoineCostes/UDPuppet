@@ -9,6 +9,9 @@ void MotorShield2Manager::initManager()
 {
     Manager::initManager();
     AFMS.begin();
+    Wire.setClock(400000L);
+    lastEventPos = 0;
+    lastEventTime = 0;
 }
 
 void MotorShield2Manager::update()
@@ -24,8 +27,16 @@ void MotorShield2Manager::update()
         float speed = pair.second->currentSpeed();
         float maxSpeed = pair.second->maxSpeed();
 
-        if (pos != newPos)
-            sendEvent(StepperEvent(StepperEvent::Type::MOVED, pair.first, newPos, speed, maxSpeed));
+        if (millis() - lastEventTime > 5)
+        {
+            if (newPos != lastEventPos)
+            {
+                sendEvent(StepperEvent(StepperEvent::Type::MOVED, pair.first, newPos, speed, maxSpeed));
+                lastEventPos = newPos;
+                lastEventTime = millis();
+            }
+        }
+
     
         // TODO : other types of event ? changed parameter ?
     }
@@ -212,8 +223,8 @@ void MotorShield2Manager::stepperGoTo(byte index, long value)
         return;
     }
 
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " go to " + String(value));
     steppers[index]->goTo(value);
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " move to " + String(value));
 }
 
 void MotorShield2Manager::stepperMove(byte index, long value)
@@ -228,8 +239,8 @@ void MotorShield2Manager::stepperMove(byte index, long value)
     }
 
     // REFACTOR make StepperMotor methods
-    steppers[index]->moveTo(value);
     if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " move relative " + String(value));
+    steppers[index]->moveTo(value);
 }
 
 void MotorShield2Manager::stepperReset(byte index)
@@ -243,9 +254,9 @@ void MotorShield2Manager::stepperReset(byte index)
         return;
     }
 
+    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " reset ");
     // REFACTOR make StepperMotor methods
     steppers[index]->reset();
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " reset ");
 }
 
 void MotorShield2Manager::stepperSetSpeed(byte index, float value)
@@ -259,8 +270,8 @@ void MotorShield2Manager::stepperSetSpeed(byte index, float value)
         return;
     }
 
-    steppers[index]->setSpeed(value);
     if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed " + String(value));
+    steppers[index]->setSpeed(value);
 }
 
 void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
@@ -274,8 +285,8 @@ void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
         return;
     }
 
-    steppers[index]->setSpeedRel(value);
     if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed rel " + String(value));
+    steppers[index]->setSpeedRel(value);
 }
 
 void MotorShield2Manager::stepperSetAccel(byte index, float value)
@@ -289,8 +300,8 @@ void MotorShield2Manager::stepperSetAccel(byte index, float value)
         return;
     }
 
-    steppers[index]->setAcceleration(value);
     if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set accel " + String(value));
+    steppers[index]->setAcceleration(value);
 }
 
 void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
@@ -304,28 +315,28 @@ void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
         return;
     }
 
-    steppers[index]->setMaxSpeed(value);
     if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set max speed " + String(value));
+    steppers[index]->setMaxSpeed(value);
 }
 
 void MotorShield2Manager::forward1()
 {
-    shieldStepper1->onestep(FORWARD, SINGLE);
+    shieldStepper1->quickstep(FORWARD);
 }
 
 void MotorShield2Manager::backward1()
 {
-    shieldStepper1->onestep(BACKWARD, SINGLE);
+    shieldStepper1->quickstep(BACKWARD);
 }
 
 void MotorShield2Manager::forward2()
 {
-    shieldStepper2->onestep(FORWARD, SINGLE);
+    shieldStepper2->quickstep(FORWARD);
 }
 
 void MotorShield2Manager::backward2()
 {
-    shieldStepper2->onestep(BACKWARD, SINGLE);
+    shieldStepper2->quickstep(BACKWARD);
 }
 
 bool MotorShield2Manager::handleCommand(OSCMessage &command)
