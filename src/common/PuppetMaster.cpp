@@ -66,8 +66,8 @@ void PuppetMaster::initManager()
 
     Manager::initManager();
 
-    std::set<int> reservedPins{};
-    Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
+    //std::set<int> reservedPins{};
+    //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
     fileMgr.init();
 

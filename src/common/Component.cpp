@@ -20,6 +20,29 @@ bool Component::checkInit()
     return initialized;
 }
 
+bool Component::registerPin(int pin)
+{
+    std::set<int> pins = {pin};
+    return registerPins(pins);
+}
+
+bool Component::registerPins(std::set<int> pins)
+{
+    for (int pin : pins)
+    {
+        if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
+        {
+            Serial.println("[Component] Error: pin #"+String(pin)+" is already registered !");
+            return false;
+        }
+    }
+    for (int pin : pins)
+    {
+        Component::forbiddenPins.insert(pin);
+    }
+    return true;
+}
+
 void Component::compDebug(String message)
 {
     if (serialDebug)

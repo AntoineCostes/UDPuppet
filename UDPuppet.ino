@@ -73,6 +73,8 @@ void setup()
 void loop()
 {
   master.update();
+
+  // ensure at least 1ms between frames
   if (millis() == lastLoopTime)
   {
     delay(1);
