@@ -75,10 +75,8 @@ void SequencePlayer::startSequence(float atTime)
 
 void SequencePlayer::stopPlaying()
 {
-#ifdef HAS_FILES
   isPlaying = false;
   sendEvent(PlayerEvent(PlayerEvent::Stop));
-#endif
 }
 
 void SequencePlayer::playFrame()

@@ -1,25 +1,15 @@
 #include "FileManager.h"
 
 bool FileManager::sdIsDetected = false;
-
-#ifdef HAS_FILES
-// #ifndef FILES_USE_INTERNAL_MEMORY
 SPIClass FileManager::spiSD(HSPI);
-// #endif
-#endif
 
 FileManager::FileManager() : Manager("files"),
                              isUploading(false),
-                             serverIsEnabled(false)
-#ifdef HAS_FILES
-                             ,
+                             serverIsEnabled(false),
                              server(80)
-#endif
 {
-#ifdef HAS_FILES
     server.onNotFound(std::bind(&FileManager::handleNotFound, this));
     server.on("/upload", HTTP_POST, std::bind(&FileManager::returnOK, this), std::bind(&FileManager::handleFileUpload, this));
-#endif
     serialDebug = MASTER_DEBUG;
 }
 
@@ -44,28 +34,24 @@ void FileManager::init()
 
     if (SD.begin(SD_CS, spiSD, SDSPEED))
     {
-        compDebug("SD Card initialized.");
+        DBG("SD Card initialized.");
         listDir("/", 0);
         sdIsDetected = true;
-
     }
     else
     {
-        compDebug("SD Card Initialization failed.");
+        DBG("SD Card Initialization failed.");
     }
     // initServer();
 }
 
 void FileManager::update()
 {
-#ifdef HAS_FILES
     if (!serverIsEnabled)
         return;
     server.handleClient();
-#endif
 }
 
-#ifdef HAS_FILES
 File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists)
 {
     if (forWriting && deleteIfExists)
@@ -75,7 +61,7 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
         fileName = "/" + fileName;
 
     File f = SD.open(fileName.c_str(), forWriting ? FILE_WRITE : FILE_READ);
-    compDebug("Open file : " + String(f.name()));
+    DBG("Open file : " + String(f.name()));
     return f;
 }
 
@@ -87,7 +73,7 @@ void FileManager::deleteFileIfExists(String path)
     if (SD.exists(path.c_str()))
     {
         SD.remove(path.c_str());
-        compDebug("Removed file " + path);
+        DBG("Removed file " + path);
     }
 }
 
@@ -98,13 +84,13 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
 
     if (!root)
     {
-        compDebug("Failed to open directory");
+        DBG("Failed to open directory");
         return;
     }
 
     if (!root.isDirectory())
     {
-        compDebug("Not a directory");
+        DBG("Not a directory");
         return;
     }
 
@@ -113,7 +99,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
     {
         if (file.isDirectory())
         {
-            compDebug("  DIR : " + String(file.name()));
+            DBG("  DIR : " + String(file.name()));
             if (levels)
             {
                 listDir(file.name(), levels - 1);
@@ -121,36 +107,30 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         }
         else
         {
-            compDebug("  FILE: " + String(file.name()));
-            compDebug("  SIZE: " + String(file.size()));
+            DBG("  FILE: " + String(file.name()));
+            DBG("  SIZE: " + String(file.size()));
         }
         file = root.openNextFile();
     }
 }
-#endif //HAS_FILES
 
 //SERVER
 void FileManager::initServer()
 {
-#ifdef HAS_FILES
     server.begin();
-    compDebug("HTTP server started");
+    DBG("HTTP server started");
     serverIsEnabled = true;
-#endif
 }
 
 void FileManager::closeServer()
 {
-#ifdef HAS_FILES
     server.close();
-    compDebug("HTTP server closed");
+    DBG("HTTP server closed");
     serverIsEnabled = false;
-#endif
 }
 
 void FileManager::handleFileUpload()
 {
-#ifdef HAS_FILES
     if (server.uri() != "/upload")
     {
         return;
@@ -173,7 +153,7 @@ void FileManager::handleFileUpload()
         }
         else
         {
-            compDebug("ERROR WHEN CREATING THE FILE");
+            DBG("ERROR WHEN CREATING THE FILE");
         }
 
         isUploading = true;
@@ -184,7 +164,7 @@ void FileManager::handleFileUpload()
         {
             if (uploadedBytes == 0 && upload.buf[0] == 13 && upload.buf[1] == 10)
             {
-                compDebug("Remove new line nonsense");
+                DBG("Remove new line nonsense");
                 uploadingFile.write(upload.buf + 2, upload.currentSize - 2);
             }
             else
@@ -209,7 +189,7 @@ void FileManager::handleFileUpload()
         if (uploadingFile)
         {
             String n = uploadingFile.name();
-            compDebug("Upload total size " + String(upload.totalSize) + " < > " + String(uploadingFile.size()));
+            DBG("Upload total size " + String(upload.totalSize) + " < > " + String(uploadingFile.size()));
             uploadingFile.close();
 
             var data;
@@ -220,37 +200,31 @@ void FileManager::handleFileUpload()
         }
         else
         {
-            compDebug("Upload finish ERROR");
+            DBG("Upload finish ERROR");
             isUploading = false;
         }
     }
     else if (upload.status == UPLOAD_FILE_ABORTED)
     {
-        compDebug("ABOORT !!!!!!!!!!");
+        DBG("ABOORT !!!!!!!!!!");
         uploadingFile.close();
         isUploading = false;
     }
-#endif
 }
 
 void FileManager::returnOK()
 {
-#ifdef HAS_FILES
     server.send(200, "text/plain", "ok");
-#endif
 }
 
 void FileManager::returnFail(String msg)
 {
-    compDebug("Failed here");
+    DBG("Failed here");
     server.send(500, "text/plain", msg + "\r\n");
-#endif
 }
 
 void FileManager::handleNotFound()
 {
-    compDebug("Not found here");
+    DBG("Not found here");
     server.send(404, "text/plain", "[notfound]");
-#endif
 }
-#endif

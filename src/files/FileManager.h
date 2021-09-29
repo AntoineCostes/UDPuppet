@@ -8,8 +8,7 @@
 #include <WebServer.h>
 
 // TODO CONFIX refactor in LoggerWing
-
-#define HAS_FILES
+#define DBG(msg) Serial.println(msg)
 
 #define SDSPEED 27000000
 #define SD_MISO 19
@@ -52,22 +51,14 @@ public:
     FileManager();
     ~FileManager() {}
 
-#ifdef HAS_FILES
-
-#ifdef FILES_USE_INTERNAL_MEMORY
-
-#else
     static SPIClass spiSD;
-#endif
-
     File uploadingFile;
 
-#ifdef ESP32
+//#ifdef ESP32
     WebServer server;
 // #elif defined ESP8266
 //     ESP8266WebServer server;
-#endif
-#endif
+//#endif
 
     static bool sdIsDetected;
     bool serverIsEnabled;
@@ -78,13 +69,9 @@ public:
     void update() override;
     
     //File manipulation
-#ifdef HAS_FILES
     static File openFile(String fileName, bool forWriting = false, bool deleteIfExists = true);
     static void deleteFileIfExists(String path);
-
     static void listDir(const char *dirname, uint8_t levels);
-
-#endif
 
     //Server handling
     void initServer();
