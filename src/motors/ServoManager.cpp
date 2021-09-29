@@ -24,13 +24,14 @@ void ServoManager::registerServo(byte index, byte pin, byte min, byte max, byte 
 
   std::set<int> servoPins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
 
-  if (SERVO_SAFE_PINS)
+  if (SERVO_ALLOW_UNSAFE_PINS)
     if (servoPins.find(pin) == servoPins.end())
     {
       compError("pin " + String(pin) + " is not valid to attach Servo !");
       return;
     }
 
+  // TODO replace with registerPin
   if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
   {
     compError("cannot register prop: " + String(pin) + " is already used !");

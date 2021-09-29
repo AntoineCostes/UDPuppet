@@ -1,3 +1,4 @@
+#pragma once
 #include "../common/Component.h"
 #include <Adafruit_MotorShield.h>
 

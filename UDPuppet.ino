@@ -1,19 +1,22 @@
 #include "src/common/PuppetMaster.h"
+// dependencies:
+// Adafruit_NeoPixel.h
+// OSCMessage.h
+// ESP32Servo.h
+// Adafruit_MotorShield.h (v2)
+// AccelStepper.h (modified)
+// SPI.h
+// SD.h
+// FS.h
+// WebServer.h
 
-// required dependencies
-#include <Adafruit_NeoPixel.h>
-#include <OSCMessage.h>
-#include <ESP32Servo.h>
-#include <Adafruit_MotorShield.h>
-#include <AccelStepper.h>
-#include <SPI.h>
-#include <SD.h>
-#include <FS.h>
-#include <WebServer.h>
+// TODO wifi in ino
+// TODO remove index
+// TODO local libs
+// TODO filemanager server
 
-// après avoir uploadé il faut que la carte s'éteigne
 
-// remove index and add pin bypass
+// RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
 PuppetMaster master;
 long lastLoopTime = 0;
@@ -28,12 +31,11 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef TEST
-  //                            index, pin, nbLeds, ledTyp*************
-  master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
+  //                            index, pin, nbLeds, ledType
+  master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   //master.servo.registerServo(0, 27, 0, 120, 50); // index, pin, min, max, start
   //master.servo.registerServo(1, 12, 0, 120, 50); // index, pin, min, max, start
-  master.motorwing.registerStepper(0, 14, 15, 32, 33);
-  
+  //master.motorwing.registerStepper(0, 14, 15, 32, 33);
 #endif
 
 #ifdef AMPOULE

@@ -20,7 +20,7 @@ FileManager::FileManager() : Manager("files"),
     server.onNotFound(std::bind(&FileManager::handleNotFound, this));
     server.on("/upload", HTTP_POST, std::bind(&FileManager::returnOK, this), std::bind(&FileManager::handleFileUpload, this));
 #endif
-serialDebug = MASTER_DEBUG;
+    serialDebug = MASTER_DEBUG;
 }
 
 void FileManager::init()
@@ -28,49 +28,32 @@ void FileManager::init()
     if (sdIsDetected)
         return;
 
-#ifdef HAS_FILES
-
-// #ifdef FILES_USE_INTERNAL_MEMORY
-//     if (SPIFFS.begin()) // Start the SPI Flash Files System
-//     {
-//         sdIsDetected = true;
-//         NDBG("SPIFFS initialized.");
-//     }
-//     else
-//     {
-//         NDBG("Error initializing SPIFFS");
-//     }
-
-// #else
-
-// #ifdef SD_EN
-//     pinMode(SD_EN, OUTPUT);
-//     digitalWrite(SD_EN, LOW);
-// #endif
+    std::set<int> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
+    if (!Component::registerPins(pins))
+    {
+        compError("cannot initialize SD: a needed pin is already registered !");
+        return;
+    }
 
     pinMode(SD_SCK, INPUT_PULLUP);
     pinMode(SD_MISO, INPUT_PULLUP);
     pinMode(SD_MOSI, INPUT_PULLUP);
     pinMode(SD_CS, INPUT_PULLUP);
 
-    spiSD.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS); //SCK,MISO,MOSI,ss
+    spiSD.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
 
     if (SD.begin(SD_CS, spiSD, SDSPEED))
     {
-        NDBG("SD Card initialized.");
+        compDebug("SD Card initialized.");
         listDir("/", 0);
         sdIsDetected = true;
 
     }
     else
     {
-        NDBG("SD Card Initialization failed.");
+        compDebug("SD Card Initialization failed.");
     }
-// #endif //FILES_USE_INTERNAL_MEMORY
-
     // initServer();
-
-#endif //HAS_FILES
 }
 
 void FileManager::update()
@@ -80,7 +63,6 @@ void FileManager::update()
         return;
     server.handleClient();
 #endif
-        NDBG("update SD");
 }
 
 #ifdef HAS_FILES
@@ -92,15 +74,9 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
     if (!fileName.startsWith("/"))
         fileName = "/" + fileName;
 
-#ifdef FILES_USE_INTERNAL_MEMORY
-    File f = SPIFFS.open(fileName, forWriting ? "w" : "r"); // Open it
-#else
     File f = SD.open(fileName.c_str(), forWriting ? FILE_WRITE : FILE_READ);
-#endif
-
-    DBG("Open file : " + String(f.name()));
+    compDebug("Open file : " + String(f.name()));
     return f;
-    return File();
 }
 
 void FileManager::deleteFileIfExists(String path)
@@ -108,40 +84,27 @@ void FileManager::deleteFileIfExists(String path)
     if (!sdIsDetected)
         return;
 
-#ifdef FILES_USE_INTERNAL_MEMORY
-    DBG("Delete if exists : " + path);
-    if (SPIFFS.exists(path))
-    {
-        DBG("File exists, remove : " + path);
-        SPIFFS.remove(path);
-    }
-#else
     if (SD.exists(path.c_str()))
     {
         SD.remove(path.c_str());
-        DBG("Removed file " + path);
+        compDebug("Removed file " + path);
     }
-#endif
 }
 
 void FileManager::listDir(const char *dirname, uint8_t levels)
 {
 
-#ifdef FILES_USE_INTERNAL_MEMORY
-    File root = SPIFFS.open("/", "r");
-#else
     File root = SD.open(dirname);
-#endif
 
     if (!root)
     {
-        DBG("Failed to open directory");
+        compDebug("Failed to open directory");
         return;
     }
 
     if (!root.isDirectory())
     {
-        DBG("Not a directory");
+        compDebug("Not a directory");
         return;
     }
 
@@ -150,7 +113,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
     {
         if (file.isDirectory())
         {
-            DBG("  DIR : " + String(file.name()));
+            compDebug("  DIR : " + String(file.name()));
             if (levels)
             {
                 listDir(file.name(), levels - 1);
@@ -158,8 +121,8 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         }
         else
         {
-            DBG("  FILE: " + String(file.name()));
-            DBG("  SIZE: " + String(file.size()));
+            compDebug("  FILE: " + String(file.name()));
+            compDebug("  SIZE: " + String(file.size()));
         }
         file = root.openNextFile();
     }
@@ -171,7 +134,7 @@ void FileManager::initServer()
 {
 #ifdef HAS_FILES
     server.begin();
-    NDBG("HTTP server started");
+    compDebug("HTTP server started");
     serverIsEnabled = true;
 #endif
 }
@@ -180,7 +143,7 @@ void FileManager::closeServer()
 {
 #ifdef HAS_FILES
     server.close();
-    NDBG("HTTP server closed");
+    compDebug("HTTP server closed");
     serverIsEnabled = false;
 #endif
 }
@@ -210,7 +173,7 @@ void FileManager::handleFileUpload()
         }
         else
         {
-            NDBG("ERROR WHEN CREATING THE FILE");
+            compDebug("ERROR WHEN CREATING THE FILE");
         }
 
         isUploading = true;
@@ -221,7 +184,7 @@ void FileManager::handleFileUpload()
         {
             if (uploadedBytes == 0 && upload.buf[0] == 13 && upload.buf[1] == 10)
             {
-                NDBG("Remove new line nonsense");
+                compDebug("Remove new line nonsense");
                 uploadingFile.write(upload.buf + 2, upload.currentSize - 2);
             }
             else
@@ -246,7 +209,7 @@ void FileManager::handleFileUpload()
         if (uploadingFile)
         {
             String n = uploadingFile.name();
-            NDBG("Upload total size " + String(upload.totalSize) + " < > " + String(uploadingFile.size()));
+            compDebug("Upload total size " + String(upload.totalSize) + " < > " + String(uploadingFile.size()));
             uploadingFile.close();
 
             var data;
@@ -257,13 +220,13 @@ void FileManager::handleFileUpload()
         }
         else
         {
-            NDBG("Upload finish ERROR");
+            compDebug("Upload finish ERROR");
             isUploading = false;
         }
     }
     else if (upload.status == UPLOAD_FILE_ABORTED)
     {
-        NDBG("ABOORT !!!!!!!!!!");
+        compDebug("ABOORT !!!!!!!!!!");
         uploadingFile.close();
         isUploading = false;
     }
@@ -279,53 +242,15 @@ void FileManager::returnOK()
 
 void FileManager::returnFail(String msg)
 {
-#ifdef HAS_FILES
-    NDBG("Failed here");
+    compDebug("Failed here");
     server.send(500, "text/plain", msg + "\r\n");
 #endif
 }
 
 void FileManager::handleNotFound()
 {
-#ifdef HAS_FILES
-    NDBG("Not found here");
+    compDebug("Not found here");
     server.send(404, "text/plain", "[notfound]");
 #endif
 }
-
-// bool FileManager::handleCommand(String command, var *data, int numData)
-// {
-// #ifdef HAS_FILES
-
-//     if (checkCommand(command, "delete", numData, 1))
-//     {
-//         deleteFileIfExists(data[0].stringValue());
-//         return true;
-//     }
-//     else if (checkCommand(command, "deleteFolder", numData, 0))
-//     {
-//         if (numData > 0)
-//         {
-//             DBG("Deleting folder " + data[0].stringValue());
-// #ifdef FILES_USE_INTERNAL_MEMORY
-//             SPIFFS.rmdir(data[0].stringValue());
-// #else
-//             SD.rmdir(data[0].stringValue());
-// #endif
-//         }
-//         else
-//         {
-//             DBG("Deleting all files");
-// #ifdef FILES_USE_INTERNAL_MEMORY
-//             SPIFFS.rmdir("/");
-// #else
-//             SD.rmdir("/");
-// #endif
-//         }
-
-//         return true;
-//     }
-// #endif //HAS_FILES
-
-//     return false;
-// }
+#endif

@@ -7,8 +7,7 @@
 #include <FS.h>
 #include <WebServer.h>
 
-#define DBG(msg) Serial.println(msg)
-#define NDBG(msg) Serial.println(msg)
+// TODO CONFIX refactor in LoggerWing
 
 #define HAS_FILES
 
@@ -17,7 +16,6 @@
 #define SD_MOSI 18
 #define SD_SCK 5
 #define SD_CS 33
-
 
 class FileEvent
 {

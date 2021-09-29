@@ -36,12 +36,13 @@
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi, BOARD_NAME + " - v" + "1.2.4")
 {
+    Component::registerPin(LED_BUILTIN);
     switch (BOARD_TYPE)
     {
     case HUZZAH32:
         // used for Base
         //Component::forbiddenPins.insert(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
-        Component::forbiddenPins.insert(13); // It's connected to the red LED next to the USB port
+        //#endif
         break;
 
     default:
@@ -62,7 +63,7 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("--------------------" + osc.mDNSName + "--------------------");
+    compLog("-------------------- " + osc.mDNSName + " --------------------");
 
     Manager::initManager();
 
