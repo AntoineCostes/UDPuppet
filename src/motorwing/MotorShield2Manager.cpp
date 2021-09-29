@@ -321,22 +321,22 @@ void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
 
 void MotorShield2Manager::forward1()
 {
-    shieldStepper1->quickstep(FORWARD);
+    shieldStepper1->onestep(FORWARD, DOUBLE);
 }
 
 void MotorShield2Manager::backward1()
 {
-    shieldStepper1->quickstep(BACKWARD);
+    shieldStepper1->onestep(BACKWARD, DOUBLE);
 }
 
 void MotorShield2Manager::forward2()
 {
-    shieldStepper2->quickstep(FORWARD);
+    shieldStepper2->onestep(FORWARD, DOUBLE);
 }
 
 void MotorShield2Manager::backward2()
 {
-    shieldStepper2->quickstep(BACKWARD);
+    shieldStepper2->onestep(BACKWARD, DOUBLE);
 }
 
 bool MotorShield2Manager::handleCommand(OSCMessage &command)
