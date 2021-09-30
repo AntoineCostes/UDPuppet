@@ -4,7 +4,8 @@
  RoombaSerial::RoombaSerial(byte inPin, byte outPin, byte wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
-                                                                    centerLedBrightness(255)
+                                                                    centerLedBrightness(255),
+                                                                    maxSpeed(0.5)
 {
 }
 
@@ -12,6 +13,8 @@ void RoombaSerial::initComponent(bool serialDebug)
 {
   serial.begin(19200);
   Component::initComponent(serialDebug);
+  Serial.println("-------- ");
+  Serial.println(serialDebug);
 }
 
 void RoombaSerial::update()
@@ -86,9 +89,16 @@ void RoombaSerial::updateLeds()
 }
 
 // ----------- motors
+
+void RoombaSerial::setMaxSpeed(float value)
+{
+  maxSpeed = constrain(value, 0, 1);
+}
+
 void RoombaSerial::drive(int velocity, int radius)
 {
-  constrain(velocity, -500, 500); //def max and min velocity in mm/s
+  // TODO change with float -1 1?
+  constrain(maxSpeed*velocity, -500, 500); //def max and min velocity in mm/s
   constrain(radius, -2000, 2000); //def max and min radius in mm
   
   serial.write(137);
@@ -100,8 +110,9 @@ void RoombaSerial::drive(int velocity, int radius)
 
 void RoombaSerial::driveWheels(int right, int left)
 {
-  constrain(right, -500, 500);
-  constrain(left, -500, 500);
+  // TODO change with float -1 1?
+  constrain(maxSpeed*right, -500, 500);
+  constrain(maxSpeed*left, -500, 500);
   
   serial.write(145);
   serial.write(right >> 8);
@@ -112,6 +123,7 @@ void RoombaSerial::driveWheels(int right, int left)
 
 void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
 {
+  // TODO change with float -1 1?
   constrain(rightPWM, -255, 255);
   constrain(leftPWM, -255, 255);
   

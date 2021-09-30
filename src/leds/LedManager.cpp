@@ -5,7 +5,7 @@ LedManager::LedManager() : Manager("led"),
                            mode(LedMode::WAITING),
                            toastTimer(0)
 {
-    boolParameters["debug"] = true;
+    serialDebug = LED_DEBUG;
 }
 
 void LedManager::initManager()
@@ -150,7 +150,7 @@ void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
 void LedManager::setDebug(bool value)
 {
     setColor(0, 0, 0);
-    boolParameters["debug"] = value;
+    serialDebug = value;
     overrideFlashParameters();
 }
 bool LedManager::handleCommand(OSCMessage &command)

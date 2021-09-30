@@ -3,7 +3,7 @@
 #ifdef HAS_ROOMBA
 RoombaManager::RoombaManager() : Manager("roomba")
 {
-    //boolParameters["debug"] = true;
+    serialDebug = ROOMBA_DEBUG;
 }
 
 void RoombaManager::initManager()
@@ -50,69 +50,83 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     String address = String(buf);
     compLog("handle command : " + address);
 
-    if (address.equals("/move"))
+    if (address.equals("/roomba/move"))
     {
         if (checkCommandArguments(command, "i", false))
         {
-            switch(command.getInt(0))
+            int direction = command.getInt(0);
+            switch(direction)
             {
                 case 0:
-                    compDebug("zero");
+                    compDebug("forward");
+                    roombas[0]->driveWheels(500,500);
                     break;
                     
                 case 1:
-                    compDebug("one");
+                    compDebug("left");
+                    roombas[0]->driveWheels(500,-500);
                     break;
 
                 case 2:
-                    compDebug("two");
+                    compDebug("right");
+                    roombas[0]->driveWheels(-500,500);
                     break;
 
                 case 3:
-                    compDebug("three");
+                    compDebug("back");
+                    roombas[0]->driveWheels(-500,-500);
                     break;
             }
             return true;
         } 
         else if (checkCommandArguments(command, "ii", true))
         {
+            int direction = command.getInt(0);
             switch(command.getInt(1))
             {
                 case 0:
-                    compDebug("zero i");
+                    compDebug("forward");
+                    roombas[command.getInt(0)]->driveWheels(500,500);
                     break;
                     
                 case 1:
-                    compDebug("one i");
+                    compDebug("left");
+                    roombas[command.getInt(0)]->driveWheels(500,-500);
                     break;
 
                 case 2:
-                    compDebug("two i");
+                    compDebug("right");
+                    roombas[command.getInt(0)]->driveWheels(-500,500);
                     break;
 
                 case 3:
-                    compDebug("three i");
+                    compDebug("back");
+                    roombas[command.getInt(0)]->driveWheels(-500,-500);
                     break;
             }
             return true;
         } 
     }
-    else if (address.equals("/stop"))
+    else if (address.equals("/roomba/stop"))
     {
         if (checkCommandArguments(command, "i", false))
         {
             if(command.getInt(0))
-                compDebug("stop");
+            {
+                roombas[0]->driveWheels(0,0);
+            }
             return true;
         } 
         else if (checkCommandArguments(command, "ii", false))
         {
             if(command.getInt(1))
-                compDebug("stop index");
+            {
+                roombas[command.getInt(0)]->driveWheels(0,0);
+            }
             return true;
         } 
     }
-    else if (address.equals("/speed"))
+    else if (address.equals("/roomba/speed"))
     {
         if (checkCommandArguments(command, "f", false))
         {
@@ -125,7 +139,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             return true;
         } 
     }
-    else if (address.equals("/text"))
+    else if (address.equals("/roomba/text"))
     {
         if (checkCommandArguments(command, "s", false))
         {
@@ -139,6 +153,38 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             char text[32];
             command.getString(1, text);
             roombas[command.getInt(0)]->setText(String(text));
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/song1"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            roombas[command.getInt(0)]->imperialSong();
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/home"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            roombas[0]->setLed(HOME_GREEN,command.getInt(0));
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/warning"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            roombas[0]->setLed(WARNING_RED,command.getInt(0));
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/dirt"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            roombas[0]->setLed(DIRT_BLUE,command.getInt(0));
             return true;
         } 
     }

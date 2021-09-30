@@ -34,8 +34,7 @@ void setup()
 #ifdef TEST
   master.led.setBrightness(0.3f);
   //                            index, pin, nbLeds, ledType
-  master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
-  master.roomba.registerRoomba(33, 32, 15);
+  master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
 #endif
 
 #ifdef AMPOULE
@@ -69,6 +68,12 @@ void setup()
   master.led.setBrightness(0.2f);
   master.motorwing.addDCMotor(MotorShield2Manager::DCPort::M1);
   master.motorwing.addDCMotor(MotorShield2Manager::DCPort::M2);
+#endif
+
+#ifdef ROOMBA
+  master.led.setBrightness(0.3f);
+  master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
+  master.roomba.registerRoomba(33, 32, 15);
 #endif
 }
 

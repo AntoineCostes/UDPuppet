@@ -40,6 +40,7 @@ public:
     void writeLEDs (char a, char b, char c, char d);
 
     // methods for motors
+    void setMaxSpeed(float value);
     void drive(int velocity, int radius);
     void driveWheels(int right, int left);
     void driveWheelsPWM(int rightPWM, int leftPWM);
@@ -54,6 +55,8 @@ protected:
     bool ledStates[4];
     byte centerLedHue;
     byte centerLedBrightness;
+
+    float maxSpeed;
 
     String textBuffer;
     long lastTextUpdate;

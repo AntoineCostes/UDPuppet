@@ -2,7 +2,6 @@
 
 WifiManager::WifiManager() : Manager("wifi")
 {
-
   serialDebug = WIFI_DEBUG;
 }
 
