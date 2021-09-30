@@ -51,6 +51,31 @@ void RoombaManager::drive(byte index, float left, float right)
     roombas[index]->driveWheels(left*500, right*500);
 }
 
+void RoombaManager::setMaxSpeed(byte index, float speed)
+{
+    roombas[index]->setMaxSpeed(speed);
+}
+
+void RoombaManager::setHomeLed(byte index, bool state)
+{
+    roombas[index]->setLed(HOME_GREEN, state);
+}
+
+void RoombaManager::setDirtLed(byte index, bool state)
+{
+    roombas[index]->setLed(DIRT_BLUE, state);
+}
+
+void RoombaManager::setWarningLed(byte index, bool state)
+{
+    roombas[index]->setLed(WARNING_RED, state);
+}
+
+void RoombaManager::setSpotLed(byte index, bool state)
+{
+    roombas[index]->setLed(SPOT_GREEN, state);
+}
+
 bool RoombaManager::handleCommand(OSCMessage &command)
 {
     if (!checkInit())
@@ -70,22 +95,22 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             {
                 case 0:
                     compDebug("forward");
-                    roombas[0]->driveWheels(500,500);
+                    drive(0, 1.0f, 1.0f);
                     break;
                     
                 case 1:
                     compDebug("left");
-                    roombas[0]->driveWheels(500,-500);
+                    drive(0, 1.0f, -1.0f);
                     break;
 
                 case 2:
                     compDebug("right");
-                    roombas[0]->driveWheels(-500,500);
+                    drive(0, -1.0f, 1.0f);
                     break;
 
                 case 3:
                     compDebug("back");
-                    roombas[0]->driveWheels(-500,-500);
+                    drive(0, -1.0f, -1.0f);
                     break;
             }
             return true;
@@ -97,22 +122,22 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             {
                 case 0:
                     compDebug("forward");
-                    roombas[command.getInt(0)]->driveWheels(500,500);
+                    drive(command.getInt(0), 1.0f, 1.0f);
                     break;
                     
                 case 1:
                     compDebug("left");
-                    roombas[command.getInt(0)]->driveWheels(500,-500);
+                    drive(command.getInt(0), 1.0f, -1.0f);
                     break;
 
                 case 2:
                     compDebug("right");
-                    roombas[command.getInt(0)]->driveWheels(-500,500);
+                    drive(command.getInt(0), -1.0f, 1.0f);
                     break;
 
                 case 3:
                     compDebug("back");
-                    roombas[command.getInt(0)]->driveWheels(-500,-500);
+                    drive(command.getInt(0), -1.0f, -1.0f);
                     break;
             }
             return true;
@@ -122,31 +147,22 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            if(command.getInt(0))
-            {
-                roombas[0]->driveWheels(0,0);
-            }
+            drive(command.getInt(0), 0, 0);
             return true;
         } 
-        else if (checkCommandArguments(command, "ii", false))
-        {
-            if(command.getInt(1))
-            {
-                roombas[command.getInt(0)]->driveWheels(0,0);
-            }
-            return true;
-        } 
+        drive(0, 0, 0);
+        return true;
     }
     else if (address.equals("/roomba/speed"))
     {
         if (checkCommandArguments(command, "f", false))
         {
-            compDebug(String(command.getFloat(0)));
+            setMaxSpeed(0, command.getFloat(0));
             return true;
         } 
         else if (checkCommandArguments(command, "if", false))
         {
-            compDebug(String(command.getFloat(1)));
+            setMaxSpeed(command.getInt(0), command.getFloat(1));
             return true;
         } 
     }
@@ -156,14 +172,14 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         {
             char text[32];
             command.getString(0, text);
-            roombas[0]->setText(String(text));
+            setText(0, String(text));
             return true;
         } 
         else if (checkCommandArguments(command, "is", false))
         {
             char text[32];
             command.getString(1, text);
-            roombas[command.getInt(0)]->setText(String(text));
+            setText(command.getInt(0), String(text));
             return true;
         } 
     }
@@ -180,7 +196,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            roombas[0]->setLed(HOME_GREEN,command.getInt(0));
+            setHomeLed(0, command.getInt(0)>0);
             return true;
         } 
     }
@@ -188,7 +204,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            roombas[0]->setLed(WARNING_RED,command.getInt(0));
+            setWarningLed(0, command.getInt(0)>0);
             return true;
         } 
     }
@@ -196,17 +212,14 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            roombas[0]->setLed(DIRT_BLUE,command.getInt(0));
+            setDirtLed(0, command.getInt(0)>0);
             return true;
         } 
     }
     else if (address.equals("/roomba/hello"))
     {
-        if (checkCommandArguments(command, "i", false))
-        {
-            roombas[0]->setText("Bonjour le monde !");
-            return true;
-        } 
+        setText(0, "Bonjour le monde !");
+        return true;
     }
     return false;
 }

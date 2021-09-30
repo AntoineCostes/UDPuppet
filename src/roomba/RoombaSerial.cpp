@@ -5,7 +5,7 @@
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
-                                                                    centerLedBrightness(255),
+                                                                    centerLedBrightness(0),
                                                                     maxSpeed(0.5)
 {
 }

@@ -15,6 +15,11 @@ public:
 
     void setText(byte index, String text);
     void drive(byte index, float left, float right);
+    void setMaxSpeed(byte index, float speed);
+    void setHomeLed(byte index, bool state);
+    void setDirtLed(byte index, bool state);
+    void setWarningLed(byte index, bool state);
+    void setSpotLed(byte index, bool state);
 
     bool handleCommand(OSCMessage &command) override;
 
