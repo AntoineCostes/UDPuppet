@@ -1,5 +1,6 @@
 #include "LedManager.h"
 
+#ifdef HAS_LED
 LedManager::LedManager() : Manager("led"),
                            mode(LedMode::WAITING),
                            toastTimer(0)
@@ -230,3 +231,4 @@ bool LedManager::handleCommand(OSCMessage &command)
     }
     return false;
 }
+#endif

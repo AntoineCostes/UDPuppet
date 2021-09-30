@@ -1,6 +1,8 @@
 #include "../common/Manager.h"
 #include "FileManager.h"
 
+#ifdef HAS_SD_WING
+
 #define PLAYER_REFRESH 20
 
 #ifdef AMPOULE
@@ -87,3 +89,4 @@ protected:
   int nbFrames = 0;
 
 };
+#endif

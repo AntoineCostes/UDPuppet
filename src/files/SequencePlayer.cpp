@@ -1,5 +1,6 @@
 #include "SequencePlayer.h"
 
+#ifdef HAS_SD_WING
 SequencePlayer::SequencePlayer() : Manager("player"), fps(30)
 {
   intParameters["fps"] = fps;
@@ -212,3 +213,4 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
   }
   return false;
 }
+#endif

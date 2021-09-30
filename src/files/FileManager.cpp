@@ -1,15 +1,21 @@
 #include "FileManager.h"
 
+#ifdef HAS_SD_WING
 bool FileManager::sdIsDetected = false;
 SPIClass FileManager::spiSD(HSPI);
 
 FileManager::FileManager() : Manager("files"),
-                             isUploading(false),
+                             isUploading(false)
+                             #ifdef HAS_WEBSERVER
+                             ,
                              serverIsEnabled(false),
                              server(80)
+                             #endif
 {
+    #ifdef HAS_WEBSERVER
     server.onNotFound(std::bind(&FileManager::handleNotFound, this));
     server.on("/upload", HTTP_POST, std::bind(&FileManager::returnOK, this), std::bind(&FileManager::handleFileUpload, this));
+    #endif
     serialDebug = MASTER_DEBUG;
 }
 
@@ -42,14 +48,18 @@ void FileManager::init()
     {
         DBG("SD Card Initialization failed.");
     }
-    // initServer();
+    #ifdef HAS_WEBSERVER
+    initServer();
+    #endif
 }
 
 void FileManager::update()
 {
+    #ifdef HAS_WEBSERVER
     if (!serverIsEnabled)
         return;
     server.handleClient();
+    #endif
 }
 
 File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists)
@@ -114,7 +124,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
     }
 }
 
-//SERVER
+#ifdef HAS_WEBSERVER
 void FileManager::initServer()
 {
     server.begin();
@@ -228,3 +238,6 @@ void FileManager::handleNotFound()
     DBG("Not found here");
     server.send(404, "text/plain", "[notfound]");
 }
+#endif // HAS_WEBSERVER
+
+#endif // HAS_SD_WING

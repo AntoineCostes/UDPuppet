@@ -1,5 +1,6 @@
 #include "ServoManager.h"
 
+#ifdef HAS_SERVO
 ServoManager::ServoManager() : Manager("servo")
 {
   serialDebug = SERVO_DEBUG;
@@ -140,3 +141,4 @@ bool ServoManager::handleCommand(OSCMessage &command)
   }
   return false;
 }
+#endif

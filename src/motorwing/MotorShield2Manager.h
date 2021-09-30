@@ -4,6 +4,7 @@
 #include "DCMotor.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef HAS_MOTORWING
 #include <Adafruit_MotorShield.h>
 
 class StepperEvent
@@ -81,3 +82,4 @@ private:
   void forward2();
   void backward2();
 };
+#endif

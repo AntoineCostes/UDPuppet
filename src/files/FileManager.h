@@ -2,14 +2,21 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef HAS_SD_WING
 #include <SPI.h>
 #include <SD.h>
 #include <FS.h>
+
+
+// TODO make it a component
+#ifdef HAS_WEBSERVER
 #include <WebServer.h>
+#endif
 
 // TODO CONFIX refactor in LoggerWing
 #define DBG(msg) Serial.println(msg)
 
+// TODO move to config
 #define SDSPEED 27000000
 #define SD_MISO 19
 #define SD_MOSI 18
@@ -53,15 +60,12 @@ public:
 
     static SPIClass spiSD;
     File uploadingFile;
-
-//#ifdef ESP32
+    #ifdef HAS_WEBSERVER
     WebServer server;
-// #elif defined ESP8266
-//     ESP8266WebServer server;
-//#endif
+    bool serverIsEnabled;
+    #endif
 
     static bool sdIsDetected;
-    bool serverIsEnabled;
     int uploadedBytes;
     bool isUploading;
 
@@ -74,12 +78,15 @@ public:
     static void listDir(const char *dirname, uint8_t levels);
 
     //Server handling
+    #ifdef HAS_WEBSERVER
     void initServer();
     void closeServer();
     void handleFileUpload();
     void returnOK();
     void returnFail(String msg);
     void handleNotFound();
+    #endif
 
     // bool handleCommand(String command, var *data, int numData) override;
 };
+#endif // HAS_SD_WING

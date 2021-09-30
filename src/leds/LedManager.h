@@ -3,6 +3,7 @@
 #include "../utils/Timer.h"
 #include "LedStrip.h"
 
+#ifdef HAS_LED
 class LedManager : public Manager
 {
 public:
@@ -50,3 +51,4 @@ protected:
     Timer toastTimer;
     LedMode toastMode;
 };
+#endif

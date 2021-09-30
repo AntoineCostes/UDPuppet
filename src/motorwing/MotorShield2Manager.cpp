@@ -1,5 +1,6 @@
 #include "MotorShield2Manager.h"
 
+#ifdef HAS_MOTORWING
 MotorShield2Manager::MotorShield2Manager() : Manager("motorwing")
 {
     serialDebug = MOTORS_DEBUG;
@@ -462,3 +463,4 @@ bool MotorShield2Manager::handleCommand(OSCMessage &command)
     }
     return false;
 }
+#endif

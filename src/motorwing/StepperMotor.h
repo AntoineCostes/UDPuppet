@@ -2,6 +2,7 @@
 #pragma once
 #include "../common/Component.h"
 
+#ifdef HAS_MOTORWING
 #include <AccelStepper.h>
 
 class StepperMotor : public Component
@@ -33,3 +34,4 @@ public:
 protected:
   AccelStepper* stepper;
 };
+#endif

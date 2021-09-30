@@ -11,12 +11,13 @@
 // FS.h
 // WebServer.h
 
-// TODO wifi in ino
+// TODO wifi in ino as const
 // TODO remove index
 // TODO local libs
 // TODO filemanager server
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
+
 
 PuppetMaster master;
 long lastLoopTime = 0;
@@ -31,11 +32,9 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef TEST
+  master.led.setBrightness(0.3f);
   //                            index, pin, nbLeds, ledType
   master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
-  //master.servo.registerServo(0, 27, 0, 120, 50); // index, pin, min, max, start
-  //master.servo.registerServo(1, 12, 0, 120, 50); // index, pin, min, max, start
-  //master.motorwing.registerStepper(0, 14, 15, 32, 33);
   master.roomba.registerRoomba(33, 32, 15);
 #endif
 

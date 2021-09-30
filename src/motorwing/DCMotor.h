@@ -1,5 +1,7 @@
 #pragma once
 #include "../common/Component.h"
+
+#ifdef HAS_MOTORWING
 #include <Adafruit_MotorShield.h>
 
 class DCMotor : public Component
@@ -18,3 +20,4 @@ protected:
     int maxSpeed;
     Adafruit_DCMotor* motor;
 };
+#endif

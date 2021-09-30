@@ -1,8 +1,9 @@
 
 #pragma once
-#include <Adafruit_NeoPixel.h>
 #include "../common/Component.h"
 
+#ifdef HAS_LED
+#include <Adafruit_NeoPixel.h>
 class LedStrip : public Component
 {
 public:
@@ -25,3 +26,4 @@ protected:
     float brightness;
     Adafruit_NeoPixel strip;
 };
+#endif
