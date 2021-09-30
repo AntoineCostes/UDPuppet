@@ -39,6 +39,17 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
     compDebug("roomba registered.");
 }
 
+void RoombaManager::setText(byte index, String text)
+{
+    roombas[index]->setText(text);
+}
+
+void RoombaManager::drive(byte index, float left, float right)
+{
+    left = constrain(left, -1.0f, 1.0f);
+    right = constrain(right, -1.0f, 1.0f);
+    roombas[index]->driveWheels(left*500, right*500);
+}
 
 bool RoombaManager::handleCommand(OSCMessage &command)
 {
@@ -159,8 +170,9 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     else if (address.equals("/roomba/song1"))
     {
         if (checkCommandArguments(command, "i", false))
-        {
-            roombas[command.getInt(0)]->imperialSong();
+        {   
+            if(command.getInt(0))
+                roombas[0]->imperialSong();
             return true;
         } 
     }
@@ -185,6 +197,14 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         if (checkCommandArguments(command, "i", false))
         {
             roombas[0]->setLed(DIRT_BLUE,command.getInt(0));
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/hello"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            roombas[0]->setText("Bonjour le monde !");
             return true;
         } 
     }

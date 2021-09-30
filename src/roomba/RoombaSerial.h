@@ -15,6 +15,9 @@ enum RoombaLed
 class RoombaSerial : public Component
 {
 public:
+    // inPin = roomba RX = brown wire
+    // outPin = roomba TX = black wire
+    // wakePin = green wire
     RoombaSerial(byte inPin, byte outPin, byte wakePin);
     //~RoombaSerial(){Serial.println("delete RoombaSerial");}
     //~RoombaSerial() {}

@@ -13,6 +13,9 @@ public:
     
     void registerRoomba(byte inPin, byte outPin, byte wakePin);
 
+    void setText(byte index, String text);
+    void drive(byte index, float left, float right);
+
     bool handleCommand(OSCMessage &command) override;
 
 protected:

@@ -2,6 +2,7 @@
 
 #ifdef HAS_ROOMBA
  RoombaSerial::RoombaSerial(byte inPin, byte outPin, byte wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
+                                                                    serial(outPin, inPin),
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
                                                                     centerLedBrightness(255),
@@ -13,8 +14,8 @@ void RoombaSerial::initComponent(bool serialDebug)
 {
   serial.begin(19200);
   Component::initComponent(serialDebug);
-  Serial.println("-------- ");
-  Serial.println(serialDebug);
+  wakeUp();
+  startSafe();
 }
 
 void RoombaSerial::update()
@@ -25,7 +26,7 @@ void RoombaSerial::update()
   if (serial.available()) {
     String inString = Serial.readString();
     // TODO: serialEvent
-    compLog("char received:"+inString);
+    compDebug("char received:"+inString);
   }
 
     //  update 7 segment display
@@ -34,7 +35,7 @@ void RoombaSerial::update()
         serial.write(164);
         for (int pos = 0; pos <4; pos++)
         {
-            if (pos <= textBuffer.length())
+            if (pos < textBuffer.length())
                 serial.write(textBuffer[pos]);
             else
                 serial.write(' ');
@@ -49,6 +50,7 @@ void RoombaSerial::update()
 
 void RoombaSerial::wakeUp()
 {
+  compLog("Wake up !");
   digitalWrite(wakePin, HIGH);
   delay(100);
   digitalWrite(wakePin, LOW);
@@ -59,7 +61,7 @@ void RoombaSerial::wakeUp()
 
 void RoombaSerial::startSafe()
 {  
-  compDebug("start in safe mode");
+  compLog("start in safe mode");
   serial.write(128);  //Start
   serial.write(131);  //Safe mode
   delay(1000);
@@ -68,16 +70,19 @@ void RoombaSerial::startSafe()
 void RoombaSerial::setLed(RoombaLed led, bool state)
 {  
   ledStates[(int)led] = state;
+  updateLeds();
 }
 
 void RoombaSerial::setCenterHue(byte value)
 {
   centerLedHue = value;
+  updateLeds();
 }
 
 void RoombaSerial::setCenterBrightness(byte value)
 {
 centerLedBrightness = value;
+  updateLeds();
 }
 
 void RoombaSerial::updateLeds()
@@ -89,17 +94,29 @@ void RoombaSerial::updateLeds()
 }
 
 // ----------- motors
-
 void RoombaSerial::setMaxSpeed(float value)
 {
-  maxSpeed = constrain(value, 0, 1);
+  maxSpeed = constrain(value, 0.0f, 1.0f);
+}
+
+void RoombaSerial::driveWheels(int right, int left)
+{
+  // TODO change with float -1 1?
+  right = constrain(maxSpeed*right, -500, 500);
+  left = constrain(maxSpeed*left, -500, 500);
+  
+  serial.write(145);
+  serial.write(right >> 8);
+  serial.write(right);
+  serial.write(left >> 8);
+  serial.write(left);
 }
 
 void RoombaSerial::drive(int velocity, int radius)
 {
   // TODO change with float -1 1?
-  constrain(maxSpeed*velocity, -500, 500); //def max and min velocity in mm/s
-  constrain(radius, -2000, 2000); //def max and min radius in mm
+  velocity = constrain(maxSpeed*velocity, -500, 500); //def max and min velocity in mm/s
+  radius = constrain(radius, -2000, 2000); //def max and min radius in mm
   
   serial.write(137);
   serial.write(velocity >> 8);
@@ -108,24 +125,11 @@ void RoombaSerial::drive(int velocity, int radius)
   serial.write(radius);
 }
 
-void RoombaSerial::driveWheels(int right, int left)
-{
-  // TODO change with float -1 1?
-  constrain(maxSpeed*right, -500, 500);
-  constrain(maxSpeed*left, -500, 500);
-  
-  serial.write(145);
-  serial.write(right >> 8);
-  serial.write(right);
-  serial.write(left >> 8);
-  serial.write(left);
-  }
-
 void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
 {
   // TODO change with float -1 1?
-  constrain(rightPWM, -255, 255);
-  constrain(leftPWM, -255, 255);
+  rightPWM = constrain(rightPWM, -255, 255);
+  leftPWM = constrain(leftPWM, -255, 255);
   
   serial.write(146);
   serial.write(rightPWM >> 8);
@@ -138,6 +142,7 @@ void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
 // ----------- 7 segment display
 void RoombaSerial::setText(String text)
 {
+  compDebug("set text: "+text);
   textBuffer = "    "+text;
 }
 
