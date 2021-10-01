@@ -37,14 +37,6 @@
     {
       "type":"Trigger"
     },
-    "Yeux":
-    {
-      "type":"Boolean"
-    },
-    "Led debug":
-    {
-      "type":"Boolean"
-    },
     "Intensite Couleur":
     {
       "type":"Float",
@@ -70,6 +62,15 @@
       "min":0,
       "max":1,
       "default":0.5
+    },
+    "Yeux":
+    {
+      "type":"Boolean"
+    },
+    "Led debug":
+    {
+      "type":"Boolean",
+      "default":true
     }
   },
 
@@ -98,7 +99,7 @@
 
   "commands":
   {
-    "Couleur":
+    "Modifier couleur":
     {
       "menu":"Tete",
       "callback":"setColor",
@@ -107,11 +108,11 @@
         "Couleur":
         {
           "type":"Color",
-          "default":[0, 1, 0, 1]
+          "default":[0, 1, 1, 1]
         }
       }
     },
-    "Angle":
+    "Modifier angle":
     {
       "menu":"Tete",
       "callback":"setHeadAngle",
@@ -126,7 +127,7 @@
         }
       }
     },
-    "Vitesse Rotation":
+    "Modifier Vitesse":
     {
       "menu":"Tete",
       "callback":"rotateSpeed",

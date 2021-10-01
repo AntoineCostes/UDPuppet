@@ -50,7 +50,6 @@ PuppetMaster::PuppetMaster() : Manager("master"),
         return;
     }
     serialDebug = MASTER_DEBUG;
-    boolParameters["ledDebug"] = true;
 }
 
 void PuppetMaster::init()
@@ -204,23 +203,23 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiConnectionState::CONNECTED:
     #ifdef HAS_LED
-        led.mode = LedManager::LedMode::STREAMING;
-        led.setColor(0, 50, 0);
-        // led.toast(LedManager::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
+        led.setMode(LedStrip::LedMode::STREAMING);
+        led.setColor(0, 0, 50, 0);
+        // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         break;
 
     case WifiConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
     #ifdef HAS_LED
-        led.mode = LedManager::LedMode::ERROR;
+        led.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;
 
     case WifiConnectionState::CONNECTING:
         compDebug("connecting to wifi...");
     #ifdef HAS_LED
-        led.mode = LedManager::LedMode::WORKING;
+        led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 

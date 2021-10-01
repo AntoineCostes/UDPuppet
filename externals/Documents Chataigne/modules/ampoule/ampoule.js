@@ -1,3 +1,4 @@
+
 function init() {
   local.values.batterie.set(false);
   local.values.carteSDDetectee.set(false);
@@ -25,26 +26,26 @@ function moduleParameterChanged(param)
   {
     yo();
   }
-  if (param.name == "ledDebug")
-  {
-    local.send("/debug", param.get());
-  }
   if (param.name == "intensiteCouleur")
   {
     local.send("/led/brightness", 0, param.get());
-    // resend color to update
-    //color = local.parameters.couleur.get();
-    //local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
     sendColorValue();
   }
   if (param.name == "couleur")
   {
-  //local.send("/led/color", 0, value.get()[0]*value.get()[3], value.get()[1]*value.get()[3], value.get()[2]*value.get()[3]);
     sendColorValue();
   }
   if (param.name == "angle")
   {
     local.send("/servo", 0, param.get());
+  }
+  if (param.name == "yeux")
+  {
+    sendColorValue();
+  }
+  if (param.name == "ledDebug")
+  {
+    local.send("/led/debug", 0, param.get());
   }
 }
 
@@ -54,8 +55,10 @@ function sendColorValue()
   if (local.parameters.yeux.get())
   {
     local.send("/led/color", 0, 0, 0);
-    local.send("/led/color", 0, 4, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
-    local.send("/led/color", 0, 10, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 0, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 1, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 6, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 7, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
 
   } else {
     local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
@@ -77,6 +80,7 @@ function oscEvent(address, args)
       local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
 
       local.send("/led/brightness", 0, local.parameters.intensiteCouleur.get());
+      local.send("/led/debug", 0, local.parameters.ledDebug.get());
       //color = local.parameters.couleur.get();
       //local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
       sendColorValue();
