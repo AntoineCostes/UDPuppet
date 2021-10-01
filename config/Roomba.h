@@ -1,7 +1,5 @@
 #pragma once
 
-#define ROOMBA
-
 const String BOARD_NAME = "Roomba";    // name used for mDNS services 
 
 // BOARD TYPE

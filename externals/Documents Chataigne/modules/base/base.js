@@ -2,13 +2,14 @@ var REVOLUTION_STEPS = 2050;
 
 function init() {
   local.values.batterie.set(false);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
 function update()
 {
-  local.values.cou.set(local.values.cou.get() + local.parameters.vitesseCou.get()*0.0001);
-  local.values.pied.set(local.values.pied.get() + local.parameters.vitessePied.get()*0.0001);
+  local.parameters.cou.set(local.parameters.cou.get() + local.parameters.vitesseCou.get()*0.0001);
+  local.parameters.pied.set(local.parameters.pied.get() + local.parameters.vitessePied.get()*0.0001);
 }
 
 // TODO set defaults PARAMETERS
@@ -27,30 +28,30 @@ function moduleParameterChanged(param)
   {
     yo();
   }
+  if (param.name == "cou")
+  {
+    local.send("/servo", 0, param.get());
+  }
+  if (param.name == "pied")
+  {
+    local.send("/servo", 1, 1 - param.get());
+  }
   if (param.name == "vitesseRotation")
+  {
+    local.send("/stepper/speedrel", 0, param.get());
+  }
+  if (param.name == "vitesseMaxRotation")
   {
     local.send("/stepper/maxspeed", 0, 1.0*param.get());
   }
+  //if (value.name == "stopRotation")
+//  {
+//    local.send("/stepper/speedrel", 0, 0);
+//  }
 }
 
 // VALUES
 function moduleValueChanged(value) {
-  if (value.name == "cou")
-  {
-    local.send("/servo", 0, value.get());
-  }
-  if (value.name == "pied")
-  {
-    local.send("/servo", 1, 1 - value.get());
-  }
-  if (value.name == "vitesseRotation")
-  {
-    local.send("/stepper/speedrel", 0, value.get());
-  }
-  if (value.name == "stopRotation")
-  {
-    local.send("/stepper/speedrel", 0, 0);
-  }
 }
 
 // OSC
@@ -70,18 +71,18 @@ function oscEvent(address, args)
   }
   if (address == "/sd")
   {
-      local.parameters.carteSDDetectee.set(args[1]>0);
+      local.values.carteSDDetectee.set(args[1]>0);
   }
   if (address == "/stepper/pos")
   {
-      local.parameters.positionStepper.set(args[1]/REVOLUTION_STEPS);
+      local.values.positionStepper.set(args[1]/REVOLUTION_STEPS);
   }
 }
 
 // COMMANDS
 function setNeck(val) {
   script.log("Set cou: " + val);
-  local.values.cou.set(val);
+  local.parameters.cou.set(val);
 }
 
 function rotateNeck(val) {
@@ -91,7 +92,7 @@ function rotateNeck(val) {
 
 function setFoot(val) {
   script.log("Set pied: " + val);
-  local.values.pied.set(val);
+  local.parameters.pied.set(val);
 }
 
 function rotateFoot(val) {
@@ -111,7 +112,7 @@ function stepperMove(val) {
 
 function setRotationSpeed(val) {
   script.log("Set rotation speed: " + val);
-  local.values.vitesseRotation.set(val);
+  local.parameters.vitesseRotation.set(val);
 }
 
 function playSequence(name, fps) {

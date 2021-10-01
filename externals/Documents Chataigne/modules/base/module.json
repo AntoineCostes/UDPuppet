@@ -37,17 +37,19 @@
     {
       "type":"Trigger"
     },
-    "Carte SD Detectee":
-    {
-      "type":"Boolean",
-      "readOnly":true
-    },
     "Vitesse Cou":
     {
       "type":"Integer",
       "min": -1000,
       "max": 1000,
       "default": 0
+    },
+    "Cou":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
     },
     "Vitesse Pied":
     {
@@ -56,18 +58,26 @@
       "max": 1000,
       "default": 0
     },
+    "Pied":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
+    },
+    "Vitesse Rotation":
+    {
+      "type":"Float",
+      "min":-1,
+      "max":1,
+      "default":0
+    },
     "Vitesse Max Rotation":
     {
       "type":"Integer",
       "min": 0,
       "max": 500,
       "default": 500
-    },
-    "Position Stepper":
-    {
-      "type":"Float",
-      "default": 0,
-      "readOnly":true
     }
   },
 
@@ -87,26 +97,16 @@
       "max": 1,
       "readOnly": true
     },
-    "Cou":
+    "Carte SD Detectee":
     {
-      "type":"Float",
-      "min":0,
-      "max":1,
-      "default":0.5
+      "type":"Boolean",
+      "readOnly":true
     },
-    "Pied":
+    "Position Stepper":
     {
       "type":"Float",
-      "min":0,
-      "max":1,
-      "default":0.5
-    },
-    "Vitesse Rotation":
-    {
-      "type":"Float",
-      "min":-1,
-      "max":1,
-      "default":0
+      "default": 0,
+      "readOnly":true
     }
   },
 

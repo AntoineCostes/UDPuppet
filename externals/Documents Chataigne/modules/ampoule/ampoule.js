@@ -1,11 +1,12 @@
 function init() {
   local.values.batterie.set(false);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
 function update()
 {
-  local.values.rotation.set(local.values.rotation.get() + local.parameters.vitesseRotation.get()*0.0001);
+  local.parameters.angle.set(local.parameters.angle.get() + local.parameters.vitesseRotation.get()*0.0001);
 }
 
 // TODO set defaults PARAMETERS
@@ -20,10 +21,6 @@ local.sendTo("192.168.43.255", 9000, "/yo", 0);
 // PARAMETERS
 function moduleParameterChanged(param)
 {
-  //script.log(local.values.couleur.get()[0]);
-  //script.log(local.values.couleur.get()[1]);
-  //script.log(local.values.couleur.get()[2]);
-
   if (param.name == "invocation")
   {
     yo();
@@ -35,21 +32,38 @@ function moduleParameterChanged(param)
   if (param.name == "intensiteCouleur")
   {
     local.send("/led/brightness", 0, param.get());
-    color = local.values.couleur.get();
+    // resend color to update
+    //color = local.parameters.couleur.get();
+    //local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
+    sendColorValue();
+  }
+  if (param.name == "couleur")
+  {
+  //local.send("/led/color", 0, value.get()[0]*value.get()[3], value.get()[1]*value.get()[3], value.get()[2]*value.get()[3]);
+    sendColorValue();
+  }
+  if (param.name == "angle")
+  {
+    local.send("/servo", 0, param.get());
+  }
+}
+
+function sendColorValue()
+{
+  color = local.parameters.couleur.get();
+  if (local.parameters.yeux.get())
+  {
+    local.send("/led/color", 0, 0, 0);
+    local.send("/led/color", 0, 4, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 10, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+
+  } else {
     local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
   }
 }
 
 // VALUES
 function moduleValueChanged(value) {
-  if (value.is(local.values.couleur))
-  {
-    local.send("/led/color", 0, value.get()[0]*value.get()[3], value.get()[1]*value.get()[3], value.get()[2]*value.get()[3]);
-  }
-  if (value.is(local.values.rotation))
-  {
-    local.send("/servo", 0, value.get());
-  }
 }
 
 // OSC
@@ -63,8 +77,9 @@ function oscEvent(address, args)
       local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
 
       local.send("/led/brightness", 0, local.parameters.intensiteCouleur.get());
-      color = local.values.couleur.get();
-      local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
+      //color = local.parameters.couleur.get();
+      //local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
+      sendColorValue();
   }
 
   if (address == "/battery")
@@ -73,19 +88,19 @@ function oscEvent(address, args)
   }
   if (address == "/sd")
   {
-      local.parameters.carteSDDetectee.set(args[1]>0);
+      local.values.carteSDDetectee.set(args[1]>0);
   }
 }
 
 // COMMANDS
 function setColor(val) {
   script.log("Set color " + val);
-  local.values.couleur.set(val);
+  local.parameters.couleur.set(val);
 }
 
 function setHeadAngle(val) {
   script.log("Set tete: " + val);
-  local.values.rotation.set(val);
+  local.parameters.angle.set(val);
 }
 
 function rotateSpeed(val) {

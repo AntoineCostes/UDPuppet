@@ -1,7 +1,5 @@
 #pragma once
 
-#define TEST
-
 const String BOARD_NAME = "Test";    // name used for mDNS services 
 
 // BOARD TYPE
@@ -12,6 +10,7 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 10000;
 
 // COMPONENTS
-//#define HAS_SD
+#define HAS_SD_WING
 #define HAS_LED
-#define HAS_ROOMBA
+#define HAS_SERVO
+#define HAS_MOTORWING

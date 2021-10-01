@@ -3,7 +3,7 @@
 #ifdef HAS_MOTORWING
 MotorShield2Manager::MotorShield2Manager() : Manager("motorwing")
 {
-    serialDebug = MOTORS_DEBUG;
+    serialDebug = MOTORWING_DEBUG;
 }
 
 void MotorShield2Manager::initManager()
@@ -107,7 +107,7 @@ void MotorShield2Manager::dcMaxSpeed(DCPort port, int value)
     }
     dcMotors[port]->setMaxSpeed(value);
 
-    if (MOTORS_DEBUG) compDebug("set DC#" + String(port) + " max speed " + String(value));
+    if (MOTORWING_DEBUG) compDebug("set DC#" + String(port) + " max speed " + String(value));
 }
 
 void MotorShield2Manager::dcStopAll()
@@ -225,7 +225,7 @@ void MotorShield2Manager::stepperGoTo(byte index, long value)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " go to " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " go to " + String(value));
     steppers[index]->goTo(value);
 }
 
@@ -241,7 +241,7 @@ void MotorShield2Manager::stepperMove(byte index, long value)
     }
 
     // REFACTOR make StepperMotor methods
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " move relative " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " move relative " + String(value));
     steppers[index]->moveTo(value);
 }
 
@@ -256,7 +256,7 @@ void MotorShield2Manager::stepperReset(byte index)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " reset ");
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " reset ");
     // REFACTOR make StepperMotor methods
     steppers[index]->reset();
 }
@@ -272,7 +272,7 @@ void MotorShield2Manager::stepperSetSpeed(byte index, float value)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " set speed " + String(value));
     steppers[index]->setSpeed(value);
 }
 
@@ -287,7 +287,7 @@ void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set speed rel " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " set speed rel " + String(value));
     steppers[index]->setSpeedRel(value);
 }
 
@@ -302,7 +302,7 @@ void MotorShield2Manager::stepperSetAccel(byte index, float value)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set accel " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " set accel " + String(value));
     steppers[index]->setAcceleration(value);
 }
 
@@ -317,7 +317,7 @@ void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
         return;
     }
 
-    if (MOTORS_DEBUG) compDebug("stepper " + String(index) + " set max speed " + String(value));
+    if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " set max speed " + String(value));
     steppers[index]->setMaxSpeed(value);
 }
 

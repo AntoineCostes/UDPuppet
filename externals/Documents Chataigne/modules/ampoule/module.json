@@ -37,16 +37,11 @@
     {
       "type":"Trigger"
     },
-    "Carte SD Detectee":
-    {
-      "type":"Boolean",
-      "readOnly":true
-    },
-    "Led debug (soon)":
+    "Yeux":
     {
       "type":"Boolean"
     },
-    "Yeux (soon)":
+    "Led debug":
     {
       "type":"Boolean"
     },
@@ -57,12 +52,24 @@
       "max": 1,
       "default": 0.5
     },
+    "Couleur":
+    {
+      "type":"Color",
+      "default":[0, 0, 0, 1]
+    },
     "Vitesse Rotation":
     {
       "type":"Integer",
       "min": -1000,
       "max": 1000,
       "default": 0
+    },
+    "Angle":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
     }
   },
 
@@ -82,17 +89,10 @@
       "max": 1,
       "readOnly": true
     },
-    "Couleur":
+    "Carte SD Detectee":
     {
-      "type":"Color",
-      "default":[0, 0, 0, 1]
-    },
-    "Rotation":
-    {
-      "type":"Float",
-      "min":0,
-      "max":1,
-      "default":0.5
+      "type":"Boolean",
+      "readOnly":true
     }
   },
 
@@ -141,33 +141,32 @@
         }
       }
     },
-      "Lancer Sequence":
+    "Lancer Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        },
+        "FPS":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":200,
+          "default":30
+        }
+      }
+    },
+      "Arrêter Sequence":
       {
         "menu":"Sequence",
-        "callback":"playSequence",
+        "callback":"stopSequence",
         "parameters":
         {
-          "Name":
-          {
-            "type":"String"
-          },
-          "FPS":
-          {
-            "type":"Integer",
-            "min":0,
-            "max":200,
-            "default":30
-          }
         }
-      },
-        "Arrêter Sequence":
-        {
-          "menu":"Sequence",
-          "callback":"stopSequence",
-          "parameters":
-          {
-          }
-        }
-
+      }
   }
 }

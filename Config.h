@@ -1,40 +1,52 @@
 #pragma once
 #include <Arduino.h>
 
+// NETWORKS - SELECT ONE
+//#define SANS_GRAVITE
+#define COSTES
+
+// HARDWARE - SELECT ONE
+//#define AMPOULE
+#define BASE
+//#define BOBINE
+//#define CORBEILLE
+//#define ROOMBA
+
+
+// WIFI PARAMETERS
+#if defined(SANS_GRAVITE)
+const String WIFI_SSID = "Sans Gravité";
+const String WIFI_PASSWORD = "lovecraft";
+#elif defined(COSTES)
+const String WIFI_SSID = "Ouifi";
+const String WIFI_PASSWORD = "28101948AC";
+#else
+const String WIFI_SSID = "LeNet";
+const String WIFI_PASSWORD = "connectemoi";
+#endif
+
 enum BoardType
 {
     HUZZAH32,
-    HUZZAH8266 // not supported yet
+    HUZZAH8266 // not supported yet,
 };
 
-//#include "config/sansgravite/Amoule.h"
-#include "config/Roomba.h"
-
-/*enum Network
-{
-    ANTOINE,
-    COSTES,
-    SANS_GRAVITE
-};*/
-#define COSTES // CHOOSE NETWORK
+#if defined(AMPOULE)
+#include "config/sansgravite/Ampoule.h"
+#elif defined(BASE)
+#include "config/sansgravite/Base.h"
+#elif defined(BOBINE)
+#include "config/sansgravite/Bobine.h"
+#elif defined(CORBEILLE)
+#include "config/sansgravite/Corbeille.h"
+#elif defined(ROOMBA)
+#include "config/sansgravite/Roomba.h"
+#endif
 
 
 // GENERAL PARAMETERS
 const bool MASTER_DEBUG = true;
 
-// WIFI PARAMETERS
-#ifdef SANS_GRAVITE
-const String WIFI_SSID = "Sans Gravité";
-const String WIFI_PASSWORD = "lovecraft";
-#endif
-#ifdef ANTOINE
-const String WIFI_SSID = "LeNet";
-const String WIFI_PASSWORD = "connectemoi";
-#endif
-#ifdef COSTES
-const String WIFI_SSID = "Ouifi";
-const String WIFI_PASSWORD = "28101948AC";
-#endif
 const bool OVERRIDE_NETWORK = true;
 const long DELAY_BEFORE_RECONNECT_MS = 3000;
 const long CONNECTION_TIMEOUT_MS = 10000;
@@ -62,7 +74,7 @@ const int SERVO_MAX = 180;
 const bool SERVO_ALLOW_UNSAFE_PINS = false;
 
 // FEATHERWING PARAMETERS
-const bool MOTORS_DEBUG = true; // TODO rename FEATHERWING
+const bool MOTORWING_DEBUG = true;
 
 // ROOMBA PARAMETERS
 const bool ROOMBA_DEBUG = true;
