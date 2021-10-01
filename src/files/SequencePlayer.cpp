@@ -213,4 +213,4 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
   }
   return false;
 }
-#endif
+#endif //HAS_SD_WING

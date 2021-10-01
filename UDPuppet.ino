@@ -11,10 +11,10 @@
 // FS.h
 // WebServer.h
 
-// TODO wifi in ino as const
 // TODO remove index
 // TODO local libs
 // TODO filemanager server
+// TODO OTA
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 

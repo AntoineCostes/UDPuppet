@@ -18,6 +18,9 @@
 // PuppetMaster singleton ?
 // connectionstates inside class ? Wifi or Master ?
 
+// make childClass DebugLedStrip with communication methods
+// les managers ne devraient pas hériter de component car ils n'ont pas de paramètres
+
 // TODO
 // fix stepper
 // include libs
@@ -34,21 +37,15 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.2.5")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.0")
 {
-    Component::registerPin(LED_BUILTIN);
-    switch (BOARD_TYPE)
-    {
-    case HUZZAH32:
-        //#ifndef BASE // Base uses pin 12 TODO Change define with constant
-        //Component::forbiddenPins.insert(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
-        //#endif
-        break;
-
-    default:
-        compError("Unknown board type !");
-        return;
-    }
+    #ifdef BASE // Base uses pin 12 and 13
+    
+    #else
+    Component::registerPin(LED_BUILTIN); 
+    Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
+    #endif
+    
     serialDebug = MASTER_DEBUG;
 }
 
@@ -339,7 +336,7 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
 
 
 }
-#endif
+#endif // HAS_SD_WING
 
 // void PuppetMaster::commandFromOSCMessage(OSCMessage &command)
 // {

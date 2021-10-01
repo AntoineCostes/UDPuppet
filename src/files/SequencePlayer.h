@@ -88,5 +88,5 @@ protected:
   uint8_t *buff;
   int nbFrames = 0;
 
-};
-#endif
+}; 
+#endif // HAS_SD_WING

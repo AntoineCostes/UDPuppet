@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-// NETWORKS - SELECT ONE
+// NETWORKS - DEFAULT TO LENET
 //#define SANS_GRAVITE
 #define COSTES
 
