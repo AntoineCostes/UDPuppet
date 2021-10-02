@@ -2,6 +2,7 @@
 #pragma once
 #include "../common/Component.h"
 
+#ifdef HAS_MOTORWING
 #include <AccelStepper.h>
 
 class StepperMotor : public Component
@@ -18,11 +19,7 @@ public:
     SPEED
   } mode;
 
-  float acceleration;
-  float maxSpeed;
-
   void goTo(long value);
-  void goToFromStart(long value);
   void moveTo(long value);
   void reset();
   void setSpeed(float value);
@@ -31,8 +28,10 @@ public:
   void setMaxSpeed(float value);
   long currentPosition();
   float currentSpeed();
+  float maxSpeed();
+  float acceleration();
 
 protected:
   AccelStepper* stepper;
-  long startValue;
 };
+#endif

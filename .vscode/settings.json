@@ -90,7 +90,8 @@
         "concepts": "cpp",
         "format": "cpp",
         "forward_list": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "complex": "cpp"
     }
 
 }

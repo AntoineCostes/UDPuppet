@@ -1,13 +1,14 @@
 #include "StepperMotor.h"
 
+#ifdef HAS_MOTORWING
 StepperMotor::StepperMotor(byte id, AccelStepper *stepper) : Component("stepper_" + String(id)),
                                                              stepper(stepper),
-                                                             maxSpeed(1000),
-                                                             acceleration(300),
                                                              mode(SPEED)
 {
-    floatParameters["maxSpeed"] = maxSpeed;
-    floatParameters["acceleration"] = acceleration;
+    // TODO values in constructor ?
+    // FIXME maximum values for motorwing ?
+    floatParameters["maxSpeed"] = 100; 
+    floatParameters["acceleration"] = 1000;
     mode = SPEED;
 }
 
@@ -16,9 +17,8 @@ void StepperMotor::initComponent(bool serialDebug)
     Component::initComponent(serialDebug);
     // setSpeed(5000.0f);
     //moveTo(500.0f);
-    startValue = stepper->currentPosition();
-    stepper->setMaxSpeed(maxSpeed);
-    stepper->setAcceleration(acceleration);
+    stepper->setMaxSpeed(floatParameters["maxSpeed"]);
+    stepper->setAcceleration(floatParameters["acceleration"]);
 }
 
 void StepperMotor::update()
@@ -43,17 +43,18 @@ void StepperMotor::goTo(long value)
     if (!checkInit())
         return;
 
-    mode = POSITION;
+    // ensure the stepper moves
+    if (stepper->targetPosition() == value)
+        stepper->moveTo(value+100);
+
+
+    // make sure previous speed does not interfere
+    if (mode != POSITION)
+    {
+        stepper->setSpeed(0);
+        mode = POSITION;
+    }
     stepper->moveTo(value);
-}
-
-void StepperMotor::goToFromStart(long value)
-{
-    if (!checkInit())
-        return;
-
-    mode = POSITION;
-    stepper->moveTo(value +  startValue);
     compDebug("go to " + String(value));
 }
 
@@ -62,8 +63,14 @@ void StepperMotor::moveTo(long value)
     if (!checkInit())
         return;
 
-    mode = POSITION;
-    stepper->moveTo(stepper->currentPosition() + value);
+    
+    // make sure previous speed does not interfere
+    if (mode != POSITION)
+    {
+        stepper->setSpeed(0);
+        mode = POSITION;
+    }
+    stepper->move(value);
     compDebug("move to " + String(value));
 }
 
@@ -72,8 +79,11 @@ void StepperMotor::reset()
     if (!checkInit())
         return;
 
-    startValue = stepper->currentPosition();
-    compDebug("reset ");
+    // TODO restore previous state ? 
+    //float speed = stepper->speed();
+    stepper->setCurrentPosition(0);
+    //stepper->setSpeed(speed); // does not work
+    compDebug("reset");
 }
 
 void StepperMotor::setSpeed(float value)
@@ -112,6 +122,11 @@ void StepperMotor::setAcceleration(float value)
         compError("can't set acceleration, incorrect value: " + String(value));
         return;
     }
+
+    // setAcceleration triggers run to position
+    if (stepper->speed() == 0)
+        stepper->move(0); // cancel target position
+
     compDebug("set accel " + String(value));
     stepper->setAcceleration(value);
     floatParameters["acceleration"] = value;
@@ -128,6 +143,10 @@ void StepperMotor::setMaxSpeed(float value)
         compError("can't set max speed, incorrect value: " + String(value));
         return;
     }
+    
+    // setMaxSpeed triggers run to position
+    if (stepper->speed() == 0)
+        stepper->move(0); // cancel target position
 
     compDebug("set max speed " + String(value));
     stepper->setMaxSpeed(value);
@@ -144,3 +163,9 @@ float StepperMotor::currentSpeed()
 {
    return stepper->speed();
 }
+
+float StepperMotor::maxSpeed()
+{
+   return stepper->maxSpeed();
+}
+#endif

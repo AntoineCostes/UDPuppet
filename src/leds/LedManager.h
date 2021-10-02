@@ -1,8 +1,8 @@
 #pragma once
 #include "../common/Manager.h"
-#include "../utils/Timer.h"
 #include "LedStrip.h"
 
+#ifdef HAS_LED
 class LedManager : public Manager
 {
 public:
@@ -12,19 +12,8 @@ public:
     void update();
     
     void registerLedStrip(byte index, byte pin, byte numLeds, neoPixelType type);
-    
-    enum LedMode
-    {
-        WAITING,
-        READY,
-        WORKING,
-        ERROR,
-        STREAMING
-    } mode;
 
-    // allows to display a given mode for a given duration
-    void toast(LedMode toastedMode, long ms);
-    void setMode(LedMode mode);
+    void setMode(LedStrip::LedMode newMode);
     
     // all
     void clear();
@@ -40,13 +29,10 @@ public:
     // led
     void setColor(int stripIndex, int i, int r, int g, int b);
     
-    void setDebug(bool value);
     bool handleCommand(OSCMessage &command) override;
 
 protected:
     unsigned long lastLedRefreshTime;
     std::map<int, LedStrip*> strips; 
-
-    Timer toastTimer;
-    LedMode toastMode;
 };
+#endif

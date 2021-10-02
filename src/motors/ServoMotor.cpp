@@ -1,5 +1,6 @@
 #include "ServoMotor.h"
 
+#ifdef HAS_SERVO
 ServoMotor::ServoMotor(byte pin, byte min, byte max, byte start) :
                         Component("servo_pin" + String(pin)),
                         pin(pin),
@@ -100,3 +101,4 @@ void ServoMotor::setMax(int value)
   intParameters["max"] = value;
   overrideFlashParameters();
 }
+#endif

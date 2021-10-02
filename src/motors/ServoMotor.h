@@ -2,6 +2,7 @@
 #pragma once
 #include "../common/Component.h"
 
+#ifdef HAS_SERVO
 #include <ESP32Servo.h>
 
 class ServoMotor : public Component
@@ -33,3 +34,4 @@ protected:
     int max;
     int start;
 };
+#endif

@@ -1,17 +1,15 @@
 #include "LedManager.h"
 
-LedManager::LedManager() : Manager("led"),
-                           mode(LedMode::WAITING),
-                           toastTimer(0)
+#ifdef HAS_LED
+LedManager::LedManager() : Manager("led")
 {
-    boolParameters["debug"] = true;
+    serialDebug = LED_DEBUG;
 }
 
 void LedManager::initManager()
 {
     Manager::initManager();
     lastLedRefreshTime = millis();
-    serialDebug = LED_DEBUG;
 }
 
 void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelType type)
@@ -19,78 +17,31 @@ void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelTy
     if (!checkInit())
         return;
 
-    // std::set<int> pins {pin};
-
     if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
     {
         compError("cannot register prop: " + String(pin) + " is already used !");
         return;
     }
-    Component::forbiddenPins.insert(pin);
+    Component::forbiddenPins.insert(pin);  
 
-    strips.insert({index, new LedStrip(pin, numLeds, type)});
+    // only first ledstrip is debug true by default
+    strips.insert({index, new LedStrip(pin, numLeds, type, index==0)});
     strips[index]->initComponent(serialDebug);
     compDebug("register prop: " + String(strips[index]->name));
 }
 
-void LedManager::setMode(LedMode newMode)
+void LedManager::setMode(LedStrip::LedMode newMode)
 {
-    //compDebug("set mode");
-    //if (newMove != mode)
-    //    setColor(0, 0, 0);
-    //mode = newMode;
-}
-
-void LedManager::toast(LedMode toastedMode, long ms)
-{
-    toastMode = toastedMode;
-
-    toastTimer.time = ms;
-
-    toastTimer.start();
+    for (auto const &pair : strips)
+    {
+        pair.second->mode = newMode;
+    }
 }
 
 void LedManager::update()
 {
     if (!checkInit())
         return;
-
-    float slow = abs(sin(0.001f * millis()));
-    float fast = abs(sin(0.002f * millis()));
-
-    toastTimer.update();
-    LedMode currentMode = toastTimer.isRunning ? toastMode : mode;
-
-    // clear leds
-    //if (!toastTimer.isRunning && toastMode != mode)
-    //{
-    //    compDebug("end toast");
-    //    toastMode = mode;
-    //    setColor(0, 0, 0);
-    //}
-
-    if (boolParameters["debug"])
-        switch (currentMode)
-        {
-        case LedMode::WAITING:
-            setColor(0, 0, int(50 * slow));
-            break;
-
-        case LedMode::READY:
-            setColor(0, 100, 0);
-            break;
-
-        case LedMode::WORKING:
-            setColor(int(50 * fast), 0, int(50 * fast));
-            break;
-
-        case LedMode::ERROR:
-            setColor(50, 0, 0);
-            break;
-
-        case LedMode::STREAMING:
-            break;
-        }
 
     // no Manager::update(), leds are refreshed periodically
     if (millis() - lastLedRefreshTime > LED_REFRESH_MS)
@@ -146,12 +97,6 @@ void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
     strips[stripIndex]->setLed(i, r, g, b);
 }
 
-void LedManager::setDebug(bool value)
-{
-    setColor(0, 0, 0);
-    boolParameters["debug"] = value;
-    overrideFlashParameters();
-}
 bool LedManager::handleCommand(OSCMessage &command)
 {
     if (!checkInit())
@@ -162,6 +107,21 @@ bool LedManager::handleCommand(OSCMessage &command)
     String address = String(buf);
     compLog("handle command : " + address);
 
+    if (address.equals("/led/debug"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            int value = command.getInt(0)>0;
+            strips[0]->setWifiDebug(value);
+            return true;
+        } else if (checkCommandArguments(command, "ii", true))
+        {
+            int index = command.getInt(0);
+            int value = command.getInt(1)>0;
+            strips[index]->setWifiDebug(value);
+            return true;
+        }
+    }
     if (address.equals("/led/color"))
     {
         if (checkCommandArguments(command, "iii", false))
@@ -219,14 +179,6 @@ bool LedManager::handleCommand(OSCMessage &command)
             return true;
         }
     }
-    else if (address.equals("/led/debug"))
-    {
-        if (checkCommandArguments(command, "i", false))
-        {
-            int value = command.getFloat(0);
-            setDebug(value>0);
-            return true;
-        }
-    }
     return false;
 }
+#endif

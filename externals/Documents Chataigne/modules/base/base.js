@@ -1,6 +1,15 @@
+var REVOLUTION_STEPS = 2050;
+
 function init() {
-  local.values.batterie.set(false);
+  local.values.batterie.set(0);
+  local.values.carteSDDetectee.set(false);
   yo();
+}
+
+function update()
+{
+  local.parameters.cou.set(local.parameters.cou.get() + local.parameters.vitesseCou.get()*0.0001);
+  local.parameters.pied.set(local.parameters.pied.get() + local.parameters.vitessePied.get()*0.0001);
 }
 
 // TODO set defaults PARAMETERS
@@ -19,51 +28,30 @@ function moduleParameterChanged(param)
   {
     yo();
   }
-  if (param.name == "couMin")
+  if (param.name == "cou")
   {
-    // TODO check min max
-      local.send("/servo/min", 0, param.get());
+    local.send("/servo", 0, param.get());
   }
-  if (param.name == "couMax")
+  if (param.name == "pied")
   {
-    // TODO check min max
-      local.send("/servo/max", 0, param.get());
-  }
-  if (param.name == "piedMin")
-  {
-    // TODO check min max
-      local.send("/servo/mikn", 1, param.get());
-  }
-  if (param.name == "piedMax")
-  {
-    // TODO check min max
-      local.send("/servo/max", 1, param.get());
+    local.send("/servo", 1, 1 - param.get());
   }
   if (param.name == "vitesseRotation")
   {
-    // TODO check min max
-      local.send("/stepper/maxSpeed", 0, param.get());
+    local.send("/stepper/speedrel", 0, param.get());
   }
+  if (param.name == "vitesseMaxRotation")
+  {
+    local.send("/stepper/maxspeed", 0, 1.0*param.get());
+  }
+  //if (value.name == "stopRotation")
+//  {
+//    local.send("/stepper/speedrel", 0, 0);
+//  }
 }
 
 // VALUES
 function moduleValueChanged(value) {
-  if (value.name == "cou")
-  {
-    local.send("/servo", 0, value.get());
-  }
-  if (value.name == "pied")
-  {
-    local.send("/servo", 1, 1 -value.get());
-  }
-  if (value.name == "stopRotation")
-  {
-    local.parameters.vitesse.set("stop");
-  }
-  if (value.name == "rotation")
-  {
-    local.send("/stepper/speed", 0, value.get()*local.parameters.vitesseRotation.get()*0.5);
-  }
 }
 
 // OSC
@@ -83,24 +71,48 @@ function oscEvent(address, args)
   }
   if (address == "/sd")
   {
-      local.parameters.carteSDDetectee.set(args[1]>0);
+      local.values.carteSDDetectee.set(args[1]>0);
+  }
+  if (address == "/stepper/pos")
+  {
+      local.values.positionStepper.set(args[1]/REVOLUTION_STEPS);
   }
 }
 
 // COMMANDS
-function setElbow(val) {
+function setNeck(val) {
   script.log("Set cou: " + val);
-  local.values.cou.set(val);
+  local.parameters.cou.set(val);
 }
 
-function setShoulder(val) {
+function rotateNeck(val) {
+  script.log("Set vitesse cou: " + val);
+  local.parameters.vitesseCou.set(val);
+}
+
+function setFoot(val) {
   script.log("Set pied: " + val);
-  local.values.pied.set(val);
+  local.parameters.pied.set(val);
 }
 
-function setBaseRotation(val) {
-  script.log("Set base: " + val);
-  local.values.rotation.set(val);
+function rotateFoot(val) {
+  script.log("Set vitesse pied: " + val);
+  local.parameters.vitessePied.set(val);
+}
+
+function stepperGo(val) {
+  script.log("Set rotation pos: " + val);
+    local.send("/stepper/go", 0, parseInt(val*REVOLUTION_STEPS));
+}
+
+function stepperMove(val) {
+  script.log("Set rotation pos: " + val);
+    local.send("/stepper/move", 0, parseInt(val*REVOLUTION_STEPS));
+}
+
+function setRotationSpeed(val) {
+  script.log("Set rotation speed: " + val);
+  local.parameters.vitesseRotation.set(val);
 }
 
 function playSequence(name, fps) {

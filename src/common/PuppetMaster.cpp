@@ -3,6 +3,7 @@
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
+// OSC_DEBUG_SEND et OSC_DEBUG_REVEICE
 // override
 // rename init
 // managers indépendants
@@ -16,6 +17,9 @@
 // compProgress()
 // PuppetMaster singleton ?
 // connectionstates inside class ? Wifi or Master ?
+
+// make childClass DebugLedStrip with communication methods
+// les managers ne devraient pas hériter de component car ils n'ont pas de paramètres
 
 // TODO
 // fix stepper
@@ -33,22 +37,16 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " - v" + "1.2.1")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.0")
 {
-    switch (BOARD_TYPE)
-    {
-    case HUZZAH32:
-        // used for Base
-        //Component::forbiddenPins.insert(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
-        Component::forbiddenPins.insert(13); // It's connected to the red LED next to the USB port
-        break;
-
-    default:
-        compError("Unknown board type !");
-        return;
-    }
+    #ifdef BASE // Base uses pin 12 and 13
+    
+    #else
+    Component::registerPin(LED_BUILTIN); 
+    Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
+    #endif
+    
     serialDebug = MASTER_DEBUG;
-    boolParameters["ledDebug"] = true;
 }
 
 void PuppetMaster::init()
@@ -61,37 +59,52 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("--------------------" + osc.mDNSName + "--------------------");
+    compLog("-------------------- " + osc.mDNSName + " --------------------");
 
     Manager::initManager();
 
-    std::set<int> reservedPins{};
-    Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
+    //std::set<int> reservedPins{};
+    //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
-    fileMgr.init();
-
+    // init managers and subscribe to their events
     managers.emplace_back(&wifi);
     wifi.initManager();
     managers.emplace_back(&osc);
     osc.initManager();
-    managers.emplace_back(&led);
-    led.initManager();
-    managers.emplace_back(&servo);
-    servo.initManager();
-    managers.emplace_back(&motorwing);
-    motorwing.initManager();
-    managers.emplace_back(&battery);
-    battery.initManager();
-    managers.emplace_back(&player);
-    player.initManager();
-
-    // subscribe manager events
-    fileMgr.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
     wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
     osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
-    motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+    managers.emplace_back(&battery);
+    battery.initManager();
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
+
+#ifdef HAS_SD_WING
+    fileMgr.init();
+    fileMgr.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
+    managers.emplace_back(&player);
+    player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
+#endif
+
+#ifdef HAS_LED
+    managers.emplace_back(&led);
+    led.initManager();
+#endif
+
+#ifdef HAS_SERVO
+    managers.emplace_back(&servo);
+    servo.initManager();
+#endif
+
+#ifdef HAS_MOTORWING
+    managers.emplace_back(&motorwing);
+    motorwing.initManager();
+    motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+#endif
+
+#ifdef HAS_ROOMBA
+    managers.emplace_back(&roomba);
+    roomba.initManager();
+#endif
 
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
@@ -101,12 +114,16 @@ void PuppetMaster::initManager()
 
 void PuppetMaster::checkComponents()
 {
+#ifdef HAS_SD_WING
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
+#endif
 
+// CONFIX
 // TODO advertise component parameters
+/*
 #ifdef AMPOULE
 //TODO
 #elif defined BASE
@@ -120,6 +137,7 @@ motorwing.stepperSetSpeed(0, 0.0f);
 #elif defined CORBEILLE
 //TODO
 #endif
+*/
 }
 
 void PuppetMaster::update()
@@ -148,9 +166,12 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     String address = String(buf);
     compDebug("command " + address);
 
+    // TODO change with featherwing/stepper
+#ifdef HAS_MOTORWING
     if (command.match("/stepper") || command.match("/dc"))
         if (!motorwing.handleCommand(command))
             compError("motorwing could not handle command");
+#endif
 
     int sepIndex = address.indexOf('/', 1);
     for (auto const &mgr : managers)
@@ -159,7 +180,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
         {
             //compDebug("for " + mgr.get()->name);
             if (!mgr.get()->handleCommand(command))
-                compError(mgr.get()->name + "could not handle command");
+                compError(mgr.get()->name + " could not handle command");
         }
     }
 
@@ -174,23 +195,29 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
-    compLog("WifiEvent");
     switch (e.state)
     {
+    case WifiConnectionState::CONNECTING:
+        compDebug("connecting to wifi...");
+    #ifdef HAS_LED
+        led.setMode(LedStrip::LedMode::WORKING);
+    #endif
+        break;
+
     case WifiConnectionState::CONNECTED:
-        led.mode = LedManager::LedMode::STREAMING;
-        led.setColor(0, 50, 0);
-        // led.toast(LedManager::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
+        compDebug("wifi connected !");
+    #ifdef HAS_LED
+        led.setMode(LedStrip::LedMode::STREAMING);
+        led.setColor(0, 0, 50, 0);
+        // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
+    #endif
         break;
 
     case WifiConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
-        led.mode = LedManager::LedMode::ERROR;
-        break;
-
-    case WifiConnectionState::CONNECTING:
-        compDebug("connecting to wifi...");
-        led.mode = LedManager::LedMode::WORKING;
+    #ifdef HAS_LED
+        led.setMode(LedStrip::LedMode::ERROR);
+    #endif
         break;
 
     default:
@@ -238,17 +265,23 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     }
 }
 
+
+#ifdef HAS_MOTORWING
 void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 {
     if (!osc.isConnected)
         return;
 
+    //compDebug("stepper event");
+
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
     msg.add((int)e.position);
     msg.add((int)e.speed);
+    msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
+#endif
 
 void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 {
@@ -263,6 +296,7 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     osc.sendMessage(msg);
 }
 
+#ifdef HAS_SD_WING
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 {
     switch (e.type)
@@ -282,8 +316,8 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
         servo.setServoRel(0, e.data[3] / 255.0f);
 #elif defined BASE
-        servo.setServoRel(1, e.data[0] / 255.0f);
-        servo.setServoRel(2, e.data[1] / 255.0f);
+        servo.setServoRel(1, e.data[0] / 255.0f); // foot
+        servo.setServoRel(0, e.data[1] / 255.0f); // neck
         motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
         motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
@@ -302,6 +336,7 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
 
 
 }
+#endif // HAS_SD_WING
 
 // void PuppetMaster::commandFromOSCMessage(OSCMessage &command)
 // {

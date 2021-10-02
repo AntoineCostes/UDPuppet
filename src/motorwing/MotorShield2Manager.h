@@ -4,6 +4,7 @@
 #include "DCMotor.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef HAS_MOTORWING
 #include <Adafruit_MotorShield.h>
 
 class StepperEvent
@@ -16,7 +17,8 @@ public:
     int index;
     long position;
     long speed;
-    StepperEvent(Type type, int index, long position, long speed) : type(type), index(index), position(position), speed(speed) {}
+    float maxSpeed;
+    StepperEvent(Type type, int index, long position, long speed, float maxSpeed) : type(type), index(index), position(position), speed(speed), maxSpeed(maxSpeed) {}
 };
 
 class MotorShield2Manager : public Manager,
@@ -65,6 +67,8 @@ protected:
   Adafruit_MotorShield AFMS;
   std::set<DCPort> usedPorts;
   void registerStepper(byte index, byte id, AccelStepper *stepper);
+  long lastEventTime;
+  long lastEventPos;
 
   std::map<byte, StepperMotor *> steppers;
   // std::map<byte, Adafruit_DCMotor *> dc;
@@ -78,3 +82,4 @@ private:
   void forward2();
   void backward2();
 };
+#endif

@@ -5,9 +5,11 @@ OSCManager::OSCManager(WifiManager *wifiMgr, String mDNSName) : Manager("osc"),
                                                                 overrideTargetIp(TARGET_IP_OVERRIDE),
                                                                 mDNSName(mDNSName)
 {
-    // intParameters["listeningPort"] = OSC_LISTENING_PORT;
-    // intParameters["targetPort"] = OSC_TARGET_PORT;
-    stringParameters["targetIp"] = OSC_TARGET_IP;
+    if (!OSC_TARGET_IP.equals(""))
+    {
+        stringParameters["targetIp"] = OSC_TARGET_IP;
+        overrideFlashParameters();
+    }
     serialDebug = OSC_DEBUG;
 }
 

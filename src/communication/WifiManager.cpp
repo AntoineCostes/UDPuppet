@@ -2,7 +2,6 @@
 
 WifiManager::WifiManager() : Manager("wifi")
 {
-
   serialDebug = WIFI_DEBUG;
 }
 
@@ -145,22 +144,3 @@ String WifiManager::getMAC()
   //uint64_t did = ESP.getEfuseMac();
   //return String((uint32_t)(did >> 32)) + String((uint32_t)(did & 0xffffffff));
 }
-
-/*
-void WifiManager::command_wifi(String command, var *arguments, int numArgs)
-{
-  if (check_command_types(command, "wifi", arguments, "ss"))
-  {
-    ssid = arguments[0].stringValue();
-    pass = arguments[1].stringValue();
-    
-    preferences.begin("wifi");
-    preferences.putString("ssid", ssid);
-    preferences.putString("pass", pass);
-    preferences.end();
-    compDebug("set config: " + ssid + " - " + pass);
-    return;
-  }
-  compDebug("" + command + " is not valid");
-}
-*/

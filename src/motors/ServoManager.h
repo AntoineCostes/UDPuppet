@@ -2,6 +2,7 @@
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
+#ifdef HAS_SERVO
 class ServoManager : public Manager
 {
 
@@ -24,3 +25,4 @@ public:
 protected:
   std::map<int, ServoMotor *> servos;
 };
+#endif

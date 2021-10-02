@@ -26,13 +26,14 @@ public:
     String name; // TODO const ?
 
     virtual void initComponent(bool serialDebug);
+    bool checkInit();
     virtual void update() = 0;
 
-    virtual bool handleCommand(OSCMessage &command);
-
+    static bool registerPin(int pin);
+    static bool registerPins(std::set<int> pins);
     static std::set<int> forbiddenPins;
 
-    bool checkInit();
+    virtual bool handleCommand(OSCMessage &command);
 
 protected:
     bool serialDebug;

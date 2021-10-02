@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.0.0",
+  "version":"1.0.1",
   "description":"Contrôle simplifiée d\'une lampe animatronique ",
 
 
@@ -37,25 +37,40 @@
     {
       "type":"Trigger"
     },
-    "Carte SD Detectee":
-    {
-      "type":"Boolean",
-      "readOnly":true
-    },
-    "Led debug (soon)":
-    {
-      "type":"Boolean"
-    },
-    "Yeux (soon)":
-    {
-      "type":"Boolean"
-    },
-    "Intensite":
+    "Intensite Couleur":
     {
       "type":"Float",
       "min": 0,
       "max": 1,
-      "default": 0.5
+      "default": 0.2
+    },
+    "Couleur":
+    {
+      "type":"Color",
+      "default":[0, 0, 0, 1]
+    },
+    "Vitesse Rotation":
+    {
+      "type":"Integer",
+      "min": -1000,
+      "max": 1000,
+      "default": 0
+    },
+    "Angle":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5
+    },
+    "Yeux":
+    {
+      "type":"Boolean"
+    },
+    "Led debug":
+    {
+      "type":"Boolean",
+      "default":true
     }
   },
 
@@ -75,23 +90,16 @@
       "max": 1,
       "readOnly": true
     },
-    "Couleur":
+    "Carte SD Detectee":
     {
-      "type":"Color",
-      "default":[0, 0, 0, 1]
-    },
-    "Rotation":
-    {
-      "type":"Float",
-      "min":0,
-      "max":1,
-      "default":0.5
+      "type":"Boolean",
+      "readOnly":true
     }
   },
 
   "commands":
   {
-    "Couleur":
+    "Modifier couleur":
     {
       "menu":"Tete",
       "callback":"setColor",
@@ -100,14 +108,14 @@
         "Couleur":
         {
           "type":"Color",
-          "default":[0, 1, 0, 1]
+          "default":[0, 1, 1, 1]
         }
       }
     },
-    "Rotation Tete":
+    "Modifier angle":
     {
       "menu":"Tete",
-      "callback":"setHeadRotation",
+      "callback":"setHeadAngle",
       "parameters":
       {
         "Value":
@@ -119,33 +127,47 @@
         }
       }
     },
-      "Lancer Sequence":
+    "Modifier Vitesse":
+    {
+      "menu":"Tete",
+      "callback":"rotateSpeed",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Integer",
+          "min":-1000,
+          "max":1000,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        },
+        "FPS":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":200,
+          "default":30
+        }
+      }
+    },
+      "Arrêter Sequence":
       {
         "menu":"Sequence",
-        "callback":"playSequence",
+        "callback":"stopSequence",
         "parameters":
         {
-          "Name":
-          {
-            "type":"String"
-          },
-          "FPS":
-          {
-            "type":"Integer",
-            "min":0,
-            "max":200,
-            "default":30
-          }
         }
-      },
-        "Arrêter Sequence":
-        {
-          "menu":"Sequence",
-          "callback":"stopSequence",
-          "parameters":
-          {
-          }
-        }
-
+      }
   }
 }
