@@ -12,4 +12,4 @@ const int OSC_TARGET_PORT = 10003;
 // COMPONENTS
 #define HAS_SD_WING
 #define HAS_LED
-#define HAS_MOTOR_WING
+#define HAS_MOTORWING

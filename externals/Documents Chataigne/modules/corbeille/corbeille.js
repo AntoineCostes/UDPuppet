@@ -1,5 +1,6 @@
 function init() {
-  local.parameters.carteSDDetectee.set(false);
+  local.values.batterie.set(0);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
@@ -19,10 +20,23 @@ function moduleParameterChanged(param)
   {
     yo();
   }
+
+  if (param.name == "moteurGauche")
+  {
+    local.send("/dc/run", 2, param.get());
+  }
+  if (param.name == "moteurDroit")
+  {
+    local.send("/dc/run", 1, param.get());
+  }
+    if (param.name == "stop")
+  {
+    local.parameters.moteurGauche.set(0);
+    local.parameters.moteurDroit.set(0);
+  }
   if (param.name == "vitesseMax")
   {
-    local.send("/dc/maxspeed", 2, param.get());
-    local.send("/dc/maxspeed", 1, param.get());
+    sendMaxSpeed();
   }
 }
 
@@ -37,12 +51,8 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-    script.log(" YO ! moi c'est " + args[0]+ " sur le "+ args[1]);
     local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
-
-    // TODO get from prop
-    local.send("/dc/maxspeed", 2, local.parameters.vitesseMax.get());
-    local.send("/dc/maxspeed", 1, local.parameters.vitesseMax.get());
+    sendMaxSpeed(); // TODO get from prop
   }
   if (address == "/battery")
   {
@@ -50,63 +60,45 @@ function oscEvent(address, args)
   }
   if (address == "/sd")
   {
-    local.parameters.carteSDDetectee.set(args[1]>0);
+    local.values.carteSDDetectee.set(args[1]>0);
   }
 }
 
 function moduleValueChanged(value) {
-	if(value.isParameter())
-	{
-		//script.log("Module value changed : "+value.name+" > "+value.get());
-	}else
-	{
-		//script.log("Module value triggered : "+value.name);
-	}
-    if (value.is(local.values.stop))
-    {
-      local.values.moteurGauche.set(0);
-      local.values.moteurDroit.set(0);
-    }
-
-  if (value.is(local.values.moteurGauche))
-  {
-    local.send("/dc/run", 2, value.get());
-      //local.sendTo(local.parameters.oscOutputs.oscOutput.remoteHost.get(), 9000, "/dc/run", 1, value.get()*local.parameters.vitesseMax.get());
-  }
-  if (value.is(local.values.moteurDroit))
-  {
-    local.send("/dc/run", 1, value.get());
-    //local.sendTo(local.parameters.oscOutputs.oscOutput.remoteHost.get(), 9000, "/dc/run", 0, value.get()*local.parameters.vitesseMax.get());
-  }
 }
 
+function sendMaxSpeed()
+{
+  local.send("/dc/maxspeed", 2, local.parameters.vitesseMax.get());
+  local.send("/dc/maxspeed", 1, local.parameters.vitesseMax.get());
+}
 function left(dir) {
-  local.values.moteurGauche.set(dir);
+  local.parameters.moteurGauche.set(dir);
 }
 
 function right(dir) {
-  local.values.moteurDroit.set(dir);
+  local.parameters.moteurDroit.set(dir);
 }
 
 function forward(dir) {
-  local.values.moteurGauche.set(dir);
-  local.values.moteurDroit.set(dir);
+  local.parameters.moteurGauche.set(dir);
+  local.parameters.moteurDroit.set(dir);
 }
 
 function rotation(dir) {
-  local.values.moteurGauche.set(-dir);
-  local.values.moteurDroit.set(dir);
+  local.parameters.moteurGauche.set(-dir);
+  local.parameters.moteurDroit.set(dir);
 }
 
 function stop() {
-  local.values.moteurGauche.set(0);
-  local.values.moteurDroit.set(0);
+  local.parameters.moteurGauche.set(0);
+  local.parameters.moteurDroit.set(0);
 }
 
 function playSequence(name, fps) {
-  local.sendTo(local.parameters.oscOutputs.oscOutput.remoteHost.get(), 9000, "/player/play", name, fps);
+  local.send("/player/play", name, fps);
 }
 
 function stopSequence() {
-  local.sendTo(local.parameters.oscOutputs.oscOutput.remoteHost.get(), 9000, "/player/stop");
+  local.send("/player/stop");
 }

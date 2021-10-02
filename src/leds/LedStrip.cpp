@@ -4,7 +4,7 @@
 LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Component("led_pin" + String(pin)),
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
-                                                                            brightness(0.5),
+                                                                            brightness(0.3),
                                                                             mode(LedMode::WAITING),
                                                                             toastTimer(0)
 {

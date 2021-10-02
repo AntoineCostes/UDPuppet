@@ -1,7 +1,7 @@
 var REVOLUTION_STEPS = 2050;
 
 function init() {
-  local.values.batterie.set(false);
+  local.values.batterie.set(0);
   local.values.carteSDDetectee.set(false);
   yo();
 }
