@@ -53,7 +53,7 @@ const long CONNECTION_TIMEOUT_MS = 10000;
 const bool WIFI_DEBUG = false;
 
 // OSC PARAMETERS
-const String OSC_TARGET_IP = "192.168.43.14";
+const String OSC_TARGET_IP = "";
 const long PING_TIMEOUT_MS = 1000;
 const bool TARGET_IP_OVERRIDE = true;
 const bool OSC_DEBUG = false;

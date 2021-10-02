@@ -195,10 +195,17 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
-    compLog("WifiEvent");
     switch (e.state)
     {
+    case WifiConnectionState::CONNECTING:
+        compDebug("connecting to wifi...");
+    #ifdef HAS_LED
+        led.setMode(LedStrip::LedMode::WORKING);
+    #endif
+        break;
+
     case WifiConnectionState::CONNECTED:
+        compDebug("wifi connected !");
     #ifdef HAS_LED
         led.setMode(LedStrip::LedMode::STREAMING);
         led.setColor(0, 0, 50, 0);
@@ -210,13 +217,6 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         compDebug("wifi lost !");
     #ifdef HAS_LED
         led.setMode(LedStrip::LedMode::ERROR);
-    #endif
-        break;
-
-    case WifiConnectionState::CONNECTING:
-        compDebug("connecting to wifi...");
-    #ifdef HAS_LED
-        led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 
