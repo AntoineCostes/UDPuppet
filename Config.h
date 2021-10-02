@@ -7,8 +7,8 @@
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
-#define BASE
-//#define BOBINE
+//#define BASE
+#define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
 
