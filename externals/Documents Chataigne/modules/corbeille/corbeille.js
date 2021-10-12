@@ -1,6 +1,6 @@
 function init() {
-  local.values.batterie.set(0);
-  local.values.carteSDDetectee.set(false);
+  local.parameters.batterie.set(0);
+  local.parameters.carteSDDetectee.set(false);
   yo();
 }
 
@@ -56,11 +56,11 @@ function oscEvent(address, args)
   }
   if (address == "/battery")
   {
-    local.values.batterie.set(args[1]);
+    local.parameters.batterie.set(args[1]);
   }
   if (address == "/sd")
   {
-    local.values.carteSDDetectee.set(args[1]>0);
+    local.parameters.carteSDDetectee.set(args[1]>0);
   }
 }
 

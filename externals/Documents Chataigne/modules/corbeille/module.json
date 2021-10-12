@@ -37,6 +37,18 @@
     {
       "type":"Trigger"
     },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    },
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
     "Moteur Gauche":
     {
       "type":"Float",
@@ -73,18 +85,7 @@
 
   "values":
   {
-    "Batterie":
-    {
-      "type":"Float",
-      "min": 0,
-      "max": 1,
-      "readOnly": true
-    },
-    "Carte SD Detectee":
-    {
-      "type":"Boolean",
-      "readOnly":true
-    }
+
   },
 
   "commands":
