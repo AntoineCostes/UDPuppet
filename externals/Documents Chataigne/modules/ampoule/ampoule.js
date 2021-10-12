@@ -1,7 +1,7 @@
 
 function init() {
-  local.values.batterie.set(false);
-  local.values.carteSDDetectee.set(false);
+  local.parameters.batterie.set(false);
+  local.parameters.carteSDDetectee.set(false);
   yo();
 }
 
@@ -55,10 +55,10 @@ function sendColorValue()
   if (local.parameters.yeux.get())
   {
     local.send("/led/color", 0, 0, 0);
-    local.send("/led/color", 0, 0, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
-    local.send("/led/color", 0, 1, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
-    local.send("/led/color", 0, 6, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
-    local.send("/led/color", 0, 7, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 3, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 4, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 9, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
+    local.send("/led/color", 0, 10, parseInt(color[0]*color[3]*255), parseInt(color[1]*color[3]*255), parseInt(color[2]*color[3]*255));
 
   } else {
     local.send("/led/color", 0, color[0]*color[3], color[1]*color[3], color[2]*color[3]);
@@ -88,11 +88,11 @@ function oscEvent(address, args)
 
   if (address == "/battery")
   {
-      local.values.batterie.set(args[1]);
+      local.parameters.batterie.set(args[1]);
   }
   if (address == "/sd")
   {
-      local.values.carteSDDetectee.set(args[1]>0);
+      local.parameters.carteSDDetectee.set(args[1]>0);
   }
 }
 

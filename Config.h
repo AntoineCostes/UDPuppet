@@ -40,7 +40,7 @@ enum BoardType
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
 #elif defined(ROOMBA)
-#include "config/sansgravite/Roomba.h"
+#include "config/Roomba.h"
 #endif
 
 
