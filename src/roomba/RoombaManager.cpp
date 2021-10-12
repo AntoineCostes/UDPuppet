@@ -76,6 +76,16 @@ void RoombaManager::setSpotLed(byte index, bool state)
     roombas[index]->setLed(SPOT_GREEN, state);
 }
 
+void RoombaManager::setCenterHue(byte index, byte value)
+{
+    roombas[index]->setCenterHue(value);
+}
+
+void RoombaManager::setCenterBrightness(byte index, byte value)
+{
+    roombas[index]->setCenterBrightness(value);
+}
+
 bool RoombaManager::handleCommand(OSCMessage &command)
 {
     if (!checkInit())
@@ -183,14 +193,35 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             return true;
         } 
     }
-    else if (address.equals("/roomba/song1"))
+    else if (address.equals("/roomba/song/imperial"))
     {
-        if (checkCommandArguments(command, "i", false))
-        {   
-            if(command.getInt(0))
-                roombas[0]->imperialSong();
-            return true;
-        } 
+        roombas[0]->imperialSong();
+        return true;
+    }
+    else if (address.equals("/roomba/song/victory"))
+    {
+        roombas[0]->victorySong();
+        return true;
+    }
+    else if (address.equals("/roomba/song/validate"))
+    {
+        roombas[0]->validateSong();
+        return true;
+    }
+    else if (address.equals("/roomba/song/cancel"))
+    {
+        roombas[0]->cancelSong();
+        return true;
+    }
+    else if (address.equals("/roomba/song/error"))
+    {
+        roombas[0]->errorSong();
+        return true;
+    }
+    else if (address.equals("/roomba/song/kraftwerk"))
+    {
+        roombas[0]->kraftwerk();
+        return true;
     }
     else if (address.equals("/roomba/home"))
     {
@@ -216,9 +247,35 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             return true;
         } 
     }
+    else if (address.equals("/roomba/hue"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            setCenterHue(0, (byte)command.getInt(0));
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/brightness"))
+    {
+        if (checkCommandArguments(command, "i", false))
+        {
+            setCenterBrightness(0, (byte)command.getInt(0));
+            return true;
+        } 
+    }
     else if (address.equals("/roomba/hello"))
     {
         setText(0, "Bonjour le monde !");
+        return true;
+    }
+    else if (address.equals("/roomba/wake"))
+    {
+        roombas[0]->wakeUp();
+        return true;
+    }
+    else if (address.equals("/roomba/start"))
+    {
+        roombas[0]->startSafe();
         return true;
     }
     return false;

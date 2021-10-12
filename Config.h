@@ -6,10 +6,10 @@
 //#define COSTES
 
 // HARDWARE - SELECT ONE
-#define AMPOULE
+//#define AMPOULE
 //#define BASE
 //#define BOBINE
-//#define CORBEILLE
+#define CORBEILLE
 //#define ROOMBA
 
 
@@ -40,7 +40,7 @@ enum BoardType
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
 #elif defined(ROOMBA)
-#include "config/sansgravite/Roomba.h"
+#include "config/Roomba.h"
 #endif
 
 

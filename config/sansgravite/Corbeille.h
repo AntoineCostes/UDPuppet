@@ -1,6 +1,6 @@
 #pragma once
 
-const String BOARD_NAME = "Bobine";    // name used for mDNS services 
+const String BOARD_NAME = "Corbeille";    // name used for mDNS services 
 
 // BOARD TYPE
 const BoardType BOARD_TYPE = HUZZAH32;

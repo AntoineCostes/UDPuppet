@@ -37,10 +37,12 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.0")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.1")
 {
     #ifdef BASE // Base uses pin 12 and 13
-    
+
+    #elif defined(ROOMBA) // Roomba uses pin 12
+    Component::registerPin(LED_BUILTIN); 
     #else
     Component::registerPin(LED_BUILTIN); 
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.

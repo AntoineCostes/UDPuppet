@@ -16,6 +16,15 @@ void RoombaSerial::initComponent(bool serialDebug)
   Component::initComponent(serialDebug);
   wakeUp();
   startSafe();
+
+  delay(2000);
+  validateSong();
+  delay(2000);
+  victorySong();
+  delay(2000);
+  cancelSong();
+  delay(2000);
+  errorSong();
 }
 
 void RoombaSerial::update()
@@ -81,7 +90,7 @@ void RoombaSerial::setCenterHue(byte value)
 
 void RoombaSerial::setCenterBrightness(byte value)
 {
-centerLedBrightness = value;
+  centerLedBrightness = value;
   updateLeds();
 }
 
@@ -194,15 +203,14 @@ void RoombaSerial::writeLEDs (char a, char b, char c, char d)
 
 
 // ------------------ songs
-
 void RoombaSerial::imperialSong()
 {
-    serial.write(140);
-    serial.write(byte(0));
-    serial.write(9);
+    serial.write(140);      // record song
+    serial.write(byte(0));  // song #0
+    serial.write(9);        // song number of notes
 
-    serial.write(57);
-    serial.write(30);
+    serial.write(57); // pitch
+    serial.write(30); // duration
     
     serial.write(57);
     serial.write(30);
@@ -228,7 +236,158 @@ void RoombaSerial::imperialSong()
     serial.write(57);
     serial.write(45);
   
+    serial.write(141);      // play song
+    serial.write(byte(0));  // #0
+}
+
+void RoombaSerial::victorySong()
+{
+    serial.write(140);
+    serial.write(byte(1));
+    serial.write(5);
+
+    serial.write(53);
+    serial.write(10);
+
+    serial.write(57);
+    serial.write(10);
+    
+    serial.write(60);
+    serial.write(10);
+    
+    serial.write(57);
+    serial.write(10);
+    
+    serial.write(60);
+    serial.write(40);
+    
     serial.write(141);
-    serial.write(byte(0));
+    serial.write(byte(1));
+}
+
+void RoombaSerial::validateSong()
+{
+    serial.write(140);
+    serial.write(byte(2));
+    serial.write(4);
+
+    serial.write(53);
+    serial.write(15);
+
+    serial.write(58);
+    serial.write(15);
+    
+    serial.write(57);
+    serial.write(15);
+    
+    serial.write(58);
+    serial.write(40);
+    
+    serial.write(141);
+    serial.write(byte(2));
+}
+
+void RoombaSerial::cancelSong()
+{
+    serial.write(140);
+    serial.write(byte(3));
+    serial.write(5);
+
+    serial.write(60);
+    serial.write(10);
+
+    serial.write(57);
+    serial.write(10);
+    
+    serial.write(53);
+    serial.write(10);
+    
+    serial.write(57);
+    serial.write(10);
+    
+    serial.write(53);
+    serial.write(40);
+    
+    serial.write(141);
+    serial.write(byte(3));
+}
+
+void RoombaSerial::errorSong()
+{
+    serial.write(140);
+    serial.write(byte(4));
+    serial.write(2);
+
+    serial.write(Pitch::G_1);
+    serial.write(64); // 1 second
+    
+    serial.write(Pitch::G_1);
+    serial.write(64); // 1 second
+    
+    serial.write(141);
+    serial.write(byte(4));
+}
+
+void RoombaSerial::kraftwerk()
+{
+    serial.write(140);
+    serial.write(byte(4));
+    serial.write(10);
+
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::C_4);
+    serial.write(8); 
+    serial.write(Pitch::C_4);
+    serial.write(8);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::C_4);
+    serial.write(8); 
+    serial.write(Pitch::C_4);
+    serial.write(8);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::SILENCE);
+    serial.write(16);
+    serial.write(Pitch::F_4);
+    serial.write(8); 
+    serial.write(Pitch::F_4);
+    serial.write(8);
+    serial.write(Pitch::SILENCE);
+    serial.write(16);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::C_4);
+    serial.write(8); 
+    serial.write(Pitch::C_4);
+    serial.write(8);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::C_4);
+    serial.write(8); 
+    serial.write(Pitch::C_4);
+    serial.write(8);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    serial.write(Pitch::D_4);
+    serial.write(8); 
+    serial.write(Pitch::D_4);
+    serial.write(8);
+    
+    serial.write(141);
+    serial.write(byte(4));
 }
 #endif
