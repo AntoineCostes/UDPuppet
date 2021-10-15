@@ -78,6 +78,8 @@ void setup()
 #endif
 
 #ifdef MULTILED
+  master.analog.registerAnalogReader("LDR1", A0);
+  master.analog.registerAnalogReader("LDR2", A1);
   master.led.setBrightness(0.1f);
   master.led.registerLedStrip(0, 17, 12, NEO_RGB + NEO_KHZ800); // 12 led ring
   master.led.registerLedStrip(1, 16, 12, NEO_RGB + NEO_KHZ800);

@@ -4,7 +4,6 @@
 // passe sur les TODO et les FIXME
 // separer stepper et DC
 // OSC_DEBUG_SEND et OSC_DEBUG_REVEICE
-// override
 // rename init
 // managers indépendants
 // manager not a component
@@ -69,15 +68,18 @@ void PuppetMaster::initManager()
     //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
     // init managers and subscribe to their events
-    managers.emplace_back(&wifi);
     wifi.initManager();
-    managers.emplace_back(&osc);
-    osc.initManager();
     wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
+    managers.emplace_back(&wifi);
+    osc.initManager();
     osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
-    managers.emplace_back(&battery);
+    managers.emplace_back(&osc);
     battery.initManager();
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
+    managers.emplace_back(&battery);
+    analog.initManager();
+    analog.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
+    managers.emplace_back(&analog);
 
 #ifdef HAS_SD_WING
     fileMgr.init();
@@ -88,24 +90,24 @@ void PuppetMaster::initManager()
 #endif
 
 #ifdef HAS_LED
-    managers.emplace_back(&led);
     led.initManager();
+    managers.emplace_back(&led);
 #endif
 
 #ifdef HAS_SERVO
-    managers.emplace_back(&servo);
     servo.initManager();
+    managers.emplace_back(&servo);
 #endif
 
 #ifdef HAS_MOTORWING
-    managers.emplace_back(&motorwing);
     motorwing.initManager();
     motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+    managers.emplace_back(&motorwing);
 #endif
 
 #ifdef HAS_ROOMBA
-    managers.emplace_back(&roomba);
     roomba.initManager();
+    managers.emplace_back(&roomba);
 #endif
 
     // TODO give this info on demand
@@ -295,6 +297,18 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     msg.add(e.normValue);
     msg.add(e.analogValue);
     msg.add(e.voltage);
+    osc.sendMessage(msg);
+}
+
+void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    OSCMessage msg(("/analog/"+e.niceName).c_str());
+    msg.add(BOARD_NAME.c_str());
+    msg.add(e.normValue);
+    msg.add(e.rawValue);
     osc.sendMessage(msg);
 }
 

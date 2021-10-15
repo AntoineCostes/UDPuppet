@@ -22,8 +22,8 @@ public:
     //~RoombaSerial(){Serial.println("delete RoombaSerial");}
     //~RoombaSerial() {}
 
-    void initComponent(bool serialDebug);
-    void update();
+    void initComponent(bool serialDebug) override;
+    void update() override;
     
     // general methods
     void wakeUp();

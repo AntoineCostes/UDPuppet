@@ -4,6 +4,7 @@
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
 #include "../sensors/BatteryManager.h"
+#include "../sensors/AnalogManager.h"
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 #include "../leds/LedManager.h"
@@ -25,6 +26,7 @@ public:
     WifiManager wifi;
     OSCManager osc;
     BatteryManager battery;
+    AnalogManager analog;
     
 #ifdef HAS_SD_WING
     SequencePlayer player;
@@ -64,6 +66,7 @@ protected:
     void gotWifiEvent(const WifiEvent &e);
     void gotOSCEvent(const OSCEvent &e);
     void gotBatteryEvent(const BatteryEvent &e);
+    void gotAnalogEvent(const AnalogEvent &e);
 
 #ifdef HAS_SD_WING
     void gotFileEvent(const FileEvent &e);

@@ -10,8 +10,8 @@ class ServoMotor : public Component
 public:
     ServoMotor(byte pin, byte min, byte max, byte start);
 
-    void initComponent(bool serialDebug);
-    void update();
+    void initComponent(bool serialDebug) override;
+    void update() override;
     
     // void set(int value);
     void setAbs(int value);

@@ -11,7 +11,7 @@
 #define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
-
+#define MULTILED
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -41,6 +41,8 @@ enum BoardType
 #include "config/sansgravite/Corbeille.h"
 #elif defined(ROOMBA)
 #include "config/Roomba.h"
+#elif defined(MULTILED)
+#include "config/MultiLed.h"
 #endif
 
 
