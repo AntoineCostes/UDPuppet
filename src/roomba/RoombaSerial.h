@@ -6,10 +6,10 @@
 
 enum RoombaLed
 {
-    DIRT_BLUE,
-    SPOT_GREEN,
     HOME_GREEN,
-    WARNING_RED
+    SPOT_GREEN,
+    WARNING_RED,
+    DIRT_BLUE
 };
 
 class RoombaSerial : public Component

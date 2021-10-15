@@ -76,6 +76,14 @@ void setup()
   master.roomba.registerRoomba(33, 32, 15);
   master.roomba.setText(0, "Hello la cie !");
 #endif
+
+#ifdef MULTILED
+  master.led.setBrightness(0.1f);
+  master.led.registerLedStrip(0, 17, 12, NEO_RGB + NEO_KHZ800); // 12 led ring
+  master.led.registerLedStrip(1, 16, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(2, 19, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(3, 18, 12, NEO_RGB + NEO_KHZ800);
+#endif
 }
 
 void loop()

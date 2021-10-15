@@ -127,6 +127,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         } 
         else if (checkCommandArguments(command, "ii", true))
         {
+            // TODO fix this
             int direction = command.getInt(0);
             switch(command.getInt(1))
             {
