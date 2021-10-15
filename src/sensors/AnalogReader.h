@@ -10,8 +10,9 @@ class AnalogReader : public Component
         void update() override;
 
         String niceName;
-        uint16_t read();
+        int read();
 
     protected:
         int pin;
+        uint16_t lastValue;
 };

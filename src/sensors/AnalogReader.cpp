@@ -3,7 +3,8 @@
 
 AnalogReader::AnalogReader(int pin, String niceName) : Component("reader" + String(pin)), 
                                                             pin(pin),
-                                                            niceName(niceName)
+                                                            niceName(niceName),
+                                                            lastValue(0)
 {
 }
         
@@ -17,7 +18,15 @@ void AnalogReader::update()
 
 }
 
-uint16_t AnalogReader::read()
+int AnalogReader::read()
 {
-    return analogRead(pin);
+    uint16_t current = analogRead(pin);
+    //compDebug(String(current));
+
+    if (current == lastValue)
+    {
+        return -1;
+    }
+    lastValue = current;
+    return current;
 }

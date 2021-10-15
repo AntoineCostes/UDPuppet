@@ -15,6 +15,7 @@
 // TODO local libs
 // TODO filemanager server
 // TODO OTA
+// TODO send both on 12000 and specific port ?
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -78,19 +79,22 @@ void setup()
 #endif
 
 #ifdef MULTILED
-  master.analog.registerAnalogReader("LDR1", A0);
+ master.analog.registerAnalogReader("LDR1", A0);
   master.analog.registerAnalogReader("LDR2", A1);
   master.led.setBrightness(0.1f);
-  master.led.registerLedStrip(0, 17, 12, NEO_RGB + NEO_KHZ800); // 12 led ring
-  master.led.registerLedStrip(1, 16, 12, NEO_RGB + NEO_KHZ800);
-  master.led.registerLedStrip(2, 19, 12, NEO_RGB + NEO_KHZ800);
-  master.led.registerLedStrip(3, 18, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(0, 17, 12, NEO_GRB + NEO_KHZ800); // 12 led ring
+  master.led.registerLedStrip(1, 16, 12, NEO_GRB + NEO_KHZ800);
+  master.led.registerLedStrip(2, 19, 12, NEO_GRB + NEO_KHZ800);
+  master.led.registerLedStrip(3, 18, 12, NEO_GRB + NEO_KHZ800);
 #endif
 }
 
 void loop()
 {
   master.update();
+
+  //int sensorValue = analogRead(A0);
+  //Serial.println(sensorValue);
 
   // ensure at least 1ms between frames
   if (millis() == lastLoopTime)
