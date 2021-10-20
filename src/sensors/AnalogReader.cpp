@@ -21,7 +21,6 @@ void AnalogReader::update()
 int AnalogReader::read()
 {
     uint16_t current = analogRead(pin);
-    //compDebug(String(current));
 
     if (current == lastValue)
     {

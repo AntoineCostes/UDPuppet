@@ -19,9 +19,6 @@ void AnalogManager::update()
     if (!checkInit())
         return;
 
-    //uint16_t val = analogRead(A0);
-
-    //compDebug(String(val));
     for (auto const &prop : props)
     {   
         AnalogReader* reader = static_cast<AnalogReader*>(prop.get());

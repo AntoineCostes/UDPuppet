@@ -16,6 +16,8 @@
 // TODO filemanager server
 // TODO OTA
 // TODO send both on 12000 and specific port ?
+// TODO inputPins & outPutPins PinManager
+// analog refresh => merge battery as AnalogReader child ?
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -79,22 +81,22 @@ void setup()
 #endif
 
 #ifdef MULTILED
- master.analog.registerAnalogReader("LDR1", A0);
-  master.analog.registerAnalogReader("LDR2", A1);
+ master.analog.registerAnalogReader("LDR1", A2); //D34
+  //master.analog.registerAnalogReader("LDR2", A3); //D39
   master.led.setBrightness(0.1f);
-  master.led.registerLedStrip(0, 17, 12, NEO_GRB + NEO_KHZ800); // 12 led ring
+  master.led.registerLedStrip(0, 21, 12, NEO_GRB + NEO_KHZ800); // 12 led ring
   master.led.registerLedStrip(1, 16, 12, NEO_GRB + NEO_KHZ800);
-  master.led.registerLedStrip(2, 19, 12, NEO_GRB + NEO_KHZ800);
-  master.led.registerLedStrip(3, 18, 12, NEO_GRB + NEO_KHZ800);
+  master.led.registerLedStrip(2, 17, 12, NEO_GRB + NEO_KHZ800);
+  master.led.registerLedStrip(3, 25, 12, NEO_GRB + NEO_KHZ800);
+  //master.led.registerLedStrip(4, 26, 12, NEO_GRB + NEO_KHZ800);
+  
+  master.led.registerLedStrip(4, 27, 12, NEO_GRB + NEO_KHZ800);
 #endif
 }
 
 void loop()
 {
   master.update();
-
-  //int sensorValue = analogRead(A0);
-  //Serial.println(sensorValue);
 
   // ensure at least 1ms between frames
   if (millis() == lastLoopTime)

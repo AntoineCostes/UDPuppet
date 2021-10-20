@@ -88,8 +88,7 @@ void OSCManager::update()
 
     if (millis() > lastSentPingMs + PING_TIMEOUT_MS)
     {
-        OSCMessage pingMsg("/ping");
-        pingMsg.add(BOARD_NAME.c_str());
+        OSCMessage pingMsg( (BOARD_NAME + "/ping").c_str() );
         sendMessage(pingMsg);
         lastSentPingMs = millis();
     }
