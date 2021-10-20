@@ -3,15 +3,16 @@
 
 // NETWORKS - DEFAULT TO LENET
 //#define SANS_GRAVITE
-#define COSTES
+//#define COSTES
+#define LATITUDE50
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
 //#define BASE
 //#define BOBINE
 //#define CORBEILLE
-//#define ROOMBA
-#define MULTILED
+#define ROOMBA
+//#define MULTILED
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -20,6 +21,9 @@ const String WIFI_PASSWORD = "lovecraft";
 #elif defined(COSTES)
 const String WIFI_SSID = "Ouifi";
 const String WIFI_PASSWORD = "28101948AC";
+#elif defined(LATITUDE50)
+const String WIFI_SSID = "Latitude 50 - Coworking";
+const String WIFI_PASSWORD = "Coworking15";
 #else
 const String WIFI_SSID = "LeNet";
 const String WIFI_PASSWORD = "connectemoi";
@@ -80,4 +84,4 @@ const bool MOTORWING_DEBUG = true;
 
 // ROOMBA PARAMETERS
 const bool ROOMBA_DEBUG = true;
-const long ROOMBA_TEXT_UPDATE_MS = 200;
+const long ROOMBA_TEXT_UPDATE_MS = 400;

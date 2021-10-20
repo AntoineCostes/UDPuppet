@@ -36,7 +36,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.1")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.2")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -119,8 +119,7 @@ void PuppetMaster::initManager()
 void PuppetMaster::checkComponents()
 {
 #ifdef HAS_SD_WING
-    OSCMessage msg("/sd");
-    msg.add(BOARD_NAME.c_str());
+    OSCMessage msg( ("/" + BOARD_NAME + "/sd").c_str() );
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
 #endif
@@ -278,8 +277,7 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 
     //compDebug("stepper event");
 
-    OSCMessage msg("/stepper/pos"); //+String(e.index)));
-    msg.add(BOARD_NAME.c_str());
+    OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
     msg.add((int)e.position);
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
@@ -292,8 +290,7 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     if (!osc.isConnected)
         return;
 
-    OSCMessage msg("/battery");
-    msg.add(BOARD_NAME.c_str());
+    OSCMessage msg( ("/" + BOARD_NAME + "/battery").c_str() );
     msg.add(e.normValue);
     msg.add(e.analogValue);
     msg.add(e.voltage);
@@ -305,8 +302,7 @@ void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
     if (!osc.isConnected)
         return;
 
-    OSCMessage msg(("/analog/"+e.niceName).c_str());
-    msg.add(BOARD_NAME.c_str());
+    OSCMessage msg( ("/" + BOARD_NAME + "/analog/" + e.niceName).c_str() );
     msg.add(e.normValue);
     msg.add(e.rawValue);
     osc.sendMessage(msg);

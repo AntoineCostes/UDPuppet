@@ -1,0 +1,188 @@
+{
+  "name":"Roomba",
+  "type":"OSC",
+  "path":"cie AMK",
+
+  "version":"1.0.0",
+  "description":"OSC control of Roomba vacuum cleaner with ESP32",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":true,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":10005
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":" ",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+
+  "parameters":
+  {
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    },
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    }
+  },
+
+  "scripts":
+  [
+    "roomba.js"
+  ],
+
+  "values":
+  {
+
+  },
+
+  "commands":
+  {
+    "Start Safe Mode":
+    {
+      "menu":"System",
+      "callback":"startMode",
+    },
+    "Start Full Mode":
+    {
+      "menu":"System",
+      "callback":"fullMode",
+    },
+    "Wake Up":
+    {
+      "menu":"System",
+      "callback":"wakeUp",
+    },
+    "Move":
+    {
+      "menu":"Motion",
+      "callback":"move",
+      "parameters":
+      {
+        "Direction":
+        {
+          "type":"Enum",
+          "options":{"forwards":"0", "left":"1", "right":"2", "backwards":"3"}
+        },
+        "Speed":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        },
+      }
+    },
+    "Motors":
+    {
+      "menu":"Motion",
+      "callback":"setMotors",
+      "parameters":
+      {
+        "Left":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "default":0
+        },
+          "Right":
+          {
+            "type":"Float",
+            "min":-1,
+            "max":1,
+            "default":0.2
+          }
+      }
+    },
+    "Stop":
+    {
+      "menu":"Motion",
+      "callback":"stop",
+    },
+    "Display text":
+    {
+      "menu":"Display",
+      "callback":"displayText",
+      "parameters":
+      {
+        "Text":
+        {
+          "type":"String",
+          "default":"Hello world!"
+        }
+      }
+    },
+    "Set led":
+    {
+      "menu":"Display",
+      "callback":"setLed",
+      "parameters":
+      {
+        "Led":
+        {
+          "type":"Enum",
+          "options":{"home":"0", "spot":"1", "warning":"2", "dirt":"3"}
+        },
+        "Value":
+        {
+          "type":"Boolean"
+        }
+      }
+    },
+    "Play note":
+    {
+      "menu":"Sound",
+      "callback":"playNote",
+      "parameters":
+      {
+        "Pitch":
+        {
+          "type":"Enum",
+          "options":{"C":"0", "C#":"1", "D":"2", "D#":"3", "E":"4", "F":"5", "F#":"6", "G":"7"}
+        },
+        "Octave":
+        {
+          "type":"Integer",
+          "min":1,
+          "max":7
+        },
+        "Duration":
+        {
+          "type":"Enum",
+          "options":{"0.015":"1", "0.031":"2", "0.047":"3", "0.062":"4", "0.078":"5", "0.094":"6", "0.109":"7", "0.125":"8",
+          "0.141":"9", "0.156":"10", "0.31":"20", "0.625":"40", "0.78":"50", "1,56":"100"}
+
+        }
+      }
+    }
+  }
+}

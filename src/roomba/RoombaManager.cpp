@@ -37,6 +37,7 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
     roombas.emplace_back(new RoombaSerial(inPin, outPin, wakePin));
     roombas.back()->initComponent(serialDebug);
     compDebug("roomba registered.");
+    roombas.back()->validateSong();
 }
 
 void RoombaManager::setText(byte index, String text)
@@ -98,6 +99,11 @@ bool RoombaManager::handleCommand(OSCMessage &command)
 
     if (address.equals("/roomba/move"))
     {
+        if (checkCommandArguments(command, "ff", false))
+        {
+            drive(0, command.getFloat(0), command.getFloat(1));
+            return true;
+        } 
         if (checkCommandArguments(command, "i", false))
         {
             int direction = command.getInt(0);
@@ -274,9 +280,19 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         roombas[0]->wakeUp();
         return true;
     }
-    else if (address.equals("/roomba/start"))
+    else if (address.equals("/roomba/safe"))
     {
-        roombas[0]->startSafe();
+        roombas[0]->safeMode();
+        return true;
+    }
+    else if (address.equals("/roomba/full"))
+    {
+        roombas[0]->fullMode();
+        return true;
+    }
+    else if (address.equals("/roomba/note"))
+    {
+        roombas[0]->playNote((byte)command.getInt(0), (byte)command.getInt(1));
         return true;
     }
     return false;

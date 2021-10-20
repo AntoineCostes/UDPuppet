@@ -42,8 +42,25 @@ function oscEvent(address, args)
 function moduleValueChanged(value) {
 }
 
-function move(direction) {
+function move(direction, speed) {
+  local.send("/roomba/speed", speed);
   local.send("/roomba/move", parseInt(direction));
+}
+
+function setMotors(left, right) {
+  local.send("/roomba/move", left, right);
+}
+
+function wakeUp() {
+  local.send("/roomba/wake");
+}
+
+function safeMode() {
+  local.send("/roomba/start");
+}
+
+function fullMode() {
+  local.send("/roomba/full");
 }
 
 function stop() {
@@ -58,10 +75,10 @@ function setLed(led, value) {
   // TODO
 }
 
-function playSequence(name, fps) {
-  local.send("/player/play", name, fps);
-}
+function playNote(pitch, octave, duration) {
+  var note = 21 + octave*12 + parseInt(pitch);
 
-function stopSequence() {
-  local.send("/player/stop");
+  script.log(note);
+  script.log(parseInt(duration));
+  local.send("/roomba/note", note, parseInt(duration));
 }

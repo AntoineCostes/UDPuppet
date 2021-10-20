@@ -27,7 +27,8 @@ public:
     
     // general methods
     void wakeUp();
-    void startSafe();
+    void safeMode();
+    void fullMode();
 
     // methods for leds
     void setLed(RoombaLed led, bool state);
@@ -49,6 +50,8 @@ public:
     void driveWheelsPWM(int rightPWM, int leftPWM);
 
     // methods for sounds
+    void playNote(byte pitch, byte duration);
+
     void imperialSong();
     void victorySong();
     void validateSong();

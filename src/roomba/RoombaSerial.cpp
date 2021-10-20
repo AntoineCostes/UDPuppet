@@ -6,7 +6,7 @@
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
                                                                     centerLedBrightness(0),
-                                                                    maxSpeed(0.5)
+                                                                    maxSpeed(1.0)
 {
 }
 
@@ -15,16 +15,7 @@ void RoombaSerial::initComponent(bool serialDebug)
   serial.begin(19200);
   Component::initComponent(serialDebug);
   wakeUp();
-  startSafe();
-
-  delay(2000);
-  validateSong();
-  delay(2000);
-  victorySong();
-  delay(2000);
-  cancelSong();
-  delay(2000);
-  errorSong();
+  safeMode();
 }
 
 void RoombaSerial::update()
@@ -68,11 +59,19 @@ void RoombaSerial::wakeUp()
   delay(2000);
 }
 
-void RoombaSerial::startSafe()
+void RoombaSerial::safeMode()
 {  
   compLog("start in safe mode");
   serial.write(128);  //Start
   serial.write(131);  //Safe mode
+  delay(1000);
+}
+
+void RoombaSerial::fullMode()
+{  
+  compLog("start in full mode");
+  serial.write(128);  //Start
+  serial.write(132);  //Full mode
   delay(1000);
 }
 
@@ -202,6 +201,16 @@ void RoombaSerial::writeLEDs (char a, char b, char c, char d)
 } 
 
 
+void RoombaSerial::playNote(byte pitch, byte duration)
+{
+    serial.write(140);      // record song
+    serial.write(byte(1));
+    serial.write(1);
+    serial.write(pitch);   
+    serial.write(duration);   
+    serial.write(141);      // play song
+    serial.write(byte(1)); 
+}
 // ------------------ songs
 void RoombaSerial::imperialSong()
 {
@@ -315,7 +324,7 @@ void RoombaSerial::cancelSong()
 void RoombaSerial::errorSong()
 {
     serial.write(140);
-    serial.write(byte(4));
+    serial.write(byte(1));
     serial.write(2);
 
     serial.write(Pitch::G_1);
@@ -331,7 +340,7 @@ void RoombaSerial::errorSong()
 void RoombaSerial::kraftwerk()
 {
     serial.write(140);
-    serial.write(byte(4));
+    serial.write(byte(1));
     serial.write(10);
 
     serial.write(Pitch::D_4);
@@ -388,6 +397,6 @@ void RoombaSerial::kraftwerk()
     serial.write(8);
     
     serial.write(141);
-    serial.write(byte(4));
+    serial.write(byte(1));
 }
 #endif
