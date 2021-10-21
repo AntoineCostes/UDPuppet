@@ -74,7 +74,7 @@ void setup()
 #endif
 
 #ifdef ROOMBA
-  master.led.setBrightness(0.3f);
+  master.led.setBrightness(0.2f);
   master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   master.roomba.registerRoomba(33, 32, 15);
   master.roomba.setText(0, "Hello la cie !");

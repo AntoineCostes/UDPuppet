@@ -31,7 +31,7 @@
     }
   },
 
-  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
 
 
   "parameters":
@@ -167,7 +167,7 @@
         "Pitch":
         {
           "type":"Enum",
-          "options":{"C":"0", "C#":"1", "D":"2", "D#":"3", "E":"4", "F":"5", "F#":"6", "G":"7"}
+          "options":{"C":"0", "C#":"1", "D":"2", "D#":"3", "E":"4", "F":"5", "F#":"6", "G":"7", "G#":"8", "A":"9", "A#":"10", "B":"11"}
         },
         "Octave":
         {
@@ -178,8 +178,10 @@
         "Duration":
         {
           "type":"Enum",
-          "options":{"0.015":"1", "0.031":"2", "0.047":"3", "0.062":"4", "0.078":"5", "0.094":"6", "0.109":"7", "0.125":"8",
-          "0.141":"9", "0.156":"10", "0.31":"20", "0.625":"40", "0.78":"50", "1,56":"100"}
+          "options":{"0.062":"4", "0.125":"8", "0.156":"10", "0.250":"16",
+            "0.31":"20", "0.39":"25", "0.469":"30", "0,5":"32",
+            "0.625":"40", "0.78":"50", "1":"64",
+            "1,172":"75", "1,5":"96", "1,56":"100", "1,98":"127"}
 
         }
       }

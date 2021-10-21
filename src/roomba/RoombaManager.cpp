@@ -47,9 +47,9 @@ void RoombaManager::setText(byte index, String text)
 
 void RoombaManager::drive(byte index, float left, float right)
 {
-    left = constrain(left, -1.0f, 1.0f);
-    right = constrain(right, -1.0f, 1.0f);
-    roombas[index]->driveWheels(left*500, right*500);
+    //left = constrain(left, -1.0f, 1.0f);
+    //right = constrain(right, -1.0f, 1.0f);
+    roombas[index]->driveWheels(left, right);
 }
 
 void RoombaManager::setMaxSpeed(byte index, float speed)

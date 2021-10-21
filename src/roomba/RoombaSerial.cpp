@@ -107,28 +107,31 @@ void RoombaSerial::setMaxSpeed(float value)
   maxSpeed = constrain(value, 0.0f, 1.0f);
 }
 
-void RoombaSerial::driveWheels(int right, int left)
+void RoombaSerial::driveWheels(float right, float left)
 {
   // TODO change with float -1 1?
-  right = constrain(maxSpeed*right, -500, 500);
-  left = constrain(maxSpeed*left, -500, 500);
+  int r = 500*constrain(maxSpeed*right, -1.0f, 1.0f);
+  int l = 500*constrain(maxSpeed*left, -1.0f, 1.0f);
+
+  compDebug("drive wheels:" + String(r) + " - " + String(l));
   
   serial.write(145);
-  serial.write(right >> 8);
-  serial.write(right);
-  serial.write(left >> 8);
-  serial.write(left);
+  serial.write(r >> 8);
+  serial.write(r);
+  serial.write(l >> 8);
+  serial.write(l);
 }
 
-void RoombaSerial::drive(int velocity, int radius)
+void RoombaSerial::driveVelocityRadius(float velocity, int radius)
 {
-  // TODO change with float -1 1?
-  velocity = constrain(maxSpeed*velocity, -500, 500); //def max and min velocity in mm/s
+  int speed = 500*constrain(maxSpeed*velocity, -1, 1); //def max and min velocity in mm/s
   radius = constrain(radius, -2000, 2000); //def max and min radius in mm
   
+  compDebug("drive wheels radius:" + String(speed) + " - " + String(radius));
+
   serial.write(137);
-  serial.write(velocity >> 8);
-  serial.write(velocity);
+  serial.write(speed >> 8);
+  serial.write(speed);
   serial.write(radius >> 8);
   serial.write(radius);
 }
@@ -139,6 +142,8 @@ void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
   rightPWM = constrain(rightPWM, -255, 255);
   leftPWM = constrain(leftPWM, -255, 255);
   
+  compDebug("drive wheels PWM:" + String(rightPWM) + " - " + String(leftPWM));
+
   serial.write(146);
   serial.write(rightPWM >> 8);
   serial.write(rightPWM);

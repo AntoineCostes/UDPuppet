@@ -45,8 +45,8 @@ public:
 
     // methods for motors
     void setMaxSpeed(float value);
-    void drive(int velocity, int radius);
-    void driveWheels(int right, int left);
+    void driveVelocityRadius(float velocity, int radius);
+    void driveWheels(float right, float left);
     void driveWheelsPWM(int rightPWM, int leftPWM);
 
     // methods for sounds

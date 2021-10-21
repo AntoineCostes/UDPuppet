@@ -23,19 +23,22 @@ function moduleParameterChanged(param)
 
 function oscEvent(address, args)
 {
-  if (args[0] != "Roomba") return;
+  device = address.split("/")[1];
+  command = address.split("/")[2];
 
-  if (address == "/yo")
+  if (device != "Roomba") return;
+  
+  if (command == "yo")
   {
-    local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+    local.parameters.oscOutputs.oscOutput.remoteHost.set(args[0]);
   }
-  if (address == "/battery")
+  if (command == "battery")
   {
-    local.parameters.batterie.set(args[1]);
+    local.parameters.batterie.set(args[0]);
   }
-  if (address == "/sd")
+  if (command == "sd")
   {
-    local.parameters.carteSDDetectee.set(args[1]>0);
+    local.parameters.carteSDDetectee.set(args[0]>0);
   }
 }
 
