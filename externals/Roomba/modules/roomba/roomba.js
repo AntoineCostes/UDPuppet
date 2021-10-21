@@ -27,7 +27,7 @@ function oscEvent(address, args)
   command = address.split("/")[2];
 
   if (device != "Roomba") return;
-  
+
   if (command == "yo")
   {
     local.parameters.oscOutputs.oscOutput.remoteHost.set(args[0]);
@@ -58,12 +58,16 @@ function wakeUp() {
   local.send("/roomba/wake");
 }
 
-function safeMode() {
-  local.send("/roomba/start");
+function startPassive() {
+  local.send("/roomba/start", 0);
 }
 
-function fullMode() {
-  local.send("/roomba/full");
+function startSafe() {
+  local.send("/roomba/start", 1);
+}
+
+function startFull() {
+  local.send("/roomba/start", 2);
 }
 
 function stop() {

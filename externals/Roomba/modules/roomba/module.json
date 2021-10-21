@@ -66,15 +66,20 @@
 
   "commands":
   {
+    "Start Passive Mode":
+    {
+      "menu":"System",
+      "callback":"startPassive",
+    },
     "Start Safe Mode":
     {
       "menu":"System",
-      "callback":"startMode",
+      "callback":"startSafe",
     },
     "Start Full Mode":
     {
       "menu":"System",
-      "callback":"fullMode",
+      "callback":"startFull",
     },
     "Wake Up":
     {
