@@ -1,5 +1,6 @@
 #pragma once
 #include "../common/Component.h"
+#include "../utils/EventBroadcaster.h"
 
 #ifdef HAS_ROOMBA
 #include <SoftwareSerial.h>
@@ -12,7 +13,28 @@ enum RoombaLed
     DIRT_BLUE
 };
 
-class RoombaSerial : public Component
+enum RoombaMode
+{
+    PASSIVE,
+    SAFE,
+    FULL
+};
+
+class RoombaValueEvent
+{
+public:
+    enum Type
+    {
+        BATTERY_VOLTAGE,
+        BATTERY_CHARGE
+
+    } type;
+    int rawValue;
+    RoombaValueEvent(Type type, int rawValue) : type(type), rawValue(rawValue) {}
+};
+
+class RoombaSerial : public Component, 
+                    public EventBroadcaster<RoombaValueEvent>
 {
 public:
     // inPin = roomba RX = brown wire
@@ -27,8 +49,9 @@ public:
     
     // general methods
     void wakeUp();
-    void safeMode();
-    void fullMode();
+    void start(RoombaMode mode);
+    void getBattery();
+    void streamBattery();
 
     // methods for leds
     void setLed(RoombaLed led, bool state);

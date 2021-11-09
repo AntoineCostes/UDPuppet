@@ -36,8 +36,9 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
 
     roombas.emplace_back(new RoombaSerial(inPin, outPin, wakePin));
     roombas.back()->initComponent(serialDebug);
-    compDebug("roomba registered.");
-    roombas.back()->validateSong();
+    roombas.back()->addListener(std::bind(&RoombaManager::gotRoombaEvent, this, std::placeholders::_1));
+
+    compDebug("roomba device registered succesfully !");
 }
 
 void RoombaManager::setText(byte index, String text)
@@ -85,6 +86,11 @@ void RoombaManager::setCenterHue(byte index, byte value)
 void RoombaManager::setCenterBrightness(byte index, byte value)
 {
     roombas[index]->setCenterBrightness(value);
+}
+
+void RoombaManager::gotRoombaEvent(const RoombaValueEvent &e)
+{
+    sendEvent(e);
 }
 
 bool RoombaManager::handleCommand(OSCMessage &command)
@@ -280,19 +286,26 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         roombas[0]->wakeUp();
         return true;
     }
-    else if (address.equals("/roomba/safe"))
+    else if (address.equals("/roomba/start"))
     {
-        roombas[0]->safeMode();
-        return true;
-    }
-    else if (address.equals("/roomba/full"))
-    {
-        roombas[0]->fullMode();
+        int mode = command.getInt(0);
+        if (mode >= 0 && mode < 3)
+            roombas[0]->start(RoombaMode(mode));
         return true;
     }
     else if (address.equals("/roomba/note"))
     {
         roombas[0]->playNote((byte)command.getInt(0), (byte)command.getInt(1));
+        return true;
+    }
+    else if (address.equals("/roomba/battery"))
+    {
+        roombas[0]->getBattery();
+        return true;
+    }
+    else if (address.equals("/roomba/stream"))
+    {
+        roombas[0]->streamBattery();
         return true;
     }
     return false;

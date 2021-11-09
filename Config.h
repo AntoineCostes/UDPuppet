@@ -4,7 +4,7 @@
 // NETWORKS - DEFAULT TO LENET
 //#define SANS_GRAVITE
 //#define COSTES
-#define LATITUDE50
+//#define LATITUDE50
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE

@@ -15,7 +15,7 @@ void RoombaSerial::initComponent(bool serialDebug)
   serial.begin(19200);
   Component::initComponent(serialDebug);
   wakeUp();
-  safeMode();
+  start(SAFE);
 }
 
 void RoombaSerial::update()
@@ -24,9 +24,12 @@ void RoombaSerial::update()
       return;
 
   if (serial.available()) {
-    String inString = Serial.readString();
-    // TODO: serialEvent
-    compDebug("char received:"+inString);
+      compDebug("SERIAL");
+      char buffer[10];
+      int nbPackets = Serial.readBytesUntil(byte(19), buffer, 10);
+      
+      for(int i = 0; i < nbPackets; i++)
+        compDebug(String(int(buffer[i])));
   }
 
     //  update 7 segment display
@@ -59,20 +62,46 @@ void RoombaSerial::wakeUp()
   delay(2000);
 }
 
-void RoombaSerial::safeMode()
+void RoombaSerial::start(RoombaMode mode)
 {  
-  compLog("start in safe mode");
-  serial.write(128);  //Start
-  serial.write(131);  //Safe mode
+  switch(mode)
+  {
+    case RoombaMode::PASSIVE:
+      compLog("start in passive mode");
+      serial.write(128);
+      break;
+
+    case RoombaMode::SAFE:
+      compLog("start in safe mode");
+      serial.write(131);
+    break;
+    case RoombaMode::FULL:
+      compLog("start in full mode");
+      serial.write(132);
+    break;
+  }
   delay(1000);
 }
 
-void RoombaSerial::fullMode()
+void RoombaSerial::streamBattery()
 {  
-  compLog("start in full mode");
-  serial.write(128);  //Start
-  serial.write(132);  //Full mode
-  delay(1000);
+  if (!checkInit())
+    return;
+  
+  compDebug("STREAM BATTERY");
+  serial.write(148);
+  serial.write(1);
+  serial.write(22);
+}
+
+void RoombaSerial::getBattery()
+{  
+  if (!checkInit())
+    return;
+  
+  compDebug("GET BATTERY");
+  serial.write(142);
+  serial.write(22);
 }
 
 void RoombaSerial::setLed(RoombaLed led, bool state)
@@ -113,7 +142,7 @@ void RoombaSerial::driveWheels(float right, float left)
   int r = 500*constrain(maxSpeed*right, -1.0f, 1.0f);
   int l = 500*constrain(maxSpeed*left, -1.0f, 1.0f);
 
-  compDebug("drive wheels:" + String(r) + " - " + String(l));
+  compDebug("drive wheels: " + String(r) + " / " + String(l));
   
   serial.write(145);
   serial.write(r >> 8);
@@ -127,7 +156,7 @@ void RoombaSerial::driveVelocityRadius(float velocity, int radius)
   int speed = 500*constrain(maxSpeed*velocity, -1, 1); //def max and min velocity in mm/s
   radius = constrain(radius, -2000, 2000); //def max and min radius in mm
   
-  compDebug("drive wheels radius:" + String(speed) + " - " + String(radius));
+  compDebug("drive wheels radius: " + String(speed) + " / " + String(radius));
 
   serial.write(137);
   serial.write(speed >> 8);
@@ -142,7 +171,7 @@ void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
   rightPWM = constrain(rightPWM, -255, 255);
   leftPWM = constrain(leftPWM, -255, 255);
   
-  compDebug("drive wheels PWM:" + String(rightPWM) + " - " + String(leftPWM));
+  compDebug("drive wheels PWM: " + String(rightPWM) + " / " + String(leftPWM));
 
   serial.write(146);
   serial.write(rightPWM >> 8);
@@ -216,6 +245,7 @@ void RoombaSerial::playNote(byte pitch, byte duration)
     serial.write(141);      // play song
     serial.write(byte(1)); 
 }
+
 // ------------------ songs
 void RoombaSerial::imperialSong()
 {

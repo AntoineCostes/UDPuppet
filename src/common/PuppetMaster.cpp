@@ -36,7 +36,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.3")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.4")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -108,6 +108,7 @@ void PuppetMaster::initManager()
 #ifdef HAS_ROOMBA
     roomba.initManager();
     managers.emplace_back(&roomba);
+    roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
     // TODO give this info on demand
@@ -268,23 +269,6 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     }
 }
 
-
-#ifdef HAS_MOTORWING
-void PuppetMaster::gotStepperEvent(const StepperEvent &e)
-{
-    if (!osc.isConnected)
-        return;
-
-    //compDebug("stepper event");
-
-    OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
-    msg.add((int)e.position);
-    msg.add((int)e.speed);
-    msg.add((float)e.maxSpeed);
-    osc.sendMessage(msg);
-}
-#endif
-
 void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 {
     if (!osc.isConnected)
@@ -307,6 +291,22 @@ void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
     msg.add(e.rawValue);
     osc.sendMessage(msg);
 }
+
+#ifdef HAS_MOTORWING
+void PuppetMaster::gotStepperEvent(const StepperEvent &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    //compDebug("stepper event");
+
+    OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
+    msg.add((int)e.position);
+    msg.add((int)e.speed);
+    msg.add((float)e.maxSpeed);
+    osc.sendMessage(msg);
+}
+#endif
 
 #ifdef HAS_SD_WING
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
@@ -350,47 +350,34 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
 }
 #endif // HAS_SD_WING
 
-// void PuppetMaster::commandFromOSCMessage(OSCMessage &command)
-// {
-//     char addr[32];
-//     command.getAddress(addr, 1); //remove the first slash
-//     String tc(addr);
-//     int tcIndex = tc.indexOf('/');
+#ifdef HAS_MOTORWING
+void PuppetMaster::gotStepperEvent(const StepperEvent &e)
+{
+    if (!osc.isConnected)
+        return;
 
-//     int numData = command.size();
-//     var *msgData = (var *)malloc(numData * sizeof(var));
-//     int numUsedData = 0;
+    //compDebug("stepper event");
 
-//     char tmpStr[32][32]; //contains potential strings
+    OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
+    msg.add((int)e.position);
+    msg.add((int)e.speed);
+    msg.add((float)e.maxSpeed);
+    osc.sendMessage(msg);
+}
+#endif
 
-//     for (int i = 0; i < command.size(); i++)
-//     {
-//         switch (command.getType(i))
-//         {
-//         case 'i':
-//             msgData[i].value.i = command.getInt(i);
-//             msgData[i].type = 'i';
-//             numUsedData++;
-//             break;
-//         case 'f':
-//             msgData[i].value.f = command.getFloat(i);
-//             msgData[i].type = 'f';
-//             numUsedData++;
-//             break;
-//         case 's':
-//             command.getString(i, tmpStr[i]);
-//             msgData[i].value.s = tmpStr[i];
-//             msgData[i].type = 's';
-//             numUsedData++;
-//             break;
+#ifdef HAS_ROOMBA
+void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
+{
+    if (!osc.isConnected)
+        return;
 
-//         default:
-//             break;
-//         }
-//     }
-//     // handle_command(tc.substring(0, tcIndex), tc.substring(tcIndex + 1), msgData, numUsedData);
-//     compDebug(tc.substring(0, tcIndex));
-//     compDebug(tc.substring(tcIndex + 1));
-//     compDebug(String(numUsedData));
+    compDebug("roomba event");
 
-// }
+    // OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
+    // msg.add((int)e.position);
+    // msg.add((int)e.speed);
+    // msg.add((float)e.maxSpeed);
+    // osc.sendMessage(msg);
+}
+#endif

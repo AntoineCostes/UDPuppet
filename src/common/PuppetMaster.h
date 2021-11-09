@@ -78,6 +78,7 @@ protected:
 #endif
 
 #ifdef HAS_ROOMBA
+    void gotRoombaValueEvent(const RoombaValueEvent &e);
 #endif
     
 };
