@@ -7,11 +7,11 @@
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
-//#define BASE
+#define BASE
 //#define BOBINE
-#define CORBEILLE
+//#define CORBEILLE
 //#define ROOMBA
-
+//#define SERVOTEST
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -70,7 +70,6 @@ const long LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
 const bool SERVO_DEBUG = true;
-const int SERVO_MAX = 180;
 const bool SERVO_ALLOW_UNSAFE_PINS = false;
 
 // FEATHERWING PARAMETERS

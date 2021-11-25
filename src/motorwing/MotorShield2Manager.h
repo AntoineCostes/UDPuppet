@@ -14,7 +14,7 @@ public:
     {
         MOVED
     } type;
-    int index;
+    int index; // TODO byte ?
     long position;
     long speed;
     float maxSpeed;

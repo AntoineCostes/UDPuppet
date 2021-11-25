@@ -16,5 +16,5 @@ protected:
     bool serialDebug;
     
     vector<std::unique_ptr<Component>> props;
-    bool registerProp(Component* comp, std::set<int> reservedPins);
+    bool registerProp(Component* comp, std::set<byte> reservedPins);
 };

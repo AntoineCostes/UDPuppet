@@ -11,7 +11,7 @@ void Manager::initManager()
     Component::initComponent(serialDebug);
 }
 
-bool Manager::registerProp(Component* prop, std::set<int> reservedPins)
+bool Manager::registerProp(Component* prop, std::set<byte> reservedPins)
 {
     compDebug("register prop: " + String(prop->name));
 

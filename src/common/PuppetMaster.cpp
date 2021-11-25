@@ -37,7 +37,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.1")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.2")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -110,7 +110,7 @@ void PuppetMaster::initManager()
 
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
-    // for (int pin : Component::forbiddenPins)
+    // for (byte pin : Component::forbiddenPins)
     //     compDebug(String(pin));
 }
 
@@ -316,10 +316,10 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 //compDebug("Got new frame ! "+String((int)e.data[0]));
 #ifdef AMPOULE
         led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
-        servo.setServoRel(0, e.data[3] / 255.0f);
+        servo.setServoRelativePosition(0, e.data[3] / 255.0f);
 #elif defined BASE
-        servo.setServoRel(1, e.data[0] / 255.0f); // foot
-        servo.setServoRel(0, e.data[1] / 255.0f); // neck
+        servo.setServoRelativePosition(1, e.data[0] / 255.0f); // foot
+        servo.setServoRelativePosition(0, e.data[1] / 255.0f); // neck
         motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
         motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);

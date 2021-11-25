@@ -27,7 +27,9 @@ void setup()
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(3000); // wait for serial console
+  
+  //while (!Serial) { delay(1); } // wait for serial console
+  delay(2000); 
 
   master.initManager(); // TODO make singleton and rename ?
 
@@ -41,16 +43,18 @@ void setup()
   // couleur
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // rotation tête
-  master.servo.registerServo(0, 15, 0, 180, 90); // index, pin, min, max, start
+   master.servo.registerServo(0, 15, 0.5f); // index, pin, départ au centre
 #endif
 
 #ifdef BASE
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // pied
-  master.servo.registerServo(0, 27, 50, 140, 70); // index, pin, min, max, start
+  // master.servo.registerServo(0, 27, 50, 140, 70); // index, pin, min, max, start
+  master.servo.registerServo(0, 27, 1087, 2064, 1304);  // index, pin, pulseMin, pulseMax, pulseStart
   // cou
-  master.servo.registerServo(1, 12, 60, 120, 120); // index, pin, min, max, start
+  // master.servo.registerServo(1, 12, 60, 120, 120); // index, pin, min, max, start
+  master.servo.registerServo(1, 12, .3f, .6f, .6f); // index, pin, min, max, start
   //rotation
   master.motorwing.registerStepper(0, 14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
@@ -75,6 +79,13 @@ void setup()
   master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   master.roomba.registerRoomba(33, 32, 15);
   master.roomba.setText(0, "Hello la cie !");
+#endif
+
+
+#ifdef SERVOTEST
+  // master.servo.registerServo(0, 21, 0, 180, 90); // index, pin, min, max, start
+  // master.servo.registerServo(1, 17, 0, 180, 90);
+  // master.servo.registerServo(2, 16, 0, 180, 90);
 #endif
 }
 

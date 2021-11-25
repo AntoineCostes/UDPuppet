@@ -26,12 +26,14 @@ public:
     String name; // TODO const ?
 
     virtual void initComponent(bool serialDebug);
+    bool checkRange(String valueName, float value, float min, float max);
+    bool checkRange(String valueName, int value, int min, int max);
     bool checkInit();
     virtual void update() = 0;
 
-    static bool registerPin(int pin);
-    static bool registerPins(std::set<int> pins);
-    static std::set<int> forbiddenPins;
+    static bool registerPin(byte pin);
+    static bool registerPins(std::set<byte> pins);
+    static std::set<byte> forbiddenPins;
 
     virtual bool handleCommand(OSCMessage &command);
 

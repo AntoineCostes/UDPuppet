@@ -1,9 +1,9 @@
 #include "LedStrip.h"
 
 #ifdef HAS_LED
-LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Component("led_pin" + String(pin)),
+LedStrip::LedStrip(byte pin, int numLeds, neoPixelType type, bool debug) : Component("led_pin" + String(pin)),
                                                                             numLeds(numLeds),
-                                                                            strip(numLeds, pin, type),
+                                                                            strip(numLeds, (int)pin, type),
                                                                             brightness(0.3),
                                                                             mode(LedMode::WAITING),
                                                                             toastTimer(0)

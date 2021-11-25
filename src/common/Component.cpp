@@ -1,6 +1,6 @@
 #include "Component.h"
 
-std::set<int> Component::forbiddenPins = {};
+std::set<byte> Component::forbiddenPins = {};
 
 Component::Component(const String &name) : name(name), initialized(false)
 {
@@ -20,15 +20,35 @@ bool Component::checkInit()
     return initialized;
 }
 
-bool Component::registerPin(int pin)
+bool Component::checkRange(String valueName, int value, int min, int max)
 {
-    std::set<int> pins = {pin};
+  if (value < min || value > max)
+  {
+    compError("can't set " + valueName + ", value " + String(value) + "us out of range [" + String(min) + ", " + String(max) + "].");
+    return false;
+  }
+  return true;
+}
+
+bool Component::checkRange(String valueName, float value, float min, float max)
+{
+  if (value < min || value > max)
+  {
+    compError("can't set " + valueName + ", value " + String(value) + "us out of range [" + String(min) + ", " + String(max) + "].");
+    return false;
+  }
+  return true;
+}
+
+bool Component::registerPin(byte pin)
+{
+    std::set<byte> pins = {pin};
     return registerPins(pins);
 }
 
-bool Component::registerPins(std::set<int> pins)
+bool Component::registerPins(std::set<byte> pins)
 {
-    for (int pin : pins)
+    for (byte pin : pins)
     {
         if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
         {
@@ -36,7 +56,7 @@ bool Component::registerPins(std::set<int> pins)
             return false;
         }
     }
-    for (int pin : pins)
+    for (byte pin : pins)
     {
         Component::forbiddenPins.insert(pin);
     }
@@ -239,4 +259,5 @@ bool Component::checkCommandArguments(OSCMessage &command, String types, bool lo
 
 bool Component::handleCommand(OSCMessage &command)
 {
+    return false;
 }

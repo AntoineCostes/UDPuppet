@@ -27,7 +27,7 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
     if (!checkInit())
         return;
 
-    std::set<int> pins = {inPin, outPin, wakePin};
+    std::set<byte> pins = {inPin, outPin, wakePin};
     if (!Component::registerPins(pins))
     {
         compError("cannot register roomba: a pin is already registered !");

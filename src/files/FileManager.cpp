@@ -24,7 +24,7 @@ void FileManager::init()
     if (sdIsDetected)
         return;
 
-    std::set<int> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
+    std::set<byte> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
     if (!Component::registerPins(pins))
     {
         compError("cannot initialize SD: a needed pin is already registered !");

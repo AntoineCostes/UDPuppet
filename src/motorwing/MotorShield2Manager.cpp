@@ -148,9 +148,9 @@ void MotorShield2Manager::registerStepper(byte index, byte pin1, byte pin2, byte
         return;
 
     // TODO replace with registerPins
-    std::set<int> pins{pin1, pin2, pin3, pin4};
+    std::set<byte> pins{pin1, pin2, pin3, pin4};
 
-    for (int pin : pins)
+    for (byte pin : pins)
     {
         if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
         {

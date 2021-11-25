@@ -7,7 +7,7 @@
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 #include "../leds/LedManager.h"
-#include "../motors/ServoManager.h"
+#include "../servo/ServoManager.h"
 #include "../motorwing/MotorShield2Manager.h"
 #include "../roomba/RoombaManager.h"
 

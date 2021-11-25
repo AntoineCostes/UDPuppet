@@ -136,7 +136,7 @@ void SequencePlayer::playFrame()
   curFile.read(frameData, FRAME_SIZE);
   sendEvent(PlayerEvent(PlayerEvent::NewFrame, frameData));
 
-  //setServo(0, map(curFile.read(), 0, 255, 0, 180));
+  // FIXME set servo curFile.read()/255 ?
 }
 
 void SequencePlayer::seek(float t)
@@ -157,7 +157,7 @@ void SequencePlayer::seek(float t)
   else if (!isPlaying)
   {
     compDebug("seek not playing");
-    //setServo(0, map(curFile.read(), 0, 255, 0, 180));
+    // FIXME set servo curFile.read()/255 ?
   }
 }
 
