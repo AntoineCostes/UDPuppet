@@ -2,16 +2,19 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
+//#define SANS_GRAVITE
 //#define COSTES
+#define SUNNY
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
-#define BASE
+//#define BASE
 //#define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
 //#define SERVOTEST
+//#define MULTILED
+#define BLUEHOUSE
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -20,6 +23,9 @@ const String WIFI_PASSWORD = "lovecraft";
 #elif defined(COSTES)
 const String WIFI_SSID = "Ouifi";
 const String WIFI_PASSWORD = "28101948AC";
+#elif defined(SUNNY)
+const String WIFI_SSID = "Sunnyhome";
+const String WIFI_PASSWORD = "20210616";
 #else
 const String WIFI_SSID = "LeNet";
 const String WIFI_PASSWORD = "connectemoi";
@@ -41,6 +47,10 @@ enum BoardType
 #include "config/sansgravite/Corbeille.h"
 #elif defined(ROOMBA)
 #include "config/Roomba.h"
+#elif defined(MULTILED)
+#include "config/MultiLed.h"
+#elif defined(BLUEHOUSE)
+#include "config/BlueHouse.h"
 #endif
 
 

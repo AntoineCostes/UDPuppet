@@ -81,6 +81,28 @@ void setup()
   master.roomba.setText(0, "Hello la cie !");
 #endif
 
+#ifdef MULTILED
+  master.led.setBrightness(0.1f);
+  master.led.registerLedStrip(0, 21, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(1, 17, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(2, 16, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(3, 19, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(4, 18, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(5, 5, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(6, 4, 12, NEO_RGB + NEO_KHZ800);
+  
+  master.led.registerLedStrip(7, 22, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(8, 23, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(9, 14, 12, NEO_RGB + NEO_KHZ800);
+  master.led.registerLedStrip(10, 32, 12, NEO_RGB + NEO_KHZ800);
+#endif
+
+#ifdef BLUEHOUSE
+  master.led.setBrightness(0.3f);
+  master.led.registerLedStrip(0, 27, 12, NEO_RGB + NEO_KHZ800);
+  //master.led.registerLedStrip(1, 27, 10, NEO_GRB + NEO_KHZ800);
+#endif
+
 
 #ifdef SERVOTEST
   // master.servo.registerServo(0, 21, 0, 180, 90); // index, pin, min, max, start
