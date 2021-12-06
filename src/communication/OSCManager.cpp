@@ -88,8 +88,7 @@ void OSCManager::update()
 
     if (millis() > lastSentPingMs + PING_TIMEOUT_MS)
     {
-        OSCMessage pingMsg("/ping");
-        pingMsg.add(BOARD_NAME.c_str());
+        OSCMessage pingMsg(("/" + BOARD_NAME + "/ping").c_str() );
         sendMessage(pingMsg);
         lastSentPingMs = millis();
     }
@@ -168,18 +167,18 @@ void OSCManager::update()
     return;
 }
 
+// TODO: not used
 void OSCManager::pong()
 {
-    OSCMessage pongMsg("/pong");
-    pongMsg.add(BOARD_NAME.c_str());
+    OSCMessage pongMsg(("/" + BOARD_NAME + "/pong").c_str() );
+    pongMsg.add(wifi->getIP().c_str());
     pongMsg.add(wifi->getMAC().c_str());
     sendMessage(pongMsg);
 }
 
 void OSCManager::yo()
 {
-    OSCMessage answerMsg("/yo");
-    answerMsg.add(BOARD_NAME.c_str());
+    OSCMessage answerMsg(("/" + BOARD_NAME + "/yo").c_str() );
     answerMsg.add(wifi->getIP().c_str());
     answerMsg.add(wifi->getMAC().c_str());
     sendMessage(answerMsg);

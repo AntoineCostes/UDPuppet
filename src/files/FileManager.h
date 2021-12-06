@@ -70,7 +70,7 @@ public:
     bool isUploading;
 
     void init();
-    void update() override;
+    void update();
     
     //File manipulation
     static File openFile(String fileName, bool forWriting = false, bool deleteIfExists = true);

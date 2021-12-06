@@ -10,8 +10,8 @@ class StepperMotor : public Component
 public:
   StepperMotor(byte id, AccelStepper *stepper);
 
-  void initComponent(bool serialDebug);
-  void update();
+  void initComponent(bool serialDebug) override;
+  void update() override;
 
   enum StepperControlMode
   {

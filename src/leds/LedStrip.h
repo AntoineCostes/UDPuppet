@@ -13,7 +13,7 @@ public:
     //~LedStrip(){Serial.println("delete LedStrip");}
     //~LedStrip() {}
 
-    void initComponent(bool serialDebug);
+    void initComponent(bool serialDebug) override;
     void update();
     
     // allows to display a given mode for a given duration

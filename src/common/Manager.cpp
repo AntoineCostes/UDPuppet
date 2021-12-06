@@ -13,7 +13,7 @@ void Manager::initManager()
 
 bool Manager::registerProp(Component* prop, std::set<byte> reservedPins)
 {
-    compDebug("register prop: " + String(prop->name));
+    compDebug("registering prop: " + String(prop->name));
 
     for (int newPin : reservedPins)
         if (Component::forbiddenPins.find(newPin) != Component::forbiddenPins.end())
@@ -31,6 +31,9 @@ bool Manager::registerProp(Component* prop, std::set<byte> reservedPins)
     
 void Manager::update()
 {
+    if (!checkInit())
+        return;
+        
     for (auto const &prop : props)
     {
         prop.get()->update();

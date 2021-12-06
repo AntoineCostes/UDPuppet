@@ -15,8 +15,8 @@ public:
     ServoMotor(byte pin, float min, float max, float startPosition);
     ServoMotor(byte pin, int pulseMin, int pulseMax, int startPulse);
 
-    void initComponent(bool serialDebug);
-    void update();
+    void initComponent(bool serialDebug) override;
+    void update() override;
     
     void goToStartPosition();
     void goToPosition(float relativeValue);

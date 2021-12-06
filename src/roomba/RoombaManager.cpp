@@ -36,7 +36,9 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
 
     roombas.emplace_back(new RoombaSerial(inPin, outPin, wakePin));
     roombas.back()->initComponent(serialDebug);
-    compDebug("roomba registered.");
+    roombas.back()->addListener(std::bind(&RoombaManager::gotRoombaEvent, this, std::placeholders::_1));
+
+    compDebug("roomba device registered succesfully !");
 }
 
 void RoombaManager::setText(byte index, String text)
@@ -46,9 +48,9 @@ void RoombaManager::setText(byte index, String text)
 
 void RoombaManager::drive(byte index, float left, float right)
 {
-    left = constrain(left, -1.0f, 1.0f);
-    right = constrain(right, -1.0f, 1.0f);
-    roombas[index]->driveWheels(left*500, right*500);
+    //left = constrain(left, -1.0f, 1.0f);
+    //right = constrain(right, -1.0f, 1.0f);
+    roombas[index]->driveWheels(left, right);
 }
 
 void RoombaManager::setMaxSpeed(byte index, float speed)
@@ -86,6 +88,11 @@ void RoombaManager::setCenterBrightness(byte index, byte value)
     roombas[index]->setCenterBrightness(value);
 }
 
+void RoombaManager::gotRoombaEvent(const RoombaValueEvent &e)
+{
+    sendEvent(e);
+}
+
 bool RoombaManager::handleCommand(OSCMessage &command)
 {
     if (!checkInit())
@@ -98,6 +105,11 @@ bool RoombaManager::handleCommand(OSCMessage &command)
 
     if (address.equals("/roomba/move"))
     {
+        if (checkCommandArguments(command, "ff", false))
+        {
+            drive(0, command.getFloat(0), command.getFloat(1));
+            return true;
+        } 
         if (checkCommandArguments(command, "i", false))
         {
             int direction = command.getInt(0);
@@ -127,6 +139,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         } 
         else if (checkCommandArguments(command, "ii", true))
         {
+            // TODO fix this
             int direction = command.getInt(0);
             switch(command.getInt(1))
             {
@@ -275,7 +288,24 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/start"))
     {
-        roombas[0]->startSafe();
+        int mode = command.getInt(0);
+        if (mode >= 0 && mode < 3)
+            roombas[0]->start(RoombaMode(mode));
+        return true;
+    }
+    else if (address.equals("/roomba/note"))
+    {
+        roombas[0]->playNote((byte)command.getInt(0), (byte)command.getInt(1));
+        return true;
+    }
+    else if (address.equals("/roomba/battery"))
+    {
+        roombas[0]->getBattery();
+        return true;
+    }
+    else if (address.equals("/roomba/stream"))
+    {
+        roombas[0]->streamBattery();
         return true;
     }
     return false;

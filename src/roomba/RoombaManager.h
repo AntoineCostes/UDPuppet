@@ -1,9 +1,13 @@
 #pragma once
 #include "../common/Manager.h"
 #include "RoombaSerial.h"
+#include "../utils/EventBroadcaster.h"
+
 
 #ifdef HAS_ROOMBA
-class RoombaManager : public Manager
+
+class RoombaManager : public Manager,
+                    public EventBroadcaster<RoombaValueEvent>
 {
 public:
     RoombaManager();
@@ -24,6 +28,8 @@ public:
     void setSpotLed(byte index, bool state);
     void setCenterHue(byte index, byte value);
     void setCenterBrightness(byte index, byte value);
+
+    void gotRoombaEvent(const RoombaValueEvent &e);
 
     bool handleCommand(OSCMessage &command) override;
 

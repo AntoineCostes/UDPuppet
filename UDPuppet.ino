@@ -15,6 +15,9 @@
 // TODO local libs
 // TODO filemanager server
 // TODO OTA
+// TODO send both on 12000 and specific port ?
+// TODO inputPins & outPutPins PinManager
+// analog refresh => merge battery as AnalogReader child ?
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -75,10 +78,10 @@ void setup()
 #endif
 
 #ifdef ROOMBA
-  master.led.setBrightness(0.3f);
+  master.led.setBrightness(0.1f);
   master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   master.roomba.registerRoomba(33, 32, 15);
-  master.roomba.setText(0, "Hello la cie !");
+  //master.roomba.setText(0, "Hello la cie !");
 #endif
 
 #ifdef MULTILED

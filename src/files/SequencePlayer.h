@@ -34,6 +34,7 @@ public:
     uint8_t * data;
 };
 
+// TODO make Component instead of Manager
 class SequencePlayer : public Manager,
       public EventBroadcaster<PlayerEvent>
 {
@@ -41,7 +42,7 @@ public:
   SequencePlayer();
 
   void initManager();
-  void update() override;
+  void update();
 
   void setFPS(byte value);
 
