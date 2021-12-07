@@ -1,7 +1,7 @@
 #include "AnalogReader.h"
 
 
-AnalogReader::AnalogReader(int pin, String niceName) : Component("reader" + String(pin)), 
+AnalogReader::AnalogReader(byte pin, String niceName) : Component("reader" + String(pin)), 
                                                             pin(pin),
                                                             niceName(niceName),
                                                             lastValue(0)
@@ -20,12 +20,12 @@ void AnalogReader::update()
 
 int AnalogReader::read()
 {
-    uint16_t current = analogRead(pin);
+    uint16_t currentValue = analogRead(pin);
 
-    if (current == lastValue)
+    if (currentValue == lastValue)
     {
         return -1;
     }
-    lastValue = current;
-    return current;
+    lastValue = currentValue;
+    return currentValue;
 }

@@ -3,8 +3,7 @@
 #include "../utils/EventBroadcaster.h"
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
-#include "../sensors/BatteryManager.h"
-#include "../sensors/AnalogManager.h"
+#include "../sensors/SensorManager.h"
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 #include "../leds/LedManager.h"
@@ -23,26 +22,25 @@ public:
     void checkComponents();
     void update();
 
-    WifiManager wifi;
-    OSCManager osc;
-    BatteryManager battery;
-    AnalogManager analog;
+    WifiManager wifiMgr;
+    OSCManager oscMgr;
+    SensorManager sensorMgr;
     
 #ifdef HAS_SD_WING
     SequencePlayer player;
     FileManager fileMgr;
 #endif
 #ifdef HAS_LED
-    LedManager led;
+    LedManager ledMgr;
 #endif
 #ifdef HAS_SERVO
-    ServoManager servo;
+    ServoManager servoMgr;
 #endif
 #ifdef HAS_MOTORWING
-    MotorShield2Manager motorwing;
+    MotorShield2Manager motorwingMgr;
 #endif
 #ifdef HAS_ROOMBA
-    RoombaManager roomba;
+    RoombaManager roombaMgr;
 #endif
 
 protected:

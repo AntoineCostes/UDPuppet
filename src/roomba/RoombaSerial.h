@@ -34,7 +34,7 @@ public:
 };
 
 class RoombaSerial : public Component, 
-                    public EventBroadcaster<RoombaValueEvent>
+                    public EventBroadcaster<RoombaValueEvent> // TODO remove
 {
 public:
     // inPin = roomba RX = brown wire

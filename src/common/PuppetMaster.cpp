@@ -1,5 +1,16 @@
 #include "PuppetMaster.h"
 
+
+// TODO clear config
+// TODO remove index
+// TODO remove serialDebug for Component
+// TODO local libs
+// TODO filemanager server
+// TODO OTA
+// TODO send both on 12000 and specific port ?
+// TODO inputPins & outPutPins PinManager
+// analog refresh => merge battery as AnalogReader child ?
+
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
@@ -36,7 +47,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.2")
+                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.3.2")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -60,7 +71,7 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("-------------------- " + osc.mDNSName + " --------------------");
+    compLog("-------------------- " + oscMgr.mDNSName + " --------------------");
 
     Manager::initManager();
 
@@ -68,18 +79,16 @@ void PuppetMaster::initManager()
     //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
     // init managers and subscribe to their events
-    wifi.initManager();
-    wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
-    managers.emplace_back(&wifi);
-    osc.initManager();
-    osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
-    managers.emplace_back(&osc);
-    battery.initManager();
-    battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
-    managers.emplace_back(&battery);
-    analog.initManager();
-    analog.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
-    managers.emplace_back(&analog);
+    wifiMgr.initManager();
+    wifiMgr.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
+    managers.emplace_back(&wifiMgr);
+    oscMgr.initManager();
+    oscMgr.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
+    managers.emplace_back(&oscMgr);
+    sensorMgr.initManager();
+    sensorMgr.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
+    sensorMgr.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
+    managers.emplace_back(&sensorMgr);
 
 #ifdef HAS_SD_WING
     fileMgr.init();
@@ -90,25 +99,25 @@ void PuppetMaster::initManager()
 #endif
 
 #ifdef HAS_LED
-    led.initManager();
-    managers.emplace_back(&led);
+    ledMgr.initManager();
+    managers.emplace_back(&ledMgr);
 #endif
 
 #ifdef HAS_SERVO
-    servo.initManager();
-    managers.emplace_back(&servo);
+    servoMgr.initManager();
+    managers.emplace_back(&servoMgr);
 #endif
 
 #ifdef HAS_MOTORWING
-    motorwing.initManager();
-    motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
-    managers.emplace_back(&motorwing);
+    motorwingMgr.initManager();
+    motorwingMgr.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+    managers.emplace_back(&motorwingMgr);
 #endif
 
 #ifdef HAS_ROOMBA
-    roomba.initManager();
-    managers.emplace_back(&roomba);
-    roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
+    roombaMgr.initManager();
+    managers.emplace_back(&roombaMgr);
+    roombaMgr.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
     // TODO give this info on demand
@@ -122,7 +131,7 @@ void PuppetMaster::checkComponents()
 #ifdef HAS_SD_WING
     OSCMessage msg( ("/" + BOARD_NAME + "/sd").c_str() );
     msg.add(fileMgr.sdIsDetected?1:0);
-    osc.sendMessage(msg);
+    oscMgr.sendMessage(msg);
 #endif
 
 // CONFIX
@@ -133,11 +142,11 @@ void PuppetMaster::checkComponents()
 #elif defined BASE
 //TODO
 #elif defined BOBINE
-motorwing.stepperSetSpeed(0, 600.0f);
+motorwingMgr.stepperSetSpeed(0, 600.0f);
 delay(1000);
-motorwing.stepperSetSpeed(0, -600.0f);
+motorwingMgr.stepperSetSpeed(0, -600.0f);
 delay(1000);
-motorwing.stepperSetSpeed(0, 0.0f);
+motorwingMgr.stepperSetSpeed(0, 0.0f);
 #elif defined CORBEILLE
 //TODO
 #endif
@@ -173,7 +182,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     // TODO change with featherwing/stepper
 #ifdef HAS_MOTORWING
     if (command.match("/stepper") || command.match("/dc"))
-        if (!motorwing.handleCommand(command))
+        if (!motorwingMgr.handleCommand(command))
             compError("motorwing could not handle command");
 #endif
 
@@ -191,9 +200,9 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     // if (command.match("/debug"))
     // {
     //     if (command.getInt(0))
-    //         led.setColor(0, 50, 0);
+    //         ledMgr.setColor(0, 50, 0);
     //     else
-    //         led.setColor(0, 0, 0);
+    //         ledMgr.setColor(0, 0, 0);
     // }
 }
 
@@ -204,23 +213,23 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     case WifiConnectionState::CONNECTING:
         compDebug("connecting to wifi...");
     #ifdef HAS_LED
-        led.setMode(LedStrip::LedMode::WORKING);
+        ledMgr.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 
     case WifiConnectionState::CONNECTED:
         compDebug("wifi connected !");
     #ifdef HAS_LED
-        led.setMode(LedStrip::LedMode::STREAMING);
-        led.setColor(0, 0, 50, 0);
-        // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
+        ledMgr.setMode(LedStrip::LedMode::STREAMING);
+        ledMgr.setColor(0, 0, 50, 0);
+        // ledMgr.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         break;
 
     case WifiConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
     #ifdef HAS_LED
-        led.setMode(LedStrip::LedMode::ERROR);
+        ledMgr.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;
 
@@ -238,7 +247,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     {
     case OSCEvent::Type::CONNECTED:
         // TODO advertise error
-        osc.yo();
+        oscMgr.yo();
         checkComponents();
         break;
 
@@ -251,11 +260,11 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
         break;
 
     case OSCEvent::Type::PING_ALIVE: // not used
-        //osc.pong();
+        //oscMgr.pong();
         break;
 
     case OSCEvent::Type::HANDSHAKE:
-        osc.yo();
+        oscMgr.yo();
         checkComponents();
         break;
 
@@ -271,31 +280,31 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
 
 void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 {
-    if (!osc.isConnected)
+    if (!oscMgr.isConnected)
         return;
 
     OSCMessage msg( ("/" + BOARD_NAME + "/battery").c_str() );
     msg.add(e.normValue);
     msg.add(e.analogValue);
     msg.add(e.voltage);
-    osc.sendMessage(msg);
+    oscMgr.sendMessage(msg);
 }
 
 void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
 {
-    if (!osc.isConnected)
+    if (!oscMgr.isConnected)
         return;
 
     OSCMessage msg( ("/" + BOARD_NAME + "/analog/" + e.niceName).c_str() );
     msg.add(e.normValue);
     msg.add(e.rawValue);
-    osc.sendMessage(msg);
+    oscMgr.sendMessage(msg);
 }
 
 #ifdef HAS_MOTORWING
 void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 {
-    if (!osc.isConnected)
+    if (!oscMgr.isConnected)
         return;
 
     //compDebug("stepper event");
@@ -304,7 +313,7 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     msg.add((int)e.position);
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
-    osc.sendMessage(msg);
+    oscMgr.sendMessage(msg);
 }
 #endif
 
@@ -325,17 +334,17 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     {
 //compDebug("Got new frame ! "+String((int)e.data[0]));
 #ifdef AMPOULE
-        led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
-        servo.setServoRelativePosition(0, e.data[3] / 255.0f);
+        ledMgr.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
+        servoMgr.setServoRelativePosition(0, e.data[3] / 255.0f);
 #elif defined BASE
-        servo.setServoRelativePosition(1, e.data[0] / 255.0f); // foot
-        servo.setServoRelativePosition(0, e.data[1] / 255.0f); // neck
-        motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
+        servoMgr.setServoRelativePosition(1, e.data[0] / 255.0f); // foot
+        servoMgr.setServoRelativePosition(0, e.data[1] / 255.0f); // neck
+        motorwingMgr.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
-        motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
+        motorwingMgr.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
 #elif defined CORBEILLE
-        motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
-        motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[1] / 127.0f - 1.0f);
+        motorwingMgr.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
+        motorwingMgr.dcRun(MotorShield2Manager::DCPort::M2, e.data[1] / 127.0f - 1.0f);
 #endif
     }
 }
@@ -353,7 +362,7 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
 #ifdef HAS_MOTORWING
 void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 {
-    if (!osc.isConnected)
+    if (!oscMgr.isConnected)
         return;
 
     //compDebug("stepper event");
@@ -362,14 +371,14 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     msg.add((int)e.position);
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
-    osc.sendMessage(msg);
+    oscMgr.sendMessage(msg);
 }
 #endif
 
 #ifdef HAS_ROOMBA
 void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
 {
-    if (!osc.isConnected)
+    if (!oscMgr.isConnected)
         return;
 
     compDebug("roomba event");
@@ -378,6 +387,6 @@ void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
     // msg.add((int)e.position);
     // msg.add((int)e.speed);
     // msg.add((float)e.maxSpeed);
-    // osc.sendMessage(msg);
+    // oscMgr.sendMessage(msg);
 }
 #endif

@@ -10,11 +10,11 @@ public:
     Manager(const String &name);
 
     void initManager();
-    void update() override;
+    virtual void update() = 0;
 
 protected:
     bool serialDebug;
     
-    vector<std::unique_ptr<Component>> props;
-    bool registerProp(Component* comp, std::set<byte> reservedPins);
+    // vector<std::unique_ptr<Component>> props;
+    // bool registerProp(Component* comp, std::set<byte> reservedPins);
 };

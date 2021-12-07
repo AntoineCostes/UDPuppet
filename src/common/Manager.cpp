@@ -11,33 +11,38 @@ void Manager::initManager()
     Component::initComponent(serialDebug);
 }
 
-bool Manager::registerProp(Component* prop, std::set<byte> reservedPins)
-{
-    compDebug("registering prop: " + String(prop->name));
+// bool Manager::registerProp(Component* prop, std::set<byte> reservedPins)
+// {
+//     compDebug("registering prop: " + String(prop->name));
 
-    for (int newPin : reservedPins)
-        if (Component::forbiddenPins.find(newPin) != Component::forbiddenPins.end())
-        {
-            compError("cannot register prop: " + String(newPin) + " is already used !"); 
-            return false;
-        }
+//     for (int newPin : reservedPins)
+//         if (Component::forbiddenPins.find(newPin) != Component::forbiddenPins.end())
+//         {
+//             compError("cannot register prop: " + String(newPin) + " is already used !"); 
+//             return false;
+//         }
 
-    Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
-    props.emplace_back(prop);
-    prop->initComponent(serialDebug);
+//     if (!Component::registerPin((int)pin))
+//     {
+//         compError("cannot register servo !");
+//         return false;
+//     } 
+//     Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
+//     props.emplace_back(prop);
+//     prop->initComponent(serialDebug);
 
-    return true;
-}
+//     return true;
+// }
     
-void Manager::update()
-{
-    if (!checkInit())
-        return;
+// void Manager::update()
+// {
+//     if (!checkInit())
+//         return;
         
-    for (auto const &prop : props)
-    {
-        prop.get()->update();
-    }
-}
+//     for (auto const &prop : props)
+//     {
+//         prop.get()->update();
+//     }
+// }
 
 

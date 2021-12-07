@@ -4,7 +4,7 @@
 class AnalogReader : public Component
 {
     public:
-        AnalogReader(int pin, String niceName);
+        AnalogReader(byte pin, String niceName);
         
         void initComponent(bool serialDebug) override;
         void update() override;
@@ -13,6 +13,6 @@ class AnalogReader : public Component
         int read();
 
     protected:
-        int pin;
+        byte pin;
         uint16_t lastValue;
 };
