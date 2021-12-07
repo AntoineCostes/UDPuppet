@@ -1,8 +1,7 @@
 #pragma once
 
+#define BOARD_CORBEILLE;
 const String BOARD_NAME = "Corbeille";    // name used for mDNS services 
-
-// BOARD TYPE
 const BoardType BOARD_TYPE = HUZZAH32;
 
 // OSC PARAMETERS
@@ -13,3 +12,4 @@ const int OSC_TARGET_PORT = 10003;
 #define HAS_SD_WING
 #define HAS_LED
 #define HAS_MOTORWING
+#define FRAME_SIZE 2 // 2 DC

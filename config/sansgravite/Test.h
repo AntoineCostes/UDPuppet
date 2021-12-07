@@ -1,8 +1,7 @@
 #pragma once
 
+#define BOARD_TEST;
 const String BOARD_NAME = "Test";    // name used for mDNS services 
-
-// BOARD TYPE
 const BoardType BOARD_TYPE = HUZZAH32;
 
 // OSC PARAMETERS
@@ -14,3 +13,4 @@ const int OSC_TARGET_PORT = 10000;
 #define HAS_LED
 #define HAS_SERVO
 #define HAS_MOTORWING
+#define FRAME_SIZE 6

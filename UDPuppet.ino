@@ -28,20 +28,18 @@ void setup()
 
   master.initManager(); // TODO make singleton and rename ?
 
-#ifdef TEST
+#ifdef BOARD_TEST
   master.ledMgr.setBrightness(0.3f);
   //                            index, pin, nbLeds, ledType
   master.ledMgr.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
-#endif
-
-#ifdef AMPOULE
+  
+#elif defined(BOARD_AMPOULE)
   // couleur
   master.ledMgr.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // rotation tête
    master.servoMgr.registerServo(0, 15, 0.5f); // index, pin, départ au centre
-#endif
-
-#ifdef BASE
+  
+#elif defined(BOARD_BASE)
   // led
   master.ledMgr.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // pied
@@ -55,28 +53,24 @@ void setup()
   master.motorwingMgr.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
   master.motorwingMgr.stepperSetAccel(0, 250.0f);
   // TODO #define REVOLUTION_STEPS 1025 ?
-#endif
-
-#ifdef BOBINE
+  
+#elif defined(BOARD_BOBINE)
   master.ledMgr.registerLedStrip(0, 23, 10, NEO_GRB + NEO_KHZ800);
   master.motorwingMgr.registerShieldv2Stepper(0, 200, MotorShield2Manager::StepperPort::M3_M4);
-#endif
-
-#ifdef CORBEILLE
+  
+#elif defined(BOARD_CORBEILLE)
   master.ledMgr.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   master.ledMgr.setBrightness(0.2f);
   master.motorwingMgr.addDCMotor(MotorShield2Manager::DCPort::M1);
   master.motorwingMgr.addDCMotor(MotorShield2Manager::DCPort::M2);
-#endif
-
-#ifdef ROOMBA
+  
+#elif defined(BOARD_ROOMBA)
   master.ledMgr.setBrightness(0.1f);
   master.ledMgr.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   master.roombaMgr.registerRoomba(33, 32, 15);
   //master.roomba.setText(0, "Hello la cie !");
-#endif
-
-#ifdef MULTILED
+  
+#elif defined(BOARD_MULTILED)
   master.ledMgr.setBrightness(0.1f);
   master.ledMgr.registerLedStrip(0, 21, 12, NEO_RGB + NEO_KHZ800);
   master.ledMgr.registerLedStrip(1, 17, 12, NEO_RGB + NEO_KHZ800);
@@ -90,19 +84,11 @@ void setup()
   master.ledMgr.registerLedStrip(8, 23, 12, NEO_RGB + NEO_KHZ800);
   master.ledMgr.registerLedStrip(9, 14, 12, NEO_RGB + NEO_KHZ800);
   master.ledMgr.registerLedStrip(10, 32, 12, NEO_RGB + NEO_KHZ800);
-#endif
 
-#ifdef BLUEHOUSE
+#elif defined(BOARD_BIOMETRY)
   master.ledMgr.setBrightness(0.3f);
   master.ledMgr.registerLedStrip(0, 27, 12, NEO_RGB + NEO_KHZ800);
   //master.ledMgr.registerLedStrip(1, 27, 10, NEO_GRB + NEO_KHZ800);
-#endif
-
-
-#ifdef SERVOTEST
-  // master.servo.registerServo(0, 21, 0, 180, 90); // index, pin, min, max, start
-  // master.servo.registerServo(1, 17, 0, 180, 90);
-  // master.servo.registerServo(2, 16, 0, 180, 90);
 #endif
 }
 

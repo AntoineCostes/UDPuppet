@@ -1,8 +1,7 @@
 #pragma once
 
-const String BOARD_NAME = "MultiLed";    // name used for mDNS services 
-
-// BOARD TYPE
+#define BOARD_SHOWCASE
+const String BOARD_NAME = "Showcase";    // name used for mDNS services 
 const BoardType BOARD_TYPE = HUZZAH32;
 
 // OSC PARAMETERS

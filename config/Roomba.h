@@ -1,8 +1,7 @@
 #pragma once
 
+#define BOARD_ROOMBA;
 const String BOARD_NAME = "Roomba";    // name used for mDNS services 
-
-// BOARD TYPE
 const BoardType BOARD_TYPE = HUZZAH32;
 
 // OSC PARAMETERS

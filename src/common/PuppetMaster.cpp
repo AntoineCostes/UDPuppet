@@ -1,16 +1,5 @@
 #include "PuppetMaster.h"
 
-
-// TODO clear config
-// TODO remove index
-// TODO remove serialDebug for Component
-// TODO local libs
-// TODO filemanager server
-// TODO OTA
-// TODO send both on 12000 and specific port ?
-// TODO inputPins & outPutPins PinManager
-// analog refresh => merge battery as AnalogReader child ?
-
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
@@ -46,8 +35,19 @@
 // set color silent
 // flash parameter button
 
+// TODO remove index
+// TODO remove serialDebug for Component
+// TODO local libs
+// TODO filemanager server
+// TODO OTA
+// TODO send both on 12000 and specific port ?
+
+// TODO inputPins & outPutPins PinManager
+// config advertise components
+// niceName for all component ?
+
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.3.2")
+                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.3.3")
 {
     #ifdef BASE // Base uses pin 12 and 13
 

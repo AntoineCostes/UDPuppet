@@ -1,8 +1,7 @@
 #pragma once
 
-const String BOARD_NAME = "BlueHouse";    // name used for mDNS services 
-
-// BOARD TYPE
+#define BOARD_BIOMETRY
+const String BOARD_NAME = "Biometry";    // name used for mDNS services 
 const BoardType BOARD_TYPE = HUZZAH32;
 
 // OSC PARAMETERS
