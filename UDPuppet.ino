@@ -29,9 +29,10 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef BOARD_TEST
-  master.ledMgr.setBrightness(0.3f);
+  master.ledMgr.setBrightness(0.8f);
   //                            index, pin, nbLeds, ledType
-  master.ledMgr.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
+  master.ledMgr.registerLedStrip(0, 21, 50, NEO_GRB + NEO_KHZ800);
+   master.servoMgr.registerServo(0, 12, 0.5f); 
   
 #elif defined(BOARD_AMPOULE)
   // couleur
@@ -85,10 +86,28 @@ void setup()
   master.ledMgr.registerLedStrip(9, 14, 12, NEO_RGB + NEO_KHZ800);
   master.ledMgr.registerLedStrip(10, 32, 12, NEO_RGB + NEO_KHZ800);
 
-#elif defined(BOARD_BIOMETRY)
-  master.ledMgr.setBrightness(0.3f);
-  master.ledMgr.registerLedStrip(0, 27, 12, NEO_RGB + NEO_KHZ800);
-  //master.ledMgr.registerLedStrip(1, 27, 10, NEO_GRB + NEO_KHZ800);
+// #elif defined(BOARD_BIOMETRY)
+//   master.ledMgr.setBrightness(0.3f);
+//   master.ledMgr.registerLedStrip(0, 27, 12, NEO_RGB + NEO_KHZ800);
+//   //master.ledMgr.registerLedStrip(1, 27, 10, NEO_GRB + NEO_KHZ800);
+
+#endif
+
+#ifdef HAS_LED
+master.ledMgr.setBrightness(LED_INTENSITY);
+for (int i = 0; i < NUM_LED_STRIPS; i++)
+  master.ledMgr.registerLedStrip(i, LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800);
+#endif
+
+#ifdef HAS_HCSR04
+for (int i = 0; i < NUM_HCSR04; i++)
+  master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin);
+#endif
+
+
+#ifdef HAS_SERVO
+for (int i = 0; i < NUM_SERVOS; i++)
+  master.servoMgr.registerServo(i, SERVOS[i].pin, SERVOS[i].startPosition);
 #endif
 }
 

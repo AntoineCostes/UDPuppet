@@ -12,17 +12,19 @@ enum BoardType
 ///////////////////////////////
 //#define SANS_GRAVITE
 //#define COSTES
-//#define SUNNY
+#define SUNNY
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
 ////////////////////////////////////
+// #include "config/Test.h"
 // #include "config/sansgravite/Ampoule.h"
 // #include "config/sansgravite/Base.h"
 // #include "config/sansgravite/Bobine.h"
 // #include "config/sansgravite/Corbeille.h"
 // #include "config/Roomba.h"
-#include "config/bluehouse/Biometry.h"
+//#include "config/bluehouse/Biometry.h"
+#include "config/bluehouse/Showcase.h"
 
 
 // WIFI PARAMETERS

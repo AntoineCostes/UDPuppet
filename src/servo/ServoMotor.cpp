@@ -84,9 +84,17 @@ void ServoMotor::goToPosition(float relativeValue)
   
   if (!Component::checkRange("servo position", relativeValue, 0.0f, 1.0f)) return;
 
-  int usVal = map(relativeValue, 0.0f, 1.0f, intParameters["pulseMin"], intParameters["pulseMax"]);
+  compDebug("go to pos: "+String(relativeValue));
+  servo.write(map(relativeValue, 0.0f, 1.0f, 0, 180));
+  
+  // FIXME
+  /*
+  int usVal = map(relativeValue, 0.0f, 1.0f, intParameters["pulseMin"], SERVO_PWM_MAX);// intParameters["pulseMax"]);
   servo.writeMicroseconds(usVal);
+  compDebug("go to pos: "+String(relativeValue));
+  compDebug(String(intParameters["pulseMax"])); 
   compDebug("send pulse width: " + String(usVal) + "us for value: " + relativeValue);
+*/
 }
 
 ///

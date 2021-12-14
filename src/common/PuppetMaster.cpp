@@ -47,7 +47,7 @@
 // niceName for all component ?
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.3.3")
+                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.4.0")
 {
     #ifdef BASE // Base uses pin 12 and 13
 

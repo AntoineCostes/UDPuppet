@@ -24,6 +24,20 @@ void SensorManager::registerAnalogReader(String niceName, byte pin)
 
     analogs.emplace_back(new AnalogReader(pin, niceName));
     analogs.back()->initComponent(serialDebug);
+    compDebug("register prop: " + niceName);
+}
+
+void SensorManager::registerHCSR04Reader(String niceName, byte triggerPin, byte echoPin)
+{    
+    if (!Component::registerPins(std::set<byte>{triggerPin, echoPin}))
+    {
+        compError("cannot register hcsr04 reader: a pin is already registered !");
+        return;
+    }
+
+    ultrasonics.emplace_back(new HCSR04Reader(triggerPin, echoPin, niceName));
+    ultrasonics.back()->initComponent(serialDebug);
+    compDebug("register prop: " + niceName);
 }
 
 void SensorManager::initManager()
@@ -41,7 +55,7 @@ void SensorManager::update()
             batteryVoltageValue = (2*batteryAnalogValue / 4096.0f)*3.3f;
             batteryRelativeValue = batteryVoltageValue / 4.2f;
 
-            sendEvent(BatteryEvent(BatteryEvent::Type::PING, batteryRelativeValue, batteryVoltageValue, batteryAnalogValue));
+            sendEvent(BatteryEvent(/*BatteryEvent::Type::PING, */batteryRelativeValue, batteryVoltageValue, batteryAnalogValue));
             lastBatteryPingMs = millis();
         }
         
@@ -53,6 +67,19 @@ void SensorManager::update()
         {   
             float norm = float(raw) / 1024.0f;
             sendEvent(AnalogEvent(analog->niceName, raw, norm));
+        }
+    }
+    
+    for (auto const &hcsr04 : ultrasonics)
+    {   
+        hcsr04->update();
+        long distance = hcsr04->distanceValueMm;   
+
+        if (distance >= 0) // if new value
+        {   
+            Serial.println("HCSR04");
+            Serial.println(distance);
+            //sendEvent(UltrasonicDistanceEvent(hcsr04->niceName, distance));
         }
     }
 }

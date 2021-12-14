@@ -1,0 +1,2424 @@
+{
+  "metaData": {
+    "version": "1.9.1b16",
+    "versionNumber": 67841
+  },
+  "projectSettings": {
+    "containers": {
+      "dashboardSettings": {
+      }
+    }
+  },
+  "dashboardManager": {
+    "parameters": [
+      {
+        "value": false,
+        "controlAddress": "/editMode"
+      }
+    ],
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  },
+  "parrots": {
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  },
+  "layout": {
+    "mainLayout": {
+      "type": 1,
+      "width": 1200,
+      "height": 821,
+      "direction": 2,
+      "shifters": [
+        {
+          "type": 1,
+          "width": 1200,
+          "height": 821,
+          "direction": 2,
+          "shifters": [
+            {
+              "type": 1,
+              "width": 1200,
+              "height": 769,
+              "direction": 1,
+              "shifters": [
+                {
+                  "type": 1,
+                  "width": 307,
+                  "height": 769,
+                  "direction": 2,
+                  "shifters": [
+                    {
+                      "type": 0,
+                      "width": 307,
+                      "height": 382,
+                      "currentContent": "Modules",
+                      "tabs": [
+                        {
+                          "name": "Modules"
+                        }
+                      ]
+                    },
+                    {
+                      "type": 0,
+                      "width": 307,
+                      "height": 381,
+                      "currentContent": "Custom Variables",
+                      "tabs": [
+                        {
+                          "name": "Custom Variables"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": 0,
+                  "width": 341,
+                  "height": 769,
+                  "currentContent": "State Machine",
+                  "tabs": [
+                    {
+                      "name": "State Machine"
+                    },
+                    {
+                      "name": "Dashboard"
+                    },
+                    {
+                      "name": "Module Router"
+                    },
+                    {
+                      "name": "Morpher"
+                    }
+                  ]
+                },
+                {
+                  "type": 0,
+                  "width": 540,
+                  "height": 769,
+                  "currentContent": "Inspector",
+                  "tabs": [
+                    {
+                      "name": "Inspector"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": 1,
+              "width": 1200,
+              "height": 46,
+              "direction": 1,
+              "shifters": [
+                {
+                  "type": 0,
+                  "width": 178,
+                  "height": 46,
+                  "currentContent": "Sequences",
+                  "tabs": [
+                    {
+                      "name": "Sequences"
+                    }
+                  ]
+                },
+                {
+                  "type": 0,
+                  "width": 706,
+                  "height": 46,
+                  "currentContent": "Sequence Editor",
+                  "tabs": [
+                    {
+                      "name": "Sequence Editor"
+                    }
+                  ]
+                },
+                {
+                  "type": 0,
+                  "width": 304,
+                  "height": 46,
+                  "currentContent": "Logger",
+                  "tabs": [
+                    {
+                      "name": "Help"
+                    },
+                    {
+                      "name": "Logger"
+                    },
+                    {
+                      "name": "Warnings"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "windows": null
+  },
+  "modules": {
+    "items": [
+      {
+        "niceName": "Ampoule",
+        "type": "Ampoule",
+        "scripts": {
+          "items": [
+            {
+              "niceName": "ampoule",
+              "type": "BaseItem",
+              "scriptParams": {
+                "hideInEditor": true
+              }
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "params": {
+          "parameters": [
+            {
+              "value": false,
+              "controlAddress": "/autoAdd"
+            },
+            {
+              "value": 0.2000000029802322,
+              "controlAddress": "/intensiteCouleur"
+            },
+            {
+              "value": [
+                0.003921568859368563,
+                0.007843137718737125,
+                0.2549019753932953,
+                1.0
+              ],
+              "controlAddress": "/couleur"
+            },
+            {
+              "value": 0.350310742855072,
+              "controlAddress": "/angle"
+            },
+            {
+              "value": true,
+              "controlAddress": "/ledDebug"
+            }
+          ],
+          "containers": {
+            "oscInput": {
+              "parameters": [
+                {
+                  "value": 10000,
+                  "hexMode": false,
+                  "controlAddress": "/localPort"
+                }
+              ]
+            },
+            "oscOutputs": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": false,
+                      "controlAddress": "/local"
+                    },
+                    {
+                      "value": "192.168.43.6",
+                      "controlAddress": "/remoteHost"
+                    },
+                    {
+                      "value": 9000,
+                      "hexMode": false,
+                      "controlAddress": "/remotePort"
+                    }
+                  ],
+                  "niceName": "OSC Output",
+                  "type": "BaseItem"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "pass_through": {
+            }
+          }
+        },
+        "templates": {
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "values": {
+        }
+      },
+      {
+        "niceName": "OSC",
+        "type": "OSC",
+        "scripts": {
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "params": {
+          "containers": {
+            "oscInput": {
+            },
+            "oscOutputs": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "127.0.0.1",
+                      "controlAddress": "/remoteHost"
+                    }
+                  ],
+                  "niceName": "OSC Output",
+                  "type": "BaseItem"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "pass_through": {
+            }
+          }
+        },
+        "templates": {
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "values": {
+        }
+      }
+    ],
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  },
+  "customVariables": {
+    "items": [
+      {
+        "niceName": "Group",
+        "type": "BaseItem",
+        "params": {
+        },
+        "variables": {
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "presets": {
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        }
+      }
+    ],
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  },
+  "states": {
+    "items": [
+      {
+        "parameters": [
+          {
+            "value": [
+              -101.0,
+              -286.0
+            ],
+            "controlAddress": "/viewUIPosition"
+          },
+          {
+            "value": true,
+            "controlAddress": "/active"
+          }
+        ],
+        "niceName": "State",
+        "type": "State",
+        "processors": {
+          "items": [
+            {
+              "niceName": "Mapping",
+              "editorIsCollapsed": true,
+              "type": "Mapping",
+              "im": {
+                "items": [
+                  {
+                    "niceName": "Input Value",
+                    "type": "Input Value"
+                  }
+                ],
+                "viewOffset": [
+                  0,
+                  0
+                ],
+                "viewZoom": 1.0
+              },
+              "params": {
+                "editorIsCollapsed": true
+              },
+              "filters": {
+                "viewOffset": [
+                  0,
+                  0
+                ],
+                "viewZoom": 1.0
+              },
+              "outputs": {
+                "items": [
+                  {
+                    "niceName": "MappingOutput",
+                    "type": "BaseItem",
+                    "commandModule": "ampoule",
+                    "commandPath": "Tete",
+                    "commandType": "Modifier couleur",
+                    "command": {
+                      "parameters": [
+                        {
+                          "value": [
+                            0,
+                            1,
+                            1,
+                            1
+                          ],
+                          "controlAddress": "/couleur"
+                        }
+                      ],
+                      "paramLinks": {
+                      }
+                    }
+                  },
+                  {
+                    "niceName": "MappingOutput 1",
+                    "type": "BaseItem",
+                    "commandModule": "osc",
+                    "commandPath": "",
+                    "commandType": "Custom Message",
+                    "command": {
+                      "parameters": [
+                        {
+                          "value": "/led/color",
+                          "controlAddress": "/address"
+                        }
+                      ],
+                      "paramLinks": {
+                      },
+                      "argManager": {
+                        "items": [
+                          {
+                            "parameters": [
+                              {
+                                "value": 0.0,
+                                "controlAddress": "/#1"
+                              }
+                            ],
+                            "niceName": "#1",
+                            "type": "Float",
+                            "param": {
+                              "value": 0.0,
+                              "controlAddress": "/states/state/processors/mapping/outputs/mappingOutput1/command/arguments/#1/#1"
+                            },
+                            "paramLink": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          },
+                          {
+                            "parameters": [
+                              {
+                                "value": 0.0,
+                                "controlAddress": "/#3"
+                              }
+                            ],
+                            "niceName": "#2 1",
+                            "type": "Float",
+                            "param": {
+                              "value": 0.0,
+                              "controlAddress": "/states/state/processors/mapping/outputs/mappingOutput1/command/arguments/#21/#3"
+                            },
+                            "paramLink": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          },
+                          {
+                            "parameters": [
+                              {
+                                "value": 0.0,
+                                "controlAddress": "/#2"
+                              }
+                            ],
+                            "niceName": "#3",
+                            "type": "Float",
+                            "param": {
+                              "value": 0.0,
+                              "controlAddress": "/states/state/processors/mapping/outputs/mappingOutput1/command/arguments/#3/#2"
+                            },
+                            "paramLink": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        ],
+                        "viewOffset": [
+                          0,
+                          0
+                        ],
+                        "viewZoom": 1.0
+                      }
+                    }
+                  }
+                ],
+                "viewOffset": [
+                  0,
+                  0
+                ],
+                "viewZoom": 1.0
+              }
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        }
+      }
+    ],
+    "viewOffset": [
+      -8,
+      22
+    ],
+    "viewZoom": 1.0,
+    "transitions": {
+      "hideInEditor": true,
+      "viewOffset": [
+        0,
+        0
+      ],
+      "viewZoom": 1.0
+    },
+    "comments": {
+      "hideInEditor": true,
+      "viewOffset": [
+        -8,
+        22
+      ],
+      "viewZoom": 1.0
+    }
+  },
+  "sequences": {
+    "items": [
+      {
+        "parameters": [
+          {
+            "value": 5.0,
+            "controlAddress": "/totalTime"
+          },
+          {
+            "value": 0.0,
+            "controlAddress": "/viewStartTime"
+          },
+          {
+            "value": 5.0,
+            "controlAddress": "/viewEndTime"
+          }
+        ],
+        "niceName": "Test",
+        "type": "Sequence",
+        "layers": {
+          "hideInEditor": true,
+          "items": [
+            {
+              "parameters": [
+                {
+                  "value": 60.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 60,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Ampoule",
+              "containers": {
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "commandModule": "ampoule",
+                        "commandPath": "Tete",
+                        "commandType": "Modifier couleur",
+                        "command": {
+                          "paramLinks": {
+                            "couleur": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                },
+                "colors": {
+                  "editorIsCollapsed": true,
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 1",
+                      "type": "BaseItem"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.498447179794312,
+                          "controlAddress": "/time"
+                        },
+                        {
+                          "value": [
+                            0.3450980484485626,
+                            0.2078431397676468,
+                            1.0,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 2",
+                      "type": "BaseItem"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 3.633540391921997,
+                          "controlAddress": "/time"
+                        },
+                        {
+                          "value": [
+                            1.0,
+                            0.9803921580314636,
+                            0.03529411926865578,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 3",
+                      "type": "BaseItem"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 5.0,
+                          "controlAddress": "/time"
+                        },
+                        {
+                          "value": [
+                            0.1843137294054031,
+                            1.0,
+                            0.01568627543747425,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 4",
+                      "type": "BaseItem"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "Color"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Tete",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 0.0,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.5083333849906921,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Linear",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 0.5281656980514526,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 1.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Linear",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.015072584152222,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Linear",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.506211161613464,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.550000011920929,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 3",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.2297287434339523,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.2297287434339523,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "commandModule": "ampoule",
+                        "commandPath": "Tete",
+                        "commandType": "Modifier angle",
+                        "command": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Cou",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.529503107070923,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.4583333134651184,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.1630434840917587,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.1630434840917587,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 2.251552820205688,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.9500000476837158,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.09549687057733536,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.09549687057733536,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 2.958074569702148,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.1211179792881012,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.1211179792881012,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 3.610248327255249,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.5166666507720947,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 3",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.1432936936616898,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.1432936936616898,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "ghostCommandData": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        },
+                        "ghostModuleName": "base",
+                        "ghostCommandMenuPath": "Position",
+                        "ghostCommandName": "Modifier Angle Cou"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Pied",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 5.0,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 3.649068117141724,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.5,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.158385157585144,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.158385157585144,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 4.153726577758789,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.9833333492279053,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.08850932121276855,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.08850932121276855,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 4.549689292907715,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.08152184635400772,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.08152184635400772,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 5.0,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.5083333253860474,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 3",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "ghostCommandData": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        },
+                        "ghostModuleName": "base",
+                        "ghostCommandMenuPath": "Position",
+                        "ghostCommandName": "Modifier Angle Pied"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "cues": {
+          "hideInEditor": true,
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        }
+      },
+      {
+        "niceName": "Sequence 1",
+        "type": "Sequence",
+        "layers": {
+          "hideInEditor": true,
+          "items": [
+            {
+              "parameters": [
+                {
+                  "value": 60.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 60,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Amoule",
+              "containers": {
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "commandModule": "ampoule",
+                        "commandPath": "Tete",
+                        "commandType": "Modifier couleur",
+                        "command": {
+                          "paramLinks": {
+                            "couleur": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                },
+                "colors": {
+                  "editorIsCollapsed": true,
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 1",
+                      "type": "BaseItem"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 7.363183975219727,
+                          "controlAddress": "/time"
+                        },
+                        {
+                          "value": [
+                            0.196078434586525,
+                            1.0,
+                            0.6980392336845398,
+                            1.0
+                          ],
+                          "controlAddress": "/color"
+                        }
+                      ],
+                      "niceName": "Color 2",
+                      "type": "BaseItem"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                }
+              },
+              "type": "Color"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Tete",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 30.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 1.519999980926514,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.44278609752655,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.3500000238418579,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                2.08955192565918,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -2.08955192565918,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 3.930347919464111,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 1.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                2.014925479888916,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -2.014925479888916,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 13.93034839630127,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.09166663885116577,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                0.8656714558601379,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -0.8656714558601379,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 16.81591987609863,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.550000011920929,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 3",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "commandModule": "ampoule",
+                        "commandPath": "Tete",
+                        "commandType": "Modifier angle",
+                        "command": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Pied",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 30.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 1.519999980926514,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.44278609752655,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.3583333492279053,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                3.333333015441895,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -3.333333015441895,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 4.776119232177734,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.6833333373069763,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                2.373134613037109,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -2.373134613037109,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 12.68656730651855,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.3166666626930237,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "ghostCommandData": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        },
+                        "ghostModuleName": "base",
+                        "ghostCommandMenuPath": "Position",
+                        "ghostCommandName": "Modifier Angle Pied"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            },
+            {
+              "parameters": [
+                {
+                  "value": 120.0,
+                  "controlAddress": "/listSize"
+                },
+                {
+                  "value": 120,
+                  "hexMode": false,
+                  "controlAddress": "/uiHeight"
+                },
+                {
+                  "value": [
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    0.2117647081613541,
+                    1.0
+                  ],
+                  "controlAddress": "/layerColor"
+                }
+              ],
+              "niceName": "Cou",
+              "containers": {
+                "automation": {
+                  "parameters": [
+                    {
+                      "value": 30.0,
+                      "controlAddress": "/length"
+                    },
+                    {
+                      "value": 1.519999980926514,
+                      "controlAddress": "/position"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/viewValueRange"
+                    },
+                    {
+                      "value": [
+                        0.0,
+                        1.0
+                      ],
+                      "controlAddress": "/range",
+                      "enabled": true
+                    }
+                  ],
+                  "hideInEditor": true,
+                  "items": [
+                    {
+                      "parameters": [
+                        {
+                          "value": 1.990049839019775,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.3833333253860474,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                1.477612018585205,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -1.477612018585205,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 6.965174198150635,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.0,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 1",
+                      "containers": {
+                        "easing": {
+                          "parameters": [
+                            {
+                              "value": [
+                                2.492537498474121,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor1"
+                            },
+                            {
+                              "value": [
+                                -2.492537498474121,
+                                0.0
+                              ],
+                              "controlAddress": "/anchor2"
+                            }
+                          ]
+                        }
+                      },
+                      "type": "Key"
+                    },
+                    {
+                      "parameters": [
+                        {
+                          "value": 15.22388076782227,
+                          "controlAddress": "/position"
+                        },
+                        {
+                          "value": 0.09166663885116577,
+                          "controlAddress": "/value"
+                        },
+                        {
+                          "value": "Bezier",
+                          "controlAddress": "/easingType"
+                        }
+                      ],
+                      "niceName": "Key 2",
+                      "containers": {
+                        "easing": {
+                        }
+                      },
+                      "type": "Key"
+                    }
+                  ],
+                  "viewOffset": [
+                    0,
+                    0
+                  ],
+                  "viewZoom": 1.0
+                },
+                "recorder": {
+                  "editorIsCollapsed": true
+                },
+                "mapping": {
+                  "niceName": "Mapping",
+                  "type": "Mapping",
+                  "im": {
+                    "hideInEditor": true,
+                    "items": [
+                      {
+                        "parameters": [
+                          {
+                            "value": "",
+                            "controlAddress": "/inputValue"
+                          }
+                        ],
+                        "niceName": "Input Value",
+                        "type": "Input Value"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "params": {
+                    "parameters": [
+                      {
+                        "value": 50,
+                        "hexMode": false,
+                        "controlAddress": "/updateRate"
+                      }
+                    ],
+                    "editorIsCollapsed": true
+                  },
+                  "filters": {
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  },
+                  "outputs": {
+                    "items": [
+                      {
+                        "niceName": "MappingOutput",
+                        "type": "BaseItem",
+                        "ghostCommandData": {
+                          "paramLinks": {
+                            "value": {
+                              "linkType": 1,
+                              "mappingValueIndex": 0
+                            }
+                          }
+                        },
+                        "ghostModuleName": "base",
+                        "ghostCommandMenuPath": "Position",
+                        "ghostCommandName": "Modifier Angle Cou"
+                      }
+                    ],
+                    "viewOffset": [
+                      0,
+                      0
+                    ],
+                    "viewZoom": 1.0
+                  }
+                }
+              },
+              "type": "Mapping"
+            }
+          ],
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "cues": {
+          "hideInEditor": true,
+          "viewOffset": [
+            0,
+            0
+          ],
+          "viewZoom": 1.0
+        },
+        "editing": true
+      }
+    ],
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  },
+  "routers": {
+    "viewOffset": [
+      0,
+      0
+    ],
+    "viewZoom": 1.0
+  }
+}
