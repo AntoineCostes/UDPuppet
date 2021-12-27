@@ -1,6 +1,6 @@
 #include "ServoManager.h"
 
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
 ServoManager::ServoManager() : Manager("servo")
 {
   serialDebug = SERVO_DEBUG;

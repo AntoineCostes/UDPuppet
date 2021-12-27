@@ -55,7 +55,8 @@ void SensorManager::update()
             batteryVoltageValue = (2*batteryAnalogValue / 4096.0f)*3.3f;
             batteryRelativeValue = batteryVoltageValue / 4.2f;
 
-            sendEvent(BatteryEvent(/*BatteryEvent::Type::PING, */batteryRelativeValue, batteryVoltageValue, batteryAnalogValue));
+            sendEvent(SensorValueEvent("battery", batteryAnalogValue, 2048));
+            sendEvent(SensorValueEvent("batteryVoltage", batteryVoltageValue, batteryRelativeValue));
             lastBatteryPingMs = millis();
         }
         
@@ -66,20 +67,17 @@ void SensorManager::update()
         if (raw >= 0) // if new value
         {   
             float norm = float(raw) / 1024.0f;
-            sendEvent(AnalogEvent(analog->niceName, raw, norm));
+            sendEvent(SensorValueEvent(analog->niceName, raw, norm));
         }
     }
     
     for (auto const &hcsr04 : ultrasonics)
     {   
         hcsr04->update();
-        long distance = hcsr04->distanceValueMm;   
 
-        if (distance >= 0) // if new value
-        {   
-            Serial.println("HCSR04");
-            Serial.println(distance);
-            //sendEvent(UltrasonicDistanceEvent(hcsr04->niceName, distance));
+        if (hcsr04->gotNewValue)
+        {
+            sendEvent(SensorValueEvent(hcsr04->niceName, hcsr04->distanceValueMm, hcsr04->normValue));
         }
     }
 }

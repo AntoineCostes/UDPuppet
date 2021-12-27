@@ -54,7 +54,7 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     #elif defined(ROOMBA) // Roomba uses pin 12
     Component::registerPin(LED_BUILTIN); 
     #else
-    Component::registerPin(LED_BUILTIN); 
+    //Component::registerPin(LED_BUILTIN); 
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
     #endif
     
@@ -86,8 +86,7 @@ void PuppetMaster::initManager()
     oscMgr.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
     managers.emplace_back(&oscMgr);
     sensorMgr.initManager();
-    sensorMgr.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
-    sensorMgr.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
+    sensorMgr.addListener(std::bind(&PuppetMaster::gotSensorValueEvent, this, std::placeholders::_1));
     managers.emplace_back(&sensorMgr);
 
 #ifdef HAS_SD_WING
@@ -98,12 +97,12 @@ void PuppetMaster::initManager()
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 #endif
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
     ledMgr.initManager();
     managers.emplace_back(&ledMgr);
 #endif
 
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
     servoMgr.initManager();
     managers.emplace_back(&servoMgr);
 #endif
@@ -121,9 +120,9 @@ void PuppetMaster::initManager()
 #endif
 
     // TODO give this info on demand
-    // compDebug("forbidden pins: ");
-    // for (byte pin : Component::forbiddenPins)
-    //     compDebug(String(pin));
+    compDebug("forbidden pins: ");
+    for (byte pin : Component::forbiddenPins)
+        compDebug(String(pin));
 }
 
 void PuppetMaster::checkComponents()
@@ -212,14 +211,14 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiConnectionState::CONNECTING:
         compDebug("connecting to wifi...");
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         ledMgr.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 
     case WifiConnectionState::CONNECTED:
         compDebug("wifi connected !");
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         ledMgr.setMode(LedStrip::LedMode::STREAMING);
         ledMgr.setColor(0, 0, 50, 0);
         // ledMgr.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
@@ -228,7 +227,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         ledMgr.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;
@@ -278,28 +277,17 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     }
 }
 
-void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
+void PuppetMaster::gotSensorValueEvent(const SensorValueEvent &e)
 {
     if (!oscMgr.isConnected)
         return;
 
-    OSCMessage msg( ("/" + BOARD_NAME + "/battery").c_str() );
-    msg.add(e.normValue);
-    msg.add(e.analogValue);
-    msg.add(e.voltage);
-    oscMgr.sendMessage(msg);
-}
-
-void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
-{
-    if (!oscMgr.isConnected)
-        return;
-
-    OSCMessage msg( ("/" + BOARD_NAME + "/analog/" + e.niceName).c_str() );
+    OSCMessage msg( ("/" + BOARD_NAME + "/sensor/" + e.niceName).c_str() );
     msg.add(e.normValue);
     msg.add(e.rawValue);
     oscMgr.sendMessage(msg);
 }
+
 
 #ifdef HAS_MOTORWING
 void PuppetMaster::gotStepperEvent(const StepperEvent &e)

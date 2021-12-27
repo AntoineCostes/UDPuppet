@@ -4,16 +4,19 @@
  class HCSR04Reader : public Component
  {
      public:
-        HCSR04Reader(byte triggerPin, byte echoPin, String niceName);
+        HCSR04Reader(int triggerPin, int echoPin, String niceName);
 
         void initComponent(bool serialDebug) override;
         void update() override;
 
         bool active;
-        long distanceValueMm;
-         String niceName;
+        bool gotNewValue;
+        int distanceValueMm;
+        float normValue;
+        String niceName;
 
      protected:
-        byte triggerPin;
-        byte echoPin;
+        int triggerPin;
+        int echoPin;
+        int maxValue;
  };

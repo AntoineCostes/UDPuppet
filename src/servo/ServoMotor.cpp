@@ -1,6 +1,6 @@
 #include "ServoMotor.h"
 
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
 ///
 /// ServoMotor constructor with default values: pulse width will range from 544us to 2500us.
 ///
@@ -85,7 +85,10 @@ void ServoMotor::goToPosition(float relativeValue)
   if (!Component::checkRange("servo position", relativeValue, 0.0f, 1.0f)) return;
 
   compDebug("go to pos: "+String(relativeValue));
-  servo.write(map(relativeValue, 0.0f, 1.0f, 0, 180));
+  int value = map(relativeValue, 0.0f, 1.0f, 0, 180);
+  compDebug(String(value));
+  compDebug(String(int(relativeValue*180)));
+  servo.write(int(relativeValue*180));
   
   // FIXME
   /*

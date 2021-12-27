@@ -1,6 +1,6 @@
 #pragma once
 
-#define BOARD_SHOWCASE
+// BOARD PARAMETERS
 const String BOARD_NAME = "Showcase";    // name used for mDNS services 
 const BoardType BOARD_TYPE = HUZZAH32;
 
@@ -9,38 +9,20 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12000;
 
 // COMPONENTS
-#define HAS_LED
+#define NUM_LEDS 10
 const float LED_INTENSITY = 0.8f;
-const int NUM_LED_STRIPS = 5;
-struct UDPuppetLedStrip
-{
-    String niceName;
-    int pin;
-    int numLeds;
-    bool GRB;
-};
 
-const UDPuppetLedStrip LED_STRIPS[NUM_LED_STRIPS] = 
+const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
 {
-    {"led 1", 21, 10, false},
-    {"led 2", 17, 10, false},
-    {"led 3", 16, 10, false},
-    {"led 4", 19, 10, false},
-    {"led 5", 18, 10, false}
+    // nice name, pin, num leds, RGB/GRB
+    {"led 1", 21, 10, true},
+    {"led 2", 17, 10, true},
+    {"led 3", 16, 10, true},
+    {"led 4", 19, 10, true},
+    {"led 5", 18, 10, true},
+    {"led 6", 23, 10, true},
+    {"led 7", 22, 10, true},
+    {"led 8", 14, 10, true},
+    {"led 9", 32, 10, true},
+    {"led 10", 15, 10, true}
 };
-
-#define HAS_SERVO
-const int NUM_SERVOS = 2;
-struct UDPuppetServo
-{
-    String niceName;
-    int pin;
-    float startPosition;
-};
-
-const UDPuppetServo SERVOS[NUM_SERVOS] = 
-{
-    {"servo 1", 14, 0.5f},
-    {"servo 2", 32, 0.5f},
-};
-   

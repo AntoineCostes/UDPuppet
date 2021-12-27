@@ -30,10 +30,10 @@ public:
     SequencePlayer player;
     FileManager fileMgr;
 #endif
-#ifdef HAS_LED
+#ifdef NUM_LEDS
     LedManager ledMgr;
 #endif
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
     ServoManager servoMgr;
 #endif
 #ifdef HAS_MOTORWING
@@ -63,8 +63,7 @@ protected:
 
     void gotWifiEvent(const WifiEvent &e);
     void gotOSCEvent(const OSCEvent &e);
-    void gotBatteryEvent(const BatteryEvent &e);
-    void gotAnalogEvent(const AnalogEvent &e);
+    void gotSensorValueEvent(const SensorValueEvent &e);
 
 #ifdef HAS_SD_WING
     void gotFileEvent(const FileEvent &e);

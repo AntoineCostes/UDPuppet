@@ -4,7 +4,7 @@
 #include "../utils/Timer.h"
 
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 #include <Adafruit_NeoPixel.h>
 class LedStrip : public Component
 {

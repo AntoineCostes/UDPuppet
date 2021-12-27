@@ -2,7 +2,7 @@
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
 class ServoManager : public Manager
 {
 

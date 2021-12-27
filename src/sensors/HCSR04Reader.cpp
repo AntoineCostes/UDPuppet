@@ -1,9 +1,11 @@
 #include "HCSR04Reader.h"
 
-HCSR04Reader::HCSR04Reader(byte triggerPin, byte echoPin, String niceName) : Component("hcsr04[" + String(triggerPin)+"-"+String(echoPin)),
+HCSR04Reader::HCSR04Reader(int triggerPin, int echoPin, String niceName) : Component("hcsr04[" + String(triggerPin)+"-"+String(echoPin)),
                                                                             triggerPin(triggerPin),
                                                                             echoPin(echoPin),
                                                                             distanceValueMm(-1),
+                                                                            maxValue(0),
+                                                                            normValue(0),
                                                                             niceName(niceName),
                                                                             active(true)
 {
@@ -20,7 +22,6 @@ void HCSR04Reader::initComponent(bool serialDebug)
 // TODO parallel thread
 void HCSR04Reader::update()
 {
-    compDebug("HCSR04");
     if (active)
     {
         // Clears the trigPin
@@ -31,14 +32,20 @@ void HCSR04Reader::update()
         delayMicroseconds(10);
         digitalWrite(triggerPin, LOW);
         // Reads the echoPin, returns the sound wave travel time in microseconds
-        long value = pulseIn(echoPin, HIGH)*0.034/2;
+        long value = int(pulseIn(echoPin, HIGH)*0.034/2);
 
         if (value != distanceValueMm)
-        {
-            // send event (parallel thread)
-            distanceValueMm = value;
-        }
+            gotNewValue = true;
+        
+        distanceValueMm = value;
+        maxValue = max(maxValue, distanceValueMm);
+        normValue = float(distanceValueMm)/float(maxValue);
     }
     else
+    {
+        gotNewValue = false;
         distanceValueMm = -1;
+        maxValue = 0;
+        normValue = 0.0f;
+    }
 }

@@ -2,7 +2,7 @@
 #include "../common/Manager.h"
 #include "LedStrip.h"
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 class LedManager : public Manager
 {
 public:

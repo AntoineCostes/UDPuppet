@@ -1,6 +1,6 @@
 #include "LedManager.h"
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 LedManager::LedManager() : Manager("led")
 {
     serialDebug = LED_DEBUG;

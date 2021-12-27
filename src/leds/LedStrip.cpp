@@ -1,6 +1,6 @@
 #include "LedStrip.h"
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 LedStrip::LedStrip(byte pin, int numLeds, neoPixelType type, bool debug) : Component("led_pin" + String(pin)),
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, (int)pin, type),
