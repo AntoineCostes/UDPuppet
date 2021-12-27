@@ -81,15 +81,18 @@ void Component::compError(String message)
 
 void Component::clearFlash()
 {
+    #ifdef ESP32
     Preferences preferences;
     compLog("clear flash memory");
     preferences.begin(name.c_str());
     preferences.clear();
     preferences.end();
+    #endif
 }
 
 void Component::overrideFlashParameters()
 {
+    #ifdef ESP32
     Preferences preferences;
     compDebug("--- override parameters in flash memory");
     preferences.begin(name.c_str());
@@ -152,10 +155,12 @@ void Component::overrideFlashParameters()
 
     preferences.end();
     compDebug("---");
+    #endif
 }
 
 void Component::readParamsFromFlash()
 {
+    #ifdef ESP32
     Preferences preferences;
     compDebug("--- retrieve parameters from flash memory");
     preferences.begin(name.c_str());
@@ -227,6 +232,7 @@ void Component::readParamsFromFlash()
     }
     preferences.end();
     compDebug("---");
+    #endif
 }
 
 bool Component::checkCommandArguments(OSCMessage &command, String types, bool logError)

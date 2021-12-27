@@ -2,7 +2,9 @@
 #include "../../Config.h"
 
 #include <Arduino.h>
+#ifdef ESP32
 #include <Preferences.h>
+#endif
 #include <OSCMessage.h>
 
 #include <vector>

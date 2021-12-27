@@ -2,6 +2,7 @@
 
 SensorManager::SensorManager() : Manager("sensors"), batteryPin(-1)
 {
+    #ifdef ESP32
     switch (BOARD_TYPE)
     {
         case HUZZAH32:
@@ -10,7 +11,7 @@ SensorManager::SensorManager() : Manager("sensors"), batteryPin(-1)
     }
 
     if (batteryPin) analogSetPinAttenuation(batteryPin, ADC_0db);
-
+    #endif
     serialDebug = MASTER_DEBUG;
 }
 

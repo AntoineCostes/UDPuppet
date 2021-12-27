@@ -158,6 +158,9 @@ void PuppetMaster::update()
     {
     case HUZZAH32:
         break;
+        
+    case THINGESP8266:
+        break;
 
     default:
         compError("Unknown board type !");

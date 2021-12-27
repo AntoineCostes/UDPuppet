@@ -21,12 +21,14 @@ void ServoManager::update()
 bool ServoManager::checkServoPin(byte pin)
 {
   std::set<int> servoPins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
+  #ifdef ESP32
   if (!SERVO_ALLOW_UNSAFE_PINS)
     if (servoPins.find(pin) == servoPins.end())
     {
       compError("pin " + String(pin) + " is not valid to attach Servo !");
       return false;
     }
+  #endif
 
   if (!Component::registerPin((int)pin))
   {

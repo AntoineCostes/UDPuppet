@@ -3,8 +3,11 @@
 #include "../common/Component.h"
 
 #ifdef NUM_SERVOS
+#ifdef ESP32
 #include <ESP32Servo.h>
-
+#else
+#include <Servo.h>
+#endif
 class ServoMotor : public Component
 {
 public:

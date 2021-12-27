@@ -2,7 +2,14 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef ESP32
 #include <WiFi.h>
+#elif defined(ESP8266)
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#else
+#error "This code is meant for ESP32 or ESP8266 only !"
+#endif
 
 enum WifiConnectionState
 {
