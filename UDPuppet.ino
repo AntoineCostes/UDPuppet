@@ -46,9 +46,13 @@ void setup()
   #endif
 
   master.servoMgr.setServoRelativePosition(0, 0.0f);
-  delay(1000);
+  delay(2000);
   master.servoMgr.setServoRelativePosition(0, 1.0f);
-  delay(1000);
+  delay(2000);
+  master.servoMgr.setServoRelativePosition(0, 0.0f);
+  delay(2000);
+  master.servoMgr.setServoRelativePosition(0, 1.0f);
+  delay(2000);
   
   digitalWrite(LED_BUILTIN, LOW);
 }

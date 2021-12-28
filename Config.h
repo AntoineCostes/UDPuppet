@@ -12,8 +12,8 @@
 // #include "config/sansgravite/Corbeille.h"
 // #include "config/Roomba.h"
 //#include "config/bluehouse/Biometry.h"
-#include "config/bluehouse/Showcase.h"
-//#include "config/bluehouse/Test.h"
+//#include "config/bluehouse/Showcase.h"
+#include "config/bluehouse/Test.h"
 
 // NETWORK
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[NETWORKS::SUNNY];
