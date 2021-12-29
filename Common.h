@@ -18,15 +18,17 @@ enum NETWORKS
     LENET,
     COSTES,
     SANSGRAVITE,
-    SUNNY
+    SUNNY,
+    BLUEHOUSE
 };
 
-const UDPuppetWifiCredentials CREDENTIALS[4] = 
+const UDPuppetWifiCredentials CREDENTIALS[5] = 
 {
     {"LeNet", "connectemoi"},
     {"Ouifi", "28101948AC"},
     {"Sans Gravité", "lovecraft"},
-    {"Sunnyhome", "20210616"}
+    {"Sunnyhome", "20210616"},
+    {"BLUE HOUSE", "bomibomi"}
 };
 
 struct UDPuppetLedStrip

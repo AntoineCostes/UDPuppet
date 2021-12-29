@@ -38,21 +38,21 @@ void setup()
   #ifdef NUM_SERVOS
   for (int i = 0; i < NUM_SERVOS; i++)
     master.servoMgr.registerServo(i, SERVOS[i].pin, SERVOS[i].minPosition, SERVOS[i].maxPosition, SERVOS[i].startPosition);
+  
+    master.servoMgr.setServoRelativePosition(0, 0.0f);
+    delay(2000);
+    master.servoMgr.setServoRelativePosition(0, 1.0f);
+    delay(2000);
+    master.servoMgr.setServoRelativePosition(0, 0.0f);
+    delay(2000);
+    master.servoMgr.setServoRelativePosition(0, 1.0f);
+    delay(2000);
   #endif
 
   #ifdef NUM_HCSR04
   for (int i = 0; i < NUM_HCSR04; i++)
     master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin);
   #endif
-
-  master.servoMgr.setServoRelativePosition(0, 0.0f);
-  delay(2000);
-  master.servoMgr.setServoRelativePosition(0, 1.0f);
-  delay(2000);
-  master.servoMgr.setServoRelativePosition(0, 0.0f);
-  delay(2000);
-  master.servoMgr.setServoRelativePosition(0, 1.0f);
-  delay(2000);
   
   digitalWrite(LED_BUILTIN, LOW);
 }
