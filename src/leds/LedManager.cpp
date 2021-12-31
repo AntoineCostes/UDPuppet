@@ -79,21 +79,41 @@ void LedManager::setBrightness(float value)
 
 void LedManager::setBrightness(int stripIndex, float value)
 {
+  if (strips.count(stripIndex) == 0)
+  {
+    compError("incorrect index: " + String(stripIndex));
+    return;
+  }
     strips[stripIndex]->setBrightness(value);
 }
 
 void LedManager::setColor(int stripIndex, int c)
 {
+  if (strips.count(stripIndex) == 0)
+  {
+    compError("incorrect index: " + String(stripIndex));
+    return;
+  }
     strips[stripIndex]->setAll(c, c, c);
 }
 
 void LedManager::setColor(int stripIndex, int r, int g, int b)
 {
+  if (strips.count(stripIndex) == 0)
+  {
+    compError("incorrect index: " + String(stripIndex));
+    return;
+  }
     strips[stripIndex]->setAll(r, g, b);
 }
 
 void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
 {
+  if (strips.count(stripIndex) == 0)
+  {
+    compError("incorrect index: " + String(stripIndex));
+    return;
+  }
     strips[stripIndex]->setLed(i, r, g, b);
 }
 
@@ -154,6 +174,7 @@ bool LedManager::handleCommand(OSCMessage &command)
             float g = command.getFloat(1);
             float b = command.getFloat(2);
             setColor(r * 255, g * 255, b * 255);
+            return true;
         } else if (checkCommandArguments(command, "ifff", true))
         {
             int stripIndex = command.getInt(0);

@@ -33,6 +33,7 @@ void setup()
   master.ledMgr.setBrightness(LED_INTENSITY);
   for (int i = 0; i < NUM_LEDS; i++)
     master.ledMgr.registerLedStrip(i, LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800);
+  
   #endif
 
   #ifdef NUM_SERVOS

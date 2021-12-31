@@ -12,8 +12,9 @@
 // #include "config/sansgravite/Corbeille.h"
 // #include "config/Roomba.h"
 //#include "config/bluehouse/Biometry.h"
-#include "config/bluehouse/Showcase.h"
+//#include "config/bluehouse/Showcase.h"
 //#include "config/bluehouse/Test.h"
+#include "config/bluehouse/Motors.h"
 
 // NETWORK
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[NETWORKS::BLUEHOUSE];
@@ -24,7 +25,7 @@ const bool MASTER_DEBUG = true;
 
 const bool OVERRIDE_NETWORK = true;
 const long DELAY_BEFORE_RECONNECT_MS = 3000;
-const long CONNECTION_TIMEOUT_MS = 10000;
+const long CONNECTION_TIMEOUT_MS = 100000;
 const bool WIFI_DEBUG = false;
 
 // OSC PARAMETERS
