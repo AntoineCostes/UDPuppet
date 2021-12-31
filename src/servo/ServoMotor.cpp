@@ -84,20 +84,12 @@ void ServoMotor::goToPosition(float relativeValue)
   
   if (!Component::checkRange("servo position", relativeValue, 0.0f, 1.0f)) return;
 
-  compDebug("go to pos: "+String(relativeValue));
-  int value = map(relativeValue, 0.0f, 1.0f, 0, 180);
-  compDebug(String(value));
-  compDebug(String(int(relativeValue*180)));
-  servo.write(int(relativeValue*180));
-  
-  // FIXME
-  /*
-  int usVal = map(relativeValue, 0.0f, 1.0f, intParameters["pulseMin"], SERVO_PWM_MAX);// intParameters["pulseMax"]);
+  //int usVal = map(relativeValue, 0.0f, 1.0f, intParameters["pulseMin"], intParameters["pulseMax"]);
+  int usVal = int(relativeValue*(intParameters["pulseMax"] - intParameters["pulseMin"])) + intParameters["pulseMin"];
   servo.writeMicroseconds(usVal);
-  compDebug("go to pos: "+String(relativeValue));
+  compDebug(String(intParameters["pulseMin"])); 
   compDebug(String(intParameters["pulseMax"])); 
-  compDebug("send pulse width: " + String(usVal) + "us for value: " + relativeValue);
-*/
+  compDebug("send pulse width: " + String(usVal) + "us for value: " + String(relativeValue));
 }
 
 ///
@@ -134,7 +126,7 @@ void ServoMotor::setPulseMax(int value)
 {
  if (!Component::checkRange("servo max pulse width", value, SERVO_PWM_MIN, SERVO_PWM_MAX)) return;
 
-  floatParameters["pulseMax"] = value;
+  intParameters["pulseMax"] = value;
   overrideFlashParameters();
 }
 
