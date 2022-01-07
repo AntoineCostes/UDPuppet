@@ -50,7 +50,7 @@ void LedStrip::update()
             break;
 
         case LedMode::WORKING:
-            setAll(int(50 * fast), 0, int(50 * fast));
+            setAll(0, 0, int(50 * fast));
             break;
 
         case LedMode::ERROR:

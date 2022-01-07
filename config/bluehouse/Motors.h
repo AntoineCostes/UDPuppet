@@ -14,8 +14,8 @@ const int OSC_TARGET_PORT = 12000;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // nice name, pin, min [0,1], max [0,1], start [0,1]
-    {"servo 1", 21, 0.0f, 1.0f, 0.0f},
-    {"servo 2", 17, 0.0f, 1.0f, 0.0f},
-    {"servo 3", 22, 0.0f, 1.0f, 0.0f},
-    {"servo 4", 23, 0.0f, 1.0f, 0.0f}
+    {"servo 1", 23, 0.0f, 1.0f, 0.3f},
+    {"servo 2", 22, 0.0f, 1.0f, 0.0f},
+    {"servo 3", 14, 0.0f, 1.0f, 0.0f},
+    {"servo 4", 32, 0.0f, 1.0f, 0.0f}
 };

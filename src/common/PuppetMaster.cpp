@@ -55,7 +55,7 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     Component::registerPin(LED_BUILTIN); 
     #else
     //Component::registerPin(LED_BUILTIN); 
-    Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
+    //Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
     #endif
     
     serialDebug = MASTER_DEBUG;
@@ -223,7 +223,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         compDebug("wifi connected !");
     #ifdef NUM_LEDS
         ledMgr.setMode(LedStrip::LedMode::STREAMING);
-        ledMgr.setColor(0, 0, 50, 0);
+        ledMgr.setColor(0, 0, 200);
         // ledMgr.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         break;

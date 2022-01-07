@@ -11,10 +11,10 @@
 // #include "config/sansgravite/Bobine.h"
 // #include "config/sansgravite/Corbeille.h"
 // #include "config/Roomba.h"
-//#include "config/bluehouse/Biometry.h"
+#include "config/bluehouse/Biometry.h"
 //#include "config/bluehouse/Showcase.h"
 //#include "config/bluehouse/Test.h"
-#include "config/bluehouse/Motors.h"
+//#include "config/bluehouse/Motors.h"
 
 // NETWORK
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[NETWORKS::BLUEHOUSE];
@@ -24,9 +24,9 @@ const bool MASTER_DEBUG = true;
 // TODO ALLOW LED USE LED BUILTIN
 
 const bool OVERRIDE_NETWORK = true;
-const long DELAY_BEFORE_RECONNECT_MS = 3000;
-const long CONNECTION_TIMEOUT_MS = 100000;
-const bool WIFI_DEBUG = false;
+const long DELAY_BEFORE_RECONNECT_MS = 2000;
+const long CONNECTION_TIMEOUT_MS = 2000;
+const bool WIFI_DEBUG = true;
 
 // OSC PARAMETERS
 const String OSC_TARGET_IP = "192.168.0.8";
