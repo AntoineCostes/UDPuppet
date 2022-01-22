@@ -9,7 +9,8 @@ LedStrip::LedStrip(byte pin, int numLeds, neoPixelType type, bool debug) : Compo
                                                                             toastTimer(0)
 {
     // pin as intParameter ? instantiate strip in init ?
-    boolParameters["wifiDebug"] = debug;
+    //boolParameters["wifiDebug"] = debug;
+    setWifiDebug(debug);
 
 }
 

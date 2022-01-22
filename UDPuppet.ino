@@ -24,15 +24,14 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
   
-  //while (!Serial) { delay(1); } // wait for serial console
-  delay(2000); 
+  delay(2000);  // wait for serial console
 
   master.initManager(); // TODO make singleton and rename ?
 
   #ifdef NUM_LEDS
   master.ledMgr.setBrightness(LED_INTENSITY);
   for (int i = 0; i < NUM_LEDS; i++)
-    master.ledMgr.registerLedStrip(i, LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800);
+    master.ledMgr.registerLedStrip(i, LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_WIFI_DEBUG);
   
   #endif
 

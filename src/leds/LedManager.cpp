@@ -12,7 +12,7 @@ void LedManager::initManager()
     lastLedRefreshTime = millis();
 }
 
-void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelType type)
+void LedManager::registerLedStrip(int index, int pin, int numLeds, neoPixelType type, boolean wifiDebugAll)
 {
     if (!checkInit())
         return;
@@ -25,7 +25,7 @@ void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelTy
     Component::forbiddenPins.insert(pin);  
 
     // only first ledstrip is debug true by default
-    strips.insert({index, new LedStrip(pin, numLeds, type, index==0)});
+    strips.insert({index, new LedStrip(pin, numLeds, type, wifiDebugAll?true:index==0)});
     strips[index]->initComponent(serialDebug);
     compDebug("register prop: " + String(strips[index]->name));
 }

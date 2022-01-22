@@ -45,7 +45,9 @@ const bool SEQUENCE_DEBUG = true;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
+const bool LED_WIFI_DEBUG = true;
 const long LED_REFRESH_MS = 20;
+// TODO DEBUG COLOR
 
 // SERVO PARAMETERS
 const bool SERVO_DEBUG = true;
