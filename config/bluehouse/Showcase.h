@@ -7,6 +7,9 @@ const BoardType BOARD_TYPE = HUZZAH32;
 // OSC PARAMETERS
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12000;
+#define USE_STATIC_IP
+const IPAddress STATIC_IP(192, 168, 4, 43);
+const IPAddress GATEWAY(192, 168, 4, 1);
 
 // COMPONENTS
 #define NUM_LEDS 10

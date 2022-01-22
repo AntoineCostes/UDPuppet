@@ -31,6 +31,27 @@ void WifiManager::initManager()
   stringParameters["ssid"] = WIFI_CREDENTIALS.ssid;
   stringParameters["pass"] = WIFI_CREDENTIALS.password;
   #endif
+
+  #ifdef USE_STATIC_IP
+  compLog("Trying to set static ip... "+STATIC_IP.toString());
+
+  // Following three settings are optional
+  IPAddress subnet(255, 255, 0, 0);
+  IPAddress primaryDNS(8, 8, 8, 8); 
+  IPAddress secondaryDNS(8, 8, 4, 4);
+  
+  // This part of code will try create static IP address
+  if (!WiFi.config(STATIC_IP, GATEWAY, subnet, primaryDNS, secondaryDNS))
+  {
+    compLog("=========================== STA Failed to configure !");
+  } else
+    compLog("Success !");
+  #else
+  //if (!WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE))
+  //  compLog("Failed !");
+  //  else
+  //  compLog("================================= Success !");
+  #endif
   
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
