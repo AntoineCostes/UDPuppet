@@ -223,8 +223,8 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         compDebug("wifi connected !");
     #ifdef NUM_LEDS
         ledMgr.setMode(LedStrip::LedMode::STREAMING);
-        ledMgr.setColor(0, 0, 200);
-        // ledMgr.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
+        ledMgr.setColor(0, 200, 200);
+        //ledMgr.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         break;
 

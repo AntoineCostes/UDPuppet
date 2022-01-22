@@ -13,7 +13,7 @@
 // #include "config/Roomba.h"
 #include "config/bluehouse/Biometry.h"
 //#include "config/bluehouse/Showcase.h"
-//#include "config/bluehouse/Test.h"
+//include "config/bluehouse/Test.h"
 //#include "config/bluehouse/Motors.h"
 
 // NETWORK
@@ -24,12 +24,12 @@ const bool MASTER_DEBUG = true;
 // TODO ALLOW LED USE LED BUILTIN
 
 const bool OVERRIDE_NETWORK = true;
-const long DELAY_BEFORE_RECONNECT_MS = 2000;
-const long CONNECTION_TIMEOUT_MS = 2000;
+const long DELAY_BEFORE_RECONNECT_MS = 1000;
+const long CONNECTION_TIMEOUT_MS = 30000;
 const bool WIFI_DEBUG = true;
 
 // OSC PARAMETERS
-const String OSC_TARGET_IP = "192.168.0.8";
+const String OSC_TARGET_IP = "192.168.0.1";
 const long PING_TIMEOUT_MS = 1000;
 const bool TARGET_IP_OVERRIDE = true;
 const bool OSC_DEBUG = true;
@@ -45,7 +45,6 @@ const bool SEQUENCE_DEBUG = true;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
-const bool LED_WIFI_DEBUG = true;
 const long LED_REFRESH_MS = 20;
 // TODO DEBUG COLOR
 

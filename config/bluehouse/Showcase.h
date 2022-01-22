@@ -8,6 +8,8 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12000;
 
+const bool LED_WIFI_DEBUG_ALL = true;
+
 // COMPONENTS
 #define NUM_LEDS 10
 const float LED_INTENSITY = 0.8f;

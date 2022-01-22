@@ -31,7 +31,7 @@ void WifiManager::initManager()
   stringParameters["ssid"] = WIFI_CREDENTIALS.ssid;
   stringParameters["pass"] = WIFI_CREDENTIALS.password;
   #endif
-  
+
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
