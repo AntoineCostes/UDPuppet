@@ -21,10 +21,11 @@ ServoMotor::ServoMotor(byte pin, float startPosition) : Component("servo_pin" + 
 ServoMotor::ServoMotor(byte pin, float min, float max, float startPosition) : Component("servo_pin" + String(pin))
 {
   if (!Component::checkRange("min", min, 0.0f, 1.0f)) min = 0.0f;
-  setPulseMin(map(min, 0.0f, 1.0f, SERVO_PWM_MIN, SERVO_PWM_MAX));
+  setPulseMin(min*(SERVO_PWM_MAX - SERVO_PWM_MIN) + SERVO_PWM_MIN);
 
   if (!Component::checkRange("max", max, 0.0f, 1.0f)) max = 1.0f;
-  setPulseMax(map(max, 0.0f, 1.0f, SERVO_PWM_MIN, SERVO_PWM_MAX));
+  //setPulseMax(map(max, 0.0f, 1.0f, SERVO_PWM_MIN, SERVO_PWM_MAX));
+  setPulseMax(max*(SERVO_PWM_MAX - SERVO_PWM_MIN) + SERVO_PWM_MIN);
 
   if (!Component::checkRange("startPosition", startPosition, 0.0f, 1.0f)) startPosition = 0.5f;
   setStartPosition(startPosition);
@@ -71,7 +72,7 @@ void ServoMotor::update()
 ///
 void ServoMotor::goToStartPosition()
 {
-  goToPosition(floatParameters["startPosition"]);
+  goToPosition(floatParameters["start"]);
 }
 
 ///
@@ -87,8 +88,8 @@ void ServoMotor::goToPosition(float relativeValue)
   //int usVal = map(relativeValue, 0.0f, 1.0f, intParameters["pulseMin"], intParameters["pulseMax"]);
   int usVal = int(relativeValue*(intParameters["pulseMax"] - intParameters["pulseMin"])) + intParameters["pulseMin"];
   servo.writeMicroseconds(usVal);
-  compDebug(String(intParameters["pulseMin"])); 
-  compDebug(String(intParameters["pulseMax"])); 
+  //compDebug(String(intParameters["pulseMin"])); 
+  //compDebug(String(intParameters["pulseMax"])); 
   compDebug("send pulse width: " + String(usVal) + "us for value: " + String(relativeValue));
 }
 
