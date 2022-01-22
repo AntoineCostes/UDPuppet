@@ -28,7 +28,7 @@ void SensorManager::registerAnalogReader(String niceName, byte pin)
     compDebug("register prop: " + niceName);
 }
 
-void SensorManager::registerHCSR04Reader(String niceName, byte triggerPin, byte echoPin)
+void SensorManager::registerHCSR04Reader(String niceName, byte triggerPin, byte echoPin, boolean active)
 {    
     if (!Component::registerPins(std::set<byte>{triggerPin, echoPin}))
     {
@@ -36,7 +36,7 @@ void SensorManager::registerHCSR04Reader(String niceName, byte triggerPin, byte 
         return;
     }
 
-    ultrasonics.emplace_back(new HCSR04Reader(triggerPin, echoPin, niceName));
+    ultrasonics.emplace_back(new HCSR04Reader(triggerPin, echoPin, niceName, active));
     ultrasonics.back()->initComponent(serialDebug);
     compDebug("register prop: " + niceName);
 }
@@ -81,4 +81,35 @@ void SensorManager::update()
             sendEvent(SensorValueEvent(hcsr04->niceName, hcsr04->distanceValueMm, hcsr04->normValue));
         }
     }
+}
+
+bool SensorManager::handleCommand(OSCMessage &command)
+{
+    if (!checkInit())
+        return false;
+
+    char buf[32];
+    command.getAddress(buf);
+    String address = String(buf);
+    compLog("handle command: " + address);
+
+#ifdef NUM_HCSR04
+    if (address.equals("/sensors/hcsr04"))
+    {
+        if (checkCommandArguments(command, "ii", true))
+        {
+            byte index = command.getInt(0);
+            bool value = command.getInt(1) > 0;
+
+            // FIXME
+            if (index >= 0 && index < NUM_HCSR04)
+            {
+                 compLog("set hcsr04 ");
+                ultrasonics[index]->active = value;
+                return true;
+            }
+        }
+    }
+    #endif
+    return false;
 }

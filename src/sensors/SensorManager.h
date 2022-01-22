@@ -27,9 +27,11 @@ public:
 */
     void initManager();
     void update();
+    
+  bool handleCommand(OSCMessage &command) override;
 
     void registerAnalogReader(String niceName, byte pin);
-    void registerHCSR04Reader(String niceName, byte triggerPin, byte echoPin);
+    void registerHCSR04Reader(String niceName, byte triggerPin, byte echoPin, boolean active);
 
 protected:
     std::vector<AnalogReader*> analogs; 

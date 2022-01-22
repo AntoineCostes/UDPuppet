@@ -4,7 +4,7 @@
  class HCSR04Reader : public Component
  {
      public:
-        HCSR04Reader(int triggerPin, int echoPin, String niceName);
+        HCSR04Reader(int triggerPin, int echoPin, String niceName, boolean active);
 
         void initComponent(bool serialDebug) override;
         void update() override;

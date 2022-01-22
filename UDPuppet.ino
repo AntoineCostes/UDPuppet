@@ -42,7 +42,7 @@ void setup()
 
   #ifdef NUM_HCSR04
   for (int i = 0; i < NUM_HCSR04; i++)
-    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin);
+    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin, ULTRASONICS[i].active);
   #endif
   
   digitalWrite(LED_BUILTIN, LOW);

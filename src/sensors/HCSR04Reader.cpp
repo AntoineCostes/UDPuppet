@@ -1,13 +1,13 @@
 #include "HCSR04Reader.h"
 
-HCSR04Reader::HCSR04Reader(int triggerPin, int echoPin, String niceName) : Component("hcsr04[" + String(triggerPin)+"-"+String(echoPin)),
+HCSR04Reader::HCSR04Reader(int triggerPin, int echoPin, String niceName, boolean active) : Component("hcsr04[" + String(triggerPin)+"-"+String(echoPin)),
                                                                             triggerPin(triggerPin),
                                                                             echoPin(echoPin),
                                                                             distanceValueMm(-1),
                                                                             maxValue(0),
                                                                             normValue(0),
                                                                             niceName(niceName),
-                                                                            active(true)
+                                                                            active(active)
 {
 
 }

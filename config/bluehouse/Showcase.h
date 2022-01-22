@@ -26,3 +26,10 @@ const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] =
     {"led 9", 32, 10, true},
     {"led 10", 15, 10, true}
 };
+
+#define NUM_HCSR04 1
+
+const UDPuppetHCSR04 ULTRASONICS[NUM_HCSR04] = 
+{
+    {"left hand", 27, 12, false}
+};
