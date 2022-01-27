@@ -2,13 +2,15 @@
 #include "../common/Manager.h"
 #include "LedStrip.h"
 
+const long LED_REFRESH_MS = 20;
+
 #ifdef NUM_LEDS
 class LedManager : public Manager
 {
 public:
     LedManager();
 
-    void initManager();
+    void initManager(bool serialDebug);
     void update();
     
     void registerLedStrip(int index, int pin, int numLeds, neoPixelType type, boolean wifiDebugAll);

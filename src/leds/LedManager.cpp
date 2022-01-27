@@ -3,12 +3,11 @@
 #ifdef NUM_LEDS
 LedManager::LedManager() : Manager("led")
 {
-    serialDebug = LED_DEBUG;
 }
 
-void LedManager::initManager()
+void LedManager::initManager(bool serialDebug)
 {
-    Manager::initManager();
+    Manager::initManager(serialDebug);
     lastLedRefreshTime = millis();
 }
 

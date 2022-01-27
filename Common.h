@@ -13,7 +13,7 @@ struct UDPuppetWifiCredentials
     String password;
 };
 
-enum NETWORKS
+enum Networks
 {  
     LENET,
     COSTES,

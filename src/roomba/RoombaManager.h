@@ -3,6 +3,7 @@
 #include "RoombaSerial.h"
 #include "../utils/EventBroadcaster.h"
 
+const long ROOMBA_TEXT_UPDATE_MS = 400; 
 
 #ifdef HAS_ROOMBA
 
@@ -12,7 +13,7 @@ class RoombaManager : public Manager,
 public:
     RoombaManager();
 
-    void initManager();
+    void initManager(bool serialDebug);
     void update();
     
     void registerRoomba(byte inPin, byte outPin, byte wakePin);

@@ -28,7 +28,7 @@ class SequencePlayer : public Manager,
 public:
   SequencePlayer();
 
-  void initManager();
+  void initManager(bool serialDebug);
   void update();
 
   void setFPS(byte value);

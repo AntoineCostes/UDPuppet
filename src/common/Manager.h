@@ -9,7 +9,7 @@ class Manager : public Component
 public:
     Manager(const String &name);
 
-    void initManager();
+    void initManager(bool serialDebug);
     virtual void update() = 0;
 
 protected:

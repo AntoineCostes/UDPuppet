@@ -3,12 +3,11 @@
 #ifdef HAS_ROOMBA
 RoombaManager::RoombaManager() : Manager("roomba")
 {
-    serialDebug = ROOMBA_DEBUG;
 }
 
-void RoombaManager::initManager()
+void RoombaManager::initManager(bool serialDebug)
 {
-    Manager::initManager();
+    Manager::initManager(serialDebug);
 }
 
 void RoombaManager::update()
@@ -43,11 +42,13 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
 
 void RoombaManager::setText(byte index, String text)
 {
+    // FIXME check roomba index
     roombas[index]->setText(text);
 }
 
 void RoombaManager::drive(byte index, float left, float right)
 {
+    // FIXME check roomba index
     //left = constrain(left, -1.0f, 1.0f);
     //right = constrain(right, -1.0f, 1.0f);
     roombas[index]->driveWheels(left, right);
@@ -55,36 +56,43 @@ void RoombaManager::drive(byte index, float left, float right)
 
 void RoombaManager::setMaxSpeed(byte index, float speed)
 {
+    // FIXME check roomba index
     roombas[index]->setMaxSpeed(speed);
 }
 
 void RoombaManager::setHomeLed(byte index, bool state)
 {
+    // FIXME check roomba index
     roombas[index]->setLed(HOME_GREEN, state);
 }
 
 void RoombaManager::setDirtLed(byte index, bool state)
 {
+    // FIXME check roomba index
     roombas[index]->setLed(DIRT_BLUE, state);
 }
 
 void RoombaManager::setWarningLed(byte index, bool state)
 {
+    // FIXME check roomba index
     roombas[index]->setLed(WARNING_RED, state);
 }
 
 void RoombaManager::setSpotLed(byte index, bool state)
 {
+    // FIXME check roomba index
     roombas[index]->setLed(SPOT_GREEN, state);
 }
 
 void RoombaManager::setCenterHue(byte index, byte value)
 {
+    // FIXME check roomba index
     roombas[index]->setCenterHue(value);
 }
 
 void RoombaManager::setCenterBrightness(byte index, byte value)
 {
+    // FIXME check roomba index
     roombas[index]->setCenterBrightness(value);
 }
 

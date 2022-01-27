@@ -1,5 +1,7 @@
+
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
+
 // dependencies:
 // Adafruit_NeoPixel.h
 // OSCMessage.h
@@ -14,9 +16,6 @@
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
 PuppetMaster master;
-long lastLoopTime = 0;
-
-// TODO FIX SERVO
 
 void setup()
 {
@@ -26,13 +25,12 @@ void setup()
   
   delay(2000);  // wait for serial console
 
-  master.initManager(); // TODO make singleton and rename ?
+  master.init(); // TODO make singleton and rename ?
 
   #ifdef NUM_LEDS
   master.ledMgr.setBrightness(LED_INTENSITY);
   for (int i = 0; i < NUM_LEDS; i++)
     master.ledMgr.registerLedStrip(i, LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_WIFI_DEBUG_ALL);
-  
   #endif
 
   #ifdef NUM_SERVOS

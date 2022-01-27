@@ -16,7 +16,6 @@ FileManager::FileManager() : Manager("files"),
     server.onNotFound(std::bind(&FileManager::handleNotFound, this));
     server.on("/upload", HTTP_POST, std::bind(&FileManager::returnOK, this), std::bind(&FileManager::handleFileUpload, this));
     #endif
-    serialDebug = MASTER_DEBUG;
 }
 
 void FileManager::init()

@@ -6,9 +6,9 @@ ServoManager::ServoManager() : Manager("servo")
   serialDebug = SERVO_DEBUG;
 }
 
-void ServoManager::initManager()
+void ServoManager::initManager(bool serialDebug)
 {
-  Manager::initManager();
+  Manager::initManager(serialDebug);
 }
 
 void ServoManager::update()

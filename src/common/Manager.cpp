@@ -6,7 +6,7 @@ Manager::Manager(const String &name) : Component(name)
 {
 }
 
-void Manager::initManager()
+void Manager::initManager(bool serialDebug)
 {
     Component::initComponent(serialDebug);
 }

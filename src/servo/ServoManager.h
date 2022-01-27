@@ -9,7 +9,7 @@ class ServoManager : public Manager
 public:
   ServoManager();
 
-  void initManager();
+  void initManager(bool serialDebug);
   void update() override;
 
   void registerServo(byte index, byte pin, float startPosition);

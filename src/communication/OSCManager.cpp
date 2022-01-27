@@ -2,21 +2,18 @@
 
 OSCManager::OSCManager(WifiManager *wifiMgr, String mDNSName) : Manager("osc"),
                                                                 wifi(wifiMgr),
-                                                                overrideTargetIp(TARGET_IP_OVERRIDE),
                                                                 mDNSName(mDNSName)
 {
-    // FIXME
-    //if (!OSC_TARGET_IP.equals(""))
-    //{
-    stringParameters["targetIp"] = OSC_TARGET_IP;
-    overrideFlashParameters();
-    //}
-    serialDebug = OSC_DEBUG;
+    if (OSC_TARGET_IP != "")
+    {
+        stringParameters["targetIp"] = OSC_TARGET_IP;
+        overrideFlashParameters();
+    }
 }
 
-void OSCManager::initManager()
+void OSCManager::initManager(bool serialDebug)
 {
-    Manager::initManager();
+    Manager::initManager(serialDebug);
     // subscribe to wifi notifications to handle UDP port
     wifi->addListener(std::bind(&OSCManager::gotWifiEvent, this, std::placeholders::_1));
 }
@@ -57,8 +54,12 @@ void OSCManager::connect()
 
     compLog("creating mDNS instance: " + mDNSName);
     if (MDNS.begin(mDNSName.c_str()))
-    {
+    {   
+#ifdef ESP32
         MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
+#else
+        MDNS.addService("osc", "udp", OSC_LISTENING_PORT);
+#endif
         compDebug("OSC Zeroconf service added sucessfully !");
     }
     else

@@ -40,7 +40,7 @@ public:
   };
   MotorShield2Manager();
 
-  void initManager();
+  void initManager(bool serialDebug);
   void update() override;
 
   bool handleCommand(OSCMessage &command) override;

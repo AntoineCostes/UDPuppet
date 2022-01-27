@@ -6,7 +6,7 @@
 // OSC_DEBUG_SEND et OSC_DEBUG_REVEICE
 // rename init
 // managers indépendants
-// manager not a component
+// manager not a component > wifi & osc components
 // osc sendMessage(address, data)
 // events with var
 // managers singletons, props vector or set
@@ -47,7 +47,7 @@
 // niceName for all component ?
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.4.0")
+                               oscMgr(&wifiMgr, BOARD_NAME + " v" + "1.4.1")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -57,64 +57,62 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     //Component::registerPin(LED_BUILTIN); 
     //Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
     #endif
-    
-    serialDebug = MASTER_DEBUG;
 }
 
 void PuppetMaster::init()
 {
-    initManager();
+    initManager(MASTER_DEBUG);
 }
 
-void PuppetMaster::initManager()
+void PuppetMaster::initManager(bool serialDebug)
 {
     compLog("");
     compLog("");
     compLog("");
     compLog("-------------------- " + oscMgr.mDNSName + " --------------------");
 
-    Manager::initManager();
+    Manager::initManager(serialDebug);
 
     //std::set<int> reservedPins{};
     //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
     // init managers and subscribe to their events
-    wifiMgr.initManager();
+    wifiMgr.initManager(WIFI_DEBUG);
     wifiMgr.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
     managers.emplace_back(&wifiMgr);
-    oscMgr.initManager();
+    oscMgr.initManager(OSC_DEBUG);
     oscMgr.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
     managers.emplace_back(&oscMgr);
-    sensorMgr.initManager();
+    sensorMgr.initManager(MASTER_DEBUG);
     sensorMgr.addListener(std::bind(&PuppetMaster::gotSensorValueEvent, this, std::placeholders::_1));
     managers.emplace_back(&sensorMgr);
 
 #ifdef HAS_SD_WING
-    fileMgr.init();
+    fileMgr.init(MASTER_DEBUG);
     fileMgr.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
     managers.emplace_back(&player);
-    player.initManager();
+    player.initManager(SEQUENCE_DEBUG);
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 #endif
 
 #ifdef NUM_LEDS
-    ledMgr.initManager();
+    ledMgr.initManager(LED_DEBUG);
     managers.emplace_back(&ledMgr);
 #endif
 
 #ifdef NUM_SERVOS
-    servoMgr.initManager();
+    servoMgr.initManager(SERVO_DEBUG);
     managers.emplace_back(&servoMgr);
 #endif
 
 #ifdef HAS_MOTORWING
-    motorwingMgr.initManager();
+    motorwingMgr.initManager(MOTORWING_DEBUG);
     motorwingMgr.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
     managers.emplace_back(&motorwingMgr);
 #endif
 
 #ifdef HAS_ROOMBA
-    roombaMgr.initManager();
+    roombaMgr.initManager(ROOMBA_DEBUG);
     managers.emplace_back(&roombaMgr);
     roombaMgr.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif

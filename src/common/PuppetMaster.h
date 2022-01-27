@@ -18,7 +18,7 @@ public:
     PuppetMaster();
 
     void init();
-    void initManager();
+    void initManager(bool serialDebug);
     void checkComponents();
     void update();
 

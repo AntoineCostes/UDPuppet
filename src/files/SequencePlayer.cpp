@@ -4,12 +4,11 @@
 SequencePlayer::SequencePlayer() : Manager("player"), fps(30)
 {
   intParameters["fps"] = fps;
-  serialDebug = SEQUENCE_DEBUG;
 }
 
-void SequencePlayer::initManager()
+void SequencePlayer::initManager(bool serialDebug)
 {
-  Manager::initManager();
+  Manager::initManager(serialDebug);
 }
 
 void SequencePlayer::setFPS(byte value)

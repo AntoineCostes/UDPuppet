@@ -43,7 +43,7 @@ public:
     //~WifiManager() {}
 
 
-    void initManager();
+    void initManager(bool serialDebug);
     void update();
 
     void connect();

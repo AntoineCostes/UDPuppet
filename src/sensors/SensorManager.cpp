@@ -10,9 +10,8 @@ SensorManager::SensorManager() : Manager("sensors"), batteryPin(-1)
             break;
     }
 
-    if (batteryPin) analogSetPinAttenuation(batteryPin, ADC_0db);
+    if (batteryPin > 0) analogSetPinAttenuation(batteryPin, ADC_0db);
     #endif
-    serialDebug = MASTER_DEBUG;
 }
 
 void SensorManager::registerAnalogReader(String niceName, byte pin)
@@ -41,15 +40,15 @@ void SensorManager::registerHCSR04Reader(String niceName, byte triggerPin, byte 
     compDebug("register prop: " + niceName);
 }
 
-void SensorManager::initManager()
+void SensorManager::initManager(bool serialDebug)
 {
-    Manager::initManager();
+    Manager::initManager(serialDebug);
     lastBatteryPingMs = 0;
 }
 
 void SensorManager::update()
 {
-    if (batteryPin)
+    if (batteryPin > 0)
         if (millis() > lastBatteryPingMs + BATTERY_TIMOUT_MS)
         {
             batteryAnalogValue = analogRead(batteryPin);
@@ -93,7 +92,6 @@ bool SensorManager::handleCommand(OSCMessage &command)
     String address = String(buf);
     compLog("handle command: " + address);
 
-#ifdef NUM_HCSR04
     if (address.equals("/sensors/hcsr04"))
     {
         if (checkCommandArguments(command, "ii", true))
@@ -101,8 +99,7 @@ bool SensorManager::handleCommand(OSCMessage &command)
             byte index = command.getInt(0);
             bool value = command.getInt(1) > 0;
 
-            // FIXME
-            if (index >= 0 && index < NUM_HCSR04)
+            if (index >= 0 && index < ultrasonics.size())
             {
                  compLog("set hcsr04 ");
                 ultrasonics[index]->active = value;
@@ -110,6 +107,5 @@ bool SensorManager::handleCommand(OSCMessage &command)
             }
         }
     }
-    #endif
     return false;
 }

@@ -38,7 +38,7 @@ public:
     bool isConnected;
     String mDNSName;
 
-    void initManager();
+    void initManager(bool serialDebug);
     void update();
     void connect();
     void disconnect();

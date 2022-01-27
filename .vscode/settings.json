@@ -92,7 +92,8 @@
         "forward_list": "cpp",
         "stop_token": "cpp",
         "complex": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "ranges": "cpp"
     }
 
 }

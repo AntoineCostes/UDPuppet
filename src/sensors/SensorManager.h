@@ -25,7 +25,7 @@ public:
     using EventBroadcaster<SensorValueEvent>::addListener;
     using EventBroadcaster<SensorValueEvent>::sendEvent;
 */
-    void initManager();
+    void initManager(bool serialDebug);
     void update();
     
   bool handleCommand(OSCMessage &command) override;
@@ -38,7 +38,7 @@ protected:
     std::vector<HCSR04Reader*> ultrasonics; 
 
     // battery
-    byte batteryPin;
+    int batteryPin;
     long lastBatteryPingMs;
     int batteryAnalogValue;
     float batteryVoltageValue;
