@@ -1,6 +1,8 @@
 function init() {
   local.parameters.batterie.set(0);
   local.parameters.carteSDDetectee.set(false);
+  local.parameters.moteurGauche.setAttribute("alwaysNotify", true);
+  local.parameters.moteurDroit.setAttribute("alwaysNotify", true);
   yo();
 }
 
@@ -61,6 +63,11 @@ function oscEvent(address, args)
   if (address == "/sd")
   {
     local.parameters.carteSDDetectee.set(args[1]>0);
+  }
+  if (address.startsWith("/dc/maxspeed"))
+  {
+    script.log(args[1]);
+    local.parameters.vitesseMax.set(args[1]);
   }
 }
 
