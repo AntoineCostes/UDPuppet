@@ -5,16 +5,14 @@ OSCManager::OSCManager(WifiManager *wifiMgr, String mDNSName) : Manager("osc"),
                                                                 overrideTargetIp(TARGET_IP_OVERRIDE),
                                                                 mDNSName(mDNSName)
 {
-    if (!OSC_TARGET_IP.equals(""))
-    {
-        stringParameters["targetIp"] = OSC_TARGET_IP;
-        overrideFlashParameters();
-    }
+    stringParameters["targetIp"] = OSC_TARGET_IP;
     serialDebug = OSC_DEBUG;
 }
 
 void OSCManager::initManager()
 {
+    if (OSC_TARGET_IP.length() != 0) overrideFlashParameters(); // override if defined in config
+    
     Manager::initManager();
     // subscribe to wifi notifications to handle UDP port
     wifi->addListener(std::bind(&OSCManager::gotWifiEvent, this, std::placeholders::_1));
