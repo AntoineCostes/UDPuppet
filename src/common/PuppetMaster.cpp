@@ -186,6 +186,18 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     if (command.match("/stepper") || command.match("/dc"))
         if (!motorwing.handleCommand(command))
             compError("motorwing could not handle command");
+
+    if (command.match("/dc/run"))
+    {
+        float value = abs(command.getFloat(1));
+        if (command.getInt(0) == 2)
+            for (int i = 0; i < 4 ; i++)
+                led.setColor(0, i, 0, value*255, 0);
+                
+        if (command.getInt(0) == 1)
+            for (int i = 4; i < 8 ; i++)
+                led.setColor(0, i, 0, value*255, 0);
+    }            
 #endif
 
     int sepIndex = address.indexOf('/', 1);
