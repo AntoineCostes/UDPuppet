@@ -37,7 +37,7 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.1")
+                               osc(&wifi, BOARD_NAME + " v" + "1.3.2")
 {
     #ifdef BASE // Base uses pin 12 and 13
 

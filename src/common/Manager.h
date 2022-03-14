@@ -9,12 +9,10 @@ class Manager : public Component
 public:
     Manager(const String &name);
 
-    void initManager();
-    void update() override;
+    virtual void initManager();
+    virtual void update() override;
 
 protected:
-    bool serialDebug;
-    
     vector<std::unique_ptr<Component>> props;
     bool registerProp(Component* comp, std::set<int> reservedPins);
 };

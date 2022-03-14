@@ -2,6 +2,6 @@
     "board": "esp32:esp32:featheresp32",
     "configuration": "FlashFreq=80,UploadSpeed=115200,DebugLevel=none,PartitionScheme=default",
     "sketch": "UDPuppet.ino",
-    "port": "COM5",
+    "port": "COM8",
     "output": "../ArduinoOutput"
 }

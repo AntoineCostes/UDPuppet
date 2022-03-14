@@ -57,6 +57,7 @@ void MotorShield2Manager::addDCMotor(DCPort port)
     usedPorts.insert(port);
 
     dcMotors.insert({port, new DCMotor(AFMS.getMotor(port), (int)port, 50)});
+    dcMotors[port]->initComponent(serialDebug);
     //dc.insert({index, AFMS.getMotor(port)});
     // compDebug("added DC#" + String(index) + " on port " + String(port));
     compDebug("added DC#" + String(port));
