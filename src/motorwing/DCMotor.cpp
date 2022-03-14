@@ -9,6 +9,7 @@ DCMotor::DCMotor(Adafruit_DCMotor* motor, int port, int maxSpeed):Component("dc_
 void DCMotor::initComponent(bool serialDebug)
 {
     Component::initComponent(serialDebug);
+    maxSpeed = intParameters["maxSpeed"];
 }
 
 void DCMotor::update()
