@@ -116,11 +116,24 @@ void PuppetMaster::initManager()
 
 void PuppetMaster::checkComponents()
 {
+    compDebug("================ CHECK");
+
 #ifdef HAS_SD_WING
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
+#endif
+
+#ifdef HAS_MOTORWING
+    for (auto &pair : motorwing.dcMotors)
+    {
+        String addr = "/dc/maxspeed/"+String(int(pair.first));
+        OSCMessage msg(addr.c_str());
+        msg.add(BOARD_NAME.c_str());
+        msg.add(pair.second->getMaxSpeed());
+        osc.sendMessage(msg);
+    }
 #endif
 
 // CONFIX

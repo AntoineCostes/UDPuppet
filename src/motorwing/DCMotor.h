@@ -14,6 +14,7 @@ public:
 
     void run(float speed); // -1 1
     void setMaxSpeed(int value);
+    int getMaxSpeed();
     void stop();
 
 protected:

@@ -50,4 +50,9 @@ void DCMotor::setMaxSpeed(int value)
     intParameters["maxSpeed"] = value;
     overrideFlashParameters();
 }
+
+int DCMotor::getMaxSpeed()
+{
+    return maxSpeed;
+}
 #endif
