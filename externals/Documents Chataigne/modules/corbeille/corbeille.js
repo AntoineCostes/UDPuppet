@@ -1,19 +1,21 @@
 function init() {
-  local.parameters.batterie.set(0);
-  local.parameters.carteSDDetectee.set(false);
   local.parameters.moteurGauche.setAttribute("alwaysNotify", true);
   local.parameters.moteurDroit.setAttribute("alwaysNotify", true);
+  local.values.batterie.set(0);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
 function yo()
 {
+local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
 local.sendTo("192.168.2.255", 9000, "/yo", 0);
 local.sendTo("192.168.10.255", 9000, "/yo", 0);
 local.sendTo("192.168.43.255", 9000, "/yo", 0);
 }
+
 function moduleParameterChanged(param)
 {
   //script.log(" param");
@@ -22,7 +24,6 @@ function moduleParameterChanged(param)
   {
     yo();
   }
-
   if (param.name == "moteurGauche")
   {
     local.send("/dc/run", 2, param.get());
@@ -31,7 +32,7 @@ function moduleParameterChanged(param)
   {
     local.send("/dc/run", 1, param.get());
   }
-    if (param.name == "stop")
+  if (param.name == "stop")
   {
     local.parameters.moteurGauche.set(0);
     local.parameters.moteurDroit.set(0);
@@ -58,16 +59,24 @@ function oscEvent(address, args)
   }
   if (address == "/battery")
   {
-    local.parameters.batterie.set(args[1]);
+    local.values.batterie.set(args[1]);
   }
   if (address == "/sd")
   {
-    local.parameters.carteSDDetectee.set(args[1]>0);
+    local.values.carteSDDetectee.set(args[1]>0);
   }
   if (address.startsWith("/dc/maxspeed"))
   {
     script.log(args[1]);
     local.parameters.vitesseMax.set(args[1]);
+  }
+  if (address == "/sequences")
+  {
+    local.parameters.sequences.removeOptions();
+    for (var i = 1; i < args.length; i++)
+    {
+      local.parameters.sequences.addOption(args[i], i - 1);
+    }
   }
 }
 
