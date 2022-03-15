@@ -75,7 +75,9 @@ public:
     //File manipulation
     static File openFile(String fileName, bool forWriting = false, bool deleteIfExists = true);
     static void deleteFileIfExists(String path);
-    static void listDir(const char *dirname, uint8_t levels);
+    void listDir(const char *dirname, uint8_t levels);
+
+    std::vector<String> sequences;
 
     //Server handling
     #ifdef HAS_WEBSERVER

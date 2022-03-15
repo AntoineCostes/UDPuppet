@@ -103,6 +103,8 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         DBG("Not a directory");
         return;
     }
+    
+    if (levels == 0) sequences.clear();
 
     File file = root.openNextFile();
     while (file)
@@ -119,6 +121,12 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         {
             DBG("  FILE: " + String(file.name()));
             DBG("  SIZE: " + String(file.size()));
+            
+            String fileName = String(file.name());
+            if (fileName.endsWith(".dat"))
+            {
+                sequences.emplace_back(fileName.substring(0, fileName.length() - 4));
+            }
         }
         file = root.openNextFile();
     }

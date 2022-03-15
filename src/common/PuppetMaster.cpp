@@ -116,13 +116,17 @@ void PuppetMaster::initManager()
 
 void PuppetMaster::checkComponents()
 {
-    compDebug("================ CHECK");
 
 #ifdef HAS_SD_WING
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
+    
+    OSCMessage msg2("/sequences");
+    msg2.add(BOARD_NAME.c_str());
+    for (auto seq : fileMgr.sequences) msg2.add(seq.c_str());
+    osc.sendMessage(msg2);
 #endif
 
 #ifdef HAS_MOTORWING
@@ -191,12 +195,12 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     {
         float value = abs(command.getFloat(1));
         if (command.getInt(0) == 2)
-            for (int i = 0; i < 4 ; i++)
+            for (int i = 0; i < 6 ; i++)
                 led.setColor(0, i, 0, value*255, 0);
                 
         if (command.getInt(0) == 1)
-            for (int i = 4; i < 8 ; i++)
-                led.setColor(0, i, 0, value*255, 0);
+            for (int i = 6; i < 12 ; i++)
+                led.setColor(0, i, 0, 0, value*255);
     }            
 #endif
 
