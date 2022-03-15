@@ -3,6 +3,7 @@
 #include "../utils/EventBroadcaster.h"
 
 #include <WiFi.h>
+#include <ArduinoOTA.h>
 
 enum WifiConnectionState
 {
