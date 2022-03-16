@@ -168,4 +168,9 @@ float StepperMotor::maxSpeed()
 {
    return stepper->maxSpeed();
 }
+
+// float StepperMotor::acceleration()
+// {
+//    return stepper->acceleration();
+// }
 #endif

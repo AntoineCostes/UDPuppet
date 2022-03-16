@@ -129,6 +129,7 @@ void PuppetMaster::checkComponents()
     osc.sendMessage(msg2);
 #endif
 
+// FIXME /dc/0
 #ifdef HAS_MOTORWING
     for (auto &pair : motorwing.dcMotors)
     {
@@ -137,6 +138,27 @@ void PuppetMaster::checkComponents()
         msg.add(BOARD_NAME.c_str());
         msg.add(pair.second->getMaxSpeed());
         osc.sendMessage(msg);
+    }
+    
+    for (auto &pair : motorwing.steppers)
+    {
+        compDebug("check stepper");
+        String addr = "/stepper/"+String(int(pair.first))+"/maxspeed";
+        OSCMessage msg(addr.c_str());
+        msg.add(BOARD_NAME.c_str());
+        msg.add(pair.second->maxSpeed());
+        osc.sendMessage(msg);
+        
+        compDebug(String(pair.second->maxSpeed()));
+
+       // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
+        // String addr2 = "/stepper/"+String(int(pair.first)+"/acceleration");
+        // OSCMessage msg2(addr.c_str());
+        // msg2.add(BOARD_NAME.c_str());
+        // msg2.add(pair.second->acceleration());  // FIXME acceleration la même pour AccelStepper et StepperMotor ou pas ?
+        // osc.sendMessage(msg2);
+        
+        // compDebug(String(pair.second->acceleration()));
     }
 #endif
 

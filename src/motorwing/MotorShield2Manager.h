@@ -63,7 +63,7 @@ public:
   void dcStopAll();
   void dcMaxSpeed(DCPort port, int value);
   std::map<DCPort, DCMotor*> dcMotors;
-
+  std::map<byte, StepperMotor *> steppers;
 
 protected:
   Adafruit_MotorShield AFMS;
@@ -72,7 +72,6 @@ protected:
   long lastEventTime;
   long lastEventPos;
 
-  std::map<byte, StepperMotor *> steppers;
   // std::map<byte, Adafruit_DCMotor *> dc;
 
 private:

@@ -29,7 +29,7 @@ public:
   long currentPosition();
   float currentSpeed();
   float maxSpeed();
-  float acceleration();
+  // float acceleration(); 
 
 protected:
   AccelStepper* stepper;

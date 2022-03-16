@@ -65,10 +65,10 @@ function oscEvent(address, args)
   {
   local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
   // TODO the prop should send this parameters instead (checkComponents + ParameterEvent )
-  stop();
-  resetPosition();
-  setMaxSpeed();
-  setAcceleration();
+  //stop();
+  //resetPosition();
+  //setMaxSpeed();
+  //setAcceleration();
 }
   if (address == "/battery")
   {
@@ -81,6 +81,14 @@ function oscEvent(address, args)
     local.values.positionTours.set(pos);
     var relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
     local.parameters.positionRelative.set(relPos);
+  }
+  if (address == "/stepper/0/maxspeed")
+  {
+    local.parameters.vitesseMax.set(args[1]*0.1/REVOLUTION_STEPS);
+  }
+  if (address == "/stepper/0/acceleration")
+  {
+    local.parameters.acceleration.set(args[1]*0.01/REVOLUTION_STEPS);
   }
 }
 
