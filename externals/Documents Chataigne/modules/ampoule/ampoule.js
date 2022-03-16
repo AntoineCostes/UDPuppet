@@ -1,7 +1,7 @@
 
 function init() {
-  local.parameters.batterie.set(false);
-  local.parameters.carteSDDetectee.set(false);
+  local.values.batterie.set(false);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
@@ -13,6 +13,7 @@ function update()
 // TODO set defaults PARAMETERS
 function yo()
 {
+  local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
 local.sendTo("192.168.2.255", 9000, "/yo", 0);
@@ -88,11 +89,11 @@ function oscEvent(address, args)
 
   if (address == "/battery")
   {
-      local.parameters.batterie.set(args[1]);
+      local.values.batterie.set(args[1]);
   }
   if (address == "/sd")
   {
-      local.parameters.carteSDDetectee.set(args[1]>0);
+      local.values.carteSDDetectee.set(args[1]>0);
   }
 }
 

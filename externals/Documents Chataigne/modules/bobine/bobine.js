@@ -3,19 +3,20 @@ var REVOLUTION_STEPS = 225;
 // TODO set revolution steps in firmware ?
 
 function init() {
-  local.parameters.batterie.set(0);
-  local.parameters.carteSDDetectee.set(false);
+  local.values.batterie.set(0);
+  local.values.carteSDDetectee.set(false);
   local.parameters.vitesse.setAttribute("alwaysNotify", true);
   yo();
 }
 
 function yo()
 {
-local.sendTo("192.168.0.255", 9000, "/yo", 0);
-local.sendTo("192.168.1.255", 9000, "/yo", 0);
-local.sendTo("192.168.2.255", 9000, "/yo", 0);
-local.sendTo("192.168.10.255", 9000, "/yo", 0);
-local.sendTo("192.168.43.255", 9000, "/yo", 0);
+  local.send("/yo", 0);
+  local.sendTo("192.168.0.255", 9000, "/yo", 0);
+  local.sendTo("192.168.1.255", 9000, "/yo", 0);
+  local.sendTo("192.168.2.255", 9000, "/yo", 0);
+  local.sendTo("192.168.10.255", 9000, "/yo", 0);
+  local.sendTo("192.168.43.255", 9000, "/yo", 0);
 }
 
 function moduleParameterChanged(param)
@@ -71,7 +72,7 @@ function oscEvent(address, args)
 }
   if (address == "/battery")
   {
-    local.parameters.batterie.set(args[1]);
+    local.values.batterie.set(args[1]);
   }
   if (address == "/stepper/pos")
   {

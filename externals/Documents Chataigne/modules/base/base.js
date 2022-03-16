@@ -1,8 +1,8 @@
 var REVOLUTION_STEPS = 2050;
 
 function init() {
-  local.parameters.batterie.set(0);
-  local.parameters.carteSDDetectee.set(false);
+  local.values.batterie.set(0);
+  local.values.carteSDDetectee.set(false);
   yo();
 }
 
@@ -15,6 +15,7 @@ function update()
 // TODO set defaults PARAMETERS
 function yo()
 {
+local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
 local.sendTo("192.168.2.255", 9000, "/yo", 0);
@@ -44,10 +45,14 @@ function moduleParameterChanged(param)
   {
     local.send("/stepper/maxspeed", 0, 1.0*param.get());
   }
-  //if (value.name == "stopRotation")
-//  {
-//    local.send("/stepper/speedrel", 0, 0);
-//  }
+  if (param.name == "setHome")
+  {
+    setHome();
+  }
+  if (param.name == "goHome")
+  {
+    goHome();
+  }
 }
 
 // VALUES
@@ -67,15 +72,19 @@ function oscEvent(address, args)
 
   if (address == "/battery")
   {
-      local.parameters.batterie.set(args[1]);
+      local.values.batterie.set(args[1]);
   }
   if (address == "/sd")
   {
-      local.parameters.carteSDDetectee.set(args[1]>0);
+      local.values.carteSDDetectee.set(args[1]>0);
   }
   if (address == "/stepper/pos")
   {
-      local.values.positionStepper.set(args[1]/REVOLUTION_STEPS);
+    local.values.positionPas.set(args[1]);
+    var pos = args[1]/REVOLUTION_STEPS;
+    local.values.positionTours.set(pos);
+    //var relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
+    //local.parameters.positionRelative.set(relPos);
   }
 }
 
@@ -113,6 +122,16 @@ function stepperMove(val) {
 function setRotationSpeed(val) {
   script.log("Set rotation speed: " + val);
   local.parameters.vitesseRotation.set(val);
+}
+
+function setHome() {
+  local.send("/stepper/reset", 0);
+  local.values.positionTours.set(0);
+  local.values.positionPas.set(0);
+}
+
+function goHome() {
+  local.send("/stepper/go", 0,0);
 }
 
 function playSequence(name, fps) {
