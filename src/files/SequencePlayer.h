@@ -49,7 +49,12 @@ public:
 
   void startSequence(float atTime);
 
-void stopPlaying();
+  void tryPlaySequence(String path);
+  int numFailed;
+
+  void playSequence(String path);
+
+  void stopPlaying();
   
   bool handleCommand(OSCMessage &command) override;
 
@@ -61,6 +66,7 @@ protected:
   void seek(float t);
 
   File curFile;
+  String curSequenceName;
   long lastPlayerMs;
 
   int fps;

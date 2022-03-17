@@ -138,10 +138,29 @@ function resetPosition() {
   local.parameters.positionRelative.set(relPos);
 }
 
+function tryPlaySequence(name, fps) {
+  local.send("/player/try", name, fps);
+}
+
 function playSequence(name, fps) {
   local.send("/player/play", name, fps);
+  // in case of network issues
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
 }
 
 function stopSequence() {
-  local.send("/player/stop");
+// in case of network issues
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
 }

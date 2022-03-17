@@ -12,9 +12,10 @@ function update()
   local.parameters.pied.set(local.parameters.pied.get() + local.parameters.vitessePied.get()*0.0001);
 }
 
-// TODO set defaults PARAMETERS
 function yo()
 {
+// FIXME set and hide osc parameters in module.json, broken in 1.9.4
+//local.parameters.oscOutputs.oscOutput.local.set(false);
 local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
@@ -22,6 +23,7 @@ local.sendTo("192.168.2.255", 9000, "/yo", 0);
 local.sendTo("192.168.10.255", 9000, "/yo", 0);
 local.sendTo("192.168.43.255", 9000, "/yo", 0);
 }
+
 // PARAMETERS
 function moduleParameterChanged(param)
 {
@@ -134,10 +136,29 @@ function goHome() {
   local.send("/stepper/go", 0,0);
 }
 
+function tryPlaySequence(name, fps) {
+  local.send("/player/try", name, fps);
+}
+
 function playSequence(name, fps) {
   local.send("/player/play", name, fps);
+  // in case of network issues
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
+  local.send("/player/try", name, fps);
 }
 
 function stopSequence() {
-    local.send("/player/stop");
+// in case of network issues
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
+local.send("/player/stop");
 }

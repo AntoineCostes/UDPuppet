@@ -1,7 +1,7 @@
 #include "SequencePlayer.h"
 
 #ifdef HAS_SD_WING
-SequencePlayer::SequencePlayer() : Manager("player"), fps(30)
+SequencePlayer::SequencePlayer() : Manager("player"), fps(30), curSequenceName("")
 {
   intParameters["fps"] = fps;
   serialDebug = SEQUENCE_DEBUG;
@@ -41,11 +41,11 @@ void SequencePlayer::update()
 
 void SequencePlayer::loadSequence(String path)
 {
-  compDebug("loading sequence file..");
+  compDebug("loading sequence file...");
   curFile = FileManager::openFile(path + ".dat", false); //false is for reading
   if (!curFile)
   {
-    compError("playing file " + path + ".dat");
+    compError("could not load file " + path + ".dat");
   }
   else
   {
@@ -54,6 +54,7 @@ void SequencePlayer::loadSequence(String path)
     curTimeMs = 0;
     isPlaying = false;
     compDebug("File loaded, " + String(totalBytes) + " bytes" + ", " + String(totalTime) + " time");
+    curSequenceName = path;
   }
 }
 
@@ -72,6 +73,25 @@ void SequencePlayer::startSequence(float atTime)
   prevTimeMs = millis();
 
   sendEvent(PlayerEvent(PlayerEvent::Start));
+}
+
+void SequencePlayer::tryPlaySequence(String path)
+{
+  if (isPlaying && path.equals(curSequenceName))
+  {
+    compLog("sequence already playing !");
+    numFailed ++;
+    return;
+  }
+  playSequence(path);
+}
+
+void SequencePlayer::playSequence(String path)
+{
+  compLog("play sequence");
+  loadSequence(path);
+  startSequence(0);
+  numFailed = 0;
 }
 
 void SequencePlayer::stopPlaying()
@@ -179,9 +199,7 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
       char pstr[32];
       command.getString(0, pstr);
       String path = String(pstr);
-      compDebug("Will load and play " + path);
-      loadSequence(path);
-      startSequence(0);
+      playSequence(path);
       return true;
     } else if (checkCommandArguments(command, "si", true))
     {
@@ -191,9 +209,29 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
       char pstr[32];
       command.getString(0, pstr);
       String path = String(pstr);
-      compDebug("Will load and play " + path);
-      loadSequence(path);
-      startSequence(0);
+      playSequence(path);
+      return true;
+    }
+  }
+  if (address.equals("/player/try"))
+  {
+    compDebug("Received try play command");
+    if (checkCommandArguments(command, "s", false))
+    {
+      char pstr[32];
+      command.getString(0, pstr);
+      String path = String(pstr);
+      tryPlaySequence(path);
+      return true;
+    } else if (checkCommandArguments(command, "si", true))
+    {
+      int fps = command.getInt(1);
+      setFPS((byte)fps);
+
+      char pstr[32];
+      command.getString(0, pstr);
+      String path = String(pstr);
+      tryPlaySequence(path);
       return true;
     }
   }

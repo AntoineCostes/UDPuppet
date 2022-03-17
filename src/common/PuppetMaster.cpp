@@ -352,18 +352,14 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 #ifdef HAS_SD_WING
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 {
-    switch (e.type)
-    {
-    case PlayerEvent::NewFrame:
-        break;
-
-    case PlayerEvent::Stop:
-        break;
-    }
-
-    //compDebug("Got Sequence Event : "+String(e.type));
+    
     if (e.type == PlayerEvent::NewFrame)
     {
+    OSCMessage msg("/failed");
+    msg.add(BOARD_NAME.c_str());
+    msg.add(player.numFailed);
+    osc.sendMessage(msg);
+
 //compDebug("Got new frame ! "+String((int)e.data[0]));
 #ifdef AMPOULE
         led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
