@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Gaillac22-1.3.2",
+      "default":"Gaillac22-1.3.3",
       "readOnly":true
     },
     "Invocation":

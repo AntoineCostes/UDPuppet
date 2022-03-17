@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Gaillac22-1.3.2",
+      "default":"Gaillac22-1.3.3",
       "readOnly":true
     },
     "Invocation":
@@ -192,7 +192,7 @@
         }
       }
     },
-    "Modifier Rotation Absolue":
+    "Aller à":
     {
       "menu":"Position",
       "callback":"stepperGo",
@@ -201,11 +201,13 @@
         "Value":
         {
           "type":"Float",
+          "min":-1,
+          "max":1,
           "default":0
         }
       }
     },
-    "Modifier Rotation Relative":
+    "Tourner de":
     {
       "menu":"Position",
       "callback":"stepperMove",
@@ -214,6 +216,8 @@
         "Value":
         {
           "type":"Float",
+          "min":-1,
+          "max":1,
           "default":0
         }
       }
