@@ -48,6 +48,14 @@ function moduleParameterChanged(param)
   {
     local.send("/led/debug", 0, param.get());
   }
+  if (address == "/sequences")
+  {
+    local.parameters.sequences.removeOptions();
+    for (var i = 1; i < args.length; i++)
+    {
+      local.parameters.sequences.addOption(args[i], i - 1);
+    }
+  }
 }
 
 function sendColorValue()
