@@ -11,6 +11,7 @@ function init() {
 
 function yo()
 {
+  local.parameters.oscOutputs.oscOutput.local.set(false);
   local.send("/yo", 0);
   local.sendTo("192.168.0.255", 9000, "/yo", 0);
   local.sendTo("192.168.1.255", 9000, "/yo", 0);

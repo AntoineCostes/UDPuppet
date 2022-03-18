@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.3.2",
+  "version":"1.3.4",
   "description":"Contrôle simplifiée d\'une corbeille animatronique ",
 
 
@@ -25,7 +25,7 @@
 			"OSC Output":
       {
         "local":false,
-        "remoteHost":" ",
+        "remoteHost":"non détectée",
         "remotePort":9000
       }
     }
@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Gaillac22-1.3.3",
+      "default":"Gaillac22-1.3.4",
       "readOnly":true
     },
     "Invocation":
@@ -74,7 +74,7 @@
     }
   },
 
-  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "oscInput/localPort", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
 
   "scripts":
   [

@@ -12,8 +12,7 @@ function update()
 
 function yo()
 {
-// FIXME set and hide osc parameters in module.json, broken in 1.9.4
-//local.parameters.oscOutputs.oscOutput.local.set(false);
+local.parameters.oscOutputs.oscOutput.local.set(false);
 local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
