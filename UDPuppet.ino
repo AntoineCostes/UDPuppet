@@ -61,6 +61,7 @@ void setup()
 #ifdef BOBINE
   master.led.registerLedStrip(0, 23, 10, NEO_GRB + NEO_KHZ800);
   master.motorwing.registerShieldv2Stepper(0, 200, MotorShield2Manager::StepperPort::M3_M4);
+ //master.motorwing.registerStepper(0, 21, 17);
 #endif
 
 #ifdef CORBEILLE

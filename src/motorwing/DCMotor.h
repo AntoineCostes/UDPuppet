@@ -2,7 +2,7 @@
 #include "../common/Component.h"
 
 #ifdef HAS_MOTORWING
-#include <Adafruit_MotorShield.h>
+#include "Adafruit_Motor_Shield_V2_Library/Adafruit_MotorShield.h"
 
 class DCMotor : public Component
 {

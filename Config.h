@@ -2,15 +2,16 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
-//#define COSTES
+//#define SANS_GRAVITE
+#define COSTES
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
 //#define BASE
-//#define BOBINE
-#define CORBEILLE
+#define BOBINE
+//#define CORBEILLE
 //#define ROOMBA
+//#define TEST
 
 
 // WIFI PARAMETERS
@@ -39,6 +40,8 @@ enum BoardType
 #include "config/sansgravite/Bobine.h"
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
+#elif defined(TEST)
+#include "config/sansgravite/Test.h"
 #elif defined(ROOMBA)
 #include "config/Roomba.h"
 #endif
@@ -62,14 +65,14 @@ const bool OSC_DEBUG = false;
 const long BATTERY_TIMOUT_MS = 5000;
 
 // PLAYER PARAMETERS
-const bool SEQUENCE_DEBUG = true;
+const bool SEQUENCE_DEBUG = false;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
 const long LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
-const bool SERVO_DEBUG = true;
+const bool SERVO_DEBUG = false;
 const int SERVO_MAX = 180;
 const bool SERVO_ALLOW_UNSAFE_PINS = false;
 

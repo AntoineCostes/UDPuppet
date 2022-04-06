@@ -5,7 +5,6 @@
 #include "../utils/EventBroadcaster.h"
 
 #ifdef HAS_MOTORWING
-#include <Adafruit_MotorShield.h>
 
 class StepperEvent
 {
@@ -48,6 +47,7 @@ public:
   // TODO handle I2C address, step type
   void registerShieldv2Stepper(byte index, int steps, StepperPort port);
   void registerStepper(byte index, byte pin1, byte pin2, byte pin3, byte pin4);
+  void registerStepper(byte index, byte step, byte dir);
   void stepperGoTo(byte index, long value);
   void stepperGoToFromStart(byte index, long value);
   void stepperMove(byte index, long value);

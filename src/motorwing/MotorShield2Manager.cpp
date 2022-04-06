@@ -165,6 +165,28 @@ void MotorShield2Manager::registerStepper(byte index, byte pin1, byte pin2, byte
     registerStepper(index, pin1 | pin2 | pin3 | pin4, new AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4));
 }
 
+void MotorShield2Manager::registerStepper(byte index, byte step, byte dir)
+{
+    if (!checkInit())
+        return;
+
+    // TODO replace with registerPins
+    std::set<int> pins{step, dir};
+
+    for (int pin : pins)
+    {
+        if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
+        {
+            compError("cannot register stepper: " + String(pin) + " is already used !");
+            return;
+        }
+        Component::forbiddenPins.insert(pin);
+    }
+
+    // FIXME id not safe
+    registerStepper(index, step | dir, new AccelStepper(AccelStepper::FULL2WIRE, step ,dir));
+}
+
 void MotorShield2Manager::registerShieldv2Stepper(byte index, int steps, StepperPort port)
 {
     if (!checkInit())
