@@ -2,8 +2,8 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-//#define SANS_GRAVITE
-#define COSTES
+#define SANS_GRAVITE
+//#define COSTES
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
