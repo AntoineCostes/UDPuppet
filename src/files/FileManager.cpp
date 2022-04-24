@@ -1,29 +1,18 @@
 #include "FileManager.h"
 
-#ifdef HAS_SD_WING
-bool FileManager::sdIsDetected = false;
-SPIClass FileManager::spiSD(HSPI);
 
-FileManager::FileManager() : Manager("files"),
-                             isUploading(false)
-                             #ifdef HAS_WEBSERVER
-                             ,
-                             serverIsEnabled(false),
-                             server(80)
-                             #endif
+#ifdef HAS_ADALOGGER_WING
+bool FileManager::sdIsDetected = false; // TODO replace with initialized ?
+#endif
+
+FileManager::FileManager() : Manager("files")
 {
-    #ifdef HAS_WEBSERVER
-    server.onNotFound(std::bind(&FileManager::handleNotFound, this));
-    server.on("/upload", HTTP_POST, std::bind(&FileManager::returnOK, this), std::bind(&FileManager::handleFileUpload, this));
-    #endif
     serialDebug = MASTER_DEBUG;
 }
 
 void FileManager::init()
 {
-    if (sdIsDetected)
-        return;
-
+    #ifdef HAS_ADALOGGER_WING
     std::set<int> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
     if (!Component::registerPins(pins))
     {
@@ -31,37 +20,51 @@ void FileManager::init()
         return;
     }
 
-    pinMode(SD_SCK, INPUT_PULLUP);
-    pinMode(SD_MISO, INPUT_PULLUP);
-    pinMode(SD_MOSI, INPUT_PULLUP);
-    pinMode(SD_CS, INPUT_PULLUP);
-
-    spiSD.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
-
-    if (SD.begin(SD_CS, spiSD, SDSPEED))
+    if (SD.begin(SD_CS))
     {
-        DBG("SD Card initialized.");
+        Serial.println("SD Card initialized.");
         listDir("/", 0);
         sdIsDetected = true;
     }
     else
     {
-        DBG("SD Card Initialization failed.");
+        Serial.println("SD Card Initialization failed.");
+        return;
     }
-    #ifdef HAS_WEBSERVER
-    initServer();
+    #else
+    if(SPIFFS.begin())// Start the SPI Flash Files System
+    {
+        Serial.println("SPIFFS initialized.");
+        listDir("/", 0);
+    } else
+    {
+        Serial.println("Error initializing SPIFFS");
+
+        Serial.println("Trying to format...");
+        if(SPIFFS.format())
+        {
+            Serial.println("File System Formated");
+            if(SPIFFS.begin())// Start the SPI Flash Files System
+            {
+                Serial.println("SPIFFS initialized.");
+                listDir("/", 0);
+            } else return;
+        }
+        else
+        {
+            Serial.println("File System Formatting Error");
+            return;
+        }
+    }
     #endif
+    Manager::initManager();
 }
 
 void FileManager::update()
 {
-    #ifdef HAS_WEBSERVER
-    if (!serverIsEnabled)
-        return;
-    server.handleClient();
-    #endif
 }
 
+// TODO make singleton to alert when not initialized
 File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists)
 {
     if (forWriting && deleteIfExists)
@@ -70,48 +73,65 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
     if (!fileName.startsWith("/"))
         fileName = "/" + fileName;
 
+    #ifdef HAS_ADALOGGER_WING
     File f = SD.open(fileName.c_str(), forWriting ? FILE_WRITE : FILE_READ);
-    DBG("Open file : " + String(f.name()));
+    #else
+    File f = SPIFFS.open(fileName.c_str(), forWriting ? "w" : "r");
+    #endif
+    
+    Serial.println("Open file : " + String(f.name()));
     return f;
 }
 
 void FileManager::deleteFileIfExists(String path)
 {
-    if (!sdIsDetected)
-        return;
-
+    #ifdef HAS_ADALOGGER_WING
     if (SD.exists(path.c_str()))
     {
         SD.remove(path.c_str());
-        DBG("Removed file " + path);
+        Serial.println("Removed file " + path);
     }
+    #else
+    if (SPIFFS.exists(path))
+    {
+        SPIFFS.remove(path);
+        Serial.println("Removed file " + path);
+    }
+    #endif
 }
 
 void FileManager::listDir(const char *dirname, uint8_t levels)
 {
-
+    #ifdef HAS_ADALOGGER_WING
     File root = SD.open(dirname);
+    #else
+    #ifdef ESP32
+    File root = SPIFFS.open(dirname, "r");
+    #elif defined(ESP8266)
+    // FIXME SPIFFS does not work ?
+    File root = SPIFFS.open(dirname, "r"); 
+    #endif
+    #endif
 
     if (!root)
     {
-        DBG("Failed to open directory");
+        Serial.println("Failed to open directory");
         return;
     }
 
     if (!root.isDirectory())
     {
-        DBG("Not a directory");
+        Serial.println("Not a directory");
         return;
     }
     
-    if (levels == 0) sequences.clear();
-
+    sequences.clear();
     File file = root.openNextFile();
     while (file)
     {
         if (file.isDirectory())
         {
-            DBG("  DIR : " + String(file.name()));
+            Serial.println("  DIR : " + String(file.name()));
             if (levels)
             {
                 listDir(file.name(), levels - 1);
@@ -119,8 +139,8 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         }
         else
         {
-            DBG("  FILE: " + String(file.name()));
-            DBG("  SIZE: " + String(file.size()));
+            Serial.println("  FILE: " + String(file.name()));
+            Serial.println("  SIZE: " + String(file.size()));
             
             String fileName = String(file.name());
             if (fileName.endsWith(".dat"))
@@ -131,121 +151,3 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         file = root.openNextFile();
     }
 }
-
-#ifdef HAS_WEBSERVER
-void FileManager::initServer()
-{
-    server.begin();
-    DBG("HTTP server started");
-    serverIsEnabled = true;
-}
-
-void FileManager::closeServer()
-{
-    server.close();
-    DBG("HTTP server closed");
-    serverIsEnabled = false;
-}
-
-void FileManager::handleFileUpload()
-{
-    if (server.uri() != "/upload")
-    {
-        return;
-    }
-
-    HTTPUpload &upload = server.upload();
-
-    if (upload.status == UPLOAD_FILE_START)
-    {
-        uploadedBytes = 0;
-        //totalBytes = server.header("Content-Length").toInt();
-
-        uploadingFile = openFile(upload.filename, true, true);
-        if (uploadingFile)
-        {
-            var data;
-            data.type = 's';
-            data.value.s = (char *)uploadingFile.name();
-            sendEvent(FileEvent(FileEvent::UploadStart, data));
-        }
-        else
-        {
-            DBG("ERROR WHEN CREATING THE FILE");
-        }
-
-        isUploading = true;
-    }
-    else if (upload.status == UPLOAD_FILE_WRITE)
-    {
-        if (uploadingFile)
-        {
-            if (uploadedBytes == 0 && upload.buf[0] == 13 && upload.buf[1] == 10)
-            {
-                DBG("Remove new line nonsense");
-                uploadingFile.write(upload.buf + 2, upload.currentSize - 2);
-            }
-            else
-            {
-                uploadingFile.write(upload.buf, upload.currentSize);
-            }
-
-            uploadedBytes += upload.currentSize;
-            float p = uploadedBytes * 1.0f / 1000000;
-            if (uploadedBytes % 8000 < 4000)
-            {
-                var data;
-                data.type = 'f';
-                data.value.f = p;
-                sendEvent(FileEvent(FileEvent::UploadProgress, data));
-            }
-        }
-    }
-    else if (upload.status == UPLOAD_FILE_END)
-    {
-
-        if (uploadingFile)
-        {
-            String n = uploadingFile.name();
-            DBG("Upload total size " + String(upload.totalSize) + " < > " + String(uploadingFile.size()));
-            uploadingFile.close();
-
-            var data;
-            data.type = 's';
-            data.value.s = (char *)uploadingFile.name();
-            sendEvent(FileEvent(FileEvent::UploadComplete, data));
-            isUploading = false;
-        }
-        else
-        {
-            DBG("Upload finish ERROR");
-            isUploading = false;
-        }
-    }
-    else if (upload.status == UPLOAD_FILE_ABORTED)
-    {
-        DBG("ABOORT !!!!!!!!!!");
-        uploadingFile.close();
-        isUploading = false;
-    }
-}
-
-void FileManager::returnOK()
-{
-    server.send(200, "text/plain", "ok");
-}
-
-void FileManager::returnFail(String msg)
-{
-    DBG("Failed here");
-    server.send(500, "text/plain", msg + "\r\n");
-}
-
-void FileManager::handleNotFound()
-{
-    DBG("Not found here");
-    server.send(404, "text/plain", "[notfound]");
-}
-#endif // HAS_WEBSERVER
-
-#endif // HAS_SD_WING

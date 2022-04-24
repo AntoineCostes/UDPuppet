@@ -4,20 +4,17 @@
 // Adafruit_NeoPixel.h
 // OSCMessage.h
 // ESP32Servo.h
-// Adafruit_MotorShield.h (v2)
-// AccelStepper.h (modified)
-// SPI.h
-// SD.h
-// FS.h
-// WebServer.h
+// ESPAsyncWebServer.h
+// AsyncTCP
+// ESPAsyncTCP
+// ESPmDNS
+// ESP8266mDNS
+// ArduinoOTA
 
 // TODO remove index
 // TODO local libs
-// TODO filemanager server
-// TODO OTA
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
-
 
 PuppetMaster master;
 long lastLoopTime = 0;
@@ -31,17 +28,30 @@ void setup()
 
   master.initManager(); // TODO make singleton and rename ?
 
-#ifdef TEST
-  master.led.setBrightness(0.3f);
-  //                            index, pin, nbLeds, ledType
-  master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
+#ifdef CHANTDRIER
+  master.servo.registerServo(0, 0, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+  master.servo.registerServo(1, 1, 0.0f, 0.5f, 0.1f); // index, pin, min, max, start
+  master.servo.registerServo(2, 2, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+  master.servo.registerServo(3, 3, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+#endif
+
+#ifdef CAMEMBERT
+#ifdef ESP32
+  master.servo.registerServo(0, 27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
+  master.servo.setServoInverse(0, true);
+  // master.servo.registerServo(0, 27, 140, 80, 139); // index, pin, min, max, start
+#else
+  // master.servo.registerServo(0, 14, 140, 50, 139); // index, pin, min, max, start
+#endif
 #endif
 
 #ifdef AMPOULE
   // couleur
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
+  // master.led.registerLedStrip(0, 21, 10, NEO_RGB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // rotation tête
   master.servo.registerServo(0, 15, 0, 180, 90); // index, pin, min, max, start
+  // master.servo.registerServo(0, 23, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
 #endif
 
 #ifdef BASE
@@ -87,7 +97,7 @@ void loop()
   if (millis() == lastLoopTime)
   {
     delay(1);
-    lastLoopTime = millis();
   }
+  lastLoopTime = millis();
   
 }

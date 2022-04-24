@@ -2,13 +2,12 @@
 #pragma once
 #include "../common/Component.h"
 
-#ifdef HAS_SERVO
 #include <ESP32Servo.h>
 
 class ServoMotor : public Component
 {
 public:
-    ServoMotor(byte pin, byte min, byte max, byte start);
+    ServoMotor(int pin, int min, int max, int start);
 
     void initComponent(bool serialDebug);
     void update();
@@ -18,7 +17,10 @@ public:
     void setRel(float value);
     void setMin(int value);
     void setMax(int value);
-    void setStart();
+    void setMin(float value);
+    void setMax(float value);
+    void setInverse(bool value);
+    void setStart(int value);
 
   // enum ServoMode
   // {
@@ -30,8 +32,4 @@ public:
 protected:
     Servo servo;
     int pin;
-    int min;
-    int max;
-    int start;
 };
-#endif

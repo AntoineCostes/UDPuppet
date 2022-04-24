@@ -1,4 +1,8 @@
 var REVOLUTION_STEPS = 2050;
+var neckSpeed = 0;
+var ghostNeck = 0.5;
+var footSpeed = 0;
+var ghostFoot = 0.5;
 
 function init() {
   local.values.batterie.set(0);
@@ -8,8 +12,17 @@ function init() {
 
 function update()
 {
-  local.parameters.cou.set(local.parameters.cou.get() + local.parameters.vitesseCou.get()*0.0001);
-  local.parameters.pied.set(local.parameters.pied.get() + local.parameters.vitessePied.get()*0.0001);
+  if ((neckSpeed > 0 && ghostNeck < 1.0) || (neckSpeed < 0 && ghostNeck > 0.0))
+  {
+    ghostNeck += neckSpeed *0.001;
+    setNeck(ghostNeck);
+  }
+
+  if ((footSpeed > 0 && ghostFoot < 1.0) || (footSpeed < 0 && ghostFoot > 0.0))
+  {
+    ghostFoot += footSpeed *0.001;
+    setFoot(ghostFoot);
+  }
 }
 
 function yo()
@@ -28,19 +41,8 @@ function moduleParameterChanged(param)
 {
   if (param.name == "invocation")
   {
+    local.parameters.ip.set("");
     yo();
-  }
-  if (param.name == "cou")
-  {
-    local.send("/servo", 0, param.get());
-  }
-  if (param.name == "pied")
-  {
-    local.send("/servo", 1, 1 - param.get());
-  }
-  if (param.name == "vitesseRotation")
-  {
-    local.send("/stepper/speedrel", 0, param.get());
   }
   if (param.name == "vitesseMaxRotation")
   {
@@ -53,14 +55,6 @@ function moduleParameterChanged(param)
   if (param.name == "goHome")
   {
     goHome();
-  }
-  if (address == "/sequences")
-  {
-    local.parameters.sequences.removeOptions();
-    for (var i = 1; i < args.length; i++)
-    {
-      local.parameters.sequences.addOption(args[i], i - 1);
-    }
   }
 }
 
@@ -95,27 +89,35 @@ function oscEvent(address, args)
     //var relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
     //local.parameters.positionRelative.set(relPos);
   }
+  if (address == "/sequences")
+  {
+    local.parameters.sequences.removeOptions();
+    for (var i = 1; i < args.length; i++)
+    {
+      local.parameters.sequences.addOption(args[i], i - 1);
+    }
+  }
 }
 
 // COMMANDS
 function setNeck(val) {
   script.log("Set cou: " + val);
-  local.parameters.cou.set(val);
+    local.send("/servo", 0, val);
 }
 
 function rotateNeck(val) {
   script.log("Set vitesse cou: " + val);
-  local.parameters.vitesseCou.set(val);
+  neckSpeed = val;
 }
 
 function setFoot(val) {
   script.log("Set pied: " + val);
-  local.parameters.pied.set(val);
+  local.send("/servo", 1, 1 - val);
 }
 
 function rotateFoot(val) {
   script.log("Set vitesse pied: " + val);
-  local.parameters.vitessePied.set(val);
+  footSpeed = val;
 }
 
 function stepperGo(val) {
@@ -130,7 +132,7 @@ function stepperMove(val) {
 
 function setRotationSpeed(val) {
   script.log("Set rotation speed: " + val);
-  local.parameters.vitesseRotation.set(val);
+    local.send("/stepper/speedrel", 0, val);
 }
 
 function setHome() {

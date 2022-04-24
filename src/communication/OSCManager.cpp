@@ -1,9 +1,8 @@
 #include "OSCManager.h"
 
-OSCManager::OSCManager(WifiManager *wifiMgr, String mDNSName) : Manager("osc"),
-                                                                wifi(wifiMgr),
-                                                                overrideTargetIp(TARGET_IP_OVERRIDE),
-                                                                mDNSName(mDNSName)
+OSCManager::OSCManager(WifiManager *wifiMgr) : Manager("osc"),
+                                                wifi(wifiMgr),
+                                                overrideTargetIp(TARGET_IP_OVERRIDE)
 {
     stringParameters["targetIp"] = OSC_TARGET_IP;
     serialDebug = OSC_DEBUG;
@@ -18,7 +17,7 @@ void OSCManager::initManager()
     wifi->addListener(std::bind(&OSCManager::gotWifiEvent, this, std::placeholders::_1));
 }
 
-// open UDP port and create mDNS service when network connection is successfull
+// open UDP port when network connection is successfull
 void OSCManager::gotWifiEvent(const WifiEvent &e)
 {
     switch (e.state)
@@ -51,18 +50,7 @@ void OSCManager::connect()
     udp.begin(OSC_LISTENING_PORT);
     udp.flush();
     lastSentPingMs = millis();
-
-    compLog("creating mDNS instance: " + mDNSName);
-    if (MDNS.begin(mDNSName.c_str()))
-    {
-        MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
-        compDebug("OSC Zeroconf service added sucessfully !");
-    }
-    else
-    {
-        sendEvent(OSCEvent(OSCEvent::Type::MDNS_ERROR));
-        compError("could not set up mDNS instance");
-    }
+    
     isConnected = true;
     sendEvent(OSCEvent(OSCEvent::Type::CONNECTED));
 }
@@ -75,7 +63,6 @@ void OSCManager::disconnect()
 
     udp.flush();
     udp.stop();
-    MDNS.end();
     isConnected = false;
 }
 
@@ -174,12 +161,14 @@ void OSCManager::pong()
     sendMessage(pongMsg);
 }
 
-void OSCManager::yo()
+void OSCManager::yo(String firmwareVersion)
 {
+    compLog("sending yo");
     OSCMessage answerMsg("/yo");
     answerMsg.add(BOARD_NAME.c_str());
     answerMsg.add(wifi->getIP().c_str());
     answerMsg.add(wifi->getMAC().c_str());
+    answerMsg.add(firmwareVersion.c_str());
     sendMessage(answerMsg);
 }
 

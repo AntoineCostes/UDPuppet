@@ -12,6 +12,7 @@ void WifiManager::initManager()
   lastDisconnectTime = millis();
   connectionState = DISCONNECTED;
   
+  #ifdef ESP32
   Preferences prefs;
   prefs.begin(name.c_str());
   if (OVERRIDE_NETWORK || !prefs.isKey("ssid") || !prefs.isKey("pass"))
@@ -26,12 +27,18 @@ void WifiManager::initManager()
     stringParameters["pass"] = prefs.getString("pass");
   }
   prefs.end();
+  #else 
+  stringParameters["ssid"] = WIFI_SSID;
+  stringParameters["pass"] = WIFI_PASSWORD;
+  #endif
 
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
   WiFi.setSleep(false);
+  #ifdef ESP32
   WiFi.setTxPower(WIFI_POWER_19dBm);
+  #endif 
 }
 
 void WifiManager::changeConnectionState(WifiConnectionState newState, WifiError compError)
@@ -137,6 +144,9 @@ void WifiManager::update()
     {
       compError("lost network !");
       changeConnectionState(WifiConnectionState::DISCONNECTED, WifiError::LOST);
+    } else
+    {
+      ArduinoOTA.handle();
     }
     break;
 

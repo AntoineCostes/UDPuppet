@@ -1,6 +1,7 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef ESP32
 class BatteryEvent
 {
 public:
@@ -32,3 +33,4 @@ protected:
     float normValue;
     float voltage;
 };
+#endif

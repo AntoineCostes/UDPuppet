@@ -5,7 +5,6 @@
 
 #include <OSCMessage.h>
 #include <WiFiUdp.h>
-#include <ESPmDNS.h>
 
 class OSCEvent
 {
@@ -16,7 +15,6 @@ public:
         GOT_PING,
         PING_ALIVE,
         DEAD_PING,
-        MDNS_ERROR,
         HANDSHAKE,
         COMMAND
     } type;
@@ -29,17 +27,16 @@ class OSCManager : public Manager,
                    public EventBroadcaster<OSCEvent>
 {
 public:
-    OSCManager(WifiManager *wifiMgr, String mDNSName);
+    OSCManager(WifiManager *wifiMgr);
 
     bool isConnected;
-    String mDNSName;
 
     void initManager();
     void update();
     void connect();
     void disconnect();
 
-    void yo();
+    void yo(String firmwareVersion);
     void pong();
 
     void sendMessage(OSCMessage &msg);

@@ -1,0 +1,50 @@
+{
+  "name":"TermAnimator",
+  "type":"HTTP",
+  "path":"Sans Gravité",
+
+  "version":"1.3.5",
+  "description":"Téléverseur de partitions animatroniques pour webserver SPIFFS (ça en jette hein ?)",
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "baseAddress":"http://camembert.local",
+    "autoAdd":false,
+  },
+
+  "parameters":
+  {
+    "File":
+    {
+      "type":"File",
+      "readOnly":true
+    },
+    "Version":
+    {
+      "type":"String",
+      "default":"Avril2022-1.3.5",
+      "readOnly":true
+    }
+  },
+
+  "hideDefaultParameters": ["autoAdd", "protocol", "clearValues", "authentication", "authentication/username", "authentication/password"],
+
+  "scripts":
+  [
+    "animator.js",
+    "manuel.js"
+  ],
+
+  "values":
+  {
+  },
+
+  "commands":
+  {
+  }
+}

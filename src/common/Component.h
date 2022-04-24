@@ -2,7 +2,9 @@
 #include "../../Config.h"
 
 #include <Arduino.h>
+#ifdef ESP32
 #include <Preferences.h>
+#endif
 #include <OSCMessage.h>
 
 #include <vector>
@@ -26,6 +28,8 @@ public:
     String name; // TODO const ?
 
     virtual void initComponent(bool serialDebug);
+    bool checkRange(String valueName, float value, float min, float max);
+    bool checkRange(String valueName, int value, int min, int max);
     bool checkInit();
     virtual void update() = 0;
 

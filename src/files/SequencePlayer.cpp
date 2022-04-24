@@ -1,6 +1,5 @@
 #include "SequencePlayer.h"
 
-#ifdef HAS_SD_WING
 SequencePlayer::SequencePlayer() : Manager("player"), fps(30), curSequenceName("")
 {
   intParameters["fps"] = fps;
@@ -18,6 +17,7 @@ void SequencePlayer::setFPS(byte value)
   intParameters["fps"] = (int)value;
   overrideFlashParameters();
 }
+
 void SequencePlayer::update()
 {
   if (!curFile)
@@ -42,10 +42,11 @@ void SequencePlayer::update()
 void SequencePlayer::loadSequence(String path)
 {
   compDebug("loading sequence file...");
-  curFile = FileManager::openFile(path + ".dat", false); //false is for reading
+  if (!path.endsWith(".dat")) path = path+".dat";
+  curFile = FileManager::openFile(path, false); //false is for reading
   if (!curFile)
   {
-    compError("could not load file " + path + ".dat");
+    compError("could not load file " + path);
   }
   else
   {
@@ -53,14 +54,15 @@ void SequencePlayer::loadSequence(String path)
     totalTime = bytePosToSeconds(totalBytes);
     curTimeMs = 0;
     isPlaying = false;
-    compDebug("File loaded, " + String(totalBytes) + " bytes" + ", " + String(totalTime) + " time");
-    curSequenceName = path;
+    compLog("File loaded, " + String(totalBytes) + " bytes" + ", " + String(totalTime) + " time");
+    curSequenceName = path.substring(0, path.lastIndexOf("."));
+    compLog("Name = "+curSequenceName);
   }
 }
 
 void SequencePlayer::startSequence(float atTime)
 {
-  compDebug("Play " + String(atTime));
+  compLog("Play " + String(atTime));
   if (!curFile)
     return;
 
@@ -105,15 +107,15 @@ void SequencePlayer::playFrame()
 
   if (curFile.available() == 0)
   {
-    compDebug("End of sequence");
+    compLog("End of sequence");
     if (doLoop)
     {
-      compDebug("Loop");
       startSequence(0);
     }
     else
     {
       isPlaying = false;
+      sendEvent(PlayerEvent(PlayerEvent::Ended));
       return;
     }
   }
@@ -122,7 +124,7 @@ void SequencePlayer::playFrame()
   prevTimeMs = mil;
 
   long fPos = curFile.position();
-  long pos = msToBytePos(curTimeMs); //curTimeMs * FRAME_SIZE * FPS / 1000;
+  long pos = msToBytePos(curTimeMs); // = curTimeMs * FRAME_SIZE * FPS / 1000;
 
   if (pos < 0)
     return;
@@ -152,7 +154,8 @@ void SequencePlayer::playFrame()
     compError("position is " + String(fPos) + ", expected " + String(pos));
   }
 
-  compDebug("Playing frame at position " + String(pos));
+  if (pos%100 < 4)
+    compDebug("Playing frame at position " + String(pos));
   curFile.read(frameData, FRAME_SIZE);
   sendEvent(PlayerEvent(PlayerEvent::NewFrame, frameData));
 
@@ -176,7 +179,7 @@ void SequencePlayer::seek(float t)
   }
   else if (!isPlaying)
   {
-    compDebug("seek not playing");
+    compLog("seek not playing");
     //setServo(0, map(curFile.read(), 0, 255, 0, 180));
   }
 }
@@ -189,7 +192,7 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
   char buf[32];
   command.getAddress(buf);
   String address = String(buf);
-  compLog("handle command: "+address);
+  compDebug("handle command: "+address);
 
   if (address.equals("/player/play"))
   {
@@ -251,4 +254,3 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
   }
   return false;
 }
-#endif //HAS_SD_WING

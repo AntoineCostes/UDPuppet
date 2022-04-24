@@ -1,16 +1,13 @@
 #include "ServoMotor.h"
 
-#ifdef HAS_SERVO
-ServoMotor::ServoMotor(byte pin, byte min, byte max, byte start) :
+ServoMotor::ServoMotor(int pin, int min, int max, int start) :
                         Component("servo_pin" + String(pin)),
-                        pin(pin),
-                        min(min),
-                        max(max),
-                        start(start)
+                        pin(pin)
 {
-  intParameters["min"] = (int)min;
-  intParameters["max"] = (int)max;
-  intParameters["start"] = (int)start;
+  intParameters["min"] = min;
+  intParameters["max"] = max;
+  intParameters["start"] = start;
+  boolParameters["inverse"] = false;
 }
 
 void ServoMotor::initComponent(bool serialDebug)
@@ -18,7 +15,7 @@ void ServoMotor::initComponent(bool serialDebug)
     //pinMode(pin, OUTPUT);
     servo.attach(pin);
     Component::initComponent(serialDebug);
-    setAbs(start);
+    setAbs(intParameters["start"]);
 }
 
 void ServoMotor::update()
@@ -28,23 +25,11 @@ void ServoMotor::update()
   // nothing
 }
 
-// void ServoMotor::set(int value)
-// {
-//   if (!checkInit()) return;
-
-//   if (value < min || value > max)
-//   {
-//     compError("incorrect absolute value: " + String(value));
-//     return;
-//   }
-//   servo.write(value);
-// }
-
 void ServoMotor::setAbs(int value)
 {
   if (!checkInit()) return;
 
-  if (value < min || value > max)
+  if (value < intParameters["min"] || value > intParameters["max"])
   {
     compError("incorrect absolute value: " + String(value));
     return;
@@ -62,43 +47,85 @@ void ServoMotor::setRel(float value)
     compError("incorrect relative value: " + String(value));
     return;
   }
-  int absVal = map(value * SERVO_MAX, 0, SERVO_MAX, min, max);
-  servo.write(absVal);
-  compDebug("set "+String(absVal));
+  compDebug("set rel"+String(value));
+  setAbs(intParameters["min"] + value*(intParameters["max"] - intParameters["min"]));
 }
 
-void ServoMotor::setStart()
+void ServoMotor::setStart(int value)
 {
   if (!checkInit()) return;
-  servo.write(start);
-  compDebug("set start");
+  
+  if (value < 0 || value > 180)
+  {
+    compError("can't set start, incorrect value: " + String(value));
+    return;
+  }
+
+  intParameters["start"] = value;
+  overrideFlashParameters();
+  setAbs(intParameters["start"]);
 }
 
 void ServoMotor::setMin(int value)
 {
   if (!checkInit()) return;
 
-  if (value < 0 || value >= max)
+  if (value < 0 || value >= intParameters["max"])
   {
     compError("can't set min, incorrect value: " + String(value));
     return;
   }
-  min = value;
   intParameters["min"] = value;
   overrideFlashParameters();
+  setRel(0.0f);
 }
 
 void ServoMotor::setMax(int value)
 {
   if (!checkInit()) return;
 
-  if (value < 0 || value <= min)
+  if (value < 0 || value <= intParameters["min"])
   {
     compError("can't set max, incorrect value: " + String(value));
     return;
   }
-  max = value;
   intParameters["max"] = value;
   overrideFlashParameters();
+  setRel(1.0f);
 }
-#endif
+
+void ServoMotor::setMin(float value)
+{
+  if (!checkInit()) return;
+
+  if (value < 0.0f || value > 1.0f)
+  {
+    compError("incorrect min relative value: " + String(value));
+    return;
+  }
+
+  setMin(int(180*value));
+  setAbs(0);
+}
+
+void ServoMotor::setMax(float value)
+{
+  if (!checkInit()) return;
+
+  if (value < 0.0f || value > 1.0f)
+  {
+    compError("incorrect max relative value: " + String(value));
+    return;
+  }
+
+  setMax(int(180*value));
+  setAbs(value);
+}
+
+void ServoMotor::setInverse(bool value)
+{
+  if (!checkInit()) return;
+
+  boolParameters["inverse"] = value;
+  overrideFlashParameters();
+}

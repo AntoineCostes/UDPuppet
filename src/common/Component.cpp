@@ -20,6 +20,26 @@ bool Component::checkInit()
     return initialized;
 }
 
+bool Component::checkRange(String valueName, int value, int min, int max)
+{
+  if (value < min || value > max)
+  {
+    compError("can't set " + valueName + ", value " + String(value) + " out of range [" + String(min) + ", " + String(max) + "].");
+    return false;
+  }
+  return true;
+}
+
+bool Component::checkRange(String valueName, float value, float min, float max)
+{
+  if (value < min || value > max)
+  {
+    compError("can't set " + valueName + ", value " + String(value) + "us out of range [" + String(min) + ", " + String(max) + "].");
+    return false;
+  }
+  return true;
+}
+
 bool Component::registerPin(int pin)
 {
     std::set<int> pins = {pin};
@@ -61,15 +81,18 @@ void Component::compError(String message)
 
 void Component::clearFlash()
 {
+    #ifdef ESP32
     Preferences preferences;
     compLog("clear flash memory");
     preferences.begin(name.c_str());
     preferences.clear();
     preferences.end();
+    #endif // ESP32
 }
 
 void Component::overrideFlashParameters()
 {
+    #ifdef ESP32
     Preferences preferences;
     compDebug("--- override parameters in flash memory");
     preferences.begin(name.c_str());
@@ -132,10 +155,12 @@ void Component::overrideFlashParameters()
 
     preferences.end();
     compDebug("---");
+    #endif // ESP32
 }
 
 void Component::readParamsFromFlash()
 {
+    #ifdef ESP32
     Preferences preferences;
     compDebug("--- retrieve parameters from flash memory");
     preferences.begin(name.c_str());
@@ -207,6 +232,7 @@ void Component::readParamsFromFlash()
     }
     preferences.end();
     compDebug("---");
+    #endif // ESP32
 }
 
 bool Component::checkCommandArguments(OSCMessage &command, String types, bool logError)

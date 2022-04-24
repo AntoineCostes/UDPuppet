@@ -1,0 +1,127 @@
+{
+  "name":"Chantdrier",
+  "type":"OSC",
+  "path":"UDPuppet",
+
+  "version":"1.4.0",
+  "description":"Contrôle d'une chorale de paquets de cigarette par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":12002
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"chantdrier.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Avril2022-1.4.0",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Sequences":
+    {
+      "type":"Enum"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "chantdrier.js",
+    "bake.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    }
+  },
+
+  "commands":
+  {
+    "Set servo":
+    {
+      "callback":"setServo",
+      "parameters":
+      {
+        "Index":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":3,
+          "default":0
+        },
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Set volume":
+    {
+      "callback":"setVolume",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        }
+      }
+    },
+      "Arrêter Sequence":
+      {
+        "callback":"stopSequence",
+        "parameters":
+        {
+        }
+      }
+  }
+}

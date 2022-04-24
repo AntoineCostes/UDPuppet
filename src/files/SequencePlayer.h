@@ -1,9 +1,8 @@
+#pragma once
 #include "../common/Manager.h"
 #include "FileManager.h"
 
-#ifdef HAS_SD_WING
-
-#define PLAYER_REFRESH 20
+#define PLAYER_REFRESH 30
 
 #ifdef AMPOULE
 #define FRAME_SIZE 4 // 1 pixel (RGB) + 1 servo
@@ -13,8 +12,12 @@
 #define FRAME_SIZE 1 // 1 stepper
 #elif defined CORBEILLE
 #define FRAME_SIZE 2 // 2 DC
-#elif defined TEST
-#define FRAME_SIZE 6 // 
+#elif defined CAMEMBERT
+#define FRAME_SIZE 1 // 1 servo 
+#elif defined CHANTDRIER
+#define FRAME_SIZE 4 // 4 servos 
+#else
+#define FRAME_SIZE 4 // TODO remove and compute automatically
 #endif
 
 
@@ -25,7 +28,8 @@ public:
     {
         Start,
         NewFrame,
-        Stop
+        Stop,
+        Ended
     };
 
     PlayerEvent(Type t, uint8_t * data = nullptr) : type(t), data(data) {}
@@ -59,7 +63,6 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
 protected:
-
   uint8_t frameData[FRAME_SIZE];
 
   void playFrame();
@@ -95,4 +98,3 @@ protected:
   int nbFrames = 0;
 
 }; 
-#endif // HAS_SD_WING

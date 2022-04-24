@@ -7,8 +7,8 @@ StepperMotor::StepperMotor(byte id, AccelStepper *stepper) : Component("stepper_
 {
     // TODO values in constructor ?
     // FIXME maximum values for motorwing ?
-    floatParameters["maxSpeed"] = 100; 
-    floatParameters["acceleration"] = 1000;
+    floatParameters["maxSpeed"] = 100.0f; 
+    floatParameters["acceleration"] = 1000.0f;
     mode = SPEED;
 }
 

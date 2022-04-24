@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h3>
+  Rebooting, returning to main page in <span id="countdown">30</span> seconds
+</h3>
+<script type="text/javascript">
+  var seconds = 20;
+  function countdown() {
+    seconds = seconds - 1;
+    if (seconds < 0) {
+      window.location = "/";
+    } else {
+      document.getElementById("countdown").innerHTML = seconds;
+      window.setTimeout("countdown()", 1000);
+    }
+  }
+  countdown();
+</script>
+</body>
+</html>

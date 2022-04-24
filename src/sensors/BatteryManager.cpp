@@ -1,17 +1,9 @@
 #include "BatteryManager.h"
 
+#ifdef ESP32
 BatteryManager::BatteryManager() : Manager("battery")
 {
-    int batteryPin = -1;
-    switch (BOARD_TYPE)
-    {
-        case HUZZAH32:
-            batteryPin = A13;
-            break;
-    }
-
-    if (batteryPin) analogSetPinAttenuation(batteryPin, ADC_0db);
-
+    analogSetPinAttenuation(A13, ADC_0db);
     serialDebug = MASTER_DEBUG;
 }
 
@@ -33,3 +25,4 @@ void BatteryManager::update()
         lastPingMs = millis();
     }
 }
+#endif

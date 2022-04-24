@@ -1,6 +1,5 @@
 #include "ServoManager.h"
 
-#ifdef HAS_SERVO
 ServoManager::ServoManager() : Manager("servo")
 {
   serialDebug = SERVO_DEBUG;
@@ -18,7 +17,7 @@ void ServoManager::update()
   // nothing
 }
 
-void ServoManager::registerServo(byte index, byte pin, byte min, byte max, byte start)
+void ServoManager::registerServo(int index, int pin, int min, int max, int start)
 {
   if (!checkInit())
     return;
@@ -40,7 +39,7 @@ void ServoManager::registerServo(byte index, byte pin, byte min, byte max, byte 
   }
   Component::forbiddenPins.insert(pin);
 
-  servos.insert({(int)index, new ServoMotor(pin, min, max, start)});
+  servos.insert({index, new ServoMotor(pin, min, max, start)});
   servos[index]->initComponent(serialDebug);
 
   compDebug("register prop: " + String(servos[index]->name));
@@ -77,7 +76,6 @@ void ServoManager::setServoMin(int index, int value)
   }
   compDebug("set servo#" + String(index) + " min: " + String(value));
   servos[index]->setMin(value);
-  servos[index]->setAbs(value);
 }
 
 void ServoManager::setServoMax(int index, int value)
@@ -89,7 +87,39 @@ void ServoManager::setServoMax(int index, int value)
   }
   compDebug("set servo#" + String(index) + " max: " + String(value));
   servos[index]->setMax(value);
-  servos[index]->setAbs(value);
+}
+
+void ServoManager::setServoMin(int index, float value)
+{
+  if (servos.count(index) == 0)
+  {
+    compError("incorrect index: " + String(index));
+    return;
+  }
+  compDebug("set servo#" + String(index) + " min: " + String(value));
+  servos[index]->setMin(value);
+}
+
+void ServoManager::setServoMax(int index, float value)
+{
+  if (servos.count(index) == 0)
+  {
+    compError("incorrect index: " + String(index));
+    return;
+  }
+  compDebug("set servo#" + String(index) + " max: " + String(value));
+  servos[index]->setMax(value);
+}
+
+void ServoManager::setServoInverse(int index, bool value)
+{
+  if (servos.count(index) == 0)
+  {
+    compError("incorrect index: " + String(index));
+    return;
+  }
+  compDebug("set servo#" + String(index) + " inverse: " + String(value));
+  servos[index]->setInverse(value);
 }
 
 bool ServoManager::handleCommand(OSCMessage &command)
@@ -121,24 +151,54 @@ bool ServoManager::handleCommand(OSCMessage &command)
   }
   if (address.equals("/servo/min"))
   {
-    if (checkCommandArguments(command, "ii", true))
+    if (checkCommandArguments(command, "ii", false))
     {
       int index = command.getInt(0);
       int value = command.getInt(1);
+      setServoMin(index, value);
+      return true;
+    }
+    else if (checkCommandArguments(command, "if", true))
+    {
+      int index = command.getInt(0);
+      float value = command.getFloat(1);
       setServoMin(index, value);
       return true;
     }
   }
   if (address.equals("/servo/max"))
   {
-    if (checkCommandArguments(command, "ii", true))
+    if (checkCommandArguments(command, "ii", false))
     {
       int index = command.getInt(0);
       int value = command.getInt(1);
       setServoMin(index, value);
       return true;
     }
+    else if (checkCommandArguments(command, "if", true))
+    {
+      int index = command.getInt(0);
+      float value = command.getFloat(1);
+      setServoMax(index, value);
+      return true;
+    }
+  }
+  if (address.equals("/servo/inverse"))
+  {
+    if (checkCommandArguments(command, "ii", false))
+    {
+      int index = command.getInt(0);
+      bool value = command.getInt(1)>0;
+      setServoInverse(index, value);
+      return true;
+    }
+    else if (checkCommandArguments(command, "ib", true))
+    {
+      int index = command.getInt(0);
+      bool value = command.getBoolean(1);
+      setServoInverse(index, value);
+      return true;
+    }
   }
   return false;
 }
-#endif

@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.3.4",
+  "version":"1.4.0",
   "description":"Contrôle simplifiée d\'une lampe animatronique ",
 
 
@@ -25,7 +25,7 @@
 			"OSC Output":
       {
         "local":false,
-        "remoteHost":"non détectée",
+        "remoteHost":"ampoule.local",
         "remotePort":9000
       }
     }
@@ -36,7 +36,13 @@
     "Version":
     {
       "type":"String",
-      "default":"Gaillac22-1.3.4",
+      "default":"Avril2022-1.4.0",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
       "readOnly":true
     },
     "Invocation":
@@ -47,35 +53,20 @@
     {
       "type":"Enum"
     },
+    "Play":
+    {
+      "type":"Trigger"
+    },
+    "Yeux":
+    {
+      "type":"Boolean"
+    },
     "Intensite Couleur":
     {
       "type":"Float",
       "min": 0,
       "max": 1,
       "default": 0.2
-    },
-    "Couleur":
-    {
-      "type":"Color",
-      "default":[0, 0, 0, 1]
-    },
-    "Vitesse Rotation":
-    {
-      "type":"Integer",
-      "min": -1000,
-      "max": 1000,
-      "default": 0
-    },
-    "Angle":
-    {
-      "type":"Float",
-      "min":0,
-      "max":1,
-      "default":0.5
-    },
-    "Yeux":
-    {
-      "type":"Boolean"
     },
     "Led debug":
     {
@@ -104,7 +95,7 @@
     {
       "type":"Boolean",
       "readOnly":true
-    },
+    }
   },
 
   "commands":
@@ -117,8 +108,7 @@
       {
         "Couleur":
         {
-          "type":"Color",
-          "default":[0, 1, 1, 1]
+          "type":"Color"
         }
       }
     },

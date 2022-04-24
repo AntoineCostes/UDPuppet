@@ -2,13 +2,14 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
+//#define SANS_GRAVITE
+#define JEREM
 //#define COSTES
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
-//#define BASE
-#define BOBINE
+#define BASE
+//#define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
 //#define TEST
@@ -21,6 +22,9 @@ const String WIFI_PASSWORD = "lovecraft";
 #elif defined(COSTES)
 const String WIFI_SSID = "Ouifi";
 const String WIFI_PASSWORD = "28101948AC";
+#elif defined(JEREM)
+const String WIFI_SSID = "TP-LINK_AP_E97865";
+const String WIFI_PASSWORD = "";
 #else
 const String WIFI_SSID = "LeNet";
 const String WIFI_PASSWORD = "connectemoi";
@@ -29,7 +33,7 @@ const String WIFI_PASSWORD = "connectemoi";
 enum BoardType
 {
     HUZZAH32,
-    HUZZAH8266 // not supported yet,
+    HUZZAH8266
 };
 
 #if defined(AMPOULE)
@@ -44,6 +48,10 @@ enum BoardType
 #include "config/sansgravite/Test.h"
 #elif defined(ROOMBA)
 #include "config/Roomba.h"
+#elif defined(CAMEMBERT)
+#include "config/Camembert.h"
+#elif defined(CHANTDRIER)
+#include "config/Chantdrier.h"
 #endif
 
 
@@ -65,16 +73,15 @@ const bool OSC_DEBUG = false;
 const long BATTERY_TIMOUT_MS = 5000;
 
 // PLAYER PARAMETERS
-const bool SEQUENCE_DEBUG = false;
+const bool SEQUENCE_DEBUG = true;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
 const long LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
-const bool SERVO_DEBUG = false;
-const int SERVO_MAX = 180;
-const bool SERVO_ALLOW_UNSAFE_PINS = false;
+const bool SERVO_DEBUG = true;
+const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS
 const bool MOTORWING_DEBUG = true;

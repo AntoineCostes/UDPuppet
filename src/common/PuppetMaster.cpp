@@ -37,7 +37,8 @@
 // flash parameter button
 
 PuppetMaster::PuppetMaster() : Manager("master"),
-                               osc(&wifi, BOARD_NAME + " v" + "1.3.4")
+                               osc(&wifi),
+                               firmwareVersion("1.4.0")
 {
     #ifdef BASE // Base uses pin 12 and 13
 
@@ -61,7 +62,7 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("-------------------- " + osc.mDNSName + " --------------------");
+    compLog("-------------------- " + BOARD_NAME + " v" + firmwareVersion + " --------------------");
 
     Manager::initManager();
 
@@ -75,17 +76,22 @@ void PuppetMaster::initManager()
     osc.initManager();
     wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
     osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
+
+    #ifdef ESP32
     managers.emplace_back(&battery);
     battery.initManager();
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
+    #endif
 
-#ifdef HAS_SD_WING
     fileMgr.init();
-    fileMgr.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
     managers.emplace_back(&player);
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
-#endif
+
+    managers.emplace_back(&web);
+    web.initManager();
+    web.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
+
 
 #ifdef HAS_LED
     managers.emplace_back(&led);
@@ -108,26 +114,43 @@ void PuppetMaster::initManager()
     roomba.initManager();
 #endif
 
+#ifdef HAS_MUSICMAKER
+    managers.emplace_back(&music);
+    music.initManager();
+#endif
+
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
 }
 
+void PuppetMaster::advertiseSequences()
+{
+    OSCMessage msg("/sequences");
+    msg.add(BOARD_NAME.c_str());
+    for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
+    osc.sendMessage(msg);
+}
+
 void PuppetMaster::checkComponents()
 {
-
-#ifdef HAS_SD_WING
+ // TODO make FileManager singleton
+#ifdef HAS_ADALOGGER_WING
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
-    
-    OSCMessage msg2("/sequences");
-    msg2.add(BOARD_NAME.c_str());
-    for (auto seq : fileMgr.sequences) msg2.add(seq.c_str());
-    osc.sendMessage(msg2);
 #endif
+
+#ifdef HAS_MUSICMAKER
+    OSCMessage msg3("/tracks");
+    msg3.add(BOARD_NAME.c_str());
+    for (auto seq : music.tracks) msg3.add(seq.c_str());
+    osc.sendMessage(msg3);
+#endif
+
+    advertiseSequences();
 
 // FIXME /dc/0
 #ifdef HAS_MOTORWING
@@ -187,6 +210,9 @@ void PuppetMaster::update()
     {
     case HUZZAH32:
         break;
+        
+    case HUZZAH8266:
+        break;
 
     default:
         compError("Unknown board type !");
@@ -197,6 +223,14 @@ void PuppetMaster::update()
     {
         mgr.get()->update();
     }
+}
+
+void PuppetMaster::sendDebugMsg(String componentName, String msg)
+{
+    // ifdef SERIAL_DEBUG
+    Serial.println("["+componentName+"] "+msg);
+    // ifdef OSC_DEBUG
+    // static osc send
 }
 
 void PuppetMaster::sendCommand(OSCMessage &command)
@@ -236,6 +270,13 @@ void PuppetMaster::sendCommand(OSCMessage &command)
                 compError(mgr.get()->name + " could not handle command");
         }
     }
+    
+    if (command.match("/play"))
+    {
+        char str[32];
+        command.getString(0, str);
+        launchSequence(String(str));
+    } 
 
     // if (command.match("/debug"))
     // {
@@ -244,6 +285,14 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     //     else
     //         led.setColor(0, 0, 0);
     // }
+}
+
+void PuppetMaster::launchSequence(String sequenceName)
+{
+    player.playSequence(sequenceName);
+    #ifdef HAS_MUSICMAKER
+    music.play(sequenceName+".mp3");
+    #endif 
 }
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
@@ -259,11 +308,30 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiConnectionState::CONNECTED:
         compDebug("wifi connected !");
+        
+
+        compLog("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
+        if (MDNS.begin(BOARD_NAME.c_str()))
+        {
+            MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
+            MDNS.addService("_http", "_tcp", 80);
+            compDebug("OSC Zeroconf service added sucessfully !");
+        }
+        else
+        {
+            compError("could not set up mDNS instance");
+        }
+
     #ifdef HAS_LED
         led.setMode(LedStrip::LedMode::STREAMING);
         led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
+        web.initServer();
+
+        #ifdef CAMEMBERT
+        launchSequence("covid");
+        #endif
         break;
 
     case WifiConnectionState::DISCONNECTED:
@@ -287,7 +355,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     {
     case OSCEvent::Type::CONNECTED:
         // TODO advertise error
-        osc.yo();
+        osc.yo(firmwareVersion);
         checkComponents();
         break;
 
@@ -295,16 +363,12 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
         // TODO advertise error
         break;
 
-    case OSCEvent::Type::MDNS_ERROR:
-        // TODO broadcast advertise error
-        break;
-
     case OSCEvent::Type::PING_ALIVE: // not used
         //osc.pong();
         break;
 
     case OSCEvent::Type::HANDSHAKE:
-        osc.yo();
+        osc.yo(firmwareVersion);
         checkComponents();
         break;
 
@@ -336,6 +400,7 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 }
 #endif
 
+#ifdef ESP32
 void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 {
     if (!osc.isConnected)
@@ -348,44 +413,103 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     msg.add(e.voltage);
     osc.sendMessage(msg);
 }
+#endif
 
-#ifdef HAS_SD_WING
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 {
     
     if (e.type == PlayerEvent::NewFrame)
     {
-    OSCMessage msg("/failed");
-    msg.add(BOARD_NAME.c_str());
-    msg.add(player.numFailed);
-    osc.sendMessage(msg);
+        if (player.numFailed > 0)
+        {
+            OSCMessage msg("/failed");
+            msg.add(BOARD_NAME.c_str());
+            msg.add(player.numFailed);
+            osc.sendMessage(msg);
+        }
+
+        // TODO get structure from declaration
+#ifdef CAMEMBERT
+        servo.setServoRel(0, e.data[0] / 254.0f);
+#endif
+
+#ifdef CHANTDRIER
+        servo.setServoRel(0, e.data[0] / 254.0f);
+        servo.setServoRel(1, e.data[1] / 254.0f);
+        servo.setServoRel(2, e.data[2] / 254.0f);
+        servo.setServoRel(3, e.data[3] / 254.0f);
+#endif
 
 //compDebug("Got new frame ! "+String((int)e.data[0]));
 #ifdef AMPOULE
-        led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
-        servo.setServoRel(0, e.data[3] / 255.0f);
+        if (e.data[0] < 255 && e.data[2] < 255  && e.data[2] < 255)
+            led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
+        if (e.data[3] < 255) 
+            servo.setServoRel(0, e.data[3] / 254.0f);
 #elif defined BASE
-        servo.setServoRel(1, e.data[0] / 255.0f); // foot
-        servo.setServoRel(0, e.data[1] / 255.0f); // neck
-        motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
+        if (e.data[0] < 255) 
+            servo.setServoRel(1, e.data[0] / 254.0f); // foot
+        if (e.data[1] < 255) 
+            servo.setServoRel(0, e.data[1] / 254.0f); // neck
+        if (e.data[2] < 255) 
+            motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
-        motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
+        if (e.data[0] < 255) 
+            motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
 #elif defined CORBEILLE
-        motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
-        motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[1] / 127.0f - 1.0f);
+        if (e.data[0] < 255) 
+            motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
+        if (e.data[1] < 255) 
+            motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[1] / 127.0f - 1.0f);
 #endif
+    }
+    
+    if (e.type == PlayerEvent::Start)
+    {
+        compDebug("start playing");
+    }
+    
+    if (e.type == PlayerEvent::Stop)
+    {
+        compDebug("stop playing");
+    }
+    
+    if (e.type == PlayerEvent::Ended)
+    {
+        compDebug("ended");
+        #ifdef CAMEMBERT
+        delay(10000);
+        launchSequence("deserteur");
+        #endif
     }
 }
 
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
-    // TODO useful ?
-    if (e.type == FileEvent::Type::SD_OK || FileEvent::Type::SD_ERROR)
-        checkComponents();
-
+    switch (e.type)
+    {
+        case FileEvent::Type::UploadStart:
+            compDebug("File upload started");
+            // TODO stop everything
+            break;
+            
+        case FileEvent::Type::UploadProgress:
+            compDebug("Uploading..."+String(e.value));
+            break;
+            
+        case FileEvent::Type::UploadComplete:
+            compDebug("Complete !");
+            fileMgr.listDir("/", 0);
+            advertiseSequences();
+            break;
+            
+        case FileEvent::Type::Play:
+            compDebug("play !");
+            player.playSequence(e.fileName);
+            break;
+    }
 
 }
-#endif // HAS_SD_WING
 
 // void PuppetMaster::commandFromOSCMessage(OSCMessage &command)
 // {

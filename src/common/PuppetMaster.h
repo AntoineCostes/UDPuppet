@@ -3,14 +3,29 @@
 #include "../utils/EventBroadcaster.h"
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
-#include "../sensors/BatteryManager.h"
 #include "../files/FileManager.h"
+#include "../files/WebServerManager.h"
 #include "../files/SequencePlayer.h"
 #include "../leds/LedManager.h"
 #include "../motors/ServoManager.h"
 #include "../motorwing/MotorShield2Manager.h"
 #include "../roomba/RoombaManager.h"
+#include "../audio/MusicMakerManager.h"
+#ifdef ESP32
+#include "../sensors/BatteryManager.h"
+#endif
 
+#ifdef ESP32
+#include <ESPmDNS.h>
+#elif defined (ESP8266)
+#include <ESP8266mDNS.h>
+#endif
+
+#ifdef HAS_MULTISERVO
+#ifndef HAS_SERVO
+#define HAS_SERVO
+#endif
+#endif
 
 class PuppetMaster : public Manager
 {
@@ -19,17 +34,21 @@ public:
 
     void init();
     void initManager();
+    void advertiseSequences();
     void checkComponents();
     void update();
+    static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
 
     WifiManager wifi;
     OSCManager osc;
-    BatteryManager battery;
-    
-#ifdef HAS_SD_WING
     SequencePlayer player;
     FileManager fileMgr;
-#endif
+    WebServerManager web;
+    
+    #ifdef ESP32
+    BatteryManager battery;
+    #endif
+
 #ifdef HAS_LED
     LedManager led;
 #endif
@@ -42,6 +61,9 @@ public:
 #ifdef HAS_ROOMBA
     RoombaManager roomba;
 #endif
+#ifdef HAS_MUSICMAKER
+    MusicMakerManager music;
+#endif
 
 protected:
     std::vector<std::unique_ptr<Manager>> managers; // TODO useful ? set instead of vector
@@ -51,6 +73,8 @@ protected:
     void sendCommand(OSCMessage &command);
 
     String firmwareVersion;
+
+    void launchSequence(String sequenceName);
 
     enum State
     {
@@ -63,12 +87,11 @@ protected:
 
     void gotWifiEvent(const WifiEvent &e);
     void gotOSCEvent(const OSCEvent &e);
-    void gotBatteryEvent(const BatteryEvent &e);
-
-#ifdef HAS_SD_WING
     void gotFileEvent(const FileEvent &e);
     void gotPlayerEvent(const PlayerEvent &e);
-#endif
+    #ifdef ESP32
+    void gotBatteryEvent(const BatteryEvent &e);
+    #endif
 
 #ifdef HAS_MOTORWING
     void gotStepperEvent(const StepperEvent &e);
