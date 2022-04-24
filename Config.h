@@ -2,8 +2,8 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-//#define SANS_GRAVITE
-#define JEREM
+#define SANS_GRAVITE
+//#define JEREM
 //#define COSTES
 
 // HARDWARE - SELECT ONE

@@ -3,7 +3,7 @@
 #include "../common/Component.h"
 
 #ifdef HAS_MOTORWING
-#include "../libs/AccelStepper/AccelStepper.h"
+#include "../libs/AccelStepper/src/AccelStepper.h"
 
 class StepperMotor : public Component
 {
