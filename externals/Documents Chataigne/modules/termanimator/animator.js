@@ -20,12 +20,12 @@ headParam.setAttribute("readOnly",true);
 
 var bulbUploadParam = script.addTrigger("Upload to Ampoule","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
-var neckParam = script.addTargetParameter("Layer Lucette Hauteur","");
+var neckParam = script.addTargetParameter("Layer Lucette Oui","");
 neckParam.setAttribute("targetType","container");
 neckParam.setAttribute("searchLevel",0);
 neckParam.setAttribute("readOnly",true);
 
-var footParam = script.addTargetParameter("Layer Lucette Oui","");
+var footParam = script.addTargetParameter("Layer Lucette Pied	","");
 footParam.setAttribute("targetType","container");
 footParam.setAttribute("searchLevel",0);
 footParam.setAttribute("readOnly",true);
@@ -82,7 +82,7 @@ function scriptParameterChanged(param)
 	if(param.is(bulbUploadParam))
 	{
   	objects =  [];
-    local.parameters.file.set("");
+    local.parameters.uploadedFile.set("");
     if (bulbParam.get() != "" || headParam.get() != "")
     {
     		var ampoule = getObject("Ampoule");
@@ -97,7 +97,7 @@ function scriptParameterChanged(param)
 	if(param.is(footUploadParam))
 	{
   	objects =  [];
-    local.parameters.file.set("");
+    local.parameters.uploadedFile.set("");
     if (footParam.get() != "" || neckParam.get() != "" || rotationParam.get() != "")
     {
     	var base = getObject("Base");
@@ -113,7 +113,7 @@ function scriptParameterChanged(param)
 	if(param.is(trashUploadParam))
 	{
   	objects =  [];
-    local.parameters.file.set("");
+    local.parameters.uploadedFile.set("");
     if (leftMotorParam.get() != "" || rightMotorParam.get() != "")
     {
     	var corbeille = getObject("Corbeille");
@@ -128,7 +128,7 @@ function scriptParameterChanged(param)
 	if(param.is(coilUploadParam))
 	{
   	objects =  [];
-    local.parameters.file.set("");
+    local.parameters.uploadedFile.set("");
     if (coilParam.get() != "")
     {
     	var bobine = getObject("Bobine");
@@ -224,13 +224,13 @@ function bake()
 		util.writeBytes(f, o.data, true);
 
 	  script.log("uploading...");
-		local.parameters.file.set(f);
+		local.parameters.uploadedFile.set(f);
 
 		var params = {};
 		params.dataType = "default";
 		params.extraHeaders = "Content-Type: multipart/form-data";
-		params.fileName = "myFile.dat";
-		params.file = local.parameters.file.get();
+		params.fileName = seqParam.getTarget().name+".dat";
+		params.file = local.parameters.uploadedFile.get();
 
 		local.sendPOST("/upload", params);
 	}
