@@ -20,22 +20,22 @@ headParam.setAttribute("readOnly",true);
 
 var bulbUploadParam = script.addTrigger("Upload to Ampoule","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
-var neckParam = script.addTargetParameter("Layer Lucette Oui","");
+var neckParam = script.addTargetParameter("Layer Lucette Hauteur","");
 neckParam.setAttribute("targetType","container");
 neckParam.setAttribute("searchLevel",0);
 neckParam.setAttribute("readOnly",true);
 
-var footParam = script.addTargetParameter("Layer Lucette Hauteur","");
+var footParam = script.addTargetParameter("Layer Lucette Oui","");
 footParam.setAttribute("targetType","container");
 footParam.setAttribute("searchLevel",0);
 footParam.setAttribute("readOnly",true);
-
-var footUploadParam = script.addTrigger("Upload to Base","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
 var rotationParam = script.addTargetParameter("Layer Lucette Rotation","");
 rotationParam.setAttribute("targetType","container");
 rotationParam.setAttribute("searchLevel",0);
 rotationParam.setAttribute("readOnly",true);
+
+var footUploadParam = script.addTrigger("Upload to Base","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
 var leftMotorParam = script.addTargetParameter("Layer Corbeille Gauche","");
 leftMotorParam.setAttribute("targetType","container");
@@ -66,9 +66,6 @@ function init()
 
 function moduleParameterChanged(param)
 {
-  script.log(" param");
-  script.log(param.name);
-  if (param.name == "cible") local.parameters.baseAddress.set(param.get());
 }
 
 function scriptParameterChanged(param)
@@ -84,54 +81,67 @@ function scriptParameterChanged(param)
 
 	if(param.is(bulbUploadParam))
 	{
+  	objects =  [];
+    local.parameters.file.set("");
+    if (bulbParam.get() != "" || headParam.get() != "")
+    {
+    		var ampoule = getObject("Ampoule");
+    		ampoule.layerParams = [];
+    		ampoule.layerParams[0] = {"name":"bulb", "param":bulbParam, "type":"Color"};
+    		ampoule.layerParams[1] = {"name":"head", "param":headParam, "type":"Mapping"};
+    }
 		local.parameters.baseAddress.set("http://ampoule.local");
 		bake();
 	}
 
 	if(param.is(footUploadParam))
 	{
+  	objects =  [];
+    local.parameters.file.set("");
+    if (footParam.get() != "" || neckParam.get() != "" || rotationParam.get() != "")
+    {
+    	var base = getObject("Base");
+    	base.layerParams = [];
+    	base.layerParams[0] = {"name":"foot", "param":footParam, "type":"Mapping"};
+    	base.layerParams[1] = {"name":"neck", "param":neckParam, "type":"Mapping"};
+    	base.layerParams[2] = {"name":"rotation", "param":rotationParam, "type":"Mapping"};
+    }
 		local.parameters.baseAddress.set("http://base.local");
+		bake();
+	}
+
+	if(param.is(trashUploadParam))
+	{
+  	objects =  [];
+    local.parameters.file.set("");
+    if (leftMotorParam.get() != "" || rightMotorParam.get() != "")
+    {
+    	var corbeille = getObject("Corbeille");
+    	corbeille.layerParams = [];
+    	corbeille.layerParams[0] = {"name":"leftMotor", "param":leftMotorParam, "type":"Mapping"};
+    	corbeille.layerParams[1] = {"name":"rightMotor", "param":rightMotorParam, "type":"Mapping"};
+    }
+		local.parameters.baseAddress.set("http://corbeille.local");
+		bake();
+	}
+
+	if(param.is(coilUploadParam))
+	{
+  	objects =  [];
+    local.parameters.file.set("");
+    if (coilParam.get() != "")
+    {
+    	var bobine = getObject("Bobine");
+    	bobine.layerParams = [];
+    	bobine.layerParams[0] = {"name":"coilStepper", "param":coilParam, "type":"Mapping"};
+    }
+		local.parameters.baseAddress.set("http://bobine.local");
 		bake();
 	}
 }
 
 function bake()
 {
-
-	objects =  [];
-
-if (bulbParam.get() != "" || headParam.get() != "")
-{
-		var ampoule = getObject("Ampoule");
-		ampoule.layerParams = [];
-		ampoule.layerParams[0] = {"name":"bulb", "param":bulbParam, "type":"Color"};
-		ampoule.layerParams[1] = {"name":"head", "param":headParam, "type":"Mapping"};
-}
-
-if (footParam.get() != "" || neckParam.get() != "" || rotationParam.get() != "")
-{
-	var base = getObject("Base");
-	base.layerParams = [];
-	base.layerParams[0] = {"name":"foot", "param":footParam, "type":"Mapping"};
-	base.layerParams[1] = {"name":"neck", "param":neckParam, "type":"Mapping"};
-	base.layerParams[2] = {"name":"rotation", "param":rotationParam, "type":"Mapping"};
-}
-
-if (leftMotorParam.get() != "" || rightMotorParam.get() != "")
-{
-	var corbeille = getObject("Corbeille");
-	corbeille.layerParams = [];
-	corbeille.layerParams[0] = {"name":"leftMotor", "param":leftMotorParam, "type":"Mapping"};
-	corbeille.layerParams[1] = {"name":"rightMotor", "param":rightMotorParam, "type":"Mapping"};
-}
-
-if (coilParam.get() != "")
-{
-	var bobine = getObject("Bobine");
-	bobine.layerParams = [];
-	bobine.layerParams[0] = {"name":"coilStepper", "param":coilParam, "type":"Mapping"};
-}
-
 	//go through sequence
 	var step = 1.0 / bakeFPS.get();
 	for(var t = 0;t<seqParam.getTarget().totalTime.get();t+=step)
@@ -141,7 +151,7 @@ if (coilParam.get() != "")
 				var o = objects[i];
 				var oLayers = o.layerParams;
 
-			 //if (t == 0) script.log(o.name);
+			 if (t == 0) script.log(o.name);
 
 				for(var j=0;j<oLayers.length;j++)
 				{
@@ -149,7 +159,7 @@ if (coilParam.get() != "")
 					var layer = oLayers[j]["param"].getTarget();
 					var layerType = oLayers[j]["type"];
 
-					//if (t == 0) script.log(oLayers[j]["name"]);
+					if (t == 0) script.log(oLayers[j]["name"]);
 
 					if (layerDefined)
 						if (layer.getType() != layerType)

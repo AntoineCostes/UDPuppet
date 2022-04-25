@@ -1,7 +1,5 @@
 function init() {
-  local.parameters.moteurGauche.setAttribute("alwaysNotify", true);
-  local.parameters.moteurDroit.setAttribute("alwaysNotify", true);
-  local.values.batterie.set(0);
+  local.values.batterie.set(0.0);
   local.values.carteSDDetectee.set(false);
   yo();
 }
@@ -25,18 +23,13 @@ function moduleParameterChanged(param)
   {
     yo();
   }
-  if (param.name == "moteurGauche")
+  if (param.name == "play")
   {
-    local.send("/dc/run", 2, param.get());
-  }
-  if (param.name == "moteurDroit")
-  {
-    local.send("/dc/run", 1, param.get());
+    playSequence(local.parameters.sequences.getKey(), 30);
   }
   if (param.name == "stop")
   {
-    local.parameters.moteurGauche.set(0);
-    local.parameters.moteurDroit.set(0);
+    stop();
   }
   if (param.name == "vitesseMax")
   {
@@ -55,7 +48,8 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-    local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+    //local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+    local.parameters.ip.set(args[1]);
     sendMaxSpeed(); // TODO get from prop
   }
   if (address == "/battery")
@@ -68,7 +62,6 @@ function oscEvent(address, args)
   }
   if (address.startsWith("/dc/maxspeed"))
   {
-    script.log(args[1]);
     local.parameters.vitesseMax.set(args[1]);
   }
   if (address == "/sequences")
@@ -90,26 +83,27 @@ function sendMaxSpeed()
   local.send("/dc/maxspeed", 1, local.parameters.vitesseMax.get());
 }
 function left(dir) {
-  local.parameters.moteurGauche.set(dir);
+  local.send("/dc/run", 2, dir);
 }
 
 function right(dir) {
-  local.parameters.moteurDroit.set(dir);
+  local.send("/dc/run", 1, dir);
 }
 
 function forward(dir) {
-  local.parameters.moteurGauche.set(dir);
-  local.parameters.moteurDroit.set(dir);
+  local.send("/dc/run", 2, dir);
+  local.send("/dc/run", 1, dir);
 }
 
 function rotation(dir) {
-  local.parameters.moteurGauche.set(-dir);
-  local.parameters.moteurDroit.set(dir);
+  local.send("/dc/run", 2, -dir);
+  local.send("/dc/run", 1, dir);
 }
 
 function stop() {
-  local.parameters.moteurGauche.set(0);
-  local.parameters.moteurDroit.set(0);
+  stopSequence();
+  local.send("/dc/run", 2, 0);
+  local.send("/dc/run", 1, 0);
 }
 
 function tryPlaySequence(name, fps) {

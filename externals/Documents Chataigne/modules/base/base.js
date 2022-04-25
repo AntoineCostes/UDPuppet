@@ -5,7 +5,7 @@ var footSpeed = 0;
 var ghostFoot = 0.5;
 
 function init() {
-  local.values.batterie.set(0);
+  local.values.batterie.set(0.0);
   local.values.carteSDDetectee.set(false);
   yo();
 }
@@ -44,6 +44,10 @@ function moduleParameterChanged(param)
     local.parameters.ip.set("");
     yo();
   }
+  if (param.name == "play")
+  {
+    playSequence(local.parameters.sequences.getKey(), 30);
+  }
   if (param.name == "vitesseMaxRotation")
   {
     local.send("/stepper/maxspeed", 0, 1.0*param.get());
@@ -70,7 +74,8 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-      local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+      //local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+      local.parameters.ip.set(args[1]);
   }
 
   if (address == "/battery")

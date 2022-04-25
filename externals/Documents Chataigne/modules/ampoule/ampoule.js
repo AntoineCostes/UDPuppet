@@ -3,7 +3,7 @@ var speed = 0;
 var ghostPos = 0.5;
 
 function init() {
-  local.values.batterie.set(false);
+  local.values.batterie.set(0.0);
   local.values.carteSDDetectee.set(false);
   yo();
 }
@@ -41,6 +41,10 @@ function moduleParameterChanged(param)
   {
     local.parameters.ip.set("");
     yo();
+  }
+  if (param.name == "play")
+  {
+    playSequence(local.parameters.sequences.getKey(), 30);
   }
   if (param.name == "intensiteCouleur")
   {

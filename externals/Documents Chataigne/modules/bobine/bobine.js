@@ -22,7 +22,12 @@ function moduleParameterChanged(param)
 {
   if (param.name == "invocation")
   {
+    local.parameters.ip.set("");
     yo();
+  }
+  if (param.name == "play")
+  {
+    playSequence(local.parameters.sequences.getKey(), 30);
   }
   if (param.name == "resetPosition")
   {
@@ -50,13 +55,14 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-  local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
-  // TODO the prop should send this parameters instead (checkComponents + ParameterEvent )
-  //stop();
-  //resetPosition();
-  //setMaxSpeed();
-  //setAcceleration();
-}
+    //local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+    local.parameters.ip.set(args[1]);
+    // TODO the prop should send this parameters instead (checkComponents + ParameterEvent )
+    //stop();
+    //resetPosition();
+    //setMaxSpeed();
+    //setAcceleration();
+  }
   if (address == "/battery")
   {
     local.values.batterie.set(args[1]);
@@ -76,6 +82,14 @@ function oscEvent(address, args)
   if (address == "/stepper/0/acceleration")
   {
     local.parameters.acceleration.set(args[1]);
+  }
+  if (address == "/sequences")
+  {
+    local.parameters.sequences.removeOptions();
+    for (var i = 1; i < args.length; i++)
+    {
+      local.parameters.sequences.addOption(args[i], i - 1);
+    }
   }
 }
 
@@ -113,6 +127,7 @@ function setSpeed(val) {
 }
 
 function stop() {
+  stopSequence();
   local.send("/stepper/speed", STEPPER_INDEX, 0.0);
 }
 
