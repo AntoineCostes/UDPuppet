@@ -15,14 +15,12 @@ bool Manager::registerProp(Component* prop, std::set<int> reservedPins)
 {
     compDebug("register prop: " + String(prop->name));
 
-    for (int newPin : reservedPins)
-        if (Component::forbiddenPins.find(newPin) != Component::forbiddenPins.end())
-        {
-            compError("cannot register prop: " + String(newPin) + " is already used !"); 
-            return false;
-        }
+    if (!Component::registerPins(reservedPins))
+    {
+        compError("failed !");
+        return false;
+    }
 
-    Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
     props.emplace_back(prop);
     prop->initComponent(serialDebug);
 

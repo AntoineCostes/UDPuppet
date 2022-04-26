@@ -17,12 +17,11 @@ void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelTy
     if (!checkInit())
         return;
 
-    if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
+    if (!Component::registerPins(pins))
     {
-        compError("cannot register prop: " + String(pin) + " is already used !");
+        compError("cannot register led strip !");
         return;
     }
-    Component::forbiddenPins.insert(pin);  
 
     // only first ledstrip is debug true by default
     strips.insert({index, new LedStrip(pin, numLeds, type, index==0)});

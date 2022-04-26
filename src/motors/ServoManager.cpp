@@ -31,13 +31,11 @@ void ServoManager::registerServo(int index, int pin, int min, int max, int start
       return;
     }
 
-  // TODO replace with registerPin
-  if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
+  if (!Component::registerPin(pin))
   {
-    compError("cannot register prop: " + String(pin) + " is already used !");
-    return;
+      compError("cannot register servo !");
+      return;
   }
-  Component::forbiddenPins.insert(pin);
 
   servos.insert({index, new ServoMotor(pin, min, max, start)});
   servos[index]->initComponent(serialDebug);

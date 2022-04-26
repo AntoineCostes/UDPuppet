@@ -47,7 +47,7 @@ public:
   void initManager();
   void update() override;
 
-  void setFPS(byte value);
+  void setFPS(int value);
 
   void loadSequence(String path);
 
@@ -86,13 +86,13 @@ protected:
 
   // TODO simplify this
   long msToFrame(long timeMs) { return timeMs * fps / 1000; }
-  long msToBytePos(long t) { return msToFrame(t) * FRAME_SIZE; } //rgba
+  long msTointPos(long t) { return msToFrame(t) * FRAME_SIZE; } //rgba
   long frameToMs(long frame) { return frame * 1000 / fps; }
   float frameToSeconds(long frame) { return frame * 1.0f / fps; };
   long secondsToMs(float s) { return s * 1000; }
-  long bytePosToFrame(long pos) { return pos / FRAME_SIZE; }
-  long bytePosToMs(long pos) { return frameToMs(bytePosToFrame(pos)); }
-  long bytePosToSeconds(long pos) { return frameToSeconds(bytePosToFrame(pos)); }
+  long intPosToFrame(long pos) { return pos / FRAME_SIZE; }
+  long intPosToMs(long pos) { return frameToMs(intPosToFrame(pos)); }
+  long intPosToSeconds(long pos) { return frameToSeconds(intPosToFrame(pos)); }
 
   uint8_t *buff;
   int nbFrames = 0;

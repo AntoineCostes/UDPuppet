@@ -56,7 +56,7 @@ void MotorShield2Manager::addDCMotor(DCPort port)
     }
     usedPorts.insert(port);
 
-    dcMotors.insert({port, new DCMotor(AFMS.getMotor(port), (int)port, 50)});
+    dcMotors.insert({port, new DCMotor(AFMS.getMotor(port), port, 50)});
     dcMotors[port]->initComponent(serialDebug);
     //dc.insert({index, AFMS.getMotor(port)});
     // compDebug("added DC#" + String(index) + " on port " + String(port));
@@ -148,17 +148,12 @@ void MotorShield2Manager::registerStepper(byte index, byte pin1, byte pin2, byte
     if (!checkInit())
         return;
 
-    // TODO replace with registerPins
     std::set<int> pins{pin1, pin2, pin3, pin4};
 
-    for (int pin : pins)
+    if (!Component::registerPins(pins))
     {
-        if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
-        {
-            compError("cannot register stepper: " + String(pin) + " is already used !");
-            return;
-        }
-        Component::forbiddenPins.insert(pin);
+        compError("cannot register stepper!");
+        return;
     }
 
     // FIXME id not safe
@@ -170,24 +165,19 @@ void MotorShield2Manager::registerStepper(byte index, byte step, byte dir)
     if (!checkInit())
         return;
 
-    // TODO replace with registerPins
     std::set<int> pins{step, dir};
 
-    for (int pin : pins)
+    if (!Component::registerPins(pins))
     {
-        if (Component::forbiddenPins.find(pin) != Component::forbiddenPins.end())
-        {
-            compError("cannot register stepper: " + String(pin) + " is already used !");
-            return;
-        }
-        Component::forbiddenPins.insert(pin);
+        compError("cannot register stepper!");
+        return;
     }
 
     // FIXME id not safe
     registerStepper(index, step | dir, new AccelStepper(AccelStepper::FULL2WIRE, step ,dir));
 }
 
-void MotorShield2Manager::registerShieldv2Stepper(byte index, int steps, StepperPort port)
+void MotorShield2Manager::registerShieldv2Stepper(int index, int steps, StepperPort port)
 {
     if (!checkInit())
         return;
@@ -411,7 +401,7 @@ bool MotorShield2Manager::handleCommand(OSCMessage &command)
         {
             int index = command.getInt(0);
             float value = command.getFloat(1);
-            dcMaxSpeed((DCPort)index, (int)value);
+            dcMaxSpeed((DCPort)index, value);
             return true;
         }
     }

@@ -11,10 +11,10 @@ void SequencePlayer::initManager()
   Manager::initManager();
 }
 
-void SequencePlayer::setFPS(byte value)
+void SequencePlayer::setFPS(int value)
 {
   fps = value;
-  intParameters["fps"] = (int)value;
+  intParameters["fps"] = value;
   overrideFlashParameters();
 }
 
@@ -50,11 +50,11 @@ void SequencePlayer::loadSequence(String path)
   }
   else
   {
-    long totalBytes = curFile.size();
-    totalTime = bytePosToSeconds(totalBytes);
+    long totalints = curFile.size();
+    totalTime = intPosToSeconds(totalints);
     curTimeMs = 0;
     isPlaying = false;
-    compLog("File loaded, " + String(totalBytes) + " bytes" + ", " + String(totalTime) + " time");
+    compLog("File loaded, " + String(totalints) + " ints" + ", " + String(totalTime) + " time");
     curSequenceName = path.substring(0, path.lastIndexOf("."));
     compLog("Name = "+curSequenceName);
   }
@@ -124,7 +124,7 @@ void SequencePlayer::playFrame()
   prevTimeMs = mil;
 
   long fPos = curFile.position();
-  long pos = msToBytePos(curTimeMs); // = curTimeMs * FRAME_SIZE * FPS / 1000;
+  long pos = msTointPos(curTimeMs); // = curTimeMs * FRAME_SIZE * FPS / 1000;
 
   if (pos < 0)
     return;
@@ -171,7 +171,7 @@ void SequencePlayer::seek(float t)
   curTimeMs = secondsToMs(t);
   prevTimeMs = millis();
 
-  curFile.seek(msToBytePos(max(curTimeMs, (long)0)));
+  curFile.seek(msTointPos(max(curTimeMs, (long)0)));
 
   if (curTimeMs < 0)
   {
@@ -207,7 +207,7 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
     } else if (checkCommandArguments(command, "si", true))
     {
       int fps = command.getInt(1);
-      setFPS((byte)fps);
+      setFPS(fps);
 
       char pstr[32];
       command.getString(0, pstr);
@@ -229,7 +229,7 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
     } else if (checkCommandArguments(command, "si", true))
     {
       int fps = command.getInt(1);
-      setFPS((byte)fps);
+      setFPS(fps);
 
       char pstr[32];
       command.getString(0, pstr);
@@ -248,7 +248,7 @@ bool SequencePlayer::handleCommand(OSCMessage &command)
     if (checkCommandArguments(command, "i", false))
     {
       int value = command.getInt(0);
-      setFPS((byte)value);
+      setFPS(value);
       return true;
     }
   }

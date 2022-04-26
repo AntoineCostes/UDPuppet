@@ -1,7 +1,6 @@
 
 function init() {
   local.values.batterie.set(false);
-  local.values.carteSDDetectee.set(false);
   yo();
 }
 
@@ -24,15 +23,12 @@ function moduleParameterChanged(param)
 {
   if (param.name == "invocation")
   {
+    local.parameters.ip.set("");
     yo();
   }
-  if (address == "/sequences")
+  if (param.name == "play")
   {
-    local.parameters.sequences.removeOptions();
-    for (var i = 1; i < args.length; i++)
-    {
-      local.parameters.sequences.addOption(args[i], i - 1);
-    }
+    playSequence(local.parameters.sequences.getKey(), 30);
   }
 }
 
@@ -48,16 +44,20 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-      local.parameters.oscOutputs.oscOutput.remoteHost.set(args[2]);
+    local.parameters.ip.set(args[1]);
   }
 
   if (address == "/battery")
   {
       local.values.batterie.set(args[1]);
   }
-  if (address == "/sd")
+  if (address == "/sequences")
   {
-      local.values.carteSDDetectee.set(args[1]>0);
+    local.parameters.sequences.removeOptions();
+    for (var i = 1; i < args.length; i++)
+    {
+      local.parameters.sequences.addOption(args[i], i - 1);
+    }
   }
 }
 

@@ -37,9 +37,9 @@ void setup()
 
 #ifdef CAMEMBERT
 #ifdef ESP32
-  master.servo.registerServo(0, 27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
-  master.servo.setServoInverse(0, true);
-  // master.servo.registerServo(0, 27, 140, 80, 139); // index, pin, min, max, start
+  //master.servo.registerServo(0, 27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
+  master.servo.registerServo(0, 27, 80, 140, 139); // index, pin, min, max, start
+  //master.servo.setServoInverse(0, true);
 #else
   // master.servo.registerServo(0, 14, 140, 50, 139); // index, pin, min, max, start
 #endif

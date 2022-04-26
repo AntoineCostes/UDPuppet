@@ -45,17 +45,17 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
   // TODO handle I2C address, step type
-  void registerShieldv2Stepper(byte index, int steps, StepperPort port);
-  void registerStepper(byte index, byte pin1, byte pin2, byte pin3, byte pin4);
-  void registerStepper(byte index, byte step, byte dir);
-  void stepperGoTo(byte index, long value);
-  void stepperGoToFromStart(byte index, long value);
-  void stepperMove(byte index, long value);
-  void stepperReset(byte index);
-  void stepperSetSpeed(byte index, float value);
-  void stepperSetSpeedRel(byte index, float value);
-  void stepperSetAccel(byte index, float value);
-  void stepperSetMaxSpeed(byte index, float value);
+  void registerShieldv2Stepper(int index, int steps, StepperPort port);
+  void registerStepper(int index, int pin1, int pin2, int pin3, int pin4);
+  void registerStepper(int index, int step, int dir);
+  void stepperGoTo(int index, long value);
+  void stepperGoToFromStart(int index, long value);
+  void stepperMove(int index, long value);
+  void stepperReset(int index);
+  void stepperSetSpeed(int index, float value);
+  void stepperSetSpeedRel(int index, float value);
+  void stepperSetAccel(int index, float value);
+  void stepperSetMaxSpeed(int index, float value);
   
   void addDCMotor( DCPort port);
   void dcRun(DCPort port, float value); // -1 1
@@ -63,16 +63,16 @@ public:
   void dcStopAll();
   void dcMaxSpeed(DCPort port, int value);
   std::map<DCPort, DCMotor*> dcMotors;
-  std::map<byte, StepperMotor *> steppers;
+  std::map<int, StepperMotor *> steppers;
 
 protected:
   Adafruit_MotorShield AFMS;
   std::set<DCPort> usedPorts;
-  void registerStepper(byte index, byte id, AccelStepper *stepper);
+  void registerStepper(int index, int id, AccelStepper *stepper);
   long lastEventTime;
   long lastEventPos;
 
-  // std::map<byte, Adafruit_DCMotor *> dc;
+  // std::map<int, Adafruit_DCMotor *> dc;
 
 private:
   Adafruit_StepperMotor *shieldStepper1;

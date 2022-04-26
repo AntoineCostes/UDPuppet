@@ -127,8 +127,8 @@ function setSpeed(val) {
 }
 
 function stop() {
+local.send("/stepper/speed", STEPPER_INDEX, 0.0);
   stopSequence();
-  local.send("/stepper/speed", STEPPER_INDEX, 0.0);
 }
 
 function resetPosition() {

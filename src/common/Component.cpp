@@ -58,6 +58,7 @@ bool Component::registerPins(std::set<int> pins)
     }
     for (int pin : pins)
     {
+        Serial.println("-------------- registered pin #"+String(pin));
         Component::forbiddenPins.insert(pin);
     }
     return true;

@@ -39,6 +39,12 @@
       "default":"Avril2022-1.4.0",
       "readOnly":true
     },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
     "Invocation":
     {
       "type":"Trigger"
@@ -46,6 +52,10 @@
     "Sequences":
     {
       "type":"Enum"
+    },
+    "Play":
+    {
+      "type":"Trigger"
     }
   },
 

@@ -4,7 +4,7 @@
 MusicMakerManager::MusicMakerManager() : Manager("musicmaker"),
                                             ready(false)
 {
-    floatParameters["volume"] = 50.0f;
+    floatParameters["volume"] = 0.5f;
     serialDebug = MASTER_DEBUG;
 }
 

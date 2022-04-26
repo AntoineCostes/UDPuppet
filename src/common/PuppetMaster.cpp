@@ -38,10 +38,10 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.0")
+                               firmwareVersion("1.4.1")
 {
     #ifdef BASE // Base uses pin 12 and 13
-
+    // don't register
     #elif defined(ROOMBA) // Roomba uses pin 12
     Component::registerPin(LED_BUILTIN); 
     #else
@@ -65,9 +65,6 @@ void PuppetMaster::initManager()
     compLog("-------------------- " + BOARD_NAME + " v" + firmwareVersion + " --------------------");
 
     Manager::initManager();
-
-    //std::set<int> reservedPins{};
-    //Component::forbiddenPins.insert(reservedPins.begin(), reservedPins.end());
 
     // init managers and subscribe to their events
     managers.emplace_back(&wifi);
