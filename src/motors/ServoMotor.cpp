@@ -34,6 +34,7 @@ void ServoMotor::setAbs(int value)
     compError("incorrect absolute value: " + String(value));
     return;
   }
+  if (boolParameters["inverse"]) value = intParameters["max"] + intParameters["min"] - value; 
   servo.write(value);
   compDebug("set "+String(value));
 }
