@@ -143,7 +143,7 @@ void MotorShield2Manager::dcStop(DCPort port)
     compDebug("stop DC#" + String(port));
 }
 
-void MotorShield2Manager::registerStepper(byte index, byte pin1, byte pin2, byte pin3, byte pin4)
+void MotorShield2Manager::registerStepper(int index, int pin1, int pin2, int pin3, int pin4)
 {
     if (!checkInit())
         return;
@@ -160,7 +160,7 @@ void MotorShield2Manager::registerStepper(byte index, byte pin1, byte pin2, byte
     registerStepper(index, pin1 | pin2 | pin3 | pin4, new AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4));
 }
 
-void MotorShield2Manager::registerStepper(byte index, byte step, byte dir)
+void MotorShield2Manager::registerStepper(int index, int step, int dir)
 {
     if (!checkInit())
         return;
@@ -215,7 +215,7 @@ void MotorShield2Manager::registerShieldv2Stepper(int index, int steps, StepperP
     }
 }
 
-void MotorShield2Manager::registerStepper(byte index, byte id, AccelStepper *stepper)
+void MotorShield2Manager::registerStepper(int index, int id, AccelStepper *stepper)
 {
     if (steppers.count(index) > 0)
     {
@@ -227,7 +227,7 @@ void MotorShield2Manager::registerStepper(byte index, byte id, AccelStepper *ste
     compDebug("registered " + steppers[index]->name + " on #" + String(index));
 }
 
-void MotorShield2Manager::stepperGoTo(byte index, long value)
+void MotorShield2Manager::stepperGoTo(int index, long value)
 {
     if (!checkInit())
         return;
@@ -242,7 +242,7 @@ void MotorShield2Manager::stepperGoTo(byte index, long value)
     steppers[index]->goTo(value);
 }
 
-void MotorShield2Manager::stepperMove(byte index, long value)
+void MotorShield2Manager::stepperMove(int index, long value)
 {
     if (!checkInit())
         return;
@@ -258,7 +258,7 @@ void MotorShield2Manager::stepperMove(byte index, long value)
     steppers[index]->moveTo(value);
 }
 
-void MotorShield2Manager::stepperReset(byte index)
+void MotorShield2Manager::stepperReset(int index)
 {
     if (!checkInit())
         return;
@@ -274,7 +274,7 @@ void MotorShield2Manager::stepperReset(byte index)
     steppers[index]->reset();
 }
 
-void MotorShield2Manager::stepperSetSpeed(byte index, float value)
+void MotorShield2Manager::stepperSetSpeed(int index, float value)
 {
     if (!checkInit())
         return;
@@ -289,7 +289,7 @@ void MotorShield2Manager::stepperSetSpeed(byte index, float value)
     steppers[index]->setSpeed(value);
 }
 
-void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
+void MotorShield2Manager::stepperSetSpeedRel(int index, float value)
 {
     if (!checkInit())
         return;
@@ -304,7 +304,7 @@ void MotorShield2Manager::stepperSetSpeedRel(byte index, float value)
     steppers[index]->setSpeedRel(value);
 }
 
-void MotorShield2Manager::stepperSetAccel(byte index, float value)
+void MotorShield2Manager::stepperSetAccel(int index, float value)
 {
     if (!checkInit())
         return;
@@ -319,7 +319,7 @@ void MotorShield2Manager::stepperSetAccel(byte index, float value)
     steppers[index]->setAcceleration(value);
 }
 
-void MotorShield2Manager::stepperSetMaxSpeed(byte index, float value)
+void MotorShield2Manager::stepperSetMaxSpeed(int index, float value)
 {
     if (!checkInit())
         return;

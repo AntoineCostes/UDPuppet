@@ -4,8 +4,7 @@
 #ifdef HAS_MUSICMAKER
 #include <SPI.h>
 #include <SD.h>
-// #include "../../libs/Adafruit_VS1053_Library/Adafruit_VS1053.h" why this does not work ???
-#include <Adafruit_VS1053.h>
+#include "../libs/Adafruit_VS1053_Library/Adafruit_VS1053.h"
 
 #define VS1053_RESET   -1     // VS1053 reset pin (not used!)
 #define VS1053_CS      32     // VS1053 chip select pin (output)

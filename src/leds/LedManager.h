@@ -11,7 +11,7 @@ public:
     void initManager();
     void update();
     
-    void registerLedStrip(byte index, byte pin, byte numLeds, neoPixelType type);
+    void registerLedStrip(int index, int pin, int numLeds, neoPixelType type);
 
     void setMode(LedStrip::LedMode newMode);
     

@@ -11,19 +11,19 @@ public:
     void initManager();
     void update();
     
-    void registerRoomba(byte inPin, byte outPin, byte wakePin);
+    void registerRoomba(int inPin, int outPin, int wakePin);
 
-    void setText(byte index, String text);
+    void setText(int index, String text);
 
-    void drive(byte index, float left, float right);
-    void setMaxSpeed(byte index, float speed);
+    void drive(int index, float left, float right);
+    void setMaxSpeed(int index, float speed);
 
-    void setHomeLed(byte index, bool state);
-    void setDirtLed(byte index, bool state);
-    void setWarningLed(byte index, bool state);
-    void setSpotLed(byte index, bool state);
-    void setCenterHue(byte index, byte value);
-    void setCenterBrightness(byte index, byte value);
+    void setHomeLed(int index, bool state);
+    void setDirtLed(int index, bool state);
+    void setWarningLed(int index, bool state);
+    void setSpotLed(int index, bool state);
+    void setCenterHue(int index, byte value);
+    void setCenterBrightness(int index, byte value);
 
     bool handleCommand(OSCMessage &command) override;
 

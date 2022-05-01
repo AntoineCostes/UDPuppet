@@ -3,12 +3,12 @@
 #include "../common/Component.h"
 
 #ifdef HAS_MOTORWING
-#include "../libs/AccelStepper/src/AccelStepper.h"
+#include "../libs/AccelStepper_modified/src/AccelStepper.h"
 
 class StepperMotor : public Component
 {
 public:
-  StepperMotor(byte id, AccelStepper *stepper);
+  StepperMotor(int id, AccelStepper *stepper);
 
   void initComponent(bool serialDebug) override;
   void update() override;

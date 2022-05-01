@@ -1,7 +1,7 @@
 #include "StepperMotor.h"
 
 #ifdef HAS_MOTORWING
-StepperMotor::StepperMotor(byte id, AccelStepper *stepper) : Component("stepper_" + String(id)),
+StepperMotor::StepperMotor(int id, AccelStepper *stepper) : Component("stepper_" + String(id)),
                                                              stepper(stepper),
                                                              mode(SPEED)
 {

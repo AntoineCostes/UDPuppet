@@ -22,7 +22,7 @@ void RoombaManager::update()
     }
 }
 
-void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
+void RoombaManager::registerRoomba(int inPin, int outPin, int wakePin)
 {
     if (!checkInit())
         return;
@@ -39,49 +39,49 @@ void RoombaManager::registerRoomba(byte inPin, byte outPin, byte wakePin)
     compDebug("roomba registered.");
 }
 
-void RoombaManager::setText(byte index, String text)
+void RoombaManager::setText(int index, String text)
 {
     roombas[index]->setText(text);
 }
 
-void RoombaManager::drive(byte index, float left, float right)
+void RoombaManager::drive(int index, float left, float right)
 {
     left = constrain(left, -1.0f, 1.0f);
     right = constrain(right, -1.0f, 1.0f);
     roombas[index]->driveWheels(left*500, right*500);
 }
 
-void RoombaManager::setMaxSpeed(byte index, float speed)
+void RoombaManager::setMaxSpeed(int index, float speed)
 {
     roombas[index]->setMaxSpeed(speed);
 }
 
-void RoombaManager::setHomeLed(byte index, bool state)
+void RoombaManager::setHomeLed(int index, bool state)
 {
     roombas[index]->setLed(HOME_GREEN, state);
 }
 
-void RoombaManager::setDirtLed(byte index, bool state)
+void RoombaManager::setDirtLed(int index, bool state)
 {
     roombas[index]->setLed(DIRT_BLUE, state);
 }
 
-void RoombaManager::setWarningLed(byte index, bool state)
+void RoombaManager::setWarningLed(int index, bool state)
 {
     roombas[index]->setLed(WARNING_RED, state);
 }
 
-void RoombaManager::setSpotLed(byte index, bool state)
+void RoombaManager::setSpotLed(int index, bool state)
 {
     roombas[index]->setLed(SPOT_GREEN, state);
 }
 
-void RoombaManager::setCenterHue(byte index, byte value)
+void RoombaManager::setCenterHue(int index, byte value)
 {
     roombas[index]->setCenterHue(value);
 }
 
-void RoombaManager::setCenterBrightness(byte index, byte value)
+void RoombaManager::setCenterBrightness(int index, byte value)
 {
     roombas[index]->setCenterBrightness(value);
 }

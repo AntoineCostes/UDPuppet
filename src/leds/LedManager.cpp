@@ -12,12 +12,12 @@ void LedManager::initManager()
     lastLedRefreshTime = millis();
 }
 
-void LedManager::registerLedStrip(byte index, byte pin, byte numLeds, neoPixelType type)
+void LedManager::registerLedStrip(int index, int pin, int numLeds, neoPixelType type)
 {
     if (!checkInit())
         return;
 
-    if (!Component::registerPins(pins))
+    if (!Component::registerPin(pin))
     {
         compError("cannot register led strip !");
         return;

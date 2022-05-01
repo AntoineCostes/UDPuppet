@@ -1,7 +1,6 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 // dependencies:
-// Adafruit_NeoPixel.h
 // OSCMessage.h
 // ESP32Servo.h
 // ESPAsyncWebServer.h
