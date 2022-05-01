@@ -140,6 +140,17 @@
 
   "commands":
   {
+    "Modifier couleur":
+    {
+      "callback":"setColor",
+      "parameters":
+      {
+        "Couleur":
+        {
+          "type":"Color"
+        }
+      }
+    },
     "Aller à":
     {
       "menu":"Mouvement",
@@ -192,7 +203,6 @@
     },
     "Reset Position":
     {
-      "menu":"Statut",
       "callback":"resetPosition",
     },
     "Lancer Sequence":
