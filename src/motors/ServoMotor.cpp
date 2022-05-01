@@ -8,6 +8,7 @@ ServoMotor::ServoMotor(int pin, int min, int max, int start) :
   intParameters["max"] = max;
   intParameters["start"] = start;
   boolParameters["inverse"] = false;
+  overrideFlashParameters();
 }
 
 void ServoMotor::initComponent(bool serialDebug)
@@ -129,4 +130,19 @@ void ServoMotor::setInverse(bool value)
 
   boolParameters["inverse"] = value;
   overrideFlashParameters();
+}
+
+int ServoMotor::getMin()
+{
+  return intParameters["min"];
+}
+
+int ServoMotor::getMax()
+{
+  return intParameters["max"];
+}
+
+bool ServoMotor::getInverse()
+{
+  return boolParameters["inverse"];
 }

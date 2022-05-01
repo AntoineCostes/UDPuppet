@@ -23,7 +23,12 @@ function moduleParameterChanged(param)
 {
   if (param.name == "invocation")
   {
+    local.parameters.ip.set("");
     yo();
+  }
+  if (param.name == "play")
+  {
+    playSequence(local.parameters.sequences.getKey(), 30);
   }
 }
 
@@ -39,7 +44,7 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-      local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
+    local.parameters.ip.set(args[1]);
   }
 
   if (address == "/battery")

@@ -2,18 +2,19 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
+//#define SANS_GRAVITE
 //#define JEREM
 //#define COSTES
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
-#define BASE
-//#define BOBINE
+//#define BASE
+#define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
 //#define TEST
-
+//#define CAMEMBERT
+//#define CHANTDRIER
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)

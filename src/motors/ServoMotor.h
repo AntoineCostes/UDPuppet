@@ -22,6 +22,10 @@ public:
     void setInverse(bool value);
     void setStart(int value);
 
+    int getMin();
+    int getMax();
+    bool getInverse();
+
   // enum ServoMode
   // {
   //     PLAYING,

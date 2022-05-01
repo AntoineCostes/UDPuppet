@@ -13,6 +13,10 @@
 
 // TODO remove index
 // TODO local libs
+// TODO ERROR if prop was not registered
+// TODO do not play sequence if file does not exist
+// TODO bluehouse config
+// DELETE sequence button
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -29,10 +33,10 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef CHANTDRIER
-  master.servo.registerServo(0, 0, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
-  master.servo.registerServo(1, 1, 0.0f, 0.5f, 0.1f); // index, pin, min, max, start
-  master.servo.registerServo(2, 2, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
-  master.servo.registerServo(3, 3, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+  master.servo.registerServo(0, 0, 0, 180, 90); // index, pin, min, max, start
+  master.servo.registerServo(1, 1, 20, 120, 120); // index, pin, min, max, start
+  master.servo.registerServo(2, 2, 0, 180, 90); // index, pin, min, max, start
+  master.servo.registerServo(3, 3, 0, 180, 90); // index, pin, min, max, start
 #endif
 
 #ifdef CAMEMBERT
