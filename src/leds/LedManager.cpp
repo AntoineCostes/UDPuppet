@@ -96,6 +96,11 @@ void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
     strips[stripIndex]->setLed(i, r, g, b);
 }
 
+void LedManager::setWifiDebug(int stripIndex, bool value)
+{
+    strips[stripIndex]->setWifiDebug(value);
+}
+
 bool LedManager::handleCommand(OSCMessage &command)
 {
     if (!checkInit())

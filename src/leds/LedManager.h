@@ -25,6 +25,7 @@ public:
     void setColor(int stripIndex, int c);
     void setColor(int stripIndex, int r, int g, int b);
     void setBrightness(int stripIndex, float value);
+    void setWifiDebug(int stripIndex, bool value);
 
     // led
     void setColor(int stripIndex, int i, int r, int g, int b);

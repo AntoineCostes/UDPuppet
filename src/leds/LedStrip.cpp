@@ -8,9 +8,9 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Compon
                                                                             mode(LedMode::WAITING),
                                                                             toastTimer(0)
 {
-    // pin as intParameter ? instantiate strip in init ?
+    // instantiate strip in init ?
     boolParameters["wifiDebug"] = debug;
-
+    // toast duration parameter
 }
 
 void LedStrip::initComponent(bool serialDebug)
@@ -130,6 +130,8 @@ void LedStrip::setLed(int i, int r, int g, int b)
 {
     if (!checkInit())
         return;
+
+    mode = LedMode::STREAMING;
 
     if (i < 0 || i >= numLeds)
     {
