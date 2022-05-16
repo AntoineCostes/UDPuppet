@@ -55,41 +55,43 @@ bool ServoManager::checkServoPin(int pin)
 
 }
 
-void ServoManager::registerServo(int index, int pin, int min, int max, int start)
+void ServoManager::registerServo(int pin, int min, int max, int start)
 {
   if (!checkInit())
     return;
   
 #ifdef HAS_MULTISERVO
-  if (index < 0 || index > 7)
+  if (pin < 0 || pin > 7)
   {
-    compError("incorrect index: " + String(index));
+    compError("multiservo pin must be between 0 and 7");
     return;
   }
+  
+  for (auto const &servo : servos)
+    if ( servo->name.equals( String("servo_pin"+String(pin)) ) )
+    {
+      compError("servo was already registered on this pin");
+      return;
+    }
 
-  if (servos.count(index) != 0)
-  {
-    compError("servo was already registered on this pin");
-    return;
-  }
-  servos.insert({index, new ServoMotor(pin, min, max, start)});
-  servos[index]->initComponent(serialDebug); // don't attach pin
-  compDebug("registered prop: " + String(servos[index]->name));
-  setMultiServoAbs(index, start);
+  servos.emplace_back(new ServoMotor(pin, min, max, start));
+  servos.back()->Component::initComponent(serialDebug); // don't attach pin
+  compDebug("registered servo: " + String(servos.back()->name));
+  setMultiServoAbs(servos.size() - 1, start);
   
 #elif defined(HAS_SERVO)
   if (!checkServoPin(pin))
     return;
 
-  servos.insert({index, new ServoMotor(pin, min, max, start)});
-  servos[index]->initComponent(serialDebug);
-  compDebug("registered prop: " + String(servos[index]->name));
+  servos.emplace_back(new ServoMotor(pin, min, max, start));
+  servos.back()->initComponent(serialDebug);
+  compDebug("registered servo: " + String(servos.back()->name));
 #endif
 }
 
 void ServoManager::setServoAbs(int index, int value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -106,7 +108,7 @@ void ServoManager::setServoAbs(int index, int value)
 
 void ServoManager::setServoRel(int index, float value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -122,7 +124,7 @@ void ServoManager::setServoRel(int index, float value)
 
 void ServoManager::setServoMin(int index, int value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -138,7 +140,7 @@ void ServoManager::setServoMin(int index, int value)
 
 void ServoManager::setServoMax(int index, int value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -154,7 +156,7 @@ void ServoManager::setServoMax(int index, int value)
 
 void ServoManager::setServoMin(int index, float value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -170,7 +172,7 @@ void ServoManager::setServoMin(int index, float value)
 
 void ServoManager::setServoMax(int index, float value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -186,7 +188,7 @@ void ServoManager::setServoMax(int index, float value)
 
 void ServoManager::setServoInverse(int index, bool value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;
@@ -197,6 +199,11 @@ void ServoManager::setServoInverse(int index, bool value)
 
 void ServoManager::setMultiServoRel(int index, float value)
 {
+  if (index < 0 || index >= servos.size())
+  {
+    compError("incorrect index: " + String(index));
+    return;
+  }
   compDebug("set multiservo#" + String(index) + " value: " + String(value));
   if (!Component::checkRange("multiservo rel", value, 0.0f, 1.0f)) return;
 
@@ -206,7 +213,7 @@ void ServoManager::setMultiServoRel(int index, float value)
 
 void ServoManager::setMultiServoAbs(int index, int value)
 {
-  if (servos.count(index) == 0)
+  if (index < 0 || index >= servos.size())
   {
     compError("incorrect index: " + String(index));
     return;

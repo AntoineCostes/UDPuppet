@@ -20,19 +20,21 @@ void MotorShield2Manager::update()
     if (!checkInit())
         return;
 
-    for (auto &pair : steppers)
+    
+    for(std::size_t i = 0; i < steppers.size(); ++i)
+    //for (auto &stepper : steppers) // TODO include index in name
     {
-        float pos = pair.second->currentPosition();
-        pair.second->update();
-        long newPos = pair.second->currentPosition();
-        float speed = pair.second->currentSpeed();
-        float maxSpeed = pair.second->maxSpeed();
+        float pos = steppers[i]->currentPosition();
+        steppers[i]->update();
+        long newPos = steppers[i]->currentPosition();
+        float speed = steppers[i]->currentSpeed();
+        float maxSpeed = steppers[i]->maxSpeed();
 
         if (millis() - lastEventTime > 5)
         {
             if (newPos != lastEventPos)
             {
-                sendEvent(StepperEvent(StepperEvent::Type::MOVED, pair.first, newPos, speed, maxSpeed));
+                sendEvent(StepperEvent(StepperEvent::Type::MOVED, i, newPos, speed, maxSpeed));
                 lastEventPos = newPos;
                 lastEventTime = millis();
             }
@@ -143,7 +145,7 @@ void MotorShield2Manager::dcStop(DCPort port)
     compDebug("stop DC#" + String(port));
 }
 
-void MotorShield2Manager::registerStepper(int index, int pin1, int pin2, int pin3, int pin4)
+void MotorShield2Manager::registerStepper(int pin1, int pin2, int pin3, int pin4)
 {
     if (!checkInit())
         return;
@@ -157,10 +159,10 @@ void MotorShield2Manager::registerStepper(int index, int pin1, int pin2, int pin
     }
 
     // FIXME id not safe
-    registerStepper(index, pin1 | pin2 | pin3 | pin4, new AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4));
+    registerStepper(pin1 | pin2 | pin3 | pin4, new AccelStepper(AccelStepper::FULL4WIRE, pin1, pin2, pin3, pin4));
 }
 
-void MotorShield2Manager::registerStepper(int index, int step, int dir)
+void MotorShield2Manager::registerStepper(int step, int dir)
 {
     if (!checkInit())
         return;
@@ -174,10 +176,10 @@ void MotorShield2Manager::registerStepper(int index, int step, int dir)
     }
 
     // FIXME id not safe
-    registerStepper(index, step | dir, new AccelStepper(AccelStepper::FULL2WIRE, step ,dir));
+    registerStepper(step | dir, new AccelStepper(AccelStepper::DRIVER, step ,dir));
 }
 
-void MotorShield2Manager::registerShieldv2Stepper(int index, int steps, StepperPort port)
+void MotorShield2Manager::registerShieldv2Stepper(int steps, StepperPort port)
 {
     if (!checkInit())
         return;
@@ -195,7 +197,7 @@ void MotorShield2Manager::registerShieldv2Stepper(int index, int steps, StepperP
         usedPorts.insert(DCPort::M2);
 
         shieldStepper1 = AFMS.getStepper(steps, 1);
-        registerStepper(index, 1, new AccelStepper(std::bind(&MotorShield2Manager::forward1, this), std::bind(&MotorShield2Manager::backward1, this)));
+        registerStepper(1, new AccelStepper(std::bind(&MotorShield2Manager::forward1, this), std::bind(&MotorShield2Manager::backward1, this)));
 
         break;
 
@@ -209,22 +211,17 @@ void MotorShield2Manager::registerShieldv2Stepper(int index, int steps, StepperP
         usedPorts.insert(DCPort::M4);
 
         shieldStepper2 = AFMS.getStepper(steps, 2);
-        registerStepper(index, 2, new AccelStepper(std::bind(&MotorShield2Manager::forward2, this), std::bind(&MotorShield2Manager::backward2, this)));
+        registerStepper(2, new AccelStepper(std::bind(&MotorShield2Manager::forward2, this), std::bind(&MotorShield2Manager::backward2, this)));
 
         break;
     }
 }
 
-void MotorShield2Manager::registerStepper(int index, int id, AccelStepper *stepper)
+void MotorShield2Manager::registerStepper(int id, AccelStepper *stepper)
 {
-    if (steppers.count(index) > 0)
-    {
-        compError("cannot register stepper#" + String(index));
-        return;
-    }
-    steppers.insert({index, new StepperMotor(id, stepper)});
-    steppers[index]->initComponent(serialDebug);
-    compDebug("registered " + steppers[index]->name + " on #" + String(index));
+    steppers.emplace_back(new StepperMotor(id, stepper));
+    steppers.back()->initComponent(serialDebug);
+    compDebug("registered " + steppers.back()->name);
 }
 
 void MotorShield2Manager::stepperGoTo(int index, long value)
@@ -232,9 +229,9 @@ void MotorShield2Manager::stepperGoTo(int index, long value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -247,9 +244,9 @@ void MotorShield2Manager::stepperMove(int index, long value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -263,9 +260,9 @@ void MotorShield2Manager::stepperReset(int index)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -279,9 +276,9 @@ void MotorShield2Manager::stepperSetSpeed(int index, float value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -294,9 +291,9 @@ void MotorShield2Manager::stepperSetSpeedRel(int index, float value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -309,9 +306,9 @@ void MotorShield2Manager::stepperSetAccel(int index, float value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
@@ -324,15 +321,39 @@ void MotorShield2Manager::stepperSetMaxSpeed(int index, float value)
     if (!checkInit())
         return;
 
-    if (steppers.count(index) == 0)
+    if (index < 0 || index >= steppers.size())
     {
-        compError("no stepper on " + String(index));
+        compError("incorrect index " + String(index));
         return;
     }
 
     if (MOTORWING_DEBUG) compDebug("stepper " + String(index) + " set max speed " + String(value));
     steppers[index]->setMaxSpeed(value);
 }
+
+void MotorShield2Manager::stepperRelease(int index)
+{
+    if (!checkInit())
+        return;
+
+    if (index < 0 || index >= steppers.size())
+    {
+        compError("incorrect index " + String(index));
+        return;
+    }
+    if (MOTORWING_DEBUG) compDebug("release stepper " + String(index));
+    if (steppers[index]->name.equals("stepper_1"))
+    {   
+        compDebug("release 1");
+        shieldStepper1->release();
+    }
+    if (steppers[index]->name.equals("stepper_2"))
+    {   
+        compDebug("release 2");
+        shieldStepper2->release();
+    }
+}
+
 
 void MotorShield2Manager::forward1()
 {
@@ -471,6 +492,15 @@ bool MotorShield2Manager::handleCommand(OSCMessage &command)
             int index = command.getInt(0);
             float value = command.getFloat(1);
             stepperSetAccel(index, value);
+            return true;
+        }
+    }
+    else if (address.equals("/stepper/release"))
+    {
+        if (checkCommandArguments(command, "i", true))
+        {
+            int index = command.getInt(0);
+            stepperRelease(index);
             return true;
         }
     }

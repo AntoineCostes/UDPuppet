@@ -22,9 +22,6 @@
 // les managers ne devraient pas hériter de component car ils n'ont pas de paramètres
 
 // TODO
-// fix stepper
-// include libs
-// advertise SD not found
 // Manager check(), error,
 // servo init min max
 // master check components + Parameter event to set Chataigne parameters
@@ -38,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.1")
+                               firmwareVersion("1.4.2")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -160,17 +157,16 @@ void PuppetMaster::checkComponents()
         osc.sendMessage(msg);
     }
     
-    for (auto &pair : motorwing.steppers)
+    for(std::size_t i = 0; i < motorwing.steppers.size(); ++i)
+    //for (auto &stepper : motorwing.steppers)
     {
         compDebug("check stepper");
-        String addr = "/stepper/"+String(int(pair.first))+"/maxspeed";
+        String addr = "/stepper/"+String(i)+"/maxspeed";
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
-        msg.add(pair.second->maxSpeed());
+        msg.add(motorwing.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
         
-        compDebug(String(pair.second->maxSpeed()));
-
        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
         // String addr2 = "/stepper/"+String(int(pair.first)+"/acceleration");
         // OSCMessage msg2(addr.c_str());
@@ -320,8 +316,8 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         }
 
     #ifdef HAS_LED
-        led.setMode(LedStrip::LedMode::STREAMING);
-        led.setColor(0, 0, 50, 0);
+        led.setMode(LedStrip::LedMode::READY);
+        //led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         web.initServer();

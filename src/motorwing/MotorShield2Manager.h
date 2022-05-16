@@ -45,9 +45,9 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
   // TODO handle I2C address, step type
-  void registerShieldv2Stepper(int index, int steps, StepperPort port);
-  void registerStepper(int index, int pin1, int pin2, int pin3, int pin4);
-  void registerStepper(int index, int step, int dir);
+  void registerShieldv2Stepper(int steps, StepperPort port);
+  void registerStepper(int pin1, int pin2, int pin3, int pin4);
+  void registerStepper(int step, int dir);
   void stepperGoTo(int index, long value);
   void stepperGoToFromStart(int index, long value);
   void stepperMove(int index, long value);
@@ -56,6 +56,7 @@ public:
   void stepperSetSpeedRel(int index, float value);
   void stepperSetAccel(int index, float value);
   void stepperSetMaxSpeed(int index, float value);
+  void stepperRelease(int index);
   
   void addDCMotor( DCPort port);
   void dcRun(DCPort port, float value); // -1 1
@@ -63,12 +64,13 @@ public:
   void dcStopAll();
   void dcMaxSpeed(DCPort port, int value);
   std::map<DCPort, DCMotor*> dcMotors;
-  std::map<int, StepperMotor *> steppers;
+  std::vector<StepperMotor *> steppers;
+
 
 protected:
   Adafruit_MotorShield AFMS;
   std::set<DCPort> usedPorts;
-  void registerStepper(int index, int id, AccelStepper *stepper);
+  void registerStepper(int id, AccelStepper *stepper);
   long lastEventTime;
   long lastEventPos;
 

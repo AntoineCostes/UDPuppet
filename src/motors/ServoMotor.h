@@ -36,4 +36,7 @@ public:
 protected:
     Servo servo;
     int pin;
+    int min;
+    int max;
+    int start;
 };

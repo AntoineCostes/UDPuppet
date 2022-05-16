@@ -15,7 +15,7 @@ public:
   void initManager();
   void update() override;
 
-  void registerServo(int index, int pin, int min, int max, int start);
+  void registerServo(int pin, int min, int max, int start);
 
   bool handleCommand(OSCMessage &command) override;
 
@@ -35,7 +35,7 @@ public:
 
 protected:
   bool checkServoPin(int pin); 
-  std::map<int, ServoMotor *> servos;
+  std::vector<ServoMotor *> servos;
 #ifdef HAS_MULTISERVO
 Adafruit_PWMServoDriver pwm;
 #endif

@@ -10,6 +10,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Compon
 {
     // instantiate strip in init ?
     boolParameters["wifiDebug"] = debug;
+    // TODO brightness parameter
     // toast duration parameter
 }
 
