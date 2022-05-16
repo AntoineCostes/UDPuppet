@@ -323,8 +323,29 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         web.initServer();
 
         #ifdef CAMEMBERT
-        launchSequence("covid");
+        servo.setServoRel(0, 0.5f);
+        delay(500);
+        servo.setServoRel(0, 0.0f);
         #endif
+        
+        #ifdef CASTAFIORE
+        servo.setServoRel(0, 0.5f);
+        delay(500);
+        servo.setServoRel(0, 0.0f);
+        #endif
+        
+        #ifdef CHANTDRIER
+        servo.setServoRel(0, 0.5f);
+        servo.setServoRel(1, 0.5f);
+        servo.setServoRel(2, 0.5f);
+        servo.setServoRel(3, 0.5f);
+        delay(500);
+        servo.setServoRel(0, 0.0f);
+        servo.setServoRel(1, 0.0f);
+        servo.setServoRel(2, 0.0f);
+        servo.setServoRel(3, 0.0f);
+        #endif
+
         break;
 
     case WifiConnectionState::DISCONNECTED:
@@ -426,6 +447,10 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         servo.setServoRel(0, e.data[0] / 254.0f);
 #endif
 
+#ifdef CASTAFIORE
+        servo.setServoRel(0, e.data[0] / 254.0f);
+#endif
+
 #ifdef CHANTDRIER
         servo.setServoRel(0, e.data[0] / 254.0f);
         servo.setServoRel(1, e.data[1] / 254.0f);
@@ -470,10 +495,6 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         compDebug("ended");
-        #ifdef CAMEMBERT
-        delay(10000);
-        launchSequence("deserteur");
-        #endif
     }
 }
 

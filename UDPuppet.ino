@@ -32,19 +32,31 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef CHANTDRIER
-  master.servo.registerServo(0, 0, 0, 180, 90); // index, pin, min, max, start
-  master.servo.registerServo(1, 1, 20, 120, 120); // index, pin, min, max, start
-  master.servo.registerServo(2, 2, 0, 180, 90); // index, pin, min, max, start
-  master.servo.registerServo(3, 3, 0, 180, 90); // index, pin, min, max, start
+  master.servo.registerServo(0, 0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoInverse(0, true);
+  master.servo.setServoRel(0, 0.0f);
+  master.servo.registerServo(1,  0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoInverse(1, true);
+  master.servo.setServoRel(1, 0.0f);
+  master.servo.registerServo(2, 0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoInverse(2, true);
+  master.servo.setServoRel(2, 0.0f);
+  master.servo.registerServo(3, 0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoInverse(3, true);
+  master.servo.setServoRel(3, 0.0f);
+#endif
+
+#ifdef CASTAFIORE
+  master.servo.registerServo(27, 12, 100, 50);
 #endif
 
 #ifdef CAMEMBERT
 #ifdef ESP32
-  //master.servo.registerServo(0, 27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
-  master.servo.registerServo(0, 27, 80, 140, 139); // index, pin, min, max, start
-  //master.servo.setServoInverse(0, true);
+  //master.servo.registerServo(27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
+  master.servo.registerServo(27, 80, 160, 80); // index, pin, min, max, start
+  //master.servo.setServoInverse(0, false);
 #else
-  // master.servo.registerServo(0, 14, 140, 50, 139); // index, pin, min, max, start
+  // master.servo.registerServo(14, 140, 50, 139); // index, pin, min, max, start
 #endif
 #endif
 
@@ -53,29 +65,30 @@ void setup()
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // master.led.registerLedStrip(0, 21, 10, NEO_RGB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // rotation tête
-  master.servo.registerServo(0, 15, 0, 180, 90); // index, pin, min, max, start
-  // master.servo.registerServo(0, 23, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+  master.servo.registerServo(15, 0, 180, 90); // index, pin, min, max, start
+  // master.servo.registerServo(23, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
 #endif
 
 #ifdef BASE
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // pied
-  master.servo.registerServo(0, 27, 50, 140, 70); // index, pin, min, max, start
+  master.servo.registerServo(27, 50, 140, 70); // index, pin, min, max, start
   // cou
-  master.servo.registerServo(1, 12, 60, 120, 120); // index, pin, min, max, start
+  master.servo.registerServo(12, 60, 120, 120); // index, pin, min, max, start
   //rotation
-  master.motorwing.registerStepper(0, 14, 15, 32, 13);
+  master.motorwing.registerStepper(14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
   master.motorwing.stepperSetAccel(0, 250.0f);
   // TODO #define REVOLUTION_STEPS 1025 ?
 #endif
 
 #ifdef BOBINE
-  master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
+  master.led.registerLedStrip(0, 21, 300, NEO_GRB + NEO_KHZ800);
   master.led.setWifiDebug(0, false);
-  master.motorwing.registerShieldv2Stepper(0, 200, MotorShield2Manager::StepperPort::M3_M4);
- //master.motorwing.registerStepper(0, 21, 17);
+  master.led.setBrightness(0.4f);
+  master.motorwing.registerShieldv2Stepper(200, MotorShield2Manager::StepperPort::M3_M4);
+ //master.motorwing.registerStepper(16, 17);
 #endif
 
 #ifdef CORBEILLE

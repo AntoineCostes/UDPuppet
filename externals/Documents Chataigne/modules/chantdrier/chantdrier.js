@@ -60,6 +60,12 @@ function oscEvent(address, args)
       local.parameters.sequences.addOption(args[i], i - 1);
     }
   }
+  if (address == "/tracks")
+  {
+    local.parameters.tracks.removeOptions();
+    for (var i = 1; i < args.length; i++)
+      local.parameters.tracks.addOption(args[i], i - 1);
+  }
 }
 
 // COMMANDS

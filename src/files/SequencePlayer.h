@@ -14,6 +14,8 @@
 #define FRAME_SIZE 2 // 2 DC
 #elif defined CAMEMBERT
 #define FRAME_SIZE 1 // 1 servo 
+#elif defined CASTAFIORE
+#define FRAME_SIZE 1 // 1 servo 
 #elif defined CHANTDRIER
 #define FRAME_SIZE 4 // 4 servos 
 #else

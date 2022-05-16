@@ -9,12 +9,13 @@
 // HARDWARE - SELECT ONE
 //#define AMPOULE
 //#define BASE
-#define BOBINE
+//#define BOBINE
 //#define CORBEILLE
 //#define ROOMBA
 //#define TEST
 //#define CAMEMBERT
 //#define CHANTDRIER
+#define CASTAFIORE
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -53,6 +54,8 @@ enum BoardType
 #include "config/Camembert.h"
 #elif defined(CHANTDRIER)
 #include "config/Chantdrier.h"
+#elif defined(CASTAFIORE)
+#include "config/Castafiore.h"
 #endif
 
 

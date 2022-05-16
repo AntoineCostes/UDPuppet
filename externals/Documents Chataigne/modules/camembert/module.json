@@ -56,6 +56,10 @@
     "Play":
     {
       "type":"Trigger"
+    },
+    "Tracks":
+    {
+      "type":"Enum"
     }
   },
 
@@ -63,7 +67,8 @@
 
   "scripts":
   [
-    "camembert.js"
+    "camembert.js",
+    "bake.js"
   ],
 
   "values":
