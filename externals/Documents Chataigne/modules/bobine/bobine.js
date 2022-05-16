@@ -46,6 +46,10 @@ function moduleParameterChanged(param)
   {
     stop();
   }
+  if (param.name == "release")
+  {
+    release();
+  }
 }
 
 function oscEvent(address, args)
@@ -129,6 +133,10 @@ function setSpeed(val) {
 function stop() {
 local.send("/stepper/speed", STEPPER_INDEX, 0.0);
   stopSequence();
+}
+
+function release() {
+local.send("/stepper/release", STEPPER_INDEX);
 }
 
 function resetPosition() {
