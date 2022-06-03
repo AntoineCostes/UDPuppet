@@ -204,9 +204,9 @@ void ServoManager::setMultiServoRel(int index, float value)
     compError("incorrect index: " + String(index));
     return;
   }
-  compDebug("set multiservo#" + String(index) + " value: " + String(value));
   if (!Component::checkRange("multiservo rel", value, 0.0f, 1.0f)) return;
 
+  compDebug("set multiservo#" + String(index) + " value: " + String(value));
   int abs = servos[index]->getMin() + int(value*(servos[index]->getMax() - servos[index]->getMin()));
   setMultiServoAbs(index, abs);
 }
@@ -219,9 +219,9 @@ void ServoManager::setMultiServoAbs(int index, int value)
     return;
   }
 #ifdef HAS_MULTISERVO
-  compDebug("set multiservo#" + String(index) + ": " + String(value));
   if (!Component::checkRange("multiservo abs", value, servos[index]->getMin(), servos[index]->getMax())) return;
 
+  compDebug("set multiservo#" + String(index) + ": " + String(value));
   if (servos[index]->getInverse())
     pwm.setPWM(index, 0, map(value, 0, 180, 574, 150));
   else

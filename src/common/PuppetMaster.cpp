@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.2")
+                               firmwareVersion("1.4.3")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -266,6 +266,21 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     
     if (command.match("/play"))
     {
+        #ifdef CAMEMBERT
+        servo.setServoRel(0, 0.0f);
+        #endif
+        
+        #ifdef CASTAFIORE
+        servo.setServoRel(0, 0.0f);
+        #endif
+        
+        #ifdef CHANTDRIER
+        servo.setServoRel(0, 0.0f);
+        servo.setServoRel(1, 0.0f);
+        servo.setServoRel(2, 0.0f);
+        servo.setServoRel(3, 0.0f);
+        #endif
+
         char str[32];
         command.getString(0, str);
         launchSequence(String(str));
@@ -290,6 +305,8 @@ void PuppetMaster::launchSequence(String sequenceName)
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
+    OSCMessage m("/hey");
+    
     switch (e.state)
     {
     case WifiConnectionState::CONNECTING:
@@ -321,6 +338,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         web.initServer();
+        
 
         #ifdef CAMEMBERT
         servo.setServoRel(0, 0.5f);
@@ -495,8 +513,60 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         compDebug("ended");
+        
+        OSCMessage mEnd("/ended");
+        mEnd.add(e.sequenceName);
+        osc.broadcastMessage(mEnd);
+
+        #ifdef CASTAFIORE
+        OSCMessage m("/play");
+        if (e.sequenceName == "queen4")
+        {
+            m.add("nuit");
+            osc.broadcastMessage(m);
+        }
+        if (e.sequenceName == "queen3") 
+        {
+            m.add("contine1");
+            osc.broadcastMessage(m);
+        }
+        #endif
+        
+
+        #ifdef CHANTDRIER
+        compLog("play Chantdrier");
+        OSCMessage m("/play");
+        if (e.sequenceName == "nuit")
+        {
+            m.add("deserteur");
+            osc.broadcastMessage(m);
+        } else if (e.sequenceName == "contine1")
+        {
+            m.add("valls");
+            osc.broadcastMessage(m);
+        } else if (e.sequenceName == "contine2") 
+        {
+            m.add("queen4");
+            osc.broadcastMessage(m);
+        }
+        #endif
+        
+        #ifdef CAMEMBERT
+        OSCMessage m("/play");
+        if (e.sequenceName == "deserteur")
+        {
+            m.add("queen3");
+            osc.broadcastMessage(m);
+        }
+        if (e.sequenceName == "valls") 
+        {
+            m.add("contine2");
+            osc.broadcastMessage(m);
+        }
+        #endif
     }
 }
+
 
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {

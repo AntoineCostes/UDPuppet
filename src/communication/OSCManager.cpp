@@ -201,3 +201,31 @@ void OSCManager::sendMessage(String address)
     OSCMessage m(address.c_str());
     sendMessage(m);
 }
+
+void OSCManager::broadcastMessage(OSCMessage &msg)
+{
+    if (!checkInit())
+        return;
+
+    if (!isConnected)
+    {
+        compError("Can't send message, OSC not connected !");
+
+        char addr[32];
+        msg.getAddress(addr);
+        compError(addr);
+        return;
+    }
+
+    char addr[32];
+    msg.getAddress(addr);
+    IPAddress broadcastIp;
+    broadcastIp.fromString(stringParameters["targetIp"]);
+    broadcastIp[3] = 255;
+
+    compLog("Broadcast message to " + broadcastIp.toString()+ "@" + String(OSC_TARGET_PORT) + " : " + String(addr));
+    udp.beginPacket((char *)broadcastIp.toString().c_str(), (uint16_t)9000);
+    msg.send(udp);
+    udp.endPacket();
+    msg.empty();
+}

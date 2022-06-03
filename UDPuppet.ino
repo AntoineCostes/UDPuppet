@@ -32,28 +32,28 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef CHANTDRIER
-  master.servo.registerServo(0, 0, 110, 110); // index, pin, min, max, start
+  master.servo.registerServo(0, 10, 110, 100); // index, pin, min, max, start
   master.servo.setServoInverse(0, true);
-  master.servo.setServoRel(0, 0.0f);
-  master.servo.registerServo(1,  0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoRel(0, 0.01f);
+  master.servo.registerServo(1, 5, 110, 100); // index, pin, min, max, start
   master.servo.setServoInverse(1, true);
-  master.servo.setServoRel(1, 0.0f);
-  master.servo.registerServo(2, 0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoRel(1, 0.01f);
+  master.servo.registerServo(2, 5, 110, 100); // index, pin, min, max, start
   master.servo.setServoInverse(2, true);
-  master.servo.setServoRel(2, 0.0f);
-  master.servo.registerServo(3, 0, 110, 110); // index, pin, min, max, start
+  master.servo.setServoRel(2, 0.01f);
+  master.servo.registerServo(3, 5, 110, 100); // index, pin, min, max, start
   master.servo.setServoInverse(3, true);
-  master.servo.setServoRel(3, 0.0f);
+  master.servo.setServoRel(3, 0.01f);
 #endif
 
 #ifdef CASTAFIORE
-  master.servo.registerServo(27, 12, 100, 50);
+  master.servo.registerServo(27, 18, 100, 50);
 #endif
 
 #ifdef CAMEMBERT
 #ifdef ESP32
   //master.servo.registerServo(27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
-  master.servo.registerServo(27, 80, 160, 80); // index, pin, min, max, start
+  master.servo.registerServo(27, 90, 160, 80); // index, pin, min, max, start
   //master.servo.setServoInverse(0, false);
 #else
   // master.servo.registerServo(14, 140, 50, 139); // index, pin, min, max, start

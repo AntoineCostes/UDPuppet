@@ -74,7 +74,7 @@ void SequencePlayer::startSequence(float atTime)
   seek(atTime);
   prevTimeMs = millis();
 
-  sendEvent(PlayerEvent(PlayerEvent::Start));
+  sendEvent(PlayerEvent(PlayerEvent::Start, curSequenceName));
 }
 
 void SequencePlayer::tryPlaySequence(String path)
@@ -99,7 +99,7 @@ void SequencePlayer::playSequence(String path)
 void SequencePlayer::stopPlaying()
 {
   isPlaying = false;
-  sendEvent(PlayerEvent(PlayerEvent::Stop));
+  sendEvent(PlayerEvent(PlayerEvent::Stop, curSequenceName));
 }
 
 void SequencePlayer::playFrame()
@@ -115,7 +115,7 @@ void SequencePlayer::playFrame()
     else
     {
       isPlaying = false;
-      sendEvent(PlayerEvent(PlayerEvent::Ended));
+      sendEvent(PlayerEvent(PlayerEvent::Ended, curSequenceName));
       return;
     }
   }
@@ -157,7 +157,7 @@ void SequencePlayer::playFrame()
   if (pos%100 < 4)
     compDebug("Playing frame at position " + String(pos));
   curFile.read(frameData, FRAME_SIZE);
-  sendEvent(PlayerEvent(PlayerEvent::NewFrame, frameData));
+  sendEvent(PlayerEvent(PlayerEvent::NewFrame, curSequenceName, frameData));
 
   //setServo(0, map(curFile.read(), 0, 255, 0, 180));
 }
@@ -175,7 +175,7 @@ void SequencePlayer::seek(float t)
 
   if (curTimeMs < 0)
   {
-    sendEvent(PlayerEvent(PlayerEvent::Stop));
+    sendEvent(PlayerEvent(PlayerEvent::Stop, curSequenceName));
   }
   else if (!isPlaying)
   {

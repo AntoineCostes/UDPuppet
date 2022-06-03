@@ -34,10 +34,11 @@ public:
         Ended
     };
 
-    PlayerEvent(Type t, uint8_t * data = nullptr) : type(t), data(data) {}
+    PlayerEvent(Type t, String sequenceName, uint8_t * data = nullptr) : type(t), sequenceName(sequenceName), data(data) {}
 
     Type type;
     uint8_t * data;
+    String sequenceName;
 };
 
 class SequencePlayer : public Manager,

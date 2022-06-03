@@ -41,6 +41,8 @@ public:
 
     void sendMessage(OSCMessage &msg);
     void sendMessage(String address);
+    void broadcastMessage(OSCMessage &msg);
+
 
 protected:
     WifiManager *wifi;
