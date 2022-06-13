@@ -26,6 +26,8 @@ public:
   void stop();
   void togglePausePlay();
 
+  float getVolume();
+
 protected:
   Adafruit_VS1053_FilePlayer* player;
   bool ready;

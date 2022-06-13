@@ -142,6 +142,12 @@ void PuppetMaster::checkComponents()
     msg3.add(BOARD_NAME.c_str());
     for (auto seq : music.tracks) msg3.add(seq.c_str());
     osc.sendMessage(msg3);
+
+    OSCMessage msg4("/volume");
+    msg4.add(BOARD_NAME.c_str());
+    msg4.add(music.getVolume());
+    osc.sendMessage(msg4);
+
 #endif
 
     advertiseSequences();

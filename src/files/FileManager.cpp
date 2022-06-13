@@ -64,6 +64,15 @@ void FileManager::update()
 {
 }
 
+boolean FileManager::doesExist(String fileName)
+{
+#ifdef HAS_ADALOGGER_WING
+    return SD.exists(fileName.c_str());
+#else
+    return SPIFFS.exists(fileName.c_str());
+#endif
+}
+
 // TODO make singleton to alert when not initialized
 File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists)
 {

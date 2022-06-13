@@ -41,8 +41,15 @@ void SequencePlayer::update()
 
 void SequencePlayer::loadSequence(String path)
 {
-  compDebug("loading sequence file...");
   if (!path.endsWith(".dat")) path = path+".dat";
+  
+  if (!FileManager::doesExist(path))
+  {
+    compError("could not open file "+ path +": it does not exist!");
+    return;
+  }
+  
+  compDebug("loading sequence file...");
   curFile = FileManager::openFile(path, false); //false is for reading
   if (!curFile)
   {

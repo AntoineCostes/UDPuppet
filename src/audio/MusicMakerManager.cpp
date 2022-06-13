@@ -116,6 +116,11 @@ void MusicMakerManager::setVolume(float value)
     overrideFlashParameters();
 }
 
+float MusicMakerManager::getVolume()
+{
+    return floatParameters["volume"];
+}
+
 void MusicMakerManager::play(String trackName)
 {
     if (!ready)
@@ -124,14 +129,15 @@ void MusicMakerManager::play(String trackName)
         return;
     }
     
-    stop();
     compDebug("play " + trackName);
 
     String filePath = "/"+trackName;
     if (!SD.exists(filePath))
     {
         compError(filePath+" file does not exist!");
+        return;
     }
+    stop();
     player->startPlayingFile(filePath.c_str());
 }
 
