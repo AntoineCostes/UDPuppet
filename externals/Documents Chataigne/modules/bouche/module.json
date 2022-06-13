@@ -1,0 +1,127 @@
+{
+  "name":"Bouche",
+  "type":"OSC",
+  "path":"Sans Gravité",
+
+  "version":"1.4.3",
+  "description":"Contrôle d'un lecteur MP3 par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":10004
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"bouche.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Juin2022-1.4.3",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Tracks":
+    {
+      "type":"Enum"
+    },
+    "Play":
+    {
+      "type":"Trigger"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "bouche.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    },
+    "Volume":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    }
+  },
+
+  "commands":
+  {
+    "Set volume":
+    {
+      "callback":"setVolume",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
+  }
+}
