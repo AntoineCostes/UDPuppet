@@ -10,10 +10,9 @@
 // ESP8266mDNS
 // ArduinoOTA
 
-// TODO remove index
+// TODO remove led index
 // TODO local libs
-// TODO ERROR if prop was not registered
-// TODO do not play sequence if file does not exist
+// TODO ERROR mode if prop was not registered successfully
 // TODO bluehouse config
 // DELETE sequence button
 
@@ -32,16 +31,16 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
 #ifdef CHANTDRIER
-  master.servo.registerServo(0, 10, 110, 100); // index, pin, min, max, start
+  master.servo.registerServo(0, 10, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(0, true);
   master.servo.setServoRel(0, 0.01f);
-  master.servo.registerServo(1, 5, 110, 100); // index, pin, min, max, start
+  master.servo.registerServo(1, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(1, true);
   master.servo.setServoRel(1, 0.01f);
-  master.servo.registerServo(2, 5, 110, 100); // index, pin, min, max, start
+  master.servo.registerServo(2, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(2, true);
   master.servo.setServoRel(2, 0.01f);
-  master.servo.registerServo(3, 5, 110, 100); // index, pin, min, max, start
+  master.servo.registerServo(3, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(3, true);
   master.servo.setServoRel(3, 0.01f);
 #endif
@@ -52,11 +51,11 @@ void setup()
 
 #ifdef CAMEMBERT
 #ifdef ESP32
-  //master.servo.registerServo(27, 0.5f, 0.7f, 1.0f); // index, pin, min, max, start
-  master.servo.registerServo(27, 90, 160, 80); // index, pin, min, max, start
+  //master.servo.registerServo(27, 0.5f, 0.7f, 1.0f); // pin, min, max, start
+  master.servo.registerServo(27, 90, 160, 80); // pin, min, max, start
   //master.servo.setServoInverse(0, false);
 #else
-  // master.servo.registerServo(14, 140, 50, 139); // index, pin, min, max, start
+  // master.servo.registerServo(14, 140, 50, 139); // pin, min, max, start
 #endif
 #endif
 
@@ -65,17 +64,17 @@ void setup()
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // master.led.registerLedStrip(0, 21, 10, NEO_RGB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // rotation tête
-  master.servo.registerServo(15, 0, 180, 90); // index, pin, min, max, start
-  // master.servo.registerServo(23, 0.0f, 1.0f, 0.5f); // index, pin, min, max, start
+  master.servo.registerServo(15, 0, 180, 90); // pin, min, max, start
+  // master.servo.registerServo(23, 0.0f, 1.0f, 0.5f); // pin, min, max, start
 #endif
 
 #ifdef BASE
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // pied
-  master.servo.registerServo(27, 50, 140, 70); // index, pin, min, max, start
+  master.servo.registerServo(27, 50, 140, 70); // pin, min, max, start
   // cou
-  master.servo.registerServo(12, 60, 120, 120); // index, pin, min, max, start
+  master.servo.registerServo(12, 60, 120, 120); // pin, min, max, start
   //rotation
   master.motorwing.registerStepper(14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER

@@ -3,7 +3,7 @@
   "type":"HTTP",
   "path":"Sans Gravité",
 
-  "version":"1.4.0",
+  "version":"1.4.3",
   "description":"Téléverseur de partitions animatroniques pour webserver SPIFFS (ça en jette hein ?)",
 
   "hasInput":true,
@@ -27,7 +27,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Avril2022-1.4.0",
+      "default":"Avril2022-1.4.3",
       "readOnly":true
     }
   },

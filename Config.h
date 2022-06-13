@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-//#define SANS_GRAVITE
+#define SANS_GRAVITE
 //#define JEREM
 //#define COSTES
 
@@ -11,11 +11,12 @@
 //#define BASE
 //#define BOBINE
 //#define CORBEILLE
+#define BOUCHE
 //#define ROOMBA
 //#define TEST
 //#define CAMEMBERT
 //#define CHANTDRIER
-#define CASTAFIORE
+//#define CASTAFIORE
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -46,6 +47,8 @@ enum BoardType
 #include "config/sansgravite/Bobine.h"
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
+#elif defined(BOUCHE)
+#include "config/sansgravite/Bouche.h"
 #elif defined(TEST)
 #include "config/sansgravite/Test.h"
 #elif defined(ROOMBA)

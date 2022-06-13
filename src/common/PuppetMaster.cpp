@@ -490,7 +490,9 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         if (e.data[2] < 255) 
             motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
-        if (e.data[0] < 255) 
+        if (e.data[0] < 255 && e.data[2] < 255  && e.data[2] < 255)
+            led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
+        if (e.data[3] < 255) 
             motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
 #elif defined CORBEILLE
         if (e.data[0] < 255) 

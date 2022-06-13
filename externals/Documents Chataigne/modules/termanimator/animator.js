@@ -49,14 +49,19 @@ rightMotorParam.setAttribute("readOnly",true);
 
 var trashUploadParam = script.addTrigger("Upload to Corbeille","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
-var coilParam = script.addTargetParameter("Layer Bobine Moteur","");
-coilParam.setAttribute("targetType","container");
-coilParam.setAttribute("searchLevel",0);
-coilParam.setAttribute("readOnly",true);
+var coilLedParam = script.addTargetParameter("Layer Bobine Couleur","");
+coilLedParam.setAttribute("targetType","container");
+coilLedParam.setAttribute("searchLevel",0);
+coilLedParam.setAttribute("readOnly",true);
+
+var coilStepperParam = script.addTargetParameter("Layer Bobine Moteur","");
+coilStepperParam.setAttribute("targetType","container");
+coilStepperParam.setAttribute("searchLevel",0);
+coilStepperParam.setAttribute("readOnly",true);
 
 var coilUploadParam = script.addTrigger("Upload to Bobine","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
 
-var layerParams = [bulbParam, headParam, neckParam, footParam, rotationParam, leftMotorParam, rightMotorParam, coilParam];
+var layerParams = [bulbParam, headParam, neckParam, footParam, rotationParam, leftMotorParam, rightMotorParam, coilLedParam, coilStepperParam];
 
 var objects = [];
 
@@ -129,11 +134,12 @@ function scriptParameterChanged(param)
 	{
   	objects =  [];
     local.parameters.uploadedFile.set("");
-    if (coilParam.get() != "")
+    if (coilLedParam.get() != "" || coilStepperParam.get() != "")
     {
     	var bobine = getObject("Bobine");
     	bobine.layerParams = [];
-    	bobine.layerParams[0] = {"name":"coilStepper", "param":coilParam, "type":"Mapping"};
+			bobine.layerParams[0] = {"name":"coilLed", "param":coilLedParam, "type":"Color"};
+    	bobine.layerParams[1] = {"name":"coilStepper", "param":coilStepperParam, "type":"Mapping"};
     }
 		local.parameters.baseAddress.set("http://bobine.local");
 		bake();

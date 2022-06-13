@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.4.0",
+  "version":"1.4.2",
   "description":"Contrôle simplifiée d\'une bobine animatronique ",
 
 
@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Avril2022-1.4.2",
+      "default":"Mai2022-1.4.2",
       "readOnly":true
     },
     "IP":
