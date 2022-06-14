@@ -1,14 +1,12 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 // dependencies:
-// OSCMessage.h
-// ESP32Servo.h
-// ESPAsyncWebServer.h
-// AsyncTCP
-// ESPAsyncTCP
-// ESPmDNS
-// ESP8266mDNS
-// ArduinoOTA
+// OSC by Adrian Freed
+// ESP32Servo
+// Adafruit_BuSIO & Adafruit_Motor_Shield_V2_Library
+// ESPAsyncWebServer https://github.com/me-no-dev/ESPAsyncWebServer
+// AsyncTCP https://github.com/me-no-dev/AsyncTCP
+// ESPAsyncTCP https://github.com/me-no-dev/ESPAsyncTCP
 
 // TODO remove led index
 // TODO local libs
@@ -60,10 +58,10 @@ void setup()
 #endif
 
 #ifdef AMPOULE
-  // couleur
+  // COULEUR
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); // index, pin, nbLeds, ledType
   // master.led.registerLedStrip(0, 21, 10, NEO_RGB + NEO_KHZ800); // index, pin, nbLeds, ledType
-  // rotation tête
+  // NON
   master.servo.registerServo(15, 0, 180, 90); // pin, min, max, start
   // master.servo.registerServo(23, 0.0f, 1.0f, 0.5f); // pin, min, max, start
 #endif
@@ -71,10 +69,10 @@ void setup()
 #ifdef BASE
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
-  // pied
+  // OUI
   master.servo.registerServo(27, 50, 140, 70); // pin, min, max, start
   master.servo.setServoInverse(0, false);
-  // cou
+  // PIED
   master.servo.registerServo(12, 60, 120, 120); // pin, min, max, start
   master.servo.setServoInverse(1, true);
   //rotation

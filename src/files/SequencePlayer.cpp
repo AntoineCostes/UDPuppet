@@ -42,6 +42,7 @@ void SequencePlayer::update()
 void SequencePlayer::loadSequence(String path)
 {
   if (!path.endsWith(".dat")) path = path+".dat";
+  if (!path.beginsWith("/")) path = "/"+path;
   
   if (!FileManager::doesExist(path))
   {
