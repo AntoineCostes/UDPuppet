@@ -73,8 +73,10 @@ void setup()
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // pied
   master.servo.registerServo(27, 50, 140, 70); // pin, min, max, start
+  master.servo.setServoInverse(0, false);
   // cou
   master.servo.registerServo(12, 60, 120, 120); // pin, min, max, start
+  master.servo.setServoInverse(1, true);
   //rotation
   master.motorwing.registerStepper(14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER

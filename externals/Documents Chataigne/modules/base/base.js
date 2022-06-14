@@ -117,7 +117,7 @@ function rotateNeck(val) {
 
 function setFoot(val) {
   script.log("Set pied: " + val);
-  local.send("/servo", 1, 1 - val);
+  local.send("/servo", 1, val);
 }
 
 function rotateFoot(val) {
