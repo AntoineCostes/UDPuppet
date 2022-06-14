@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.3")
+                               firmwareVersion("1.4.4")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register

@@ -42,6 +42,7 @@ function moduleParameterChanged(param)
   if (param.name == "invocation")
   {
     local.parameters.ip.set("");
+    local.parameters.firmwareVersion.set("");
     yo();
   }
   if (param.name == "play")
@@ -76,6 +77,7 @@ function oscEvent(address, args)
   {
       //local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
       local.parameters.ip.set(args[1]);
+      local.parameters.firmwareVersion.set(args[3]);
   }
 
   if (address == "/battery")
