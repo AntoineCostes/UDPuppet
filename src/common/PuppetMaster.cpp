@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.4")
+                               firmwareVersion("1.4.4f1")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -484,7 +484,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 
 //compDebug("Got new frame ! "+String((int)e.data[0]));
 #ifdef AMPOULE
-        if (e.data[0] < 255 && e.data[2] < 255  && e.data[2] < 255)
+        if (e.data[0] < 255 && e.data[1] < 255  && e.data[2] < 255)
             led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
         if (e.data[3] < 255) 
             servo.setServoRel(0, e.data[3] / 254.0f);
@@ -496,10 +496,10 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         if (e.data[2] < 255) 
             motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
 #elif defined BOBINE
-        if (e.data[0] < 255 && e.data[2] < 255  && e.data[2] < 255)
+        if (e.data[0] < 255 && e.data[1] < 255  && e.data[2] < 255)
             led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
         if (e.data[3] < 255) 
-            motorwing.stepperSetSpeedRel(0, e.data[0] / 127.0f - 1.0f);
+            motorwing.stepperSetSpeedRel(0, e.data[3] / 127.0f - 1.0f);
 #elif defined CORBEILLE
         if (e.data[0] < 255) 
             motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
