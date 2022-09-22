@@ -3,6 +3,7 @@
 
 #ifdef HAS_MOTORWING
 #include "../libs/Adafruit_Motor_Shield_V2_Library/Adafruit_MotorShield.h"
+// TODO include Adafruit_BuSIO
 
 class DCMotor : public Component
 {

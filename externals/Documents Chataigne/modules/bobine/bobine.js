@@ -132,6 +132,11 @@ function setSpeed(val) {
   local.send("/stepper/speed", STEPPER_INDEX, val); // FIXME why this 10% gap ?
 }
 
+function setRelSpeed(val) {
+  local.send("/stepper/speedrel", STEPPER_INDEX, val);
+}
+
+
 function stop() {
 local.send("/stepper/speed", STEPPER_INDEX, 0.0);
   stopSequence();
