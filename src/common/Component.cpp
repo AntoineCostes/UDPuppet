@@ -239,4 +239,5 @@ bool Component::checkCommandArguments(OSCMessage &command, String types, bool lo
 
 bool Component::handleCommand(OSCMessage &command)
 {
+    return false;
 }

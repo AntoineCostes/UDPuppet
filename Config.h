@@ -3,7 +3,7 @@
 
 // NETWORKS - DEFAULT TO LENET
 //#define SANS_GRAVITE
-//#define COSTES
+#define COSTES
 //#define LATITUDE50
 
 // HARDWARE - SELECT ONE
