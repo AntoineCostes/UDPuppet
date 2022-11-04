@@ -24,17 +24,17 @@ void MotorShield2Manager::update()
     for(std::size_t i = 0; i < steppers.size(); ++i)
     //for (auto &stepper : steppers) // TODO include index in name
     {
-        float pos = steppers[i]->currentPosition();
         steppers[i]->update();
-        long newPos = steppers[i]->currentPosition();
-        float speed = steppers[i]->currentSpeed();
-        float maxSpeed = steppers[i]->maxSpeed();
 
-        if (millis() - lastEventTime > 5)
+        if (millis() - lastEventTime > 100)
         {
+            long newPos = steppers[i]->currentPosition();
+            //float speed = steppers[i]->currentSpeed();
+            //float maxSpeed = steppers[i]->maxSpeed();
+
             if (newPos != lastEventPos)
             {
-                sendEvent(StepperEvent(StepperEvent::Type::MOVED, i, newPos, speed, maxSpeed));
+                sendEvent(StepperEvent(StepperEvent::Type::MOVED, i, newPos, 0, 0));
                 lastEventPos = newPos;
                 lastEventTime = millis();
             }

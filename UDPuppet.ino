@@ -95,6 +95,12 @@ void setup()
  master.motorwing.registerStepper(16, 17);
 #endif
 
+#ifdef BOUCHE
+  master.led.registerLedStrip(0, 21, 300, NEO_GRB + NEO_KHZ800);
+  master.led.setWifiDebug(0, false);
+  master.led.setBrightness(0.4f);
+#endif
+
 #ifdef CORBEILLE
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   master.led.setBrightness(0.2f);
@@ -113,13 +119,5 @@ void setup()
 
 void loop()
 {
-  master.update();
-
-  // ensure at least 1ms between frames
-  if (millis() == lastLoopTime)
-  {
-    delay(1);
-  }
-  lastLoopTime = millis();
-  
+  master.update();  
 }

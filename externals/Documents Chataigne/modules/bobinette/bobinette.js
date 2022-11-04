@@ -154,6 +154,11 @@ function moveToHighSpeed(val) {
   script.log("move to "+val);
 }
 
+function setLowSpeed(val) {
+  local.parameters.mode.setData(0);
+  local.send("/stepper/speed", STEPPER_INDEX, val*250);
+}
+
 function setSpeed(val) {
   local.parameters.mode.setData(1);
   if (val == 0)
@@ -161,8 +166,8 @@ function setSpeed(val) {
     stop();
     return;
   }
-  var mappedValue = Math.sign(val)*400 + val*4600; // value from 400 to 5000
-  local.send("/stepper/speed", STEPPER_INDEX, mappedValue);
+  //var mappedValue = Math.sign(val)*400 + val*4600; // value from 400 to 5000
+  local.send("/stepper/speed", STEPPER_INDEX, 5000*val);
 }
 
 function setHighSpeed(val) {

@@ -91,6 +91,17 @@
 
   "commands":
   {
+    "Modifier couleur":
+    {
+      "callback":"setColor",
+      "parameters":
+      {
+        "Couleur":
+        {
+          "type":"Color"
+        }
+      }
+    },
     "Set volume":
     {
       "callback":"setVolume",

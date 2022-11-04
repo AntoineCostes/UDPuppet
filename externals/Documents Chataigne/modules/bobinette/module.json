@@ -162,22 +162,7 @@
 
   "commands":
   {
-    "Vitesse Basse":
-    {
-      "menu":"Vitesse",
-      "callback":"setLowSpeed",
-      "parameters":
-      {
-        "Valeur":
-        {
-          "type":"Float",
-          "min":-1.0,
-          "max":1.0,
-          "default":0
-        }
-      }
-    },
-    "Vitesse Haute":
+    "Régler Vitesse":
     {
       "menu":"Vitesse",
       "callback":"setSpeed",
@@ -222,40 +207,10 @@
         }
       }
     },
-    "Aller à (normal)":
-    {
-      "menu":"Position - Normal",
-      "callback":"goToRel",
-      "parameters":
-      {
-        "Position relative":
-        {
-          "type":"Float",
-          "min":0,
-          "max":1,
-          "default":0.5
-        }
-      }
-    },
-    "Bouger de (normal)":
-    {
-      "menu":"Position - Normal",
-      "callback":"moveTo",
-      "parameters":
-      {
-        "Nombre de pas":
-        {
-          "type":"Integer",
-          "min":-10000,
-          "max":10000,
-          "default":0
-        }
-      }
-    },
     "Aller à (rapide)":
     {
       "menu":"Position - Rapide",
-      "callback":"goToRelHighSpeed",
+      "callback":"goToRel",
       "parameters":
       {
         "Position relative":
@@ -270,7 +225,7 @@
     "Bouger de (rapide)":
     {
       "menu":"Position - Rapide",
-      "callback":"moveToHighSpeed",
+      "callback":"moveTo",
       "parameters":
       {
         "Nombre de pas":
