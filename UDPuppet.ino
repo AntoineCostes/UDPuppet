@@ -13,6 +13,8 @@
 // TODO ERROR mode if prop was not registered successfully
 // TODO bluehouse config
 // DELETE sequence button
+// TODO steppermanager
+// TODO checkComponents + ParameterEvent
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -87,7 +89,10 @@ void setup()
   master.led.setWifiDebug(0, false);
   master.led.setBrightness(0.4f);
   master.motorwing.registerShieldv2Stepper(200, MotorShield2Manager::StepperPort::M3_M4);
- //master.motorwing.registerStepper(16, 17);
+#endif
+
+#ifdef BOBINETTE
+ master.motorwing.registerStepper(16, 17);
 #endif
 
 #ifdef CORBEILLE
@@ -102,6 +107,7 @@ void setup()
   master.led.registerLedStrip(0, 12, 10, NEO_GRB + NEO_KHZ800);
   master.roomba.registerRoomba(33, 32, 15);
   master.roomba.setText(0, "Hello la cie !");
+  // TODO: blip blip
 #endif
 }
 

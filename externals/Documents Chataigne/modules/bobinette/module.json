@@ -1,0 +1,325 @@
+{
+  "name":"Bobinette",
+  "type":"OSC",
+  "path":"Sans Gravité",
+
+  "version":"1.4.4",
+  "description":"Contrôle simplifiée d\'une bobinette animatronique ",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":true,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":10005
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"bobinette.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Module version":
+    {
+      "type":"String",
+      "default":"Nov2022-1.4.4",
+      "readOnly":true
+    },
+    "Firmware version":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Sequences":
+    {
+      "type":"Enum"
+    },
+    "Play":
+    {
+      "type":"Trigger"
+    },
+    "Nombre de pas":
+    {
+      "type":"Enum",
+      "readOnly":true,
+      "options":{"400":400, "200":200}
+    },
+    "Mode":
+    {
+      "type":"Enum",
+      "readOnly":true,
+      "options":{"Basse Vitesse":0, "Haute Vitesse":1, "Ultra speed":2}
+    },
+    "Vitesse Max":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "default": 1
+    },
+    "Acceleration":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "default": 1
+    },
+    "Position Min":
+    {
+      "type":"Integer",
+      "min": -1000,
+      "max": 0,
+      "default": -10
+    },
+    "Position Max":
+    {
+      "type":"Integer",
+      "min": 0,
+      "max": 10,
+      "default": 10
+    },
+    "Reset position":
+    {
+      "type":"Trigger"
+    },
+    "Stop":
+    {
+      "type":"Trigger"
+    },
+    "Release":
+    {
+      "type":"Trigger"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "bobinette.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    },
+    "Position Tours":
+    {
+      "type":"Float",
+      "default":0,
+      "readOnly":true
+    },
+    "Position Pas":
+    {
+      "type":"Integer",
+      "default":0,
+      "readOnly":true
+    },
+    "Position Relative":
+    {
+      "type":"Float",
+      "min":0,
+      "max":1,
+      "default":0.5,
+      "readOnly":true
+    }
+  },
+
+  "commands":
+  {
+    "Vitesse Basse":
+    {
+      "menu":"Vitesse",
+      "callback":"setLowSpeed",
+      "parameters":
+      {
+        "Valeur":
+        {
+          "type":"Float",
+          "min":-1.0,
+          "max":1.0,
+          "default":0
+        }
+      }
+    },
+    "Vitesse Haute":
+    {
+      "menu":"Vitesse",
+      "callback":"setSpeed",
+      "parameters":
+      {
+        "Valeur":
+        {
+          "type":"Float",
+          "min":-1.0,
+          "max":1.0,
+          "default":0
+        }
+      }
+    },
+    "Aller à (lent)":
+    {
+      "menu":"Position - Lent",
+      "callback":"goToRelLowSpeed",
+      "parameters":
+      {
+        "Position relative":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        }
+      }
+    },
+    "Bouger de (lent)":
+    {
+      "menu":"Position - Lent",
+      "callback":"moveToLowSpeed",
+      "parameters":
+      {
+        "Nombre de pas":
+        {
+          "type":"Integer",
+          "min":-10000,
+          "max":10000,
+          "default":0
+        }
+      }
+    },
+    "Aller à (normal)":
+    {
+      "menu":"Position - Normal",
+      "callback":"goToRel",
+      "parameters":
+      {
+        "Position relative":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        }
+      }
+    },
+    "Bouger de (normal)":
+    {
+      "menu":"Position - Normal",
+      "callback":"moveTo",
+      "parameters":
+      {
+        "Nombre de pas":
+        {
+          "type":"Integer",
+          "min":-10000,
+          "max":10000,
+          "default":0
+        }
+      }
+    },
+    "Aller à (rapide)":
+    {
+      "menu":"Position - Rapide",
+      "callback":"goToRelHighSpeed",
+      "parameters":
+      {
+        "Position relative":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        }
+      }
+    },
+    "Bouger de (rapide)":
+    {
+      "menu":"Position - Rapide",
+      "callback":"moveToHighSpeed",
+      "parameters":
+      {
+        "Nombre de pas":
+        {
+          "type":"Integer",
+          "min":-10000,
+          "max":10000,
+          "default":0
+        }
+      }
+    },
+    "Stop":
+    {
+      "callback":"stop",
+    },
+    "Release":
+    {
+      "callback":"release",
+    },
+    "Reset Position":
+    {
+      "callback":"resetPosition",
+    },
+    "Lancer Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        },
+        "FPS":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":200,
+          "default":30
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "menu":"Sequence",
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
+  }
+}

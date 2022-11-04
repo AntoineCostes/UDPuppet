@@ -10,8 +10,9 @@
 //#define AMPOULE
 //#define BASE
 //#define BOBINE
+#define BOBINETTE
 //#define CORBEILLE
-#define BOUCHE
+//#define BOUCHE
 //#define ROOMBA
 //#define TEST
 //#define CAMEMBERT
@@ -45,6 +46,8 @@ enum BoardType
 #include "config/sansgravite/Base.h"
 #elif defined(BOBINE)
 #include "config/sansgravite/Bobine.h"
+#elif defined(BOBINETTE)
+#include "config/sansgravite/Bobinette.h"
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
 #elif defined(BOUCHE)
