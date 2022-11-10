@@ -105,7 +105,7 @@ void StepperMotor::setSpeed(float value)
 
     mode = SPEED;
     stepper->setSpeed(value);
-    stepper->disableOutputs();
+    if (value != 0.0) stepper->disableOutputs();
     compDebug("set speed " + String(value));
 }
 
@@ -122,7 +122,7 @@ void StepperMotor::setSpeedRel(float value)
 
     mode = SPEED;
     stepper->setSpeed(value * stepper->maxSpeed());
-    stepper->disableOutputs();
+    if (value != 0.0) stepper->disableOutputs();
     compDebug("set rel speed " + String(value * stepper->maxSpeed()));
 }
 
@@ -177,7 +177,6 @@ void StepperMotor::enableOutputs()
 {
     stepper->enableOutputs();
 }
-
 
 long StepperMotor::currentPosition()
 {

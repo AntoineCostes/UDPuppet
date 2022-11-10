@@ -26,17 +26,15 @@ void MotorShield2Manager::update()
     {
         steppers[i]->update();
 
-        if (millis() - lastEventTime > 100)
+        if (millis() - lastEventTime > 50)
         {
             long newPos = steppers[i]->currentPosition();
 
-            // FIXME: how to keep stepper performances ?
-            //float speed = steppers[i]->currentSpeed();
-            //float maxSpeed = steppers[i]->maxSpeed();
-
             if (newPos != lastEventPos)
             {
-                sendEvent(StepperEvent(StepperEvent::Type::MOVED, i, newPos, 0, 0));
+                float speed = steppers[i]->currentSpeed();
+                float maxSpeed = steppers[i]->maxSpeed();
+                sendEvent(StepperEvent(StepperEvent::Type::MOVED, i, newPos, speed, maxSpeed));
                 lastEventPos = newPos;
                 lastEventTime = millis();
             }

@@ -1,5 +1,6 @@
 var STEPPER_INDEX = 0;
-var paramsChanged = false;
+var currentMaxSpeed = 0;
+var currentAccel = 0;
 
 function init() {
   local.values.batterie.set(0);
@@ -35,22 +36,6 @@ function moduleParameterChanged(param)
   if (param.name == "resetPosition")
   {
     resetPosition();
-    //local.values.positionTours.set(0);
-  }
-  if (param.name == "mode")
-  {
-    setMaxSpeed();
-    setAcceleration();
-  }
-  if (param.name == "vitesseMax")
-  {
-    setMaxSpeed();
-    paramsChanged = true;
-  }
-  if (param.name == "acceleration")
-  {
-    setAcceleration();
-    paramsChanged = true;
   }
   if (param.name == "stop")
   {
@@ -81,16 +66,19 @@ function oscEvent(address, args)
     local.values.positionPas.set(args[1]);
     var pos = args[1]/400;
     local.values.positionTours.set(pos);
-    var relPos = (pos - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
-    local.values.positionRelative.set(relPos);
+    var relPos = (pos - local.parameters.position_1.get() )/( local.parameters.position1.get() - local.parameters.position_1.get() );
+    local.values.positionRelative.set(relPos*2 - 1);
+
+    local.values.vitesse.set(args[2]/local.parameters.nombreDePas_Tour.get());
+    local.values.vitesseMax.set(args[3]/local.parameters.nombreDePas_Tour.get());
   }
   if (address == "/stepper/0/maxspeed")
   {
-    // TODO remap depending on mode
+      local.values.vitesseMax.set(args[1]/local.parameters.nombreDePas_Tour.get());
   }
   if (address == "/stepper/0/acceleration")
   {
-    // TODO remap depending on mode
+      local.values.acceleration.set(args[1]/local.parameters.nombreDePas_Tour.get());
   }
   if (address == "/sequences")
   {
@@ -106,109 +94,42 @@ function moduleValueChanged(value) {
 
 }
 
-function checkParamsChanged()
-{
-  if (paramsChanged)
-  {
-    setAcceleration();
-    setMaxSpeed();
-    paramsChanged = false;
-  }
+function setMaxSpeed(value) {
+  currentMaxSpeed = value;
+  local.send("/stepper/maxspeed", STEPPER_INDEX, parseFloat(value*local.parameters.nombreDePas_Tour.get()));
 }
 
-function setMaxSpeed() {
-
-  if (local.parameters.mode.get() == 0) local.send("/stepper/maxspeed", STEPPER_INDEX, 240*local.parameters.vitesseMax.get());
-  if (local.parameters.mode.get() == 1) local.send("/stepper/maxspeed", STEPPER_INDEX, 350 + 2650*local.parameters.vitesseMax.get()); // range 400-5000
-  if (local.parameters.mode.get() == 2) local.send("/stepper/maxspeed", STEPPER_INDEX, 8000 + 10000*local.parameters.vitesseMax.get()); // range 8000-18000
+function setAcceleration(value) {
+  currentAccel = value;
+  local.send("/stepper/accel", STEPPER_INDEX, parseFloat(value*local.parameters.nombreDePas_Tour.get()));
 }
 
-function setAcceleration() {
-  if (local.parameters.mode.get() == 0) local.send("/stepper/accel", STEPPER_INDEX, 200.0);
-  if (local.parameters.mode.get() == 1) local.send("/stepper/accel", STEPPER_INDEX, 3000.0 * local.parameters.acceleration.get());
-  else local.send("/stepper/accel", STEPPER_INDEX, 2000.0 + 28000.0 * local.parameters.acceleration.get()); // range 2000-30000
+function goToRel(relPos, maxspeed, acceleration) {
+  if (maxspeed != currentMaxSpeed)  setMaxSpeed(maxspeed);
+  if (acceleration != currentAccel) setAcceleration(acceleration);
+
+  var pos = local.parameters.position_1.get() + 0.5*(relPos + 1)*(local.parameters.position1.get() - local.parameters.position_1.get());
+  var targetPos = parseInt(pos*local.parameters.nombreDePas_Tour.get());
+  local.send("/stepper/go", STEPPER_INDEX, targetPos);
+  script.log("go to "+targetPos);
 }
 
-function goToRelLowSpeed(val) {
-  local.parameters.mode.setData(0);
-  checkParamsChanged();
-  var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
-  local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
-  script.log("go to "+pos);
-}
+function moveTo(position, maxspeed, acceleration) {
+  if (maxspeed != currentMaxSpeed)  setMaxSpeed(maxspeed);
+  if (acceleration != currentAccel) setAcceleration(acceleration);
 
-function moveToLowSpeed(val) {
-  local.parameters.mode.setData(0);
-  checkParamsChanged();
-  local.send("/stepper/move", STEPPER_INDEX, val);
-  script.log("move to "+val);
-}
-
-function goToRel(val) {
-  local.parameters.mode.setData(1);
-  checkParamsChanged();
-  var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
-  local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
-  script.log("go to "+pos);
-}
-
-function moveTo(val) {
-  local.parameters.mode.setData(1);
-  checkParamsChanged();
-  local.send("/stepper/move", STEPPER_INDEX, val);
-  script.log("move to "+val);
-}
-
-function goToRelHighSpeed(val) {
-  local.parameters.mode.setData(2);
-  checkParamsChanged();
-  var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
-  local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
-  script.log("go to "+pos);
-}
-
-function moveToHighSpeed(val) {
-  local.parameters.mode.setData(2);
-  checkParamsChanged();
-  local.send("/stepper/move", STEPPER_INDEX, val);
-  script.log("move to "+val);
-}
-
-function setLowSpeed(val) {
-  local.parameters.mode.setData(0);
-  checkParamsChanged();
-  local.parameters.vitesseMax.set(1);
-  local.send("/stepper/speed", STEPPER_INDEX, val*250);
+  var targetPos = parseInt(position*local.parameters.nombreDePas_Tour.get());
+  local.send("/stepper/move", STEPPER_INDEX, targetPos);
+  script.log("move to "+targetPos);
 }
 
 function setSpeed(val) {
-  local.parameters.mode.setData(1);
-  checkParamsChanged();
-  local.parameters.vitesseMax.set(1);
-  if (val == 0)
-  {
-    stop();
-    return;
-  }
-  //var mappedValue = Math.sign(val)*400 + val*4600; // value from 400 to 5000
-  local.send("/stepper/speed", STEPPER_INDEX, 5000*val);
-}
-
-function setHighSpeed(val) {
-  local.parameters.mode.setData(2);
-  checkParamsChanged();
-  local.parameters.vitesseMax.set(1);
-  if (val == 0)
-  {
-    stop();
-    return;
-  }
-  var mappedValue = Math.sign(val)*8000 + val*10000; // value from 8000 to 10000
-  local.send("/stepper/speed", STEPPER_INDEX, mappedValue);
+  if (val > currentMaxSpeed) setMaxSpeed(val);
+  local.send("/stepper/speed", STEPPER_INDEX, parseFloat(val*local.parameters.nombreDePas_Tour.get()));
 }
 
 function stop() {
-local.send("/stepper/speed", STEPPER_INDEX, 0.0);
+  local.send("/stepper/speed", STEPPER_INDEX, 0.0);
   stopSequence();
 }
 
@@ -221,7 +142,7 @@ function resetPosition() {
   local.values.positionTours.set(0);
   local.values.positionPas.set(0);
 
-  //var relPos = (0 - local.parameters.positionMin.get() )/( local.parameters.positionMax.get() - local.parameters.positionMin.get() );
+  //var relPos = (0 - local.parameters.position_1.get() )/( local.parameters.position1.get() - local.parameters.position_1.get() );
   //local.parameters.positionRelative.set(relPos);
 }
 

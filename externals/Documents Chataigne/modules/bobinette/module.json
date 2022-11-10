@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Sans Gravité",
 
-  "version":"1.4.4",
+  "version":"1.4.5",
   "description":"Contrôle simplifiée d\'une bobinette animatronique ",
 
 
@@ -36,7 +36,7 @@
     "Module version":
     {
       "type":"String",
-      "default":"Nov2022-1.4.4",
+      "default":"Nov2022-1.4.5",
       "readOnly":true
     },
     "Firmware version":
@@ -63,44 +63,24 @@
     {
       "type":"Trigger"
     },
-    "Nombre de pas":
+    "Nombre de pas / tour":
     {
       "type":"Enum",
       "readOnly":true,
       "options":{"400":400, "200":200}
     },
-    "Mode":
-    {
-      "type":"Enum",
-      "readOnly":true,
-      "options":{"Basse Vitesse":0, "Haute Vitesse":1, "Ultra speed":2}
-    },
-    "Vitesse Max":
-    {
-      "type":"Float",
-      "min": 0,
-      "max": 1,
-      "default": 1
-    },
-    "Acceleration":
-    {
-      "type":"Float",
-      "min": 0,
-      "max": 1,
-      "default": 1
-    },
-    "Position Min":
+    "Position -1":
     {
       "type":"Integer",
-      "min": -1000,
+      "min": -100,
       "max": 0,
       "default": -10
     },
-    "Position Max":
+    "Position 1":
     {
       "type":"Integer",
       "min": 0,
-      "max": 10,
+      "max": 100,
       "default": 10
     },
     "Reset position":
@@ -153,72 +133,129 @@
     "Position Relative":
     {
       "type":"Float",
-      "min":0,
+      "min":-1,
       "max":1,
-      "default":0.5,
+      "default":0,
       "readOnly":true
+    },
+    "Vitesse":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 10,
+      "readOnly": true
+    },
+    "Vitesse Max":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 10,
+      "readOnly": true
     }
   },
 
   "commands":
   {
+    "Stop":
+    {
+      "menu":"Arrêt",
+      "callback":"stop",
+    },
+    "Release":
+    {
+      "menu":"Arrêt",
+      "callback":"release",
+    },
+    "Reset Position":
+    {
+      "menu":"Arrêt",
+      "callback":"resetPosition",
+    },
+    "Régler Vitesse Lente":
+    {
+      "menu":"Vitesse",
+      "callback":"setSpeed",
+      "parameters":
+      {
+        "Nombre tours / sec":
+        {
+          "type":"Float",
+          "min":-0.6,
+          "max":0.6,
+          "default":0.6
+        }
+      }
+    },
     "Régler Vitesse":
     {
       "menu":"Vitesse",
       "callback":"setSpeed",
       "parameters":
       {
-        "Valeur":
+        "Nombre tours / sec":
         {
           "type":"Float",
-          "min":-1.0,
-          "max":1.0,
-          "default":0
+          "min":-8.0,
+          "max":8.0,
+          "default":8.0
         }
       }
     },
-      "Régler Vitesse Rapide":
-      {
-        "menu":"Vitesse",
-        "callback":"setHighSpeed",
-        "parameters":
-        {
-          "Valeur":
-          {
-            "type":"Float",
-            "min":-1.0,
-            "max":1.0,
-            "default":0
-          }
-        }
-      },
     "Aller à (lent)":
     {
       "menu":"Position - Lent",
-      "callback":"goToRelLowSpeed",
+      "callback":"goToRel",
       "parameters":
       {
         "Position relative":
         {
           "type":"Float",
-          "min":0,
-          "max":1,
-          "default":0.5
+          "min":-1.0,
+          "max":1.0,
+          "default":0.0
+        },
+        "Vitesse Max (tr/sec)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":0.6,
+          "default":0.6
+        },
+        "Acceleration (tr/sec²)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":5.0,
+          "default":1.0
         }
       }
     },
     "Bouger de (lent)":
     {
       "menu":"Position - Lent",
-      "callback":"moveToLowSpeed",
+      "callback":"moveTo",
       "parameters":
       {
-        "Nombre de pas":
+        "Nombre de tours":
         {
-          "type":"Integer",
-          "min":-10000,
-          "max":10000,
-          "default":0
+          "type":"Float",
+          "min":-100.0,
+          "max":100.0,
+          "default":1.0
+        },
+        "Vitesse Max (tr/sec)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":0.6,
+          "default":0.6
+        },
+        "Acceleration (tr/sec²)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":0.5,
+          "default":0.5
         }
       }
     },
@@ -231,9 +268,23 @@
         "Position relative":
         {
           "type":"Float",
-          "min":0,
-          "max":1,
-          "default":0.5
+          "min":-1.0,
+          "max":1.0,
+          "default":0.0
+        },
+        "Vitesse Max (tr/sec)":
+        {
+          "type":"Float",
+          "min":1.0,
+          "max":8.0,
+          "default":8.0
+        },
+        "Acceleration (tr/sec²)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":30.0,
+          "default":30.0
         }
       }
     },
@@ -243,56 +294,28 @@
       "callback":"moveTo",
       "parameters":
       {
-        "Nombre de pas":
-        {
-          "type":"Integer",
-          "min":-10000,
-          "max":10000,
-          "default":0
-        }
-      }
-    },
-    "Aller à (ultra)":
-    {
-      "menu":"Position - Ultra",
-      "callback":"goToRelHighSpeed",
-      "parameters":
-      {
-        "Position relative":
+        "Nombre de tours":
         {
           "type":"Float",
-          "min":0,
-          "max":1,
-          "default":0.5
-        }
-      }
-    },
-    "Bouger de (ultra)":
-    {
-      "menu":"Position - Ultra",
-      "callback":"moveToHighSpeed",
-      "parameters":
-      {
-        "Nombre de pas":
+          "min":-100.0,
+          "max":100.0,
+          "default":1.0
+        },
+        "Vitesse Max (tr/sec)":
         {
-          "type":"Integer",
-          "min":-10000,
-          "max":10000,
-          "default":0
+          "type":"Float",
+          "min":1.0,
+          "max":8.0,
+          "default":8.0
+        },
+        "Acceleration (tr/sec²)":
+        {
+          "type":"Float",
+          "min":0.0,
+          "max":30.0,
+          "default":30.0
         }
       }
-    },
-    "Stop":
-    {
-      "callback":"stop",
-    },
-    "Release":
-    {
-      "callback":"release",
-    },
-    "Reset Position":
-    {
-      "callback":"resetPosition",
     },
     "Lancer Sequence":
     {

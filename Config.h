@@ -66,7 +66,7 @@ enum BoardType
 
 
 // GENERAL PARAMETERS
-const bool MASTER_DEBUG = true;
+const bool MASTER_DEBUG = false;
 
 const bool OVERRIDE_NETWORK = true;
 const long DELAY_BEFORE_RECONNECT_MS = 3000;
@@ -95,7 +95,7 @@ const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS
 const bool MOTORWING_DEBUG = true;
-const bool STEPPER_DEBUG = true;
+const bool STEPPER_DEBUG = false;
 
 // ROOMBA PARAMETERS
 const bool ROOMBA_DEBUG = true;

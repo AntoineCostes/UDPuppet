@@ -24,17 +24,15 @@ void StepperManager::update()
     {
         steppers[i]->update();
 
-        if (millis() - lastEventTime > 100)
+        if (millis() - lastEventTime > 500)
         {
             long newPos = steppers[i]->currentPosition();
 
-            // FIXME: how to keep stepper performances ?
-            //float speed = steppers[i]->currentSpeed();
-            //float maxSpeed = steppers[i]->maxSpeed();
-
             if (newPos != lastEventPos)
             {
-                sendEvent(StepperEvent2(StepperEvent2::Type::MOVED, i, newPos, 0, 0));
+                float speed = steppers[i]->currentSpeed();
+                float maxSpeed = steppers[i]->maxSpeed();
+                sendEvent(StepperEvent2(StepperEvent2::Type::MOVED, i, newPos, speed, maxSpeed));
                 lastEventPos = newPos;
                 lastEventTime = millis();
             }
@@ -232,7 +230,7 @@ bool StepperManager::handleCommand(OSCMessage &command)
     char buf[32];
     command.getAddress(buf);
     String address = String(buf);
-    compLog("handle command : " + address);
+    compDebug("handle command : " + address);
 
     if (address.equals("/stepper/reset"))
     {

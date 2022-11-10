@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.4f1")
+                               firmwareVersion("1.4.5")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -478,8 +478,8 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
     msg.add((int)e.position);
-    // msg.add((int)e.speed);
-    // msg.add((float)e.maxSpeed);
+    msg.add((int)e.speed);
+    msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
 #endif
