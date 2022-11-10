@@ -254,8 +254,8 @@
         {
           "type":"Float",
           "min":0.0,
-          "max":0.5,
-          "default":0.5
+          "max":5.0,
+          "default":1.0
         }
       }
     },

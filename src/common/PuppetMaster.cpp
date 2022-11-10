@@ -546,6 +546,9 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
             led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
         if (e.data[3] < 255) 
             motorwing.stepperSetSpeedRel(0, e.data[3] / 127.0f - 1.0f);
+#elif defined BOBINETTE
+        if (e.data[0] < 255) 
+            stepperdriver.stepperSetSpeed(0, 3000.0f*(e.data[0] / 127.0f - 1.0f));
 #elif defined CORBEILLE
         if (e.data[0] < 255) 
             motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
@@ -568,56 +571,55 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     {
         compDebug("ended");
         
-        OSCMessage mEnd("/ended");
-        mEnd.add(e.sequenceName);
-        osc.broadcastMessage(mEnd);
+        // OSCMessage mEnd("/ended");
+        // mEnd.add(e.sequenceName);
+        // osc.broadcastMessage(mEnd);
 
-        #ifdef CASTAFIORE
-        OSCMessage m("/play");
-        if (e.sequenceName == "queen4")
-        {
-            m.add("nuit");
-            osc.broadcastMessage(m);
-        }
-        if (e.sequenceName == "queen3") 
-        {
-            m.add("contine1");
-            osc.broadcastMessage(m);
-        }
-        #endif
-        
+        // #ifdef CASTAFIORE
+        // OSCMessage m("/play");
+        // if (e.sequenceName == "queen4")
+        // {
+        //     m.add("nuit");
+        //     osc.broadcastMessage(m);
+        // }
+        // if (e.sequenceName == "queen3") 
+        // {
+        //     m.add("contine1");
+        //     osc.broadcastMessage(m);
+        // }
+        // #endif
 
-        #ifdef CHANTDRIER
-        compLog("play Chantdrier");
-        OSCMessage m("/play");
-        if (e.sequenceName == "nuit")
-        {
-            m.add("deserteur");
-            osc.broadcastMessage(m);
-        } else if (e.sequenceName == "contine1")
-        {
-            m.add("valls");
-            osc.broadcastMessage(m);
-        } else if (e.sequenceName == "contine2") 
-        {
-            m.add("queen4");
-            osc.broadcastMessage(m);
-        }
-        #endif
+        // #ifdef CHANTDRIER
+        // compLog("play Chantdrier");
+        // OSCMessage m("/play");
+        // if (e.sequenceName == "nuit")
+        // {
+        //     m.add("deserteur");
+        //     osc.broadcastMessage(m);
+        // } else if (e.sequenceName == "contine1")
+        // {
+        //     m.add("valls");
+        //     osc.broadcastMessage(m);
+        // } else if (e.sequenceName == "contine2") 
+        // {
+        //     m.add("queen4");
+        //     osc.broadcastMessage(m);
+        // }
+        // #endif
         
-        #ifdef CAMEMBERT
-        OSCMessage m("/play");
-        if (e.sequenceName == "deserteur")
-        {
-            m.add("queen3");
-            osc.broadcastMessage(m);
-        }
-        if (e.sequenceName == "valls") 
-        {
-            m.add("contine2");
-            osc.broadcastMessage(m);
-        }
-        #endif
+        // #ifdef CAMEMBERT
+        // OSCMessage m("/play");
+        // if (e.sequenceName == "deserteur")
+        // {
+        //     m.add("queen3");
+        //     osc.broadcastMessage(m);
+        // }
+        // if (e.sequenceName == "valls") 
+        // {
+        //     m.add("contine2");
+        //     osc.broadcastMessage(m);
+        // }
+        // #endif
     }
 }
 

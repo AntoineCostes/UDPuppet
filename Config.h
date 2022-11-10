@@ -83,7 +83,7 @@ const bool OSC_DEBUG = false;
 const long BATTERY_TIMOUT_MS = 5000;
 
 // PLAYER PARAMETERS
-const bool SEQUENCE_DEBUG = true;
+const bool SEQUENCE_DEBUG = false;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;

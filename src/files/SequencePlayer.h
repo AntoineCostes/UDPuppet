@@ -6,16 +6,28 @@
 
 #ifdef AMPOULE
 #define FRAME_SIZE 4 // 1 pixel (RGB) + 1 servo
+
 #elif defined BASE
 #define FRAME_SIZE 3 // 2 servo + 1 stepper
+
 #elif defined BOBINE
-#define FRAME_SIZE 4 // 1 pixel (RGB) + 1 stepper
+#define FRAME_SIZE 4 // 1 stepper
+
+#elif defined BOBINETTE
+#define FRAME_SIZE 1 // 1 stepper
+
+#elif defined BOUCHE
+#define FRAME_SIZE 3 // 1 pixel (RGB)
+
 #elif defined CORBEILLE
 #define FRAME_SIZE 2 // 2 DC
+
 #elif defined CAMEMBERT
 #define FRAME_SIZE 1 // 1 servo 
+
 #elif defined CASTAFIORE
 #define FRAME_SIZE 1 // 1 servo 
+
 #elif defined CHANTDRIER
 #define FRAME_SIZE 4 // 4 servos 
 #else

@@ -59,9 +59,24 @@ coilStepperParam.setAttribute("targetType","container");
 coilStepperParam.setAttribute("searchLevel",0);
 coilStepperParam.setAttribute("readOnly",true);
 
-var coilUploadParam = script.addTrigger("Upload to Bobine","",.1,0,1); 		//This will add a float number parameter (slider), default value of 0.1, with a range between 0 and 1
+var coilUploadParam = script.addTrigger("Upload to Bobine","",.1,0,1);
 
-var layerParams = [bulbParam, headParam, neckParam, footParam, rotationParam, leftMotorParam, rightMotorParam, coilLedParam, coilStepperParam];
+var boucheLedParam = script.addTargetParameter("Layer Bouche Couleur","");
+boucheLedParam.setAttribute("targetType","container");
+boucheLedParam.setAttribute("searchLevel",0);
+boucheLedParam.setAttribute("readOnly",true);
+
+var boucheUploadParam = script.addTrigger("Upload to Bouche","",.1,0,1);
+
+var betteStepperParam = script.addTargetParameter("Layer Bobinette Moteur","");
+betteStepperParam.setAttribute("targetType","container");
+betteStepperParam.setAttribute("searchLevel",0);
+betteStepperParam.setAttribute("readOnly",true);
+
+var betteUploadParam = script.addTrigger("Upload to Bobinette","",.1,0,1);
+
+var layerParams = [bulbParam, headParam, neckParam, footParam, rotationParam,
+	leftMotorParam, rightMotorParam, coilLedParam, coilStepperParam, boucheLedParam, betteStepperParam];
 
 var objects = [];
 
@@ -142,6 +157,34 @@ function scriptParameterChanged(param)
     	bobine.layerParams[1] = {"name":"coilStepper", "param":coilStepperParam, "type":"Mapping"};
     }
 		local.parameters.baseAddress.set("http://bobine.local");
+		bake();
+	}
+
+	if(param.is(bouchelUploadParam))
+	{
+  	objects =  [];
+    local.parameters.uploadedFile.set("");
+    if (boucheLedParam.get() != "")
+    {
+    	var bobine = getObject("Bouche");
+    	bobine.layerParams = [];
+			bobine.layerParams[0] = {"name":"boucheLed", "param":boucheLedParam, "type":"Color"};
+    }
+		local.parameters.baseAddress.set("http://bouche.local");
+		bake();
+	}
+
+	if(param.is(betteUploadParam))
+	{
+  	objects =  [];
+    local.parameters.uploadedFile.set("");
+    if (betteStepperParam.get() != "")
+    {
+    	var bobine = getObject("Bobinette");
+    	bobine.layerParams = [];
+			bobine.layerParams[0] = {"name":"betteStepper", "param":betteStepperParam, "type":"Mapping"};
+    }
+		local.parameters.baseAddress.set("http://bobinette.local");
 		bake();
 	}
 }

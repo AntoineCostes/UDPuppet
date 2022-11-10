@@ -11,3 +11,4 @@ const int OSC_TARGET_PORT = 10004;
 
 // COMPONENTS
 #define HAS_MUSICMAKER
+#define HAS_LED
