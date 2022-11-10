@@ -13,8 +13,8 @@
 // TODO ERROR mode if prop was not registered successfully
 // TODO bluehouse config
 // DELETE sequence button
-// TODO steppermanager
 // TODO checkComponents + ParameterEvent
+// TODO régler tous les paramètres avec un seul message OSC /udpuppet/module/setparams
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -92,7 +92,7 @@ void setup()
 #endif
 
 #ifdef BOBINETTE
- master.motorwing.registerStepper(16, 17);
+ master.stepperdriver.registerStepper(16, 17, 19);
 #endif
 
 #ifdef BOUCHE

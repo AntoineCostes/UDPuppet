@@ -1,6 +1,6 @@
 #include "StepperMotor.h"
 
-#ifdef HAS_MOTORWING
+#if defined(HAS_MOTORWING) || defined(HAS_STEPPER_DRIVER)
 StepperMotor::StepperMotor(int id, AccelStepper *stepper) : Component("stepper_" + String(id)),
                                                              stepper(stepper),
                                                              mode(SPEED)
@@ -10,6 +10,16 @@ StepperMotor::StepperMotor(int id, AccelStepper *stepper) : Component("stepper_"
     floatParameters["maxSpeed"] = 10000.0f; 
     floatParameters["acceleration"] = 5000.0f;
     mode = SPEED;
+}
+
+StepperMotor::StepperMotor(int id, AccelStepper *stepper, int enablePin) : Component("stepper_" + String(id)),
+                                                                        stepper(stepper),
+                                                                        mode(SPEED)
+{
+    floatParameters["maxSpeed"] = 10000.0f; 
+    floatParameters["acceleration"] = 5000.0f;
+    mode = SPEED;
+    stepper->setEnablePin(enablePin);
 }
 
 void StepperMotor::initComponent(bool serialDebug)
@@ -55,6 +65,7 @@ void StepperMotor::goTo(long value)
         mode = POSITION;
     }
     stepper->moveTo(value);
+    stepper->disableOutputs();
     compDebug("go to " + String(value));
 }
 
@@ -71,6 +82,7 @@ void StepperMotor::moveTo(long value)
         mode = POSITION;
     }
     stepper->move(value);
+    stepper->disableOutputs();
     compDebug("move to " + String(value));
 }
 
@@ -93,6 +105,7 @@ void StepperMotor::setSpeed(float value)
 
     mode = SPEED;
     stepper->setSpeed(value);
+    stepper->disableOutputs();
     compDebug("set speed " + String(value));
 }
 
@@ -109,6 +122,7 @@ void StepperMotor::setSpeedRel(float value)
 
     mode = SPEED;
     stepper->setSpeed(value * stepper->maxSpeed());
+    stepper->disableOutputs();
     compDebug("set rel speed " + String(value * stepper->maxSpeed()));
 }
 
@@ -153,6 +167,17 @@ void StepperMotor::setMaxSpeed(float value)
     floatParameters["maxSpeed"] = value;
     overrideFlashParameters();
 }
+
+void StepperMotor::setEnablePin(int pin)
+{
+    stepper->setEnablePin(pin);
+}
+
+void StepperMotor::enableOutputs()
+{
+    stepper->enableOutputs();
+}
+
 
 long StepperMotor::currentPosition()
 {

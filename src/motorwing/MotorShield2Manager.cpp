@@ -29,6 +29,8 @@ void MotorShield2Manager::update()
         if (millis() - lastEventTime > 100)
         {
             long newPos = steppers[i]->currentPosition();
+
+            // FIXME: how to keep stepper performances ?
             //float speed = steppers[i]->currentSpeed();
             //float maxSpeed = steppers[i]->maxSpeed();
 
@@ -347,7 +349,7 @@ void MotorShield2Manager::stepperRelease(int index)
         compDebug("release 1");
         shieldStepper1->release();
     }
-    if (steppers[index]->name.equals("stepper_2"))
+    else if (steppers[index]->name.equals("stepper_2"))
     {   
         compDebug("release 2");
         shieldStepper2->release();

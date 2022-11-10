@@ -103,6 +103,12 @@ void PuppetMaster::initManager()
     motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
 #endif
 
+#ifdef HAS_STEPPER_DRIVER
+    managers.emplace_back(&stepperdriver);
+    stepperdriver.initManager();
+    stepperdriver.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+#endif
+
 #ifdef HAS_ROOMBA
     managers.emplace_back(&roomba);
     roomba.initManager();
@@ -171,6 +177,29 @@ void PuppetMaster::checkComponents()
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
         msg.add(motorwing.steppers[i]->maxSpeed());
+        osc.sendMessage(msg);
+        
+       // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
+        // String addr2 = "/stepper/"+String(int(pair.first)+"/acceleration");
+        // OSCMessage msg2(addr.c_str());
+        // msg2.add(BOARD_NAME.c_str());
+        // msg2.add(pair.second->acceleration());  // FIXME acceleration la même pour AccelStepper et StepperMotor ou pas ?
+        // osc.sendMessage(msg2);
+        
+        // compDebug(String(pair.second->acceleration()));
+    }
+#endif
+
+
+#ifdef HAS_STEPPER_DRIVER
+    
+    for(std::size_t i = 0; i < stepperdriver.steppers.size(); ++i)
+    {
+        compDebug("check stepper");
+        String addr = "/stepper/"+String(i)+"/maxspeed";
+        OSCMessage msg(addr.c_str());
+        msg.add(BOARD_NAME.c_str());
+        msg.add(stepperdriver.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
         
        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
@@ -387,7 +416,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
 void PuppetMaster::gotOSCEvent(const OSCEvent &e)
 {
-    // compDebug("got OSC " + String(e.type));
+    //compDebug("got OSC " + String(e.type));
 
     switch (e.type)
     {
@@ -434,6 +463,23 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     msg.add((int)e.position);
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
+    osc.sendMessage(msg);
+}
+#endif
+
+#ifdef HAS_STEPPER_DRIVER
+void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    //compDebug("stepper event");
+
+    OSCMessage msg("/stepper/pos"); //+String(e.index)));
+    msg.add(BOARD_NAME.c_str());
+    msg.add((int)e.position);
+    // msg.add((int)e.speed);
+    // msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
 #endif

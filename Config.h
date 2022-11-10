@@ -95,6 +95,7 @@ const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS
 const bool MOTORWING_DEBUG = true;
+const bool STEPPER_DEBUG = true;
 
 // ROOMBA PARAMETERS
 const bool ROOMBA_DEBUG = true;

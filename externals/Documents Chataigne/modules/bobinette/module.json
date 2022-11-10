@@ -177,6 +177,21 @@
         }
       }
     },
+      "Régler Vitesse Rapide":
+      {
+        "menu":"Vitesse",
+        "callback":"setHighSpeed",
+        "parameters":
+        {
+          "Valeur":
+          {
+            "type":"Float",
+            "min":-1.0,
+            "max":1.0,
+            "default":0
+          }
+        }
+      },
     "Aller à (lent)":
     {
       "menu":"Position - Lent",
@@ -226,6 +241,36 @@
     {
       "menu":"Position - Rapide",
       "callback":"moveTo",
+      "parameters":
+      {
+        "Nombre de pas":
+        {
+          "type":"Integer",
+          "min":-10000,
+          "max":10000,
+          "default":0
+        }
+      }
+    },
+    "Aller à (ultra)":
+    {
+      "menu":"Position - Ultra",
+      "callback":"goToRelHighSpeed",
+      "parameters":
+      {
+        "Position relative":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0.5
+        }
+      }
+    },
+    "Bouger de (ultra)":
+    {
+      "menu":"Position - Ultra",
+      "callback":"moveToHighSpeed",
       "parameters":
       {
         "Nombre de pas":

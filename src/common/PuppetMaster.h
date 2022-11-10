@@ -9,6 +9,7 @@
 #include "../leds/LedManager.h"
 #include "../motors/ServoManager.h"
 #include "../motorwing/MotorShield2Manager.h"
+#include "../motorwing/StepperManager.h"
 #include "../roomba/RoombaManager.h"
 #include "../audio/MusicMakerManager.h"
 #ifdef ESP32
@@ -58,6 +59,9 @@ public:
 #ifdef HAS_MOTORWING
     MotorShield2Manager motorwing;
 #endif
+#ifdef HAS_STEPPER_DRIVER
+    StepperManager stepperdriver;
+#endif
 #ifdef HAS_ROOMBA
     RoombaManager roomba;
 #endif
@@ -95,6 +99,9 @@ protected:
 
 #ifdef HAS_MOTORWING
     void gotStepperEvent(const StepperEvent &e);
+#endif
+#ifdef HAS_STEPPER_DRIVER
+    void gotStepperEvent(const StepperEvent2 &e);
 #endif
 
 #ifdef HAS_ROOMBA

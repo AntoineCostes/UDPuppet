@@ -1,4 +1,5 @@
 var STEPPER_INDEX = 0;
+var paramsChanged = false;
 
 function init() {
   local.values.batterie.set(0);
@@ -44,10 +45,12 @@ function moduleParameterChanged(param)
   if (param.name == "vitesseMax")
   {
     setMaxSpeed();
+    paramsChanged = true;
   }
   if (param.name == "acceleration")
   {
     setAcceleration();
+    paramsChanged = true;
   }
   if (param.name == "stop")
   {
@@ -103,20 +106,32 @@ function moduleValueChanged(value) {
 
 }
 
+function checkParamsChanged()
+{
+  if (paramsChanged)
+  {
+    setAcceleration();
+    setMaxSpeed();
+    paramsChanged = false;
+  }
+}
+
 function setMaxSpeed() {
 
-  if (local.parameters.mode.get() == 0) local.send("/stepper/maxspeed", STEPPER_INDEX, 200*local.parameters.vitesseMax.get());
-  if (local.parameters.mode.get() == 1) local.send("/stepper/maxspeed", STEPPER_INDEX, 400 + 4600*local.parameters.vitesseMax.get()); // range 400-5000
+  if (local.parameters.mode.get() == 0) local.send("/stepper/maxspeed", STEPPER_INDEX, 240*local.parameters.vitesseMax.get());
+  if (local.parameters.mode.get() == 1) local.send("/stepper/maxspeed", STEPPER_INDEX, 350 + 2650*local.parameters.vitesseMax.get()); // range 400-5000
   if (local.parameters.mode.get() == 2) local.send("/stepper/maxspeed", STEPPER_INDEX, 8000 + 10000*local.parameters.vitesseMax.get()); // range 8000-18000
 }
 
 function setAcceleration() {
-  if (local.parameters.mode.get() == 0) local.send("/stepper/accel", STEPPER_INDEX, 2500);
-  else local.send("/stepper/accel", STEPPER_INDEX, 2000 + 28000 * local.parameters.acceleration.get()); // range 2000-30000
+  if (local.parameters.mode.get() == 0) local.send("/stepper/accel", STEPPER_INDEX, 200.0);
+  if (local.parameters.mode.get() == 1) local.send("/stepper/accel", STEPPER_INDEX, 3000.0 * local.parameters.acceleration.get());
+  else local.send("/stepper/accel", STEPPER_INDEX, 2000.0 + 28000.0 * local.parameters.acceleration.get()); // range 2000-30000
 }
 
 function goToRelLowSpeed(val) {
   local.parameters.mode.setData(0);
+  checkParamsChanged();
   var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
   local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
   script.log("go to "+pos);
@@ -124,12 +139,14 @@ function goToRelLowSpeed(val) {
 
 function moveToLowSpeed(val) {
   local.parameters.mode.setData(0);
+  checkParamsChanged();
   local.send("/stepper/move", STEPPER_INDEX, val);
   script.log("move to "+val);
 }
 
 function goToRel(val) {
   local.parameters.mode.setData(1);
+  checkParamsChanged();
   var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
   local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
   script.log("go to "+pos);
@@ -137,12 +154,14 @@ function goToRel(val) {
 
 function moveTo(val) {
   local.parameters.mode.setData(1);
+  checkParamsChanged();
   local.send("/stepper/move", STEPPER_INDEX, val);
   script.log("move to "+val);
 }
 
 function goToRelHighSpeed(val) {
   local.parameters.mode.setData(2);
+  checkParamsChanged();
   var pos = local.parameters.positionMin.get() + val*(local.parameters.positionMax.get() - local.parameters.positionMin.get());
   local.send("/stepper/go", STEPPER_INDEX, parseInt(pos*local.parameters.nombreDePas.get()));
   script.log("go to "+pos);
@@ -150,17 +169,22 @@ function goToRelHighSpeed(val) {
 
 function moveToHighSpeed(val) {
   local.parameters.mode.setData(2);
+  checkParamsChanged();
   local.send("/stepper/move", STEPPER_INDEX, val);
   script.log("move to "+val);
 }
 
 function setLowSpeed(val) {
   local.parameters.mode.setData(0);
+  checkParamsChanged();
+  local.parameters.vitesseMax.set(1);
   local.send("/stepper/speed", STEPPER_INDEX, val*250);
 }
 
 function setSpeed(val) {
   local.parameters.mode.setData(1);
+  checkParamsChanged();
+  local.parameters.vitesseMax.set(1);
   if (val == 0)
   {
     stop();
@@ -172,6 +196,8 @@ function setSpeed(val) {
 
 function setHighSpeed(val) {
   local.parameters.mode.setData(2);
+  checkParamsChanged();
+  local.parameters.vitesseMax.set(1);
   if (val == 0)
   {
     stop();
