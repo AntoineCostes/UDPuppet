@@ -1,18 +1,12 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
-// dependencies:
-// OSC by Adrian Freed
-// ESP32Servo
-// Adafruit_BuSIO & Adafruit_Motor_Shield_V2_Library
-// ESPAsyncWebServer https://github.com/me-no-dev/ESPAsyncWebServer
-// AsyncTCP https://github.com/me-no-dev/AsyncTCP
-// ESPAsyncTCP https://github.com/me-no-dev/ESPAsyncTCP
 
 // TODO remove led index
-// TODO local libs
+// DELETE sequence button
+// initComponent (when registering) and updating components automatically
 // TODO ERROR mode if prop was not registered successfully
 // TODO bluehouse config
-// DELETE sequence button
+// TODO make childClass DebugLedStrip with communication methods
 // TODO checkComponents + ParameterEvent
 // TODO régler tous les paramètres avec un seul message OSC /udpuppet/module/setparams
 

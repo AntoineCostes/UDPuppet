@@ -340,8 +340,6 @@ void PuppetMaster::launchSequence(String sequenceName)
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
-    OSCMessage m("/hey");
-    
     switch (e.state)
     {
     case WifiConnectionState::CONNECTING:

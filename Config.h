@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
+//#define SANS_GRAVITE
 //#define JEREM
 //#define COSTES
 
@@ -10,14 +10,13 @@
 //#define AMPOULE
 //#define BASE
 //#define BOBINE
-#define BOBINETTE
 //#define CORBEILLE
 //#define BOUCHE
 //#define ROOMBA
 //#define TEST
 //#define CAMEMBERT
 //#define CHANTDRIER
-//#define CASTAFIORE
+#define CASTAFIORE
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -46,8 +45,6 @@ enum BoardType
 #include "config/sansgravite/Base.h"
 #elif defined(BOBINE)
 #include "config/sansgravite/Bobine.h"
-#elif defined(BOBINETTE)
-#include "config/sansgravite/Bobinette.h"
 #elif defined(CORBEILLE)
 #include "config/sansgravite/Corbeille.h"
 #elif defined(BOUCHE)
@@ -66,7 +63,7 @@ enum BoardType
 
 
 // GENERAL PARAMETERS
-const bool MASTER_DEBUG = false;
+const bool MASTER_DEBUG = true;
 
 const bool OVERRIDE_NETWORK = true;
 const long DELAY_BEFORE_RECONNECT_MS = 3000;
@@ -83,7 +80,7 @@ const bool OSC_DEBUG = false;
 const long BATTERY_TIMOUT_MS = 5000;
 
 // PLAYER PARAMETERS
-const bool SEQUENCE_DEBUG = false;
+const bool SEQUENCE_DEBUG = true;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
@@ -95,7 +92,6 @@ const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS
 const bool MOTORWING_DEBUG = true;
-const bool STEPPER_DEBUG = false;
 
 // ROOMBA PARAMETERS
 const bool ROOMBA_DEBUG = true;

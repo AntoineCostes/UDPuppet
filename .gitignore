@@ -14,3 +14,11 @@ externals/Documents Chataigne/Gaillac_autosave/
 externals/Documents Chataigne/bake/
 
 .vs/
+
+externals/Documents Chataigne/post-DNA_autosave/
+
+debug_custom.json
+
+debug.cfg
+
+esp32.svd
