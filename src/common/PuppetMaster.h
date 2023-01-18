@@ -12,6 +12,7 @@
 #include "../motorwing/StepperManager.h"
 #include "../roomba/RoombaManager.h"
 #include "../audio/MusicMakerManager.h"
+#include "../sensors/ButtonManager.h"
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
 #endif
@@ -45,10 +46,11 @@ public:
     SequencePlayer player;
     FileManager fileMgr;
     WebServerManager web;
+    ButtonManager button;
     
-    #ifdef ESP32
+#ifdef ESP32
     BatteryManager battery;
-    #endif
+#endif
 
 #ifdef HAS_LED
     LedManager led;
@@ -93,9 +95,10 @@ protected:
     void gotOSCEvent(const OSCEvent &e);
     void gotFileEvent(const FileEvent &e);
     void gotPlayerEvent(const PlayerEvent &e);
-    #ifdef ESP32
+    void gotButtonEvent(const ButtonEvent &e);
+#ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
-    #endif
+#endif
 
 #ifdef HAS_MOTORWING
     void gotStepperEvent(const StepperEvent &e);

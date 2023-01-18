@@ -41,6 +41,7 @@ void setup()
 
 #ifdef CASTAFIORE
   master.servo.registerServo(27, 18, 100, 50);
+  master.button.registerButton(17);
 #endif
 
 #ifdef CAMEMBERT

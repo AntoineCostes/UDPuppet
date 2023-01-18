@@ -86,6 +86,9 @@ void PuppetMaster::initManager()
     web.initManager();
     web.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
 
+    managers.emplace_back(&button);
+    button.initManager();
+    button.addListener(std::bind(&PuppetMaster::gotButtonEvent, this, std::placeholders::_1));
 
 #ifdef HAS_LED
     managers.emplace_back(&led);
@@ -447,6 +450,20 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     }
 }
 
+void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
+{
+    compDebug("got button " + String(e.type));
+
+    switch (e.type)
+    {
+    case ButtonEvent::Type::PRESSED:
+        break;
+
+    default:
+        compLog("ButtonEvent :" + e.type);
+        break;
+    }
+}
 
 #ifdef HAS_MOTORWING
 void PuppetMaster::gotStepperEvent(const StepperEvent &e)
