@@ -30,11 +30,10 @@ void MusicMakerManager::initManager()
         compError("Couldn't mount SD!");
         return;
     }
-    player->useInterrupt(VS1053_FILEPLAYER_PIN_INT);
+    //player->useInterrupt(VS1053_FILEPLAYER_PIN_INT); fait crasher !!
 
     ready = true;
 
-    // TODO list tracks
     tracks.clear();
     File root =  SD.open("/");
     File file = root.openNextFile();
@@ -50,6 +49,11 @@ void MusicMakerManager::initManager()
         file =  root.openNextFile();
     }
     setVolume(floatParameters["volume"]);
+}
+
+void MusicMakerManager::update()
+{
+    if (player->playingMusic) player->feedBuffer();
 }
 
 bool MusicMakerManager::handleCommand(OSCMessage &command)

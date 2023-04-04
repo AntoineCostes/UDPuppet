@@ -18,6 +18,7 @@ public:
   MusicMakerManager();
 
   void initManager() override;
+  void update() override;
   bool handleCommand(OSCMessage &command) override;
 
   std::vector<String> tracks;

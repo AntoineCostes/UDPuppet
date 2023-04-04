@@ -6,7 +6,7 @@
     "arduino.disableTestingOpen": false,
     "arduino.skipHeaderProvider": false,
     "arduino.defaultBaudRate": 115200,
-    "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "C_Cpp.intelliSenseEngine": "default",
     "files.associations": {
         "iosfwd": "cpp",
         "xlocbuf": "cpp",
