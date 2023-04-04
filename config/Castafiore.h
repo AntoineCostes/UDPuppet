@@ -10,6 +10,6 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
 // COMPONENTS
-// #define HAS_LED
+#define HAS_LED
 #define HAS_SERVO
 #define HAS_MUSICMAKER

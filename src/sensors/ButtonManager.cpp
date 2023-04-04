@@ -11,7 +11,7 @@ void ButtonManager::initManager()
     Manager::initManager();
 }
 
-void ButtonManager::registerButton(int pin)
+void ButtonManager::registerButton(int pin, long longPressDuration)
 {
     if (!checkInit())
         return;
@@ -22,17 +22,19 @@ void ButtonManager::registerButton(int pin)
         return;
     }
     
-    buttons.emplace_back(new Button(pin));
+    buttons.emplace_back(new Button(pin, longPressDuration));
     buttons.back()->initComponent(serialDebug);
     
     buttons.back()->addListener(std::bind(&ButtonManager::gotButtonEvent, this, std::placeholders::_1));
-    compDebug("button registered on pin "+pin);
+    compDebug("button registered on pin "+String(pin));
 }
 
 void ButtonManager::update()
 {
-    for (auto const &button : buttons) button->update();
+    if (!checkInit())
+        return;
 
+    for (auto const &button : buttons) button->update();
 }
 
 

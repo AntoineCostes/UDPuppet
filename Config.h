@@ -5,6 +5,7 @@
 //#define SANS_GRAVITE
 //#define JEREM
 //#define COSTES
+//#define SUNSHINE
 
 // HARDWARE - SELECT ONE
 //#define AMPOULE
@@ -14,9 +15,10 @@
 //#define BOUCHE
 //#define ROOMBA
 //#define TEST
-//#define CAMEMBERT
+#define CAMEMBERT
 //#define CHANTDRIER
-#define CASTAFIORE
+//#define CASTAFIORE
+//#define CASTAFIORE_BUTTON
 
 // WIFI PARAMETERS
 #if defined(SANS_GRAVITE)
@@ -28,6 +30,9 @@ const String WIFI_PASSWORD = "28101948AC";
 #elif defined(JEREM)
 const String WIFI_SSID = "TP-LINK_AP_E97865";
 const String WIFI_PASSWORD = "";
+#elif defined(SUNSHINE)
+const String WIFI_SSID = "under the sunshine";
+const String WIFI_PASSWORD = "bibimbap";
 #else
 const String WIFI_SSID = "LeNet";
 const String WIFI_PASSWORD = "connectemoi";
@@ -80,14 +85,14 @@ const bool OSC_DEBUG = false;
 const long BATTERY_TIMOUT_MS = 5000;
 
 // PLAYER PARAMETERS
-const bool SEQUENCE_DEBUG = true;
+const bool SEQUENCE_DEBUG = false;
 
 // LED PARAMETERS
 const bool LED_DEBUG = true;
 const long LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
-const bool SERVO_DEBUG = true;
+const bool SERVO_DEBUG = false;
 const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS

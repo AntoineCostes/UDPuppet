@@ -3,8 +3,6 @@
 #include "../common/Component.h"
 #include "../utils/EventBroadcaster.h"
 
-#include <EasyButton.h>
-
 
 class ButtonEvent
 {
@@ -13,6 +11,7 @@ public:
     enum Type
     {
         PRESSED,
+        LONG_PRESS,
         RELASED_SHORT,
         RELEASED_LONG
     } type;
@@ -23,15 +22,19 @@ class Button : public Component,
                 public EventBroadcaster<ButtonEvent>
 {
 public:
-    Button(int pin);
+    Button(int pin, long longPressMs);
 
     void initComponent(bool serialDebug);
     void update();
     
     void pressed();
+    void released();
 
 
 protected:
     int pin;
-    EasyButton button;
+    bool isPressed;
+    long longPressMs;
+    bool isLongPressed;
+    long lastPressMs;
 };

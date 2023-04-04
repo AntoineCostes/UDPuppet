@@ -12,7 +12,7 @@ public:
 
     void initManager();
     void update();
-    void registerButton(int pin);
+    void registerButton(int pin, long longPressDuration);
     void gotButtonEvent(const ButtonEvent &e);
 
 protected:

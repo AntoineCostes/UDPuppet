@@ -1,26 +1,54 @@
 #include "Button.h"
 
-Button::Button(int pin) : Component("button" + String(pin)), pin(pin), button(pin)
+Button::Button(int pin, long longPressMs): Component("button" + String(pin)), 
+                                        pin(pin), 
+                                        isPressed(false),
+                                        longPressMs(longPressMs), 
+                                        lastPressMs(0),
+                                        isLongPressed(true)
 {
 }
 
 void Button::initComponent(bool serialDebug)
 {
-    button.begin();
     Component::initComponent(serialDebug);
-
-    // button.onPressed(Button::pressed);   
+    pinMode(pin, INPUT_PULLUP);
 }
 
 void Button::update()
 {
-    if (!checkInit())
-        return;
+    bool currentState = !digitalRead(pin);
+    if (isPressed != currentState)
+    {
+        compDebug("===================");
+        if (currentState) compDebug("currentState TRUE");
+        else compDebug("currentState FALSE");
+        
+        if (isPressed) compDebug("isPressed TRUE");
+        else compDebug("isPressed FALSE");
 
-    button.read();
-}
+        if (currentState)
+        {
+            sendEvent(ButtonEvent(pin, ButtonEvent::Type::PRESSED));
+            isPressed = true;
+            isLongPressed = false;
+            lastPressMs = millis();
+        }
+        else
+        {
+            if (millis() - lastPressMs < longPressMs)
+                sendEvent(ButtonEvent(pin, ButtonEvent::Type::RELASED_SHORT));
+            else
+                sendEvent(ButtonEvent(pin, ButtonEvent::Type::RELEASED_LONG));
+            
+            isPressed = false;
+        }
+        if (isPressed) compDebug("currentState TRUE");
+        else compDebug("currentState FALSE");
 
-void Button::pressed()
-{
-    sendEvent(ButtonEvent(pin, ButtonEvent::Type::PRESSED));
+    } else if (!isLongPressed && millis() - lastPressMs > longPressMs)
+    {
+        sendEvent(ButtonEvent(pin, ButtonEvent::Type::LONG_PRESS));
+        isLongPressed = true;
+    }
 }

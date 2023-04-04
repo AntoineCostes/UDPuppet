@@ -138,11 +138,13 @@ void MusicMakerManager::play(String trackName)
         return;
     }
     stop();
+    compDebug("start playing");
     player->startPlayingFile(filePath.c_str());
 }
 
 void MusicMakerManager::stop()
 { 
+    compDebug("stop call");
     if (!ready)
     {
         compError("music maker not ready");
@@ -150,7 +152,7 @@ void MusicMakerManager::stop()
     }
     if (player->playingMusic)
     {
-        compDebug("stop");
+        compDebug("stop playing");
         player->stopPlaying();
     }
 }

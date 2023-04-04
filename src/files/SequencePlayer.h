@@ -64,22 +64,19 @@ public:
 
   void setFPS(int value);
 
-  void loadSequence(String path);
-
-  void startSequence(float atTime);
-
+  void playSequence(String path);
+  bool isPlaying;
+  void stopPlaying();
   void tryPlaySequence(String path);
   int numFailed;
-
-  void playSequence(String path);
-
-  void stopPlaying();
   
   bool handleCommand(OSCMessage &command) override;
 
 protected:
   uint8_t frameData[FRAME_SIZE];
 
+  void loadSequence(String path);
+  void startSequence(float atTime);
   void playFrame();
   void seek(float t);
 
@@ -92,7 +89,6 @@ protected:
   long totalFrames;
 
   //playing
-  bool isPlaying;
   long curTimeMs;
   long prevTimeMs;
   long timeSinceLastSeek;

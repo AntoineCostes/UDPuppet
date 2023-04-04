@@ -1,0 +1,139 @@
+{
+  "name":"Castafiore",
+  "type":"OSC",
+  "path":"UDPuppet",
+
+  "version":"1.4.0",
+  "description":"Contrôle d'une boîte de médicament par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":12003
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"castafiore.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Avril2022-1.4.0",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Sequences":
+    {
+      "type":"Enum"
+    },
+    "Play":
+    {
+      "type":"Trigger"
+    },
+    "Tracks":
+    {
+      "type":"Enum"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+
+  "scripts":
+  [
+    "castafiore.js",
+    "bake.js"
+  ],
+
+  "values":
+  {
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 1,
+      "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    }
+  },
+
+  "commands":
+  {
+    "Set servo":
+    {
+      "callback":"setServo",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Set volume":
+    {
+      "callback":"setVolume",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
+  }
+}
