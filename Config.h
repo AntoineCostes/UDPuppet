@@ -92,7 +92,7 @@ const bool LED_DEBUG = true;
 const long LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
-const bool SERVO_DEBUG = false;
+const bool SERVO_DEBUG = true;
 const bool SERVO_ALLOW_UNSAFE_PINS = true;
 
 // FEATHERWING PARAMETERS

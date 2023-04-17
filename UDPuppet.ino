@@ -3,12 +3,14 @@
 
 // TODO remove led index
 // TODO clean DNA
+// TODO confirm upload (instead of error 302) and display alert if webserver not found
 // "delete sequence" button in module
 // TODO remove initComponent
 // checkInit only in Manager ?
 // initComponent (when registering) and updating components automatically
 // TODO ERROR mode if prop was not registered successfully
-// TODO bluehouse config
+// TODO bluehouse config 
+// => mieux: fichier de config JSON (un seul ou un set + un id?), placé en SPIFFS mais overridable via la SD 
 // TODO make childClass DebugLedStrip with communication methods
 // TODO checkComponents + ParameterEvent
 // TODO régler tous les paramètres avec un seul message OSC /udpuppet/module/setparams
@@ -45,8 +47,8 @@ void setup()
 #ifdef CASTAFIORE
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800); 
   master.led.setWifiDebug(0, false);
-  master.servo.registerServo(27, 18, 100, 20);
-  master.button.registerButton(17, 1500);
+  master.servo.registerServo(27, 5, 80, 5);
+  master.button.registerButton(17, 1200);
 #endif
 
 #ifdef CAMEMBERT

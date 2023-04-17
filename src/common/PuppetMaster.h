@@ -109,5 +109,9 @@ protected:
 
 #ifdef HAS_ROOMBA
 #endif
+
+#ifdef CASTAFIORE_BUTTON
+    int trackIndex;
+#endif
     
 };

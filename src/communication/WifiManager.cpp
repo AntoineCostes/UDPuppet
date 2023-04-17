@@ -113,8 +113,8 @@ void WifiManager::update()
   if (!checkInit())
     return;
 
-  #ifdef CASTAFIORE_BUTTON
-  #else
+  //#ifdef CASTAFIORE_BUTTON
+  //#else
 
   switch (connectionState)
   {
@@ -157,7 +157,7 @@ void WifiManager::update()
     compError("connection state not handled");
     break;
   }
-#endif
+//#endif
 }
 
 String WifiManager::getIP()

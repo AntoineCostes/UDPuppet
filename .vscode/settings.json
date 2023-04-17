@@ -93,6 +93,7 @@
         "stop_token": "cpp",
         "complex": "cpp",
         "regex": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 
 }

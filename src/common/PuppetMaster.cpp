@@ -456,8 +456,20 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
     switch (e.type)
     {
+#ifdef CASTAFIORE_BUTTON
     case ButtonEvent::Type::PRESSED:
+        music.stop();
+        player.stopPlaying();
+        servo.setServoRel(0, 0.0f);
         break;
+
+    case ButtonEvent::Type::RELASED_SHORT:
+        launchSequence(fileMgr.sequences[trackIndex]);
+        trackIndex++;
+        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        compLog("track index :" + trackIndex);
+        break;
+#endif
 
     default:
         compLog("ButtonEvent :" + e.type);
