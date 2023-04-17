@@ -12,7 +12,7 @@ void LedManager::initManager()
     lastLedRefreshTime = millis();
 }
 
-void LedManager::registerLedStrip(int index, int pin, int numLeds, neoPixelType type)
+void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type)
 {
     if (!checkInit())
         return;
@@ -24,16 +24,18 @@ void LedManager::registerLedStrip(int index, int pin, int numLeds, neoPixelType 
     }
 
     // only first ledstrip is debug true by default
-    strips.insert({index, new LedStrip(pin, numLeds, type, index==0)});
-    strips[index]->initComponent(serialDebug);
-    compDebug("register prop: " + String(strips[index]->name));
+    bool debug = strips.size() == 0;
+
+    strips.emplace_back(new LedStrip(pin, numLeds, type, index==0));
+    strips.back()->initComponent(serialDebug);
+    compDebug("register prop: " + String(strips.back()->name));
 }
 
 void LedManager::setMode(LedStrip::LedMode newMode)
 {
-    for (auto const &pair : strips)
+    for (auto const &strip : strips)
     {
-        pair.second->mode = newMode;
+        strip->mode = newMode;
     }
 }
 
@@ -45,18 +47,14 @@ void LedManager::update()
     // no Manager::update(), leds are refreshed periodically
     if (millis() - lastLedRefreshTime > LED_REFRESH_MS)
     {
-        for (auto const &pair : strips)
-        {
-            pair.second->update();
-        }
+        for (auto const &strip : strips) strip->update();
         lastLedRefreshTime = millis();
     }
 }
 
 void LedManager::clear()
 {
-    for (auto const &pair : strips)
-        pair.second->clear();
+    for (auto const &strip : strips) strip->clear();
 }
 
 void LedManager::setColor(int c)
@@ -66,14 +64,12 @@ void LedManager::setColor(int c)
 
 void LedManager::setColor(int r, int g, int b)
 {
-    for (auto const &pair : strips)
-        pair.second->setAll(r, g, b);
+    for (auto const &strip : strips) strip->setAll(r, g, b);
 }
 
 void LedManager::setBrightness(float value)
 {
-    for (auto const &pair : strips)
-        pair.second->setBrightness(value);
+    for (auto const &strip : strips) strip->setBrightness(value);
 }
 
 void LedManager::setBrightness(int stripIndex, float value)

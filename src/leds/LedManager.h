@@ -11,7 +11,7 @@ public:
     void initManager();
     void update();
     
-    void registerLedStrip(int index, int pin, int numLeds, neoPixelType type);
+    void registerLedStrip(int pin, int numLeds, neoPixelType type);
 
     void setMode(LedStrip::LedMode newMode);
     
@@ -34,6 +34,6 @@ public:
 
 protected:
     unsigned long lastLedRefreshTime;
-    std::map<int, LedStrip*> strips; 
+    std::vector<LedStrip*> strips; 
 };
 #endif
