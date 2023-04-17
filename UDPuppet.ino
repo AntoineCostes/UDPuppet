@@ -2,7 +2,6 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO clean DNA
-// TODO confirm upload (instead of error 302) and display alert if webserver not found
 // "delete sequence" button in module
 // TODO remove initComponent
 // checkInit only in Manager ?

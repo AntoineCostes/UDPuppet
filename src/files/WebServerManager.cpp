@@ -68,8 +68,11 @@ void WebServerManager::closeServer()
 
 void WebServerManager::handleNotFound(AsyncWebServerRequest *request)
 {
-    compDebug("Not found here");
-    request->send(404, "text/plain", "Error: webserver file not found!");
+    if (request->url() != "/upload") // FIXME why is it triggered after file upload ?
+    {
+      compDebug("Not found here");
+      request->send(404, "text/plain", "Error: webserver file not found!");
+    }
 }
 
 void WebServerManager::serveIndex(AsyncWebServerRequest *request)
@@ -119,7 +122,6 @@ void WebServerManager::handleFileUpload(AsyncWebServerRequest *request, String f
       // String msg = "Writing file: " + filename + " index=" + String(index) + " len=" + String(len);
       // Serial.println(msg);
       sendEvent(FileEvent(FileEvent::UploadProgress, filename, index));
-
     }
     
     if (final) {
@@ -127,7 +129,9 @@ void WebServerManager::handleFileUpload(AsyncWebServerRequest *request, String f
       // close the file handle as the upload is now done
       request->_tempFile.close();
       // Serial.println(msg);
-      request->redirect("/");
+      //request->redirect("/");
+      
+      request->send(200, "text/plain", "File upload successfull !");
       sendEvent(FileEvent(FileEvent::UploadComplete, filename));
     }
 }
