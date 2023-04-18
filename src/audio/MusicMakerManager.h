@@ -1,11 +1,6 @@
 #pragma once
 #include "../common/Manager.h"
 
-#ifdef HAS_MUSICMAKER
-#include <SPI.h>
-#include <SD.h>
-#include <Adafruit_VS1053.h>
-
 #define VS1053_RESET   -1     // VS1053 reset pin (not used!)
 #define VS1053_CS      32     // VS1053 chip select pin (output)
 #define VS1053_DCS     33     // VS1053 Data/command select pin (output)
@@ -34,4 +29,3 @@ protected:
   bool ready;
 
 };
-#endif

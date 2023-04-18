@@ -2,10 +2,6 @@
 #pragma once
 #include "../common/Component.h"
 
-#if defined(HAS_MOTORWING) || defined(HAS_STEPPER_DRIVER)
-#include "../submodules/AccelStepper/src/AccelStepper.h"
-//#include <AccelStepper.h>
-
 class StepperMotor : public Component
 {
 public:
@@ -38,4 +34,3 @@ public:
 protected:
   AccelStepper* stepper;
 };
-#endif

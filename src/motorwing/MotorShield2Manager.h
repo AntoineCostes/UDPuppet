@@ -4,8 +4,6 @@
 #include "DCMotor.h"
 #include "../utils/EventBroadcaster.h"
 
-#ifdef HAS_MOTORWING
-
 class StepperEvent
 {
 public:
@@ -84,4 +82,3 @@ private:
   void forward2();
   void backward2();
 };
-#endif

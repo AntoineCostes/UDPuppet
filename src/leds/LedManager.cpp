@@ -1,6 +1,5 @@
 #include "LedManager.h"
 
-#ifdef NUM_LEDS
 LedManager::LedManager() : Manager("led")
 {
     serialDebug = LED_DEBUG;
@@ -178,4 +177,3 @@ bool LedManager::handleCommand(OSCMessage &command)
     }
     return false;
 }
-#endif

@@ -2,7 +2,6 @@
 #include "../common/Manager.h"
 #include "RoombaSerial.h"
 
-#ifdef HAS_ROOMBA
 class RoombaManager : public Manager
 {
 public:
@@ -31,4 +30,3 @@ protected:
     std::vector<RoombaSerial*> roombas; 
 
 };
-#endif

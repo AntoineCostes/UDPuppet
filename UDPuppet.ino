@@ -1,8 +1,11 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
-// TODO bluehouse config => multiservo ?
+// TODO sequence frame size from components
+// mulitservo ifdef ?
+// filemanager ifdef ?
 // TODO advertise parameter controls
+// no wifi in credentials ?
 
 // TODO clean DNA
 // "delete sequence" button in module

@@ -3,10 +3,6 @@
 #include "WifiManager.h" // TODO remove
 #include "../utils/EventBroadcaster.h"
 
-// TODO ifdef ESP32
-#include <OSCMessage.h>
-#include <WiFiUdp.h> 
-
 class OSCEvent
 {
 public:

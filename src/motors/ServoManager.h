@@ -2,10 +2,6 @@
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
-#ifdef HAS_MULTISERVO
-#include <Adafruit_PWMServoDriver.h>
-#endif
-
 class ServoManager : public Manager
 {
 
@@ -36,8 +32,6 @@ public:
 protected:
   bool checkServoPin(int pin); 
   std::vector<ServoMotor *> servos;
-#ifdef HAS_MULTISERVO
-Adafruit_PWMServoDriver pwm;
-#endif
+  Adafruit_PWMServoDriver pwm;
 
 };

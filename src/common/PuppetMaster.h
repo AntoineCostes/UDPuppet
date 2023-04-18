@@ -1,32 +1,35 @@
 #pragma once
 #include "Manager.h"
 #include "../utils/EventBroadcaster.h"
+
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
-#include "../files/FileManager.h"
 #include "../files/WebServerManager.h"
+
+#include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
+
+#ifdef NUM_LEDS
 #include "../leds/LedManager.h"
+#endif
+#ifdef NUM_SERVOS
 #include "../motors/ServoManager.h"
+#endif
+#ifdef HAS_MOTORWING
 #include "../motorwing/MotorShield2Manager.h"
+#endif
+#ifdef HAS_STEPPER_DRIVER
 #include "../motorwing/StepperManager.h"
+#endif
+#ifdef HAS_ROOMBA
 #include "../roomba/RoombaManager.h"
+#endif
+#ifdef HAS_MUSICMAKER
 #include "../audio/MusicMakerManager.h"
+#endif
 #include "../sensors/ButtonManager.h"
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
-#endif
-
-#ifdef ESP32
-#include <ESPmDNS.h>
-#elif defined (ESP8266)
-#include <ESP8266mDNS.h>
-#endif
-
-#ifdef HAS_MULTISERVO
-#ifndef NUM_SERVOS
-#define NUM_SERVOS
-#endif
 #endif
 
 class PuppetMaster : public Manager
@@ -43,9 +46,11 @@ public:
 
     WifiManager wifi;
     OSCManager osc;
+    WebServerManager web;
+
     SequencePlayer player;
     FileManager fileMgr;
-    WebServerManager web;
+
     ButtonManager button;
     
 #ifdef ESP32
@@ -93,8 +98,10 @@ protected:
 
     void gotWifiEvent(const WifiEvent &e);
     void gotOSCEvent(const OSCEvent &e);
+
     void gotFileEvent(const FileEvent &e);
     void gotPlayerEvent(const PlayerEvent &e);
+    
     void gotButtonEvent(const ButtonEvent &e);
 #ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
@@ -105,9 +112,6 @@ protected:
 #endif
 #ifdef HAS_STEPPER_DRIVER
     void gotStepperEvent(const StepperEvent2 &e);
-#endif
-
-#ifdef HAS_ROOMBA
 #endif
 
 #ifdef CASTAFIORE_BUTTON

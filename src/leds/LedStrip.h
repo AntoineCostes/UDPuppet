@@ -3,9 +3,6 @@
 #include "../common/Component.h"
 #include "../utils/Timer.h"
 
-
-#ifdef NUM_LEDS
-#include <Adafruit_NeoPixel.h>
 class LedStrip : public Component
 {
 public:
@@ -44,4 +41,3 @@ protected:
     Timer toastTimer;
     LedMode toastMode;
 };
-#endif

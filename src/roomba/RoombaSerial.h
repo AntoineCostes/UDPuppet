@@ -1,9 +1,6 @@
 #pragma once
 #include "../common/Component.h"
 
-#ifdef HAS_ROOMBA
-#include <SoftwareSerial.h>
-
 enum RoombaLed
 {
     DIRT_BLUE,
@@ -170,4 +167,3 @@ protected:
         G_9 = 127
     };
 };
-#endif

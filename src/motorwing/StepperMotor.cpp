@@ -1,6 +1,5 @@
 #include "StepperMotor.h"
 
-#if defined(HAS_MOTORWING) || defined(HAS_STEPPER_DRIVER)
 StepperMotor::StepperMotor(int id, AccelStepper *stepper) : Component("stepper_" + String(id)),
                                                              stepper(stepper),
                                                              mode(SPEED)
@@ -197,4 +196,3 @@ float StepperMotor::maxSpeed()
 // {
 //    return stepper->acceleration();
 // }
-#endif

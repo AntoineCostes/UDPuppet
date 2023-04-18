@@ -2,7 +2,6 @@
 #pragma once
 #include "../common/Component.h"
 
-#include <ESP32Servo.h>
 
 class ServoMotor : public Component
 {

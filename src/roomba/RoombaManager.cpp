@@ -1,6 +1,5 @@
 #include "RoombaManager.h"
 
-#ifdef HAS_ROOMBA
 RoombaManager::RoombaManager() : Manager("roomba")
 {
     serialDebug = ROOMBA_DEBUG;
@@ -280,4 +279,3 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     return false;
 }
-#endif

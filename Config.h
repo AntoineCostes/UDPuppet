@@ -2,6 +2,38 @@
 #include <Arduino.h>
 #include "UDPuppetClasses.h"
 
+// Leds
+#include <Adafruit_NeoPixel.h>
+// Servos
+#include <ESP32Servo.h>
+#include <Adafruit_PWMServoDriver.h>
+// motors
+// #include <AccelStepper.h>
+#include "src/AccelStepper_modified/src/AccelStepper.h"
+#include <Adafruit_MotorShield.h>
+// sensors
+#include <Adafruit_VS1053.h>
+// communication
+#include <SoftwareSerial.h>
+#include <SPI.h>
+#include <SD.h>
+// wifi
+#include <WiFiUdp.h> 
+#include <OSCMessage.h>
+#include <ArduinoOTA.h>
+#ifdef ESP32
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#elif defined (ESP8266)
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266mDNS.h>
+#else
+#error "This code is meant for ESP32 or ESP8266 only !"
+#endif
+
+
+
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
 ////////////////////////////////////

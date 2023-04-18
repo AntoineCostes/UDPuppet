@@ -2,7 +2,6 @@
 #include "../common/Manager.h"
 #include "LedStrip.h"
 
-#ifdef NUM_LEDS
 class LedManager : public Manager
 {
 public:
@@ -36,4 +35,3 @@ protected:
     unsigned long lastLedRefreshTime;
     std::vector<LedStrip*> strips; 
 };
-#endif

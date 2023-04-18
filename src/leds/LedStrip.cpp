@@ -1,6 +1,5 @@
 #include "LedStrip.h"
 
-#ifdef NUM_LEDS
 LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Component("led_" + String(pin)),
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
@@ -160,4 +159,3 @@ void LedStrip::setLed(int i, int r, int g, int b)
     strip.setPixelColor(i, strip.Color((int)(r), (int)(g), (int)(b)));
     //strip.show();
 }
-#endif
