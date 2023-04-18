@@ -37,10 +37,14 @@ public:
     static boolean doesExist(String fileName);
     static File openFile(String fileName, bool forWriting = false, bool deleteIfExists = true);
     static void deleteFileIfExists(String path);
-    void listDir(const char *dirname, uint8_t levels);
+    void printFiles();
 
     std::vector<String> sequences;
 
     // bool handleCommand(String command, var *data, int numData) override;
+
+    protected:
+    void listDir(const char *dirname, uint8_t levels);
+
 };
 

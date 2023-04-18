@@ -20,26 +20,6 @@ bool Component::checkInit()
     return initialized;
 }
 
-bool Component::checkRange(String valueName, int value, int min, int max)
-{
-  if (value < min || value > max)
-  {
-    compError("can't set " + valueName + ", value " + String(value) + " out of range [" + String(min) + ", " + String(max) + "].");
-    return false;
-  }
-  return true;
-}
-
-bool Component::checkRange(String valueName, float value, float min, float max)
-{
-  if (value < min || value > max)
-  {
-    compError("can't set " + valueName + ", value " + String(value) + "us out of range [" + String(min) + ", " + String(max) + "].");
-    return false;
-  }
-  return true;
-}
-
 bool Component::registerPin(int pin)
 {
     std::set<int> pins = {pin};
@@ -165,7 +145,7 @@ void Component::readParamsFromFlash()
     Preferences preferences;
     preferences.begin(name.c_str());
 
-    if (stringParameters.size() + intParameters.size() + floatParameters.size() > 0)
+    if (stringParameters.size() + intParameters.size() + floatParameters.size() + boolParameters.size() > 0)
         compDebug("--- retrieve parameters from flash memory");
     // for each parameter, according to its type, override its value if it is already stored in flash memory
     for (auto const &x : stringParameters)
@@ -233,7 +213,7 @@ void Component::readParamsFromFlash()
         }
     }
     preferences.end();
-    if (stringParameters.size() + intParameters.size() + floatParameters.size() > 0)
+    if (stringParameters.size() + intParameters.size() + floatParameters.size() + boolParameters.size() > 0)
         compDebug("---");
     #endif // ESP32
 }

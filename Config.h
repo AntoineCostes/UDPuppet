@@ -51,9 +51,8 @@
 // NETWORK
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
-
 // GENERAL PARAMETERS
-const bool MASTER_DEBUG = true;
+const bool SETUP_DELAY_MS = 0;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
@@ -78,6 +77,7 @@ const bool SERVO_ALLOW_UNSAFE_PINS = false; // 2, 4, 12, 13, 14, 15, 16, 17, 21,
 const long ROOMBA_TEXT_UPDATE_MS = 200;
 
 // DEBUG PARAMETERS
+const bool MASTER_DEBUG = true;
 const bool WIFI_DEBUG = false;
 const bool OSC_DEBUG = false;
 const bool FILES_DEBUG = false;

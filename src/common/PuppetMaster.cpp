@@ -666,7 +666,7 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
             
         case FileEvent::Type::UploadComplete:
             compDebug("Complete !");
-            fileMgr.listDir("/", 0);
+            fileMgr.printFiles();
             advertiseSequences();
             break;
             

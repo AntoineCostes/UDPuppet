@@ -23,7 +23,7 @@ void FileManager::init()
     if (SD.begin(SD_CS))
     {
         Serial.println("SD Card initialized.");
-        if (serialDebug) listDir("/", 0);
+        printFiles();
         sdIsDetected = true;
     }
     else
@@ -35,7 +35,7 @@ void FileManager::init()
     if(SPIFFS.begin())// Start the SPI Flash Files System
     {
         Serial.println("SPIFFS initialized.");
-        if (serialDebug) listDir("/", 0);
+        printFiles();
     } else
     {
         Serial.println("Error initializing SPIFFS");
@@ -47,7 +47,7 @@ void FileManager::init()
             if(SPIFFS.begin())// Start the SPI Flash Files System
             {
                 Serial.println("SPIFFS initialized.");
-                if (serialDebug) listDir("/", 0);
+                printFiles();
             } else return;
         }
         else
@@ -107,6 +107,11 @@ void FileManager::deleteFileIfExists(String path)
         Serial.println("Removed file " + path);
     }
     #endif
+}
+
+void FileManager::printFiles()
+{
+    if (serialDebug) listDir("/", 0);
 }
 
 void FileManager::listDir(const char *dirname, uint8_t levels)

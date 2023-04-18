@@ -27,7 +27,7 @@ void setup()
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(3000); // wait for serial console
+  delay(SETUP_DELAY_MS);
 
   master.initManager(); // TODO make singleton and rename ?
 

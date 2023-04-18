@@ -28,11 +28,9 @@ public:
     String name; // TODO const ?
 
     virtual void initComponent(bool serialDebug);
-    bool checkRange(String valueName, float value, float min, float max);
-    bool checkRange(String valueName, int value, int min, int max);
-    bool checkInit();
-    virtual void update() = 0;
-
+    bool checkInit(); // TODO remove ?
+    virtual void update() = 0; // TODO make not pure virtual ?
+ 
     static bool registerPin(int pin);
     static bool registerPins(std::set<int> pins);
     static std::set<int> forbiddenPins;
@@ -40,6 +38,7 @@ public:
     virtual bool handleCommand(OSCMessage &command);
 
 protected:
+    bool initialized;
     bool serialDebug;
 
     // parameters
@@ -60,9 +59,6 @@ protected:
 
     // command handling
     bool checkCommandArguments(OSCMessage &command, String types, bool logError);
-
-private:
-    bool initialized;
 };
 
 
