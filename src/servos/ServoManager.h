@@ -2,6 +2,9 @@
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
+// TODO parameter for setting i2c address ?
+// TODO parameter for setting PWM frequency ?
+
 class ServoManager : public Manager
 {
 
@@ -9,9 +12,8 @@ public:
   ServoManager();
 
   void initManager();
-  void update() override;
 
-  void registerServo(int pin, int min, int max, int start, bool inverse);
+  void registerServo(int pin, int min, int max, int start, bool inverse, bool isMultiServo);
 
   bool handleCommand(OSCMessage &command) override;
 
@@ -25,13 +27,13 @@ public:
   
   void setServoInverse(int index, bool value);
 
-  void setMultiServoAbs(int index, int value);
-  void setMultiServoRel(int index, float value);
+  // void setMultiServoAbs(int index, int value);
+  // void setMultiServoRel(int index, float value);
 
 
 protected:
-  bool checkServoPin(int pin); 
+  bool isIndexValid(int index);
   std::vector<ServoMotor *> servos;
-  Adafruit_PWMServoDriver pwm;
+  Adafruit_PWMServoDriver* pwm;
 
 };

@@ -41,6 +41,7 @@ struct UDPuppetLedStrip
     bool wifiDebug;
 };
 
+// TOWERPRO M90D [20, 170]
 struct UDPuppetServo
 {
     int pin;
@@ -48,7 +49,14 @@ struct UDPuppetServo
     int max;
     int start;
     bool inverse;
+    bool isMultiServo;
 };
+
+// struct UDPuppetContinuousServo
+// {
+//     int pin;
+//     bool inverse;
+// };
 
 struct UDPuppetButton
 {

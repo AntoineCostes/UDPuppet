@@ -39,7 +39,7 @@ void setup()
 
   #ifdef NUM_SERVOS
   for (int i = 0; i < NUM_SERVOS; i++)
-    master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse);
+    master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo);
   #endif
 
   #ifdef NUM_BUTTONS

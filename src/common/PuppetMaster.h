@@ -13,7 +13,7 @@
 #include "../leds/LedManager.h"
 #endif
 #ifdef NUM_SERVOS
-#include "../motors/ServoManager.h"
+#include "../servos/ServoManager.h"
 #endif
 #ifdef HAS_MOTORWING
 #include "../motorwing/MotorShield2Manager.h"
@@ -101,7 +101,7 @@ protected:
 
     void gotFileEvent(const FileEvent &e);
     void gotPlayerEvent(const PlayerEvent &e);
-    
+
     void gotButtonEvent(const ButtonEvent &e);
 #ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
