@@ -18,7 +18,7 @@ void ServoManager::initManager()
   pwm = Adafruit_PWMServoDriver();  // TODO set i2c address
   pwm.begin();
   pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
   Manager::initManager();
 #endif
 }
@@ -32,7 +32,7 @@ void ServoManager::update()
 
 bool ServoManager::checkServoPin(int pin)
 {
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
   std::set<int> servoPins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
 #ifdef ESP32
   if (!SERVO_ALLOW_UNSAFE_PINS)
@@ -55,7 +55,7 @@ bool ServoManager::checkServoPin(int pin)
 
 }
 
-void ServoManager::registerServo(int pin, int min, int max, int start)
+void ServoManager::registerServo(int pin, int min, int max, int start, bool inverse)
 {
   if (!checkInit())
     return;
@@ -68,22 +68,22 @@ void ServoManager::registerServo(int pin, int min, int max, int start)
   }
   
   for (auto const &servo : servos)
-    if ( servo->name.equals( String("servo_pin"+String(pin)) ) )
+    if ( servo->name.equals( String("servo_"+String(pin)) ) )
     {
       compError("servo was already registered on this pin");
       return;
     }
 
-  servos.emplace_back(new ServoMotor(pin, min, max, start));
+  servos.emplace_back(new ServoMotor(pin, min, max, start, inverse));
   servos.back()->Component::initComponent(serialDebug); // don't attach pin
   compDebug("registered servo: " + String(servos.back()->name));
   setMultiServoAbs(servos.size() - 1, start);
   
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
   if (!checkServoPin(pin))
     return;
 
-  servos.emplace_back(new ServoMotor(pin, min, max, start));
+  servos.emplace_back(new ServoMotor(pin, min, max, start, inverse));
   servos.back()->initComponent(serialDebug);
   compDebug("registered servo: " + String(servos.back()->name));
 #endif
@@ -100,7 +100,7 @@ void ServoManager::setServoAbs(int index, int value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoAbs(index, value);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
   servos[index]->setAbs(value);
 #endif
 
@@ -117,7 +117,7 @@ void ServoManager::setServoRel(int index, float value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoRel(index, value);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
   servos[index]->setRel(value);
 #endif
 }
@@ -134,7 +134,7 @@ void ServoManager::setServoMin(int index, int value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoRel(index, 0.0f);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
 #endif
 }
 
@@ -150,7 +150,7 @@ void ServoManager::setServoMax(int index, int value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoRel(index, 1.0f);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
 #endif
 }
 
@@ -166,7 +166,7 @@ void ServoManager::setServoMin(int index, float value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoRel(index, 0.0f);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
 #endif
 }
 
@@ -182,7 +182,7 @@ void ServoManager::setServoMax(int index, float value)
   
 #ifdef HAS_MULTISERVO
   setMultiServoRel(index, 1.0f);
-#elif defined(HAS_SERVO)
+#elif defined(NUM_SERVOS)
 #endif
 }
 

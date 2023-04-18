@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(int pin, long longPressMs): Component("button" + String(pin)), 
+Button::Button(int pin, long longPressMs): Component("btn_" + String(pin)), 
                                         pin(pin), 
                                         isPressed(false),
                                         longPressMs(longPressMs), 

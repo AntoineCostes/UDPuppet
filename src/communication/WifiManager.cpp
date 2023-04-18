@@ -15,10 +15,10 @@ void WifiManager::initManager()
   #ifdef ESP32
   Preferences prefs;
   prefs.begin(name.c_str());
-  if (OVERRIDE_NETWORK || !prefs.isKey("ssid") || !prefs.isKey("pass"))
+  if (OVERRIDE_WIFI_CREDS || !prefs.isKey("ssid") || !prefs.isKey("pass"))
   {
-    stringParameters["ssid"] = WIFI_SSID;
-    stringParameters["pass"] = WIFI_PASSWORD;
+    stringParameters["ssid"] = WIFI_CREDENTIALS.ssid;
+    stringParameters["pass"] = WIFI_CREDENTIALS.password;
     overrideFlashParameters();
   }
   else

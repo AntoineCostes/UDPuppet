@@ -1,6 +1,6 @@
 #include "LedManager.h"
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 LedManager::LedManager() : Manager("led")
 {
     serialDebug = LED_DEBUG;
@@ -12,7 +12,7 @@ void LedManager::initManager()
     lastLedRefreshTime = millis();
 }
 
-void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type)
+void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug)
 {
     if (!checkInit())
         return;
@@ -23,10 +23,7 @@ void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type)
         return;
     }
 
-    // only first ledstrip is debug true by default
-    bool debug = strips.size() == 0;
-
-    strips.emplace_back(new LedStrip(pin, numLeds, type, index==0));
+    strips.emplace_back(new LedStrip(pin, numLeds, type, wifiDebug));
     strips.back()->initComponent(serialDebug);
     compDebug("register prop: " + String(strips.back()->name));
 }

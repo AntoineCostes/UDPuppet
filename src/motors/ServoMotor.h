@@ -7,7 +7,7 @@
 class ServoMotor : public Component
 {
 public:
-    ServoMotor(int pin, int min, int max, int start);
+    ServoMotor(int pin, int min, int max, int start, bool inverse);
 
     void initComponent(bool serialDebug);
     void update();

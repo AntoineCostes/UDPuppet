@@ -1,7 +1,7 @@
 #include "ServoMotor.h"
 
-ServoMotor::ServoMotor(int pin, int min, int max, int start) :
-                        Component("servo_pin" + String(pin)),
+ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse) :
+                        Component("servo_" + String(pin)),
                         pin(pin),
                         min(min),
                         max(max),
@@ -10,13 +10,12 @@ ServoMotor::ServoMotor(int pin, int min, int max, int start) :
   if (min < 0 || min > 180) min = 0;
   if (max < 0 || max > 180) max = 180;
   if (start < 0 || start > 180) start = 90;
-  boolParameters["inverse"] = false;
+  boolParameters["inverse"] = inverse;
   // overrideFlashParameters();
 }
 
 void ServoMotor::initComponent(bool serialDebug)
 {
-  compLog("INIT SERVO");
     //pinMode(pin, OUTPUT);
     servo.attach(pin);
     Component::initComponent(serialDebug);
@@ -41,7 +40,7 @@ void ServoMotor::setAbs(int value)
   }
   if (boolParameters["inverse"]) value = max + min - value; 
   servo.write(value);
-  compDebug("set "+String(value));
+  compDebug("set absolute value"+String(value));
 }
 
 void ServoMotor::setRel(float value)
@@ -53,7 +52,7 @@ void ServoMotor::setRel(float value)
     compError("incorrect relative value: " + String(value));
     return;
   }
-  compDebug("set rel"+String(value));
+  compDebug("set relative value: "+String(value));
   setAbs(min + value*(max - min));
 }
 
@@ -122,7 +121,7 @@ void ServoMotor::setMax(float value)
   }
 
   setMax(int(180*value));
-  setAbs(value);
+  setAbs(1.0f);
 }
 
 void ServoMotor::setInverse(bool value)

@@ -7,7 +7,7 @@ bool FileManager::sdIsDetected = false; // TODO replace with initialized ?
 
 FileManager::FileManager() : Manager("files")
 {
-    serialDebug = MASTER_DEBUG;
+    serialDebug = FILES_DEBUG;
 }
 
 void FileManager::init()
@@ -23,7 +23,7 @@ void FileManager::init()
     if (SD.begin(SD_CS))
     {
         Serial.println("SD Card initialized.");
-        listDir("/", 0);
+        if (serialDebug) listDir("/", 0);
         sdIsDetected = true;
     }
     else
@@ -35,7 +35,7 @@ void FileManager::init()
     if(SPIFFS.begin())// Start the SPI Flash Files System
     {
         Serial.println("SPIFFS initialized.");
-        listDir("/", 0);
+        if (serialDebug) listDir("/", 0);
     } else
     {
         Serial.println("Error initializing SPIFFS");
@@ -47,7 +47,7 @@ void FileManager::init()
             if(SPIFFS.begin())// Start the SPI Flash Files System
             {
                 Serial.println("SPIFFS initialized.");
-                listDir("/", 0);
+                if (serialDebug) listDir("/", 0);
             } else return;
         }
         else

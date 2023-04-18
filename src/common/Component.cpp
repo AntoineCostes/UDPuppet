@@ -163,9 +163,10 @@ void Component::readParamsFromFlash()
 {
     #ifdef ESP32
     Preferences preferences;
-    compDebug("--- retrieve parameters from flash memory");
     preferences.begin(name.c_str());
 
+    if (stringParameters.size() + intParameters.size() + floatParameters.size() > 0)
+        compDebug("--- retrieve parameters from flash memory");
     // for each parameter, according to its type, override its value if it is already stored in flash memory
     for (auto const &x : stringParameters)
     {
@@ -232,7 +233,8 @@ void Component::readParamsFromFlash()
         }
     }
     preferences.end();
-    compDebug("---");
+    if (stringParameters.size() + intParameters.size() + floatParameters.size() > 0)
+        compDebug("---");
     #endif // ESP32
 }
 

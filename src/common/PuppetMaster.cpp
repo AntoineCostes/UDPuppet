@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.5")
+                               firmwareVersion("1.4.6")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -90,12 +90,12 @@ void PuppetMaster::initManager()
     button.initManager();
     button.addListener(std::bind(&PuppetMaster::gotButtonEvent, this, std::placeholders::_1));
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
     managers.emplace_back(&led);
     led.initManager();
 #endif
 
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
     managers.emplace_back(&servo);
     servo.initManager();
 #endif
@@ -347,7 +347,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiConnectionState::CONNECTING:
         compDebug("connecting to wifi...");
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
@@ -368,7 +368,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
             compError("could not set up mDNS instance");
         }
 
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::READY);
         //led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
@@ -404,7 +404,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
-    #ifdef HAS_LED
+    #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;

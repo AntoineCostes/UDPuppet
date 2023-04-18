@@ -24,8 +24,8 @@
 #endif
 
 #ifdef HAS_MULTISERVO
-#ifndef HAS_SERVO
-#define HAS_SERVO
+#ifndef NUM_SERVOS
+#define NUM_SERVOS
 #endif
 #endif
 
@@ -52,10 +52,10 @@ public:
     BatteryManager battery;
 #endif
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
     LedManager led;
 #endif
-#ifdef HAS_SERVO
+#ifdef NUM_SERVOS
     ServoManager servo;
 #endif
 #ifdef HAS_MOTORWING

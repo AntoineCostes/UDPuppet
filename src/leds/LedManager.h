@@ -2,7 +2,7 @@
 #include "../common/Manager.h"
 #include "LedStrip.h"
 
-#ifdef HAS_LED
+#ifdef NUM_LEDS
 class LedManager : public Manager
 {
 public:
@@ -11,7 +11,7 @@ public:
     void initManager();
     void update();
     
-    void registerLedStrip(int pin, int numLeds, neoPixelType type);
+    void registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug);
 
     void setMode(LedStrip::LedMode newMode);
     

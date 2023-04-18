@@ -1,14 +1,15 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
+// TODO bluehouse config => multiservo ?
+// TODO advertise parameter controls
+
 // TODO clean DNA
 // "delete sequence" button in module
 // TODO remove initComponent
 // checkInit only in Manager ?
 // initComponent (when registering) and updating components automatically
 // TODO ERROR mode if prop was not registered successfully
-// TODO bluehouse config 
-// => mieux: fichier de config JSON (un seul ou un set + un id?), placé en SPIFFS mais overridable via la SD 
 // TODO make childClass DebugLedStrip with communication methods
 // TODO checkComponents + ParameterEvent
 // TODO régler tous les paramètres avec un seul message OSC /udpuppet/module/setparams
@@ -27,6 +28,28 @@ void setup()
 
   master.initManager(); // TODO make singleton and rename ?
 
+  #ifdef NUM_LEDS
+  master.led.setBrightness(LED_INTENSITY);
+  for (int i = 0; i < NUM_LEDS; i++)
+    master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug);
+  #endif
+
+  #ifdef NUM_SERVOS
+  for (int i = 0; i < NUM_SERVOS; i++)
+    master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse);
+  #endif
+
+  #ifdef NUM_BUTTONS
+  for (int i = 0; i < NUM_BUTTONS; i++)
+    master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].longPressMs);
+  #endif
+
+  #ifdef NUM_HCSR04
+  for (int i = 0; i < NUM_HCSR04; i++)
+    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin, ULTRASONICS[i].active);
+  #endif
+  
+/*
 #ifdef CHANTDRIER
   master.servo.registerServo(0, 10, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(0, true);
@@ -115,6 +138,7 @@ void setup()
   master.roomba.setText(0, "Hello la cie !");
   // TODO: blip blip
 #endif
+*/
 }
 
 void loop()

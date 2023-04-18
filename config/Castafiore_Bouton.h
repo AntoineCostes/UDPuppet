@@ -17,5 +17,12 @@ const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] =
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,1], max [0,1], start [0,1]
-    {22, 0.0f, 1.0f, 1.0f, false}
+    {22, 0.0f, 1.0f, 1.0f}
+};
+
+#define NUM_BUTTONS 1
+const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
+{
+    // pin, longPressMs
+    {17, 1200}
 };

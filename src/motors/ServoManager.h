@@ -15,7 +15,7 @@ public:
   void initManager();
   void update() override;
 
-  void registerServo(int pin, int min, int max, int start);
+  void registerServo(int pin, int min, int max, int start, bool inverse);
 
   bool handleCommand(OSCMessage &command) override;
 
