@@ -71,11 +71,11 @@ void PuppetMaster::initManager()
     wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
     osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
 
-    #ifdef ESP32
+#ifdef ESP32
     managers.emplace_back(&battery);
     battery.initManager();
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
-    #endif
+#endif
 
     fileMgr.init();
     managers.emplace_back(&player);
@@ -296,7 +296,6 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     {
         if (address.substring(1, sepIndex).equals(mgr.get()->name))
         {
-            //compDebug("for " + mgr.get()->name);
             if (!mgr.get()->handleCommand(command))
                 compError(mgr.get()->name + " could not handle command");
         }

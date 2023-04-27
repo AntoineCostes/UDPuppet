@@ -5,6 +5,7 @@ var addressParam = script.addStringParameter("Target address","will set the HTTP
 var uploadParam = script.addTrigger("Upload","upload partition file over HTTP to target address");
 
 function init() {
+	addressParam.set("http://puppet.local");
 }
 
 function scriptParameterChanged(param)

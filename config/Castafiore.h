@@ -16,6 +16,7 @@ const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] =
 #define NUM_SERVOS 1
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
-    // pin, min [0,1], max [0,1], start [0,1]
-    {22, 0.0f, 1.0f, 1.0f, false}
+    // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo
+    {22, 5, 80, 5, false, false}
+
 };
