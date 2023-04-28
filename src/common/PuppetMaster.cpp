@@ -35,7 +35,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.6")
+                               firmwareVersion("1.4.7")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -78,8 +78,21 @@ void PuppetMaster::initManager()
 #endif
 
     fileMgr.init();
+
+  #ifdef NUM_LEDS
+    frameSize = frameSize + 3*NUM_LEDS;
+  #endif
+  #ifdef NUM_SERVOS
+    frameSize = frameSize + NUM_SERVOS;
+  #endif
+  #ifdef NUM_STEPPERS
+    frameSize = frameSize + NUM_STEPPERS;
+  #endif
+  #ifdef NUM_DC
+    frameSize = frameSize + NUM_DC;
+  #endif
     managers.emplace_back(&player);
-    player.initManager();
+    player.initManager(frameSize);
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
     managers.emplace_back(&web);
@@ -126,6 +139,7 @@ void PuppetMaster::initManager()
     // compDebug("forbidden pins: ");
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
+    
 }
 
 void PuppetMaster::advertiseSequences()
@@ -367,38 +381,19 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
             compError("could not set up mDNS instance");
         }
 
+        // FIXME wifiDebug
     #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::READY);
         //led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
+        #ifdef NUM_SERVOS
+        for (int i = 0; i < NUM_SERVOS; i++) servo.setServoRel(i, 0.5f);
+        delay(500);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.setServoRel(i, 0.0f);
+        #endif
         web.initServer();
         
-
-        #ifdef CAMEMBERT
-        servo.setServoRel(0, 0.5f);
-        delay(500);
-        servo.setServoRel(0, 0.0f);
-        #endif
-        
-        #ifdef CASTAFIORE
-        servo.setServoRel(0, 0.5f);
-        delay(500);
-        servo.setServoRel(0, 0.0f);
-        #endif
-        
-        #ifdef CHANTDRIER
-        servo.setServoRel(0, 0.5f);
-        servo.setServoRel(1, 0.5f);
-        servo.setServoRel(2, 0.5f);
-        servo.setServoRel(3, 0.5f);
-        delay(500);
-        servo.setServoRel(0, 0.0f);
-        servo.setServoRel(1, 0.0f);
-        servo.setServoRel(2, 0.0f);
-        servo.setServoRel(3, 0.0f);
-        #endif
-
         break;
 
     case WifiConnectionState::DISCONNECTED:
@@ -554,49 +549,42 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
             osc.sendMessage(msg);
         }
 
-        // TODO get structure from declaration
-#ifdef CAMEMBERT
-        servo.setServoRel(0, e.data[0] / 254.0f);
-#endif
-
-#ifdef CASTAFIORE
-        servo.setServoRel(0, e.data[0] / 254.0f);
-#endif
-
-#ifdef CHANTDRIER
-        servo.setServoRel(0, e.data[0] / 254.0f);
-        servo.setServoRel(1, e.data[1] / 254.0f);
-        servo.setServoRel(2, e.data[2] / 254.0f);
-        servo.setServoRel(3, e.data[3] / 254.0f);
-#endif
-
-//compDebug("Got new frame ! "+String((int)e.data[0]));
-#ifdef AMPOULE
-        if (e.data[0] < 255 && e.data[1] < 255  && e.data[2] < 255)
-            led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
-        if (e.data[3] < 255) 
-            servo.setServoRel(0, e.data[3] / 254.0f);
-#elif defined BASE
-        if (e.data[0] < 255) 
-            servo.setServoRel(1, e.data[0] / 254.0f); // foot
-        if (e.data[1] < 255) 
-            servo.setServoRel(0, e.data[1] / 254.0f); // neck
-        if (e.data[2] < 255) 
-            motorwing.stepperSetSpeedRel(0, e.data[2] / 127.0f - 1.0f);
-#elif defined BOBINE
-        if (e.data[0] < 255 && e.data[1] < 255  && e.data[2] < 255)
-            led.setColor((int)e.data[0], (int)e.data[1], (int)e.data[2]);
-        if (e.data[3] < 255) 
-            motorwing.stepperSetSpeedRel(0, e.data[3] / 127.0f - 1.0f);
-#elif defined BOBINETTE
-        if (e.data[0] < 255) 
-            stepperdriver.stepperSetSpeed(0, 3000.0f*(e.data[0] / 127.0f - 1.0f));
-#elif defined CORBEILLE
-        if (e.data[0] < 255) 
-            motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[0] / 127.0f - 1.0f);
-        if (e.data[1] < 255) 
-            motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[1] / 127.0f - 1.0f);
-#endif
+        int dataIndex = 0;
+        #ifdef NUM_LEDS
+        for (int compIndex = 0; compIndex < NUM_LEDS; compIndex++)
+        {
+            if (e.data[dataIndex] < 255 && e.data[dataIndex + 1] < 255  && e.data[dataIndex + 2] < 255) // 255 value means don't update
+                led.setColor(compIndex, (int)e.data[dataIndex], (int)e.data[dataIndex + 1], (int)e.data[dataIndex+2]);
+            dataIndex += 3;
+        }
+        #endif
+        #ifdef NUM_SERVOS
+        for (int compIndex = 0; compIndex < NUM_SERVOS; compIndex++)
+        {
+            if (e.data[dataIndex] < 255) // 255 value means don't update
+                servo.setServoRel(compIndex, e.data[dataIndex] / 254.0f);
+            dataIndex++;
+        }
+        #endif
+        #ifdef NUM_STEPPERS
+        for (int compIndex = 0; compIndex < NUM_STEPPERS; compIndex++)
+        {
+            // TODO A TESTER
+            if (e.data[dataIndex] < 255) // 255 value means don't update
+            motorwing.stepperSetSpeedRel(compIndex, e.data[dataIndex] / 127.0f - 1.0f);
+            dataIndex++;
+        }
+        #endif
+        #ifdef HAS_DCPORT
+        // TODO A TESTER
+        if (e.data[dataIndex] < 255) // 255 value means don't update
+            motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[dataIndex] / 127.0f - 1.0f);
+        dataIndex++;
+        if (e.data[dataIndex] < 255) // 255 value means don't update
+            motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[dataIndex] / 127.0f - 1.0f);
+        dataIndex++;
+        }
+        #endif
     }
     
     if (e.type == PlayerEvent::Start)
@@ -649,6 +637,12 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         // }
         // #endif
         
+        
+        #ifdef CAMEMBERT
+            delay(5000);
+            launchSequence("deserteur");
+        #endif
+
         // #ifdef CAMEMBERT
         // OSCMessage m("/play");
         // if (e.sequenceName == "deserteur")

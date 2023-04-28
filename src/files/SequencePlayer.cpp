@@ -6,9 +6,10 @@ SequencePlayer::SequencePlayer() : Manager("player"), fps(30), curSequenceName("
   serialDebug = SEQUENCE_DEBUG;
 }
 
-void SequencePlayer::initManager()
+void SequencePlayer::initManager(int frameSize)
 {
   Manager::initManager();
+  frameSize = frameSize;
 }
 
 void SequencePlayer::setFPS(int value)
@@ -145,7 +146,7 @@ void SequencePlayer::playFrame()
     skippedFrames++;
     curFile.read();
     fPos = curFile.position();
-    if (curFile.available() < FRAME_SIZE)
+    if (curFile.available() < frameSize)
     {
       compError("overflowed, should not be here");
       return;
@@ -164,7 +165,7 @@ void SequencePlayer::playFrame()
 
   if (pos%100 < 4)
     compDebug("Playing frame at position " + String(pos));
-  curFile.read(frameData, FRAME_SIZE);
+  curFile.read(frameData, frameSize);
   sendEvent(PlayerEvent(PlayerEvent::NewFrame, curSequenceName, frameData));
 
   //setServo(0, map(curFile.read(), 0, 255, 0, 180));

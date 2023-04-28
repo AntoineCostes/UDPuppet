@@ -44,8 +44,8 @@
 //#include "config/sansgravite/Bouche.h"
 //#include "config/Roomba.h"
 //#include "config/Camembert.h"
-#include "config/Chantdrier.h"
-// #include "config/Castafiore.h"
+#include "config/Castafiore.h"
+//#include "config/Chantdrier.h"
 //#include "config/Test.h"
 
 // NETWORK

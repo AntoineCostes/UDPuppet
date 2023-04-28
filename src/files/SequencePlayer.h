@@ -4,37 +4,6 @@
 
 #define PLAYER_REFRESH 30
 
-#ifdef AMPOULE
-#define FRAME_SIZE 4 // 1 pixel (RGB) + 1 servo
-
-#elif defined BASE
-#define FRAME_SIZE 3 // 2 servo + 1 stepper
-
-#elif defined BOBINE
-#define FRAME_SIZE 4 // 1 stepper
-
-#elif defined BOBINETTE
-#define FRAME_SIZE 1 // 1 stepper
-
-#elif defined BOUCHE
-#define FRAME_SIZE 3 // 1 pixel (RGB)
-
-#elif defined CORBEILLE
-#define FRAME_SIZE 2 // 2 DC
-
-#elif defined CAMEMBERT
-#define FRAME_SIZE 1 // 1 servo 
-
-#elif defined CASTAFIORE
-#define FRAME_SIZE 1 // 1 servo 
-
-#elif defined CHANTDRIER
-#define FRAME_SIZE 4 // 4 servos 
-#else
-#define FRAME_SIZE 4 // TODO remove and compute automatically
-#endif
-
-
 class PlayerEvent
 {
 public:
@@ -59,7 +28,7 @@ class SequencePlayer : public Manager,
 public:
   SequencePlayer();
 
-  void initManager();
+  void initManager(int frameSize);
   void update() override;
 
   void setFPS(int value);
@@ -73,7 +42,8 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
 protected:
-  uint8_t frameData[FRAME_SIZE];
+  uint8_t frameSize;
+  uint8_t* frameData;
 
   void loadSequence(String path);
   void startSequence(float atTime);
@@ -97,11 +67,11 @@ protected:
 
   // TODO simplify this
   long msToFrame(long timeMs) { return timeMs * fps / 1000; }
-  long msTointPos(long t) { return msToFrame(t) * FRAME_SIZE; } //rgba
+  long msTointPos(long t) { return msToFrame(t) * frameSize; } //rgba
   long frameToMs(long frame) { return frame * 1000 / fps; }
   float frameToSeconds(long frame) { return frame * 1.0f / fps; };
   long secondsToMs(float s) { return s * 1000; }
-  long intPosToFrame(long pos) { return pos / FRAME_SIZE; }
+  long intPosToFrame(long pos) { return pos / frameSize; }
   long intPosToMs(long pos) { return frameToMs(intPosToFrame(pos)); }
   long intPosToSeconds(long pos) { return frameToSeconds(intPosToFrame(pos)); }
 
