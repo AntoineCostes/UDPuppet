@@ -66,6 +66,7 @@ const bool TARGET_IP_OVERRIDE = true;
 
 // BATTERY PARAMETERS
 const long BATTERY_TIMOUT_MS = 5000;
+const int BATTERY_WINDOW_MS = 100;
 
 // LED PARAMETERS
 const long LED_REFRESH_MS = 20;

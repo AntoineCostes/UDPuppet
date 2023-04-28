@@ -1,6 +1,8 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
+#define BATTERY_BUFFER_SIZE 50
+
 #ifdef ESP32
 class BatteryEvent
 {
@@ -28,8 +30,13 @@ public:
     void update();
 
 protected:
+    int values[BATTERY_BUFFER_SIZE];
+    int increment;
+    int lastMeasureMs;
+
     long lastPingMs;
     int analogValue;
+    int smoothedValue;
     float normValue;
     float voltage;
 };
