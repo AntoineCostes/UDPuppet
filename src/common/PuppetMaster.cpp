@@ -59,7 +59,7 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("-------------------- " + BOARD_NAME + " v" + firmwareVersion + " --------------------");
+    compLog("-------------- " + BOARD_NAME + " v" + firmwareVersion + " " + __DATE__ +" ----------------");
 
     Manager::initManager();
 
@@ -518,10 +518,26 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 
     OSCMessage msg("/battery");
     msg.add(BOARD_NAME.c_str());
-    msg.add(e.normValue);
+    msg.add(e.level);
     msg.add(e.analogValue);
     msg.add(e.voltage);
     osc.sendMessage(msg);
+
+    // TODO
+    switch (e.type)
+    {
+        case BatteryEvent::Type::PING:
+        break;
+        
+        case BatteryEvent::Type::BATTERY_FULL:
+        break;
+
+        case BatteryEvent::Type::BATTERY_LOW:
+        break;
+
+        case BatteryEvent::Type::BATTERY_DEAD:
+        break;
+    }
 }
 #endif
 

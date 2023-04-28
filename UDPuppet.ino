@@ -1,13 +1,11 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
-// TODO sequence frame size from components
-// mulitservo ifdef ?
-// filemanager ifdef ?
-// TODO advertise parameter controls
-// no wifi in credentials ?
+// TODO 
+// led wifidebug
+// advertise parameter controls
+// no_wifi in credentials
 
-// TODO clean DNA
 // "delete sequence" button in module
 // TODO remove initComponent
 // checkInit only in Manager ?
@@ -20,7 +18,6 @@
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
 PuppetMaster master;
-long lastLoopTime = 0;
 
 void setup()
 {

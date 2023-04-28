@@ -49,33 +49,34 @@
 //#include "config/Test.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE];
 
 // GENERAL PARAMETERS
 const bool SETUP_DELAY_MS = 0;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
-const long DELAY_BEFORE_RECONNECT_MS = 3000;
-const long CONNECTION_TIMEOUT_MS = 10000;
+const int DELAY_BEFORE_RECONNECT_MS = 3000;
+const int CONNECTION_TIMEOUT_MS = 10000;
 
 // OSC PARAMETERS
 const String OSC_TARGET_IP = "192.168.0.1";
-const long PING_TIMEOUT_MS = 1000;
+const int PING_TIMEOUT_MS = 1000;
 const bool TARGET_IP_OVERRIDE = true;
 
 // BATTERY PARAMETERS
-const long BATTERY_TIMOUT_MS = 5000;
+const int BATTERY_TIMEOUT_MS = 5000;
 const int BATTERY_WINDOW_MS = 100;
+const float BATTERY_LOW_VOLTAGE = 3.4f;
 
 // LED PARAMETERS
-const long LED_REFRESH_MS = 20;
+const int LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
 const bool SERVO_ALLOW_UNSAFE_PINS = false; // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
 
 // ROOMBA PARAMETERS
-const long ROOMBA_TEXT_UPDATE_MS = 200;
+const int ROOMBA_TEXT_UPDATE_MS = 200;
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
@@ -84,6 +85,6 @@ const bool OSC_DEBUG = false;
 const bool FILES_DEBUG = false;
 const bool SEQUENCE_DEBUG = false;
 const bool LED_DEBUG = true;
-const bool SERVO_DEBUG = true;
+const bool SERVO_DEBUG = false;
 const bool MOTORWING_DEBUG = true;
 const bool ROOMBA_DEBUG = true;
