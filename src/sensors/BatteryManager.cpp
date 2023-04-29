@@ -26,7 +26,7 @@ void BatteryManager::update()
     {
         // estimate voltage and level 
         voltage = (2*smoothedValue / 4095.0f)*3.3f*1.123f;
-        level = min(1.0f, max(0.0f, (voltage - 3.5f)/(4.2f - 3.5f))); // [0-1] from 3.5V to 4.2V
+        level = 100*min(1.0f, max(0.0f, (voltage - 3.5f)/(4.2f - 3.5f))); // [0-1] from 3.5V to 4.2V
 
         if (voltage < BATTERY_LOW_VOLTAGE) 
             sendEvent(BatteryEvent(BatteryEvent::Type::BATTERY_LOW, level, voltage, int(smoothedValue)));

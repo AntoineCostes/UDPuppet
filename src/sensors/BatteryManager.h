@@ -12,10 +12,10 @@ public:
         BATTERY_LOW,
         BATTERY_DEAD
     } type;
-    float level;
+    int level;
     float voltage;
     int analogValue;
-    BatteryEvent(Type type, float level, float voltage, int analogValue) : type(type), level(level), voltage(voltage), analogValue(analogValue) {}
+    BatteryEvent(Type type, int level, float voltage, int analogValue) : type(type), level(level), voltage(voltage), analogValue(analogValue) {}
 };
 
 class BatteryManager : public Manager,
@@ -33,7 +33,7 @@ protected:
     int lastMeasureMs;
 
     float voltage;
-    float level;
+    int level;
     long lastPingMs;
 };
 #endif
