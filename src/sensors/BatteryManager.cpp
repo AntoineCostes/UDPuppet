@@ -26,7 +26,7 @@ void BatteryManager::update()
     if (millis() > lastPingMs + BATTERY_TIMEOUT_MS)
     {
         // average the analog readings
-        int smoothedValue;
+        int smoothedValue = 0;
         for (int i = 0; i < BATTERY_BUFFER_SIZE; i++) smoothedValue += values[i];
         smoothedValue /= BATTERY_BUFFER_SIZE;
 

@@ -30,14 +30,12 @@ public:
     void update();
 
 protected:
-    int values[BATTERY_BUFFER_SIZE];
+    uint16_t values[BATTERY_BUFFER_SIZE];
     int increment;
     int lastMeasureMs;
 
-    long lastPingMs;
-    int analogValue;
-    int smoothedValue;
-    float level;
     float voltage;
+    float level;
+    long lastPingMs;
 };
 #endif
