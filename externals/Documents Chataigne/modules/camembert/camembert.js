@@ -56,10 +56,6 @@ function oscEvent(address, args)
     local.values.ip.set(args[3]);//+":"+String(args[4]));
   }
 
-  if (address == "/battery")
-  {
-      local.values.batterie.set(args[1]);
-  }
   if (address == "/sequences")
   {
     local.parameters.sequences.removeOptions();
@@ -74,6 +70,16 @@ function oscEvent(address, args)
     local.parameters.audioTracks.removeOptions();
     for (var i = 1; i < args.length; i++)
       local.parameters.audioTracks.addOption(args[i], i - 1);
+  }
+
+  if (address == "/sd")
+  {
+      local.values.carteSDDetectee.set(args[1]>0);
+  }
+
+  if (address == "/battery")
+  {
+      local.values.batterie.set(args[1]);
   }
 }
 

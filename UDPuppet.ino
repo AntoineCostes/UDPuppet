@@ -1,8 +1,7 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
-// TODO 
-// stop previous sequence when starting a new one ?
+// TODO
 // no_wifi in credentials ?
 // define behaviors ? or callback events in ino ?
 // OSCQuery

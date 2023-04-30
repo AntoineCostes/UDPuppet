@@ -157,7 +157,11 @@ void PuppetMaster::checkComponents()
     msg4.add(BOARD_NAME.c_str());
     msg4.add(music.getVolume());
     osc.sendMessage(msg4);
-
+    
+    OSCMessage msg("/sd");
+    msg.add(BOARD_NAME.c_str());
+    msg.add(music.isReady()?1:0);
+    osc.sendMessage(msg);
 #endif
 
     advertiseSequences();

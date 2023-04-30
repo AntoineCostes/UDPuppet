@@ -124,6 +124,11 @@ float MusicMakerManager::getVolume()
     return floatParameters["volume"];
 }
 
+float MusicMakerManager::isReady()
+{
+    return ready;
+}
+
 void MusicMakerManager::play(String trackName)
 {
     if (!ready)
