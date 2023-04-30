@@ -17,8 +17,9 @@ public:
 
   bool handleCommand(OSCMessage &command) override;
 
-  void setServoAbs(int index, int value);
-  void setServoRel(int index, float value);
+  void servoGoToAbsolute(int index, int value);
+  void servoGoTo(int index, float value);
+  void servoGoToStart(int index);
 
   void setServoMin(int index, int value);
   void setServoMax(int index, int value);

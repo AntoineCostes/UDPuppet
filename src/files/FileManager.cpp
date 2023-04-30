@@ -99,13 +99,15 @@ void FileManager::deleteFileIfExists(String path)
     {
         SD.remove(path.c_str());
         Serial.println("Removed file " + path);
-    }
+    } else
+        Serial.println("ERROR could not find file to delete:" + path);
     #else
     if (SPIFFS.exists(path))
     {
         SPIFFS.remove(path);
         Serial.println("Removed file " + path);
-    }
+    } else
+        Serial.println("ERROR could not find file to delete:" + path);
     #endif
 }
 

@@ -20,12 +20,23 @@ void ServoMotor::update()
 
 void ServoMotor::initComponent(bool serialDebug)
 {
-    if (!isMultiServo())  servo.attach(pin); // don't attach pin if using pwm servo driver
+    if (!isMultiServo()) servo.attach(pin); // don't attach pin if using pwm servo driver
     Component::initComponent(serialDebug);
-    setAbs(start);
+    goToStart();
 }
 
-void ServoMotor::setAbs(int value)
+void ServoMotor::goToRelative(float value)
+{
+  if (value < 0.0f || value > 1.0f)
+  {
+    compError("incorrect relative value: " + String(value));
+    return;
+  }
+  compDebug("set relative value: "+String(value));
+  goTo(min + value*(max - min));
+}
+
+void ServoMotor::goTo(int value)
 {
   if (value < min || value > max)
   {
@@ -41,19 +52,14 @@ void ServoMotor::setAbs(int value)
   if (inverse) value = max + min - value; 
 
   compDebug("set absolute value: "+String(value));
+
   if (isMultiServo()) pwm->setPWM(pin, 0, map(value, 0, 180, PWM_MIN, PWM_MAX));
   else servo.write(value);
 }
 
-void ServoMotor::setRel(float value)
+void ServoMotor::goToStart()
 {
-  if (value < 0.0f || value > 1.0f)
-  {
-    compError("incorrect relative value: " + String(value));
-    return;
-  }
-  compDebug("set relative value: "+String(value));
-  setAbs(min + value*(max - min));
+  goTo(start);
 }
 
 void ServoMotor::setStart(int value)
@@ -65,7 +71,6 @@ void ServoMotor::setStart(int value)
   }
   compDebug("set start value: " + String(value));
   start = value;
-  // setAbs(start);
 }
 
 void ServoMotor::setMin(int value)
@@ -77,7 +82,7 @@ void ServoMotor::setMin(int value)
   }
   compDebug("set min value: "+String(value));
   min = value;
-  setRel(0.0f);
+  goToRelative(0.0f);
 }
 
 void ServoMotor::setMax(int value)
@@ -89,7 +94,7 @@ void ServoMotor::setMax(int value)
   }
   compDebug("set max value: "+String(value));
   max = value;
-  setRel(1.0f);
+  goToRelative(1.0f);
 }
 
 void ServoMotor::setMin(float value)
@@ -122,20 +127,20 @@ int ServoMotor::getPin()
   return pin;
 }
 
-int ServoMotor::getMin()
-{
-  return min;
-}
+// int ServoMotor::getMin()
+// {
+//   return min;
+// }
 
-int ServoMotor::getMax()
-{
-  return max;
-}
+// int ServoMotor::getMax()
+// {
+//   return max;
+// }
 
-bool ServoMotor::getInverse()
-{
-  return inverse;
-}
+// bool ServoMotor::getInverse()
+// {
+//   return inverse;
+// }
 
 bool ServoMotor::isMultiServo()
 {

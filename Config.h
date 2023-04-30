@@ -43,8 +43,8 @@
 //#include "config/sansgravite/Corbeille.h"
 //#include "config/sansgravite/Bouche.h"
 //#include "config/Roomba.h"
-//#include "config/Camembert.h"
-#include "config/Castafiore.h"
+#include "config/Camembert.h"
+//#include "config/Castafiore.h"
 //#include "config/Chantdrier.h"
 //#include "config/Test.h"
 
@@ -84,11 +84,11 @@ const int ROOMBA_TEXT_UPDATE_MS = 200;
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = false;
-const bool WIFI_DEBUG = false;
+const bool WIFI_DEBUG = true;
 const bool OSC_DEBUG = false;
-const bool FILES_DEBUG = false;
+const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = true;
 const bool LED_DEBUG = true;
-const bool SERVO_DEBUG = false;
+const bool SERVO_DEBUG = true;
 const bool MOTORWING_DEBUG = true;
 const bool ROOMBA_DEBUG = true;

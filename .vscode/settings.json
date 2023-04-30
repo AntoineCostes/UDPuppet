@@ -92,7 +92,9 @@
         "forward_list": "cpp",
         "stop_token": "cpp",
         "complex": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "bitset": "cpp",
+        "memory_resource": "cpp"
     },
     "cmake.configureOnOpen": true
 

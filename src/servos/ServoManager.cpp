@@ -72,18 +72,25 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
   compDebug("registered servo: " + String(servos.back()->name));
 }
 
-void ServoManager::setServoAbs(int index, int value)
+void ServoManager::servoGoToAbsolute(int index, int value)
 {
   if (!isIndexValid(index)) return;
-  compDebug("set servo#" + String(index) + " abs: " + String(value));
-  servos[index]->setAbs(value);
+  compDebug("servo#" + String(index) + " go to (abs): " + String(value));
+  servos[index]->goTo(value);
 }
 
-void ServoManager::setServoRel(int index, float value)
+void ServoManager::servoGoTo(int index, float value)
 {
   if (!isIndexValid(index)) return;
-  compDebug("set servo#" + String(index) + " rel: " + String(value));
-  servos[index]->setRel(value);
+  compDebug("servo#" + String(index) + " go to (rel): " + String(value));
+  servos[index]->goToRelative(value);
+}
+
+void ServoManager::servoGoToStart(int index)
+{
+  if (!isIndexValid(index)) return;
+  compDebug("servo#" + String(index) + " go to start");
+  servos[index]->goToStart();
 }
 
 void ServoManager::setServoMin(int index, int value)
@@ -137,14 +144,14 @@ bool ServoManager::handleCommand(OSCMessage &command)
     {
       int index = command.getInt(0);
       int value = command.getInt(1);
-      setServoAbs(index, value);
+      servoGoToAbsolute(index, value);
       return true;
     }
     else if (checkCommandArguments(command, "if", true))
     {
       int index = command.getInt(0);
       float value = command.getFloat(1);
-      setServoRel(index, value);
+      servoGoTo(index, value);
       return true;
     }
   }

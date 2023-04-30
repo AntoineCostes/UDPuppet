@@ -304,24 +304,18 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     
     if (command.match("/play"))
     {
-        #ifdef CAMEMBERT
-        servo.setServoRel(0, 0.0f);
-        #endif
-        
-        #ifdef CASTAFIORE
-        servo.setServoRel(0, 0.0f);
-        #endif
-        
-        #ifdef CHANTDRIER
-        servo.setServoRel(0, 0.0f);
-        servo.setServoRel(1, 0.0f);
-        servo.setServoRel(2, 0.0f);
-        servo.setServoRel(3, 0.0f);
-        #endif
+        // for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
 
         char str[32];
         command.getString(0, str);
         launchSequence(String(str));
+    } 
+
+    if (command.match("/delete"))
+    {
+        char str[32];
+        command.getString(0, str);
+        fileMgr.deleteFileIfExists(String(str)+".dat");
     } 
 
     // if (command.match("/debug"))
@@ -335,6 +329,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 
 void PuppetMaster::launchSequence(String sequenceName)
 {
+    // TODO get File from fileManager and give it to player ?
     player.playSequence(sequenceName);
     #ifdef HAS_MUSICMAKER
     music.play(sequenceName+".mp3");
@@ -375,9 +370,11 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++) servo.setServoRel(i, 0.5f);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
         delay(500);
-        for (int i = 0; i < NUM_SERVOS; i++) servo.setServoRel(i, 0.0f);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.5f);
+        delay(500);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
         #endif
         web.initServer();
         
@@ -441,7 +438,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     case ButtonEvent::Type::PRESSED:
         music.stop();
         player.stopPlaying();
-        servo.setServoRel(0, 0.0f);
+        servo.servoGoTo(0, 0.0f);
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
@@ -549,7 +546,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         for (int compIndex = 0; compIndex < NUM_SERVOS; compIndex++)
         {
             if (e.data[dataIndex] < 255) // 255 value means don't update
-                servo.setServoRel(compIndex, e.data[dataIndex] / 254.0f);
+                servo.servoGoTo(compIndex, e.data[dataIndex] / 254.0f);
             dataIndex++;
         }
         #endif
@@ -587,62 +584,6 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         compDebug("ended");
-        
-        // OSCMessage mEnd("/ended");
-        // mEnd.add(e.sequenceName);
-        // osc.broadcastMessage(mEnd);
-
-        // #ifdef CASTAFIORE
-        // OSCMessage m("/play");
-        // if (e.sequenceName == "queen4")
-        // {
-        //     m.add("nuit");
-        //     osc.broadcastMessage(m);
-        // }
-        // if (e.sequenceName == "queen3") 
-        // {
-        //     m.add("contine1");
-        //     osc.broadcastMessage(m);
-        // }
-        // #endif
-
-        // #ifdef CHANTDRIER
-        // compLog("play Chantdrier");
-        // OSCMessage m("/play");
-        // if (e.sequenceName == "nuit")
-        // {
-        //     m.add("deserteur");
-        //     osc.broadcastMessage(m);
-        // } else if (e.sequenceName == "contine1")
-        // {
-        //     m.add("valls");
-        //     osc.broadcastMessage(m);
-        // } else if (e.sequenceName == "contine2") 
-        // {
-        //     m.add("queen4");
-        //     osc.broadcastMessage(m);
-        // }
-        // #endif
-        
-        
-        #ifdef CAMEMBERT
-            delay(5000);
-            launchSequence("deserteur");
-        #endif
-
-        // #ifdef CAMEMBERT
-        // OSCMessage m("/play");
-        // if (e.sequenceName == "deserteur")
-        // {
-        //     m.add("queen3");
-        //     osc.broadcastMessage(m);
-        // }
-        // if (e.sequenceName == "valls") 
-        // {
-        //     m.add("contine2");
-        //     osc.broadcastMessage(m);
-        // }
-        // #endif
     }
 }
 

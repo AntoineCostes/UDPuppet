@@ -14,8 +14,9 @@ public:
     void update();
     
     // void set(int value);
-    void setAbs(int value);
-    void setRel(float value);
+    void goToRelative(float value);
+    void goTo(int value);
+    void goToStart();
     void setMin(int value);
     void setMax(int value);
     void setMin(float value);
@@ -24,9 +25,9 @@ public:
     void setStart(int value);
 
     int getPin();
-    int getMin();
-    int getMax();
-    bool getInverse();
+    // int getMin();
+    // int getMax();
+    // bool getInverse();
     bool isMultiServo();
 
   // enum ServoMode

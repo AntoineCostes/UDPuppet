@@ -2,18 +2,18 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO 
-// led wifidebug
-// advertise parameter controls
-// no_wifi in credentials
+// stop previous sequence when starting a new one ?
+// no_wifi in credentials ?
+// define behaviors ? or callback events in ino ?
+// OSCQuery
+// TODO checkComponents
 
-// "delete sequence" button in module
 // TODO remove initComponent
 // checkInit only in Manager ?
 // initComponent (when registering) and updating components automatically
+
 // TODO ERROR mode if prop was not registered successfully
 // TODO make childClass DebugLedStrip with communication methods
-// TODO checkComponents + ParameterEvent
-// TODO régler tous les paramètres avec un seul message OSC /udpuppet/module/setparams
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -53,16 +53,16 @@ void setup()
 #ifdef CHANTDRIER
   master.servo.registerServo(0, 10, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(0, true);
-  master.servo.setServoRel(0, 0.01f);
+  master.servo.servoGoTo(0, 0.01f);
   master.servo.registerServo(1, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(1, true);
-  master.servo.setServoRel(1, 0.01f);
+  master.servo.servoGoTo(1, 0.01f);
   master.servo.registerServo(2, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(2, true);
-  master.servo.setServoRel(2, 0.01f);
+  master.servo.servoGoTo(2, 0.01f);
   master.servo.registerServo(3, 5, 110, 100); // pin, min, max, start
   master.servo.setServoInverse(3, true);
-  master.servo.setServoRel(3, 0.01f);
+  master.servo.servoGoTo(3, 0.01f);
 #endif
 
 #ifdef CASTAFIORE
