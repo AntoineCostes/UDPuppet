@@ -37,82 +37,68 @@ function scriptParameterChanged(param)
 
 function bake()
 {
-
-	objects =  [];
-
-// if all layers are defined
-if (servoLayerParam.get() != "")
-{
-		var obj = getObject("Camembert");
-		obj.layerParams = [];
-		obj.layerParams[0] = {"name":"servo", "param":servoLayerParam, "type":"Mapping"};
-}
+	var o = {"name":"Camembert", "layers":[], "data":[]};
+	var oLayers = o.layerParams;
+	oLayers = [];
+	oLayers[0] = {"name":"servo", "param":servoLayerParam, "type":"Mapping"};
 
 	//go through sequence
 	var step = 1.0 / bakeFPS.get();
 	for(var t = 0;t<seqParam.getTarget().totalTime.get();t+=step)
 	{
-			for(var i=0;i<objects.length;i++)
+			for(var j=0;j<oLayers.length;j++)
 			{
-				var o = objects[i];
-				var oLayers = o.layerParams;
+				var layerDefined = oLayers[j]["param"].get() != "";
+				var layer = oLayers[j]["param"].getTarget();
+				var layerType = oLayers[j]["type"];
 
-				if (t == 0) script.log(o.name);
+				if (t == 0) script.log(oLayers[j]["name"]);
 
-				for(var j=0;j<oLayers.length;j++)
+				if (layerDefined)
+					if (layer.getType() != layerType)
+					{
+						if (t == 0) script.log("wrong type");
+						if (t == 0) script.log(layer.getType());
+						if (t == 0) script.log(layerType);
+						layerDefined = false;
+					}
+
+				if(layerType == "Color")
 				{
-					var layerDefined = oLayers[j]["param"].get() != "";
-					var layer = oLayers[j]["param"].getTarget();
-					var layerType = oLayers[j]["type"];
-
-					if (t == 0) script.log(oLayers[j]["name"]);
-
 					if (layerDefined)
-						if (layer.getType() != layerType)
-						{
-							if (t == 0) script.log("wrong type");
-							if (t == 0) script.log(layer.getType());
-							if (t == 0) script.log(layerType);
-							layerDefined = false;
-						}
-
-					if(layerType == "Color")
 					{
-						if (layerDefined)
-						{
-							// write values
-							var col = layer.colors.getColorAtPosition(t);
-							o.data.push(parseInt(col[0]*254));
-							o.data.push(parseInt(col[1]*254));
-							o.data.push(parseInt(col[2]*254));
-						} else
-						{
-							if (t == 0) script.log("don't update");
-							// 255 = don't update value
-							o.data.push(255);
-							o.data.push(255);
-							o.data.push(255);
-						}
-					} else if(layerType == "Mapping")
+						// write values
+						var col = layer.colors.getColorAtPosition(t);
+						o.data.push(parseInt(col[0]*254));
+						o.data.push(parseInt(col[1]*254));
+						o.data.push(parseInt(col[2]*254));
+					} else
 					{
-						if (layerDefined) // if layer is defined
-						{
-							// get value
-							var val = layer.automation.getValueAtPosition(t);
-							// map to range
-							var range = layer.automation.range.get();
-							val = (val - range[0])/(range[1] - range[0]);
-							val = Math.max(0, Math.min(1, val));
-							//script.log(val);
-							//script.log("-");
-							// write value
-							o.data.push(parseInt(val*254));
-						} else
-						{
-							if (t == 0) script.log("don't update");
-							// 255 = don't update value
-							o.data.push(255);
-						}
+						if (t == 0) script.log("don't update");
+						// 255 = don't update value
+						o.data.push(255);
+						o.data.push(255);
+						o.data.push(255);
+					}
+				} else if(layerType == "Mapping")
+				{
+					if (layerDefined) // if layer is defined
+					{
+						// get value
+						var val = layer.automation.getValueAtPosition(t);
+						// map to range
+						var range = layer.automation.range.get();
+						val = (val - range[0])/(range[1] - range[0]);
+						val = Math.max(0, Math.min(1, val));
+						//script.log(val);
+						//script.log("-");
+						// write value
+						o.data.push(parseInt(val*254));
+					} else
+					{
+						if (t == 0) script.log("don't update");
+						// 255 = don't update value
+						o.data.push(255);
 					}
 				}
 			}

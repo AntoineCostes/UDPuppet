@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Avril2022-1.4.0",
+      "default":"Mai2023-1.4.7",
       "readOnly":true
     },
     "IP":
@@ -49,21 +49,25 @@
     {
       "type":"Trigger"
     },
+    "Audio Tracks":
+    {
+      "type":"Enum"
+    },
     "Sequences":
     {
       "type":"Enum"
     },
-    "Play":
+    "Play Sequence":
     {
       "type":"Trigger"
     },
-    "Tracks":
+    "Delete Sequence":
     {
-      "type":"Enum"
+      "type":"Trigger"
     }
   },
 
-  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback", "booleanSendMode"],
 
   "scripts":
   [
@@ -77,7 +81,7 @@
     {
       "type":"Float",
       "min": 0,
-      "max": 1,
+      "max": 100,
       "readOnly": true
     },
     "Carte SD Detectee":

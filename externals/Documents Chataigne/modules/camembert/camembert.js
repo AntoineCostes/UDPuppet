@@ -26,9 +26,13 @@ function moduleParameterChanged(param)
     local.parameters.ip.set("");
     yo();
   }
-  if (param.name == "play")
+  if (param.name == "playSequence")
   {
     playSequence(local.parameters.sequences.getKey(), 30);
+  }
+  if (param.name == "deleteSequence")
+  {
+    deleteSequence(local.parameters.sequences.getKey(), 30);
   }
 }
 
@@ -62,9 +66,9 @@ function oscEvent(address, args)
 
   if (address == "/tracks")
   {
-    local.parameters.tracks.removeOptions();
+    local.parameters.audioTracks.removeOptions();
     for (var i = 1; i < args.length; i++)
-      local.parameters.tracks.addOption(args[i], i - 1);
+      local.parameters.audioTracks.addOption(args[i], i - 1);
   }
 }
 
@@ -80,6 +84,10 @@ function setVolume(val) {
 
 function playSequence(name) {
   local.send("/play", name);
+}
+
+function deleteSequence(name) {
+  local.send("/delete", name);
 }
 
 function stopSequence() {
