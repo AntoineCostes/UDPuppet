@@ -1,10 +1,13 @@
 #include "BatteryManager.h"
 
+#define HIGH_BATTERY 2300 // ~4.15V
+#define LOW_BATTERY 1930  // ~3.5V
+
 #ifdef ESP32
 BatteryManager::BatteryManager() : Manager("battery"), smoothing(.9f)
 {
     analogSetPinAttenuation(A13, ADC_11db);
-    serialDebug = MASTER_DEBUG;
+    serialDebug = BATTERY_DEBUG;
 }
 
 void BatteryManager::initManager()
@@ -24,9 +27,13 @@ void BatteryManager::update()
 
     if (millis() > lastPingMs + BATTERY_TIMEOUT_MS)
     {
-        // estimate voltage and level 
+        // estimate voltage
         voltage = (2*smoothedValue / 4095.0f)*3.3f*1.123f;
-        level = 100*min(1.0f, max(0.0f, (voltage - 3.5f)/(4.2f - 3.5f))); // [0-1] from 3.5V to 4.2V
+
+        // estimate percetage from 3.5V to 4.2V
+        level = min(100, max(0, int(map(int(smoothedValue), LOW_BATTERY, HIGH_BATTERY, 0, 100)))); 
+
+        compDebug(String(smoothedValue) + "\t voltage = " + String(voltage) + "V\t " + level + "%");
 
         if (voltage < BATTERY_LOW_VOLTAGE) 
             sendEvent(BatteryEvent(BatteryEvent::Type::BATTERY_LOW, level, voltage, int(smoothedValue)));
