@@ -13,6 +13,8 @@ const int OSC_TARGET_PORT = 12003;
 //     {21, 10, true, false}
 // };
 
+#define FRAME_SIZE 3
+
 #define NUM_SERVOS 3
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {

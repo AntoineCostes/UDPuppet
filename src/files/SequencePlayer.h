@@ -2,8 +2,6 @@
 #include "../common/Manager.h"
 #include "FileManager.h"
 
-#define PLAYER_REFRESH 30
-
 class PlayerEvent
 {
 public:
@@ -28,7 +26,7 @@ class SequencePlayer : public Manager,
 public:
   SequencePlayer();
 
-  void initManager(int frameSize);
+  void initManager();
   void update() override;
 
   void setFPS(int value);
@@ -42,8 +40,7 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
 protected:
-  uint8_t frameSize;
-  uint8_t* frameData;
+  uint8_t frameData[FRAME_SIZE];
 
   void loadSequence(String path);
   void startSequence(float atTime);
@@ -67,11 +64,11 @@ protected:
 
   // TODO simplify this
   long msToFrame(long timeMs) { return timeMs * fps / 1000; }
-  long msTointPos(long t) { return msToFrame(t) * frameSize; } //rgba
+  long msTointPos(long t) { return msToFrame(t) * FRAME_SIZE; } //rgba
   long frameToMs(long frame) { return frame * 1000 / fps; }
   float frameToSeconds(long frame) { return frame * 1.0f / fps; };
   long secondsToMs(float s) { return s * 1000; }
-  long intPosToFrame(long pos) { return pos / frameSize; }
+  long intPosToFrame(long pos) { return pos / FRAME_SIZE; }
   long intPosToMs(long pos) { return frameToMs(intPosToFrame(pos)); }
   long intPosToSeconds(long pos) { return frameToSeconds(intPosToFrame(pos)); }
 

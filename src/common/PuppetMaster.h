@@ -49,7 +49,6 @@ public:
     WebServerManager web;
 
     SequencePlayer player;
-    int frameSize;
     FileManager fileMgr;
 
     ButtonManager button;

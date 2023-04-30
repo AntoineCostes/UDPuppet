@@ -6,10 +6,9 @@ SequencePlayer::SequencePlayer() : Manager("player"), fps(30), curSequenceName("
   serialDebug = SEQUENCE_DEBUG;
 }
 
-void SequencePlayer::initManager(int frameSize)
+void SequencePlayer::initManager()
 {
   Manager::initManager();
-  frameSize = frameSize;
 }
 
 void SequencePlayer::setFPS(int value)
@@ -32,7 +31,7 @@ void SequencePlayer::update()
     timeSinceLastSeek = millis();
   }
 
-  if (millis() - lastPlayerMs > PLAYER_REFRESH)
+  if (millis() - lastPlayerMs > PLAYER_REFRESH_MS)
   {
     lastPlayerMs = millis();
     if (isPlaying)
@@ -64,7 +63,7 @@ void SequencePlayer::loadSequence(String path)
     curTimeMs = 0;
     isPlaying = false;
     compLog("File loaded, " + String(totalints) + " ints" + ", " + String(totalTime) + " time");
-    curSequenceName = path.substring(0, path.lastIndexOf("."));
+    curSequenceName = path.substring(0, path.lastIndexOf(".")).substring(1);
     compLog("Name = "+curSequenceName);
   }
 }
@@ -146,7 +145,7 @@ void SequencePlayer::playFrame()
     skippedFrames++;
     curFile.read();
     fPos = curFile.position();
-    if (curFile.available() < frameSize)
+    if (curFile.available() < FRAME_SIZE)
     {
       compError("overflowed, should not be here");
       return;
@@ -165,7 +164,7 @@ void SequencePlayer::playFrame()
 
   if (pos%100 < 4)
     compDebug("Playing frame at position " + String(pos));
-  curFile.read(frameData, frameSize);
+  curFile.read(frameData, FRAME_SIZE);
   sendEvent(PlayerEvent(PlayerEvent::NewFrame, curSequenceName, frameData));
 
   //setServo(0, map(curFile.read(), 0, 255, 0, 180));

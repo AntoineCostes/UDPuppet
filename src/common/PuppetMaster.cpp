@@ -78,21 +78,8 @@ void PuppetMaster::initManager()
 #endif
 
     fileMgr.init();
-
-  #ifdef NUM_LEDS
-    frameSize = frameSize + 3*NUM_LEDS;
-  #endif
-  #ifdef NUM_SERVOS
-    frameSize = frameSize + NUM_SERVOS;
-  #endif
-  #ifdef NUM_STEPPERS
-    frameSize = frameSize + NUM_STEPPERS;
-  #endif
-  #ifdef NUM_DC
-    frameSize = frameSize + NUM_DC;
-  #endif
     managers.emplace_back(&player);
-    player.initManager(frameSize);
+    player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
     managers.emplace_back(&web);

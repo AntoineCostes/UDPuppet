@@ -69,6 +69,9 @@ const int BATTERY_TIMEOUT_MS = 5000;
 const int BATTERY_WINDOW_MS = 100;
 const float BATTERY_LOW_VOLTAGE = 3.4f;
 
+// PLAYER PARAMETERS
+const int PLAYER_REFRESH_MS = 30;
+
 // LED PARAMETERS
 const int LED_REFRESH_MS = 20;
 
@@ -80,11 +83,11 @@ const int ROOMBA_TEXT_UPDATE_MS = 200;
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
-const bool BATTERY_DEBUG = true;
+const bool BATTERY_DEBUG = false;
 const bool WIFI_DEBUG = false;
 const bool OSC_DEBUG = false;
 const bool FILES_DEBUG = false;
-const bool SEQUENCE_DEBUG = false;
+const bool SEQUENCE_DEBUG = true;
 const bool LED_DEBUG = true;
 const bool SERVO_DEBUG = false;
 const bool MOTORWING_DEBUG = true;

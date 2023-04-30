@@ -5,6 +5,8 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
+#define FRAME_SIZE 4
+
 #define NUM_LEDS 1
 const float LED_INTENSITY = 0.8f;
 const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
