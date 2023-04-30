@@ -10,7 +10,8 @@ function update()
 
 function yo()
 {
-local.parameters.oscOutputs.oscOutput.local.set(false);
+local.values.firmware.set("");
+local.values.ip.set("");
 local.send("/yo", 0);
 local.sendTo("192.168.0.255", 9000, "/yo", 0);
 local.sendTo("192.168.1.255", 9000, "/yo", 0);
@@ -23,7 +24,6 @@ function moduleParameterChanged(param)
 {
   if (param.name == "invocation")
   {
-    local.parameters.ip.set("");
     yo();
   }
   if (param.name == "playSequence")
@@ -48,7 +48,12 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
-    local.parameters.ip.set(args[1]);
+    // NAME, FIRMWARE, MAC, IP, port
+    local.values.firmware.set(args[1]);
+    local.parameters.oscOutputs.oscOutput.local.set(false);
+    local.parameters.oscOutputs.oscOutput.remoteHost.set(args[3]);
+    local.parameters.oscOutputs.oscOutput.remotePort.set(args[4]);
+    local.values.ip.set(args[3]);//+":"+String(args[4]));
   }
 
   if (address == "/battery")

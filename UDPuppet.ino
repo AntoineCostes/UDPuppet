@@ -6,14 +6,16 @@
 // no_wifi in credentials ?
 // define behaviors ? or callback events in ino ?
 // OSCQuery
-// TODO checkComponents
+// checkComponents
+// remember target ip
+// port in handshake ?
 
-// TODO remove initComponent
+// remove initComponent
 // checkInit only in Manager ?
 // initComponent (when registering) and updating components automatically
 
-// TODO ERROR mode if prop was not registered successfully
-// TODO make childClass DebugLedStrip with communication methods
+// ERROR mode if prop was not registered successfully
+// make childClass DebugLedStrip with communication methods
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 

@@ -39,12 +39,6 @@
       "default":"Mai2023-1.4.7",
       "readOnly":true
     },
-    "IP":
-    {
-      "type":"String",
-      "default":"",
-      "readOnly":true
-    },
     "Invocation":
     {
       "type":"Trigger"
@@ -77,6 +71,18 @@
 
   "values":
   {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
     "Batterie":
     {
       "type":"Float",

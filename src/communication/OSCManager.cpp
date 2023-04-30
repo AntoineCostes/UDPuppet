@@ -166,9 +166,10 @@ void OSCManager::yo(String firmwareVersion)
     compLog("sending yo");
     OSCMessage answerMsg("/yo");
     answerMsg.add(BOARD_NAME.c_str());
-    answerMsg.add(wifi->getIP().c_str());
-    answerMsg.add(wifi->getMAC().c_str());
     answerMsg.add(firmwareVersion.c_str());
+    answerMsg.add(wifi->getMAC().c_str());
+    answerMsg.add(wifi->getIP().c_str());
+    answerMsg.add(OSC_LISTENING_PORT);
     sendMessage(answerMsg);
 }
 
