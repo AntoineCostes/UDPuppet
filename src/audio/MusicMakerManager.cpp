@@ -132,6 +132,8 @@ void MusicMakerManager::play(String trackName)
         return;
     }
     
+    stop();
+    
     compDebug("play " + trackName);
 
     String filePath = "/"+trackName;
@@ -140,7 +142,6 @@ void MusicMakerManager::play(String trackName)
         compError(filePath+" file does not exist!");
         return;
     }
-    stop();
     compDebug("start playing");
     player->startPlayingFile(filePath.c_str());
 }

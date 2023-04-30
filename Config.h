@@ -89,6 +89,6 @@ const bool OSC_DEBUG = false;
 const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = true;
 const bool LED_DEBUG = true;
-const bool SERVO_DEBUG = true;
+const bool SERVO_DEBUG = false;
 const bool MOTORWING_DEBUG = true;
 const bool ROOMBA_DEBUG = true;
