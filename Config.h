@@ -43,8 +43,9 @@
 //#include "config/sansgravite/Corbeille.h"
 //#include "config/sansgravite/Bouche.h"
 //#include "config/Roomba.h"
-#include "config/Camembert.h"
-//#include "config/Castafiore.h"
+//#include "config/Camembert.h"
+#include "config/Castafiore.h"
+//#include "config/Castafiore_Bouton.h"
 //#include "config/Chantdrier.h"
 //#include "config/Test.h"
 
@@ -76,7 +77,6 @@ const int PLAYER_REFRESH_MS = 30;
 const int LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
-const bool SERVO_ALLOW_UNSAFE_PINS = false; // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
 
 // ROOMBA PARAMETERS
 const int ROOMBA_TEXT_UPDATE_MS = 200;

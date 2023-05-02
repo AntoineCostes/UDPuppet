@@ -32,6 +32,6 @@ public:
     bool handleCommand(OSCMessage &command) override;
 
 protected:
-    unsigned long lastLedRefreshTime;
+    unsigned long lastRefreshTime;
     std::vector<LedStrip*> strips; 
 };

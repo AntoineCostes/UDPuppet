@@ -5,14 +5,24 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
+#define SERVO_ALLOW_UNSAFE_PINS // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
+
 #define HAS_MUSICMAKER
-#define FRAME_SIZE 1
+#define FRAME_SIZE 4
+
+#define NUM_LEDS 1
+const float LED_INTENSITY = 0.8f;
+const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
+{
+    // pin, num leds, RGB/GRB, wifiDebug
+    {21, 10, true, false}
+};
 
 #define NUM_SERVOS 1
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo
-    {27, 5, 80, 5, false, false}
+    {22, 5, 80, 5, false, false}
 };
 
 #define NUM_BUTTONS 1

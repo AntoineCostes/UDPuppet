@@ -1,26 +1,19 @@
 #pragma once
 
-const String BOARD_NAME = "Test";    // name used for mDNS services 
+const String BOARD_NAME = "Castafiore";    // name used for mDNS services 
 const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
-// #define NUM_LEDS 1
-// const float LED_INTENSITY = 0.8f;
-// const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
-// {
-//     // pin, num leds, RGB/GRB, wifiDebug
-//     {21, 10, true, false}
-// };
+#define SERVO_ALLOW_UNSAFE_PINS // pins 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
 
-#define FRAME_SIZE 3
+#define HAS_MUSICMAKER // uses pins 14, 15, 32, 33
+#define FRAME_SIZE 1
 
-#define NUM_SERVOS 3
+#define NUM_SERVOS 1
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo
-    {0, 0, 90, 0, false, true},
-    {1, 0, 180, 0, false, true},
-    {27, 0, 180, 90, false, false}
+    {27, 0, 180, 0, false, false}
 
 };

@@ -52,24 +52,26 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
     }
   } else
   {
+#ifdef ESP32
+    std::set<int> unsafePins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
+      if (unsafePins.find(pin) != unsafePins.end())
+      {
+        compError("pin " + String(pin) + " is unsafe for ESP32 to attach Servo !");
+#ifndef SERVO_ALLOW_UNSAFE_PINS
+        return;
+#endif
+      }
+#endif
+
     if (!Component::registerPin(pin))
     {
         compError("cannot register servo : pin #"  +String(pin) + " is already used!");
         return;
     }
-#ifdef ESP32
-    std::set<int> servoPins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
-    if (!SERVO_ALLOW_UNSAFE_PINS)
-      if (servoPins.find(pin) != servoPins.end())
-      {
-        compError("pin " + String(pin) + " is unsafe for ESP32 to attach Servo !");
-        return;
-      }
-#endif
   }
   servos.emplace_back(new ServoMotor(pin, min, max, start, inverse, isMultiServo?pwm:nullptr));
   servos.back()->initComponent(serialDebug);
-  compDebug("registered servo: " + String(servos.back()->name));
+  compLog("registered servo: " + String(servos.back()->name));
 }
 
 void ServoManager::servoGoToAbsolute(int index, int value)

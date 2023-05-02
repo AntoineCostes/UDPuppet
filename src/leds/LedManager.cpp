@@ -8,7 +8,7 @@ LedManager::LedManager() : Manager("led")
 void LedManager::initManager()
 {
     Manager::initManager();
-    lastLedRefreshTime = millis();
+    lastRefreshTime = millis();
 }
 
 void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug)
@@ -24,7 +24,7 @@ void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool 
 
     strips.emplace_back(new LedStrip(pin, numLeds, type, wifiDebug));
     strips.back()->initComponent(serialDebug);
-    compDebug("register prop: " + String(strips.back()->name));
+    compLog("registered led strip: " + String(strips.back()->name));
 }
 
 void LedManager::setMode(LedStrip::LedMode newMode)
@@ -41,10 +41,10 @@ void LedManager::update()
         return;
 
     // no Manager::update(), leds are refreshed periodically
-    if (millis() - lastLedRefreshTime > LED_REFRESH_MS)
+    if (millis() - lastRefreshTime > LED_REFRESH_MS)
     {
         for (auto const &strip : strips) strip->update();
-        lastLedRefreshTime = millis();
+        lastRefreshTime = millis();
     }
 }
 

@@ -2,6 +2,9 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO
+// rename music musicmaker
+// implement microSeconds for servo
+// change debug from Chataigne
 // no_wifi in credentials ?
 // define behaviors ? or callback events in ino ?
 // OSCQuery
