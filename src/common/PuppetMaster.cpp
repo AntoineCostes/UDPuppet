@@ -82,9 +82,15 @@ void PuppetMaster::initManager()
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
-    managers.emplace_back(&web);
-    web.initManager();
-    web.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
+    if (FileManager::doesExist("/index.html"))
+    {
+        managers.emplace_back(&web);
+        web.initManager();
+        web.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
+    } else
+    {
+        compError("webserver not initiliazed: index.hmtl was not found");
+    }
 
     managers.emplace_back(&button);
     button.initManager();
@@ -319,7 +325,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     {
         char str[32];
         command.getString(0, str);
-        fileMgr.deleteFileIfExists(String(str)+".dat");
+        fileMgr.deleteFileIfExists("/"+String(str)+".dat");
     } 
 
     // if (command.match("/debug"))

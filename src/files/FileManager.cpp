@@ -94,6 +94,9 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
 
 void FileManager::deleteFileIfExists(String path)
 {
+    if (!path.startsWith("/"))
+        path = "/" + path;
+
     #ifdef HAS_ADALOGGER_WING
     if (SD.exists(path.c_str()))
     {
