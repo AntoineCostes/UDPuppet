@@ -43,9 +43,10 @@
 //#include "config/sansgravite/Corbeille.h"
 //#include "config/sansgravite/Bouche.h"
 //#include "config/Roomba.h"
-//#include "config/Camembert.h"
-#include "config/Castafiore.h"
+#include "config/Camembert.h"
+//#include "config/Castafiore.h"
 //#include "config/Castafiore_Bouton.h"
+//#include "config/Castafiore_Anecdote.h"
 //#include "config/Chantdrier.h"
 //#include "config/Test.h"
 

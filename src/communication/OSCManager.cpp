@@ -22,12 +22,12 @@ void OSCManager::gotWifiEvent(const WifiEvent &e)
 {
     switch (e.state)
     {
-    case WifiConnectionState::CONNECTED:
+    case WifiEvent::ConnectionState::CONNECTED:
         compDebug("wifi connected, try to connect");
         connect();
         break;
 
-    case WifiConnectionState::DISCONNECTED:
+    case WifiEvent::ConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
         disconnect();
         break;

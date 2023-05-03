@@ -64,8 +64,12 @@ void PuppetMaster::initManager()
     Manager::initManager();
 
     // init managers and subscribe to their events
-    managers.emplace_back(&wifi);
-    wifi.initManager();
+    if (WIFI_CREDENTIALS.ssid != "")
+    {
+        managers.emplace_back(&wifi);
+        wifi.initManager();
+    }
+
     managers.emplace_back(&osc);
     osc.initManager();
     wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
@@ -263,7 +267,8 @@ void PuppetMaster::update()
 
     for (auto const &mgr : managers)
     {
-        mgr.get()->update();
+        if (mgr.get()->checkInit())
+            mgr.get()->update();
     }
 }
 
@@ -326,6 +331,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
         char str[32];
         command.getString(0, str);
         fileMgr.deleteFileIfExists("/"+String(str)+".dat");
+        advertiseSequences();
     } 
 
     // if (command.match("/debug"))
@@ -350,14 +356,14 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
     switch (e.state)
     {
-    case WifiConnectionState::CONNECTING:
+    case WifiEvent::ConnectionState::CONNECTING:
         compDebug("connecting to wifi...");
     #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 
-    case WifiConnectionState::CONNECTED:
+    case WifiEvent::ConnectionState::CONNECTED:
         compDebug("wifi connected !");
         
 
@@ -390,7 +396,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         
         break;
 
-    case WifiConnectionState::DISCONNECTED:
+    case WifiEvent::ConnectionState::DISCONNECTED:
         compDebug("wifi lost !");
     #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::ERROR);

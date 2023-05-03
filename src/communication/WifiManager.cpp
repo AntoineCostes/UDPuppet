@@ -10,7 +10,7 @@ void WifiManager::initManager()
   Manager::initManager();
   lastConnectTime = millis();
   lastDisconnectTime = millis();
-  connectionState = DISCONNECTED;
+  connectionState = WifiEvent::ConnectionState::DISCONNECTED;
   
   #ifdef ESP32
   Preferences prefs;
@@ -41,18 +41,18 @@ void WifiManager::initManager()
   #endif 
 }
 
-void WifiManager::changeConnectionState(WifiConnectionState newState, WifiError compError)
+void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError)
 {
   // compLog("new state: "+String(newState));
   connectionState = newState;
   errorState = compError;
 
-  if (newState == WifiConnectionState::DISCONNECTED)
+  if (newState == WifiEvent::ConnectionState::DISCONNECTED)
     lastDisconnectTime = millis();
-  if (newState == WifiConnectionState::CONNECTING)
+  if (newState == WifiEvent::ConnectionState::CONNECTING)
     lastConnectTime = millis();
   
-  if (newState == WifiConnectionState::CONNECTED)
+  if (newState == WifiEvent::ConnectionState::CONNECTED)
   {
     ArduinoOTA.setHostname(BOARD_NAME.c_str());
     ArduinoOTA.onStart([]() {
@@ -93,19 +93,19 @@ void WifiManager::changeConnectionState(WifiConnectionState newState, WifiError 
 
 void WifiManager::connect()
 {
-  if (connectionState == WifiConnectionState::CONNECTED || connectionState == WifiConnectionState::HOTSPOT)
+  if (connectionState == WifiEvent::ConnectionState::CONNECTED || connectionState == WifiEvent::ConnectionState::HOTSPOT)
     WiFi.disconnect();
 
   compLog("Connecting to " + stringParameters["ssid"] + " (" + stringParameters["pass"] + ")...");
   WiFi.begin(stringParameters["ssid"].c_str(), stringParameters["pass"].c_str());
 
-  changeConnectionState(WifiConnectionState::CONNECTING);
+  changeConnectionState(WifiEvent::ConnectionState::CONNECTING);
 }
 
 void WifiManager::disconnect()
 {
   WiFi.disconnect();
-  changeConnectionState(WifiConnectionState::DISCONNECTED);
+  changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED);
 }
 
 void WifiManager::update()
@@ -113,12 +113,9 @@ void WifiManager::update()
   if (!checkInit())
     return;
 
-  //#ifdef CASTAFIORE_BUTTON
-  //#else
-
   switch (connectionState)
   {
-  case WifiConnectionState::DISCONNECTED:
+  case WifiEvent::ConnectionState::DISCONNECTED:
     if (millis() - lastDisconnectTime > DELAY_BEFORE_RECONNECT_MS)
     {
       compDebug("new connection attempt");
@@ -126,10 +123,10 @@ void WifiManager::update()
     }
     break;
 
-  case WifiConnectionState::CONNECTING:
+  case WifiEvent::ConnectionState::CONNECTING:
     if (WiFi.isConnected())
     {
-      changeConnectionState(WifiConnectionState::CONNECTED);
+      changeConnectionState(WifiEvent::ConnectionState::CONNECTED);
       compLog("Successfully connected, local IP: " + getIP());
       return;
     }
@@ -137,16 +134,16 @@ void WifiManager::update()
     if (millis() - lastConnectTime > CONNECTION_TIMEOUT_MS)
     {
       compError("timeout expired");
-      changeConnectionState(WifiConnectionState::DISCONNECTED, WifiError::TIMEOUT);
+      changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED, WifiManager::Error::TIMEOUT);
       return;
     }
     break;
 
-  case WifiConnectionState::CONNECTED:
+  case WifiEvent::ConnectionState::CONNECTED:
     if (!WiFi.isConnected())
     {
       compError("lost network !");
-      changeConnectionState(WifiConnectionState::DISCONNECTED, WifiError::LOST);
+      changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED, WifiManager::Error::LOST);
     } else
     {
       ArduinoOTA.handle();
@@ -162,13 +159,13 @@ void WifiManager::update()
 
 String WifiManager::getIP()
 {
-  if (connectionState == WifiConnectionState::CONNECTED)
+  if (connectionState == WifiEvent::ConnectionState::CONNECTED)
     return String(WiFi.localIP()[0]) +
            "." + String(WiFi.localIP()[1]) +
            "." + String(WiFi.localIP()[2]) +
            "." + String(WiFi.localIP()[3]);
 
-  else if (connectionState == WifiConnectionState::HOTSPOT)
+  else if (connectionState == WifiEvent::ConnectionState::HOTSPOT)
     return String(WiFi.softAPIP()[0]) +
            "." + String(WiFi.softAPIP()[1]) +
            "." + String(WiFi.softAPIP()[2]) +

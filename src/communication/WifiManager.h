@@ -2,28 +2,20 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
-enum WifiConnectionState
-{
-    DISCONNECTED,
-    CONNECTING,
-    CONNECTED,
-    HOTSPOT
-};
-
-enum WifiError
-{
-    NONE,
-    TIMEOUT,
-    LOST
-};
-
 class WifiEvent
 {
 public:
-    WifiConnectionState state;
-    //WifiEvent(WifiConnectionState state, WifiError compError) : state(state), compError(compError) {}
-    WifiEvent( WifiConnectionState state) : state(state) {}
+    enum ConnectionState
+    {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED,
+        HOTSPOT
+    } state;
+    //WifiEvent(WifiEvent::ConnectionState state, WifiManager::Error compError) : state(state), compError(compError) {}
+    WifiEvent(ConnectionState state) : state(state) {}
 };
+
 
 class WifiManager : public Manager,
                     public EventBroadcaster<WifiEvent>
@@ -43,12 +35,18 @@ public:
     String getIP();
     String getMAC();
 
+    enum Error
+    {
+        NONE,
+        TIMEOUT,
+        LOST
+    };
+
 protected:
     unsigned long lastConnectTime;
     unsigned long lastDisconnectTime;
 
-    void changeConnectionState(WifiConnectionState newState, WifiError compError = WifiError::NONE);
-    WifiConnectionState connectionState;
-    WifiError errorState;
-
+    void changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError = WifiManager::Error::NONE);
+    WifiEvent::ConnectionState connectionState;
+    WifiManager::Error errorState;
 };

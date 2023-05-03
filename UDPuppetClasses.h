@@ -18,14 +18,16 @@ struct UDPuppetWifiCredentials
 
 enum Networks
 {  
+    NO_WIFI,
     LENET,
     COSTES,
     SANSGRAVITE,
     SUNSHINE
 };
 
-const UDPuppetWifiCredentials CREDENTIALS[4] = 
+const UDPuppetWifiCredentials CREDENTIALS[5] = 
 {
+    {"", ""},
     {"LeNet", "connectemoi"},
     {"Ouifi", "28101948AC"},
     {"Sans Gravité", "lovecraft"},
