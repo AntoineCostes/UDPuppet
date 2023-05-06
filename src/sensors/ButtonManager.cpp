@@ -3,7 +3,7 @@
 
 ButtonManager::ButtonManager() : Manager("Button")
 {
-    serialDebug = MASTER_DEBUG;
+    serialDebug = BUTTON_DEBUG;
 }
 
 void ButtonManager::initManager()

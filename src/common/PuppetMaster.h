@@ -73,7 +73,7 @@ public:
     RoombaManager roomba;
 #endif
 #ifdef HAS_MUSICMAKER
-    MusicMakerManager music;
+    MusicMakerManager musicmaker;
 #endif
 
 protected:

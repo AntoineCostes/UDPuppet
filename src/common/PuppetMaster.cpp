@@ -3,8 +3,6 @@
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
-// OSC_DEBUG_SEND et OSC_DEBUG_REVEICE
-// override
 // rename init
 // managers indépendants
 // manager not a component
@@ -128,8 +126,8 @@ void PuppetMaster::initManager()
 #endif
 
 #ifdef HAS_MUSICMAKER
-    managers.emplace_back(&music);
-    music.initManager();
+    managers.emplace_back(&musicmaker);
+    musicmaker.initManager();
 #endif
 
     // TODO give this info on demand
@@ -160,17 +158,17 @@ void PuppetMaster::checkComponents()
 #ifdef HAS_MUSICMAKER
     OSCMessage msg3("/tracks");
     msg3.add(BOARD_NAME.c_str());
-    for (auto seq : music.tracks) msg3.add(seq.c_str());
+    for (auto seq : musicmaker.tracks) msg3.add(seq.c_str());
     osc.sendMessage(msg3);
 
     OSCMessage msg4("/volume");
     msg4.add(BOARD_NAME.c_str());
-    msg4.add(music.getVolume());
+    msg4.add(musicmaker.getVolume());
     osc.sendMessage(msg4);
     
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
-    msg.add(music.isReady()?1:0);
+    msg.add(musicmaker.isReady()?1:0);
     osc.sendMessage(msg);
 #endif
 
@@ -348,7 +346,7 @@ void PuppetMaster::launchSequence(String sequenceName)
     // TODO get File from fileManager and give it to player ?
     player.playSequence(sequenceName);
     #ifdef HAS_MUSICMAKER
-    music.play(sequenceName+".mp3");
+    musicmaker.play(sequenceName+".mp3");
     #endif 
 }
 
@@ -448,7 +446,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     {
 #ifdef BUTTON_JUKEBOX
     case ButtonEvent::Type::PRESSED:
-        music.stop();
+        musicmaker.stop();
         player.stopPlaying();
         
 #ifdef NUM_SERVOS
@@ -600,7 +598,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     
     if (e.type == PlayerEvent::Start)
     {
-        player.dbg("start playing");
+        // player.dbg("start playing");
     }
     
     if (e.type == PlayerEvent::Stop)

@@ -11,7 +11,7 @@ void MusicMakerManager::initManager()
 {
     Manager::initManager();
     
-    std::set<int> pins = {VS1053_RESET, VS1053_CS, VS1053_DCS, VS1053_DREQ, CARDCS};
+    std::set<int> pins = {VS1053_CS, VS1053_DCS, VS1053_DREQ, CARDCS};
     if (!Component::registerPins(pins))
     {
         compError("cannot register Music Maker: a pin is already registered !");

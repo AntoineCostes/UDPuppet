@@ -50,7 +50,7 @@ void SequencePlayer::loadSequence(String path)
     return;
   }
   
-  compDebug("loading sequence file...");
+  compLog("loading sequence file: "+path);
   curFile = FileManager::openFile(path, false); //false is for reading
   if (!curFile)
   {
@@ -64,13 +64,12 @@ void SequencePlayer::loadSequence(String path)
     isPlaying = false;
     compLog("File loaded, " + String(totalints) + " ints" + ", " + String(totalTime) + " time");
     curSequenceName = path.substring(0, path.lastIndexOf(".")).substring(1);
-    compLog("Name = "+curSequenceName);
   }
 }
 
 void SequencePlayer::startSequence(float atTime)
 {
-  compLog("Play " + String(atTime));
+  compDebug("Start " + String(atTime));
   if (!curFile)
     return;
 
@@ -89,7 +88,7 @@ void SequencePlayer::tryPlaySequence(String path)
 {
   if (isPlaying && path.equals(curSequenceName))
   {
-    compLog("sequence already playing !");
+    compError("sequence already playing !");
     numFailed ++;
     return;
   }
@@ -98,7 +97,7 @@ void SequencePlayer::tryPlaySequence(String path)
 
 void SequencePlayer::playSequence(String path)
 {
-  compLog("play sequence");
+  compLog("play sequence: " + path);
   loadSequence(path);
   startSequence(0);
   numFailed = 0;
