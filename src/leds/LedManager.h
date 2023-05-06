@@ -10,7 +10,7 @@ public:
     void initManager();
     void update();
     
-    void registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug);
+    void registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug, bool useInSequences);
 
     void setMode(LedStrip::LedMode newMode);
     
@@ -25,6 +25,7 @@ public:
     void setColor(int stripIndex, int r, int g, int b);
     void setBrightness(int stripIndex, float value);
     void setWifiDebug(int stripIndex, bool value);
+    bool useInSequences(int stripIndex);
 
     // led
     void setColor(int stripIndex, int i, int r, int g, int b);

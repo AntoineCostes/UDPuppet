@@ -6,7 +6,7 @@
 class LedStrip : public Component
 {
 public:
-    LedStrip(int pin, int numLeds, neoPixelType type, bool debug);
+    LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool useInSequences);
     //~LedStrip(){Serial.println("delete LedStrip");}
     //~LedStrip() {}
 

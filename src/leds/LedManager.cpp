@@ -11,7 +11,7 @@ void LedManager::initManager()
     lastRefreshTime = millis();
 }
 
-void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug)
+void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug, bool useInSequences)
 {
     if (!checkInit())
         return;
@@ -22,7 +22,7 @@ void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool 
         return;
     }
 
-    strips.emplace_back(new LedStrip(pin, numLeds, type, wifiDebug));
+    strips.emplace_back(new LedStrip(pin, numLeds, type, wifiDebug, useInSequences));
     strips.back()->initComponent(serialDebug);
     compLog("registered led strip: " + String(strips.back()->name));
 }
@@ -91,6 +91,11 @@ void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
 void LedManager::setWifiDebug(int stripIndex, bool value)
 {
     strips[stripIndex]->setWifiDebug(value);
+}
+
+bool LedManager::useInSequences(int stripIndex)
+{
+    return strips[stripIndex]->useInSequences;
 }
 
 bool LedManager::handleCommand(OSCMessage &command)

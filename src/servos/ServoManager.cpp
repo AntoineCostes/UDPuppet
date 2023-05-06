@@ -30,7 +30,7 @@ bool ServoManager::isIndexValid(int index)
   return true;
 }
 
-void ServoManager::registerServo(int pin, int min, int max, int start, bool inverse, bool isMultiServo)
+void ServoManager::registerServo(int pin, int min, int max, int start, bool inverse, bool isMultiServo, bool useInSequences)
 {
   if (!checkInit())
     return;
@@ -69,7 +69,7 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
         return;
     }
   }
-  servos.emplace_back(new ServoMotor(pin, min, max, start, inverse, isMultiServo?pwm:nullptr));
+  servos.emplace_back(new ServoMotor(pin, min, max, start, inverse, useInSequences, isMultiServo?pwm:nullptr));
   servos.back()->initComponent(serialDebug);
   compLog("registered servo: " + String(servos.back()->name));
 }
@@ -93,6 +93,11 @@ void ServoManager::servoGoToStart(int index)
   if (!isIndexValid(index)) return;
   compDebug("servo#" + String(index) + " go to start");
   servos[index]->goToStart();
+}
+
+bool ServoManager::useInSequences(int index)
+{
+  return servos[index]->useInSequences;
 }
 
 void ServoManager::setServoMin(int index, int value)
@@ -138,7 +143,7 @@ bool ServoManager::handleCommand(OSCMessage &command)
   char buf[32];
   command.getAddress(buf);
   String address = String(buf);
-  compLog("handle command: " + address);
+  compDebug("handle command: " + address);
 
   if (address.equals("/servo"))
   {

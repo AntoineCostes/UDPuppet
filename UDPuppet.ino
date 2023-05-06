@@ -32,14 +32,14 @@ void setup()
   master.initManager(); // TODO make singleton and rename ?
 
   #ifdef NUM_LEDS
-  master.led.setBrightness(LED_INTENSITY);
   for (int i = 0; i < NUM_LEDS; i++)
-    master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug);
+    master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug, LED_STRIPS[i].useInSequences);
+  master.led.setBrightness(LED_INTENSITY);
   #endif
 
   #ifdef NUM_SERVOS
   for (int i = 0; i < NUM_SERVOS; i++)
-    master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo);
+    master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo, SERVOS[i].useInSequences);
   #endif
 
   #ifdef NUM_BUTTONS

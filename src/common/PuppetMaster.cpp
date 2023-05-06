@@ -553,17 +553,23 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         #ifdef NUM_LEDS
         for (int compIndex = 0; compIndex < NUM_LEDS; compIndex++)
         {
-            if (e.data[dataIndex] < 255 && e.data[dataIndex + 1] < 255  && e.data[dataIndex + 2] < 255) // 255 value means don't update
-                led.setColor(compIndex, (int)e.data[dataIndex], (int)e.data[dataIndex + 1], (int)e.data[dataIndex+2]);
-            dataIndex += 3;
+            if (led.useInSequences(compIndex))
+            {
+                if (e.data[dataIndex] < 255 && e.data[dataIndex + 1] < 255  && e.data[dataIndex + 2] < 255) // 255 value means don't update
+                    led.setColor(compIndex, (int)e.data[dataIndex], (int)e.data[dataIndex + 1], (int)e.data[dataIndex+2]);
+                dataIndex += 3;
+            }
         }
         #endif
         #ifdef NUM_SERVOS
         for (int compIndex = 0; compIndex < NUM_SERVOS; compIndex++)
         {
-            if (e.data[dataIndex] < 255) // 255 value means don't update
-                servo.servoGoTo(compIndex, e.data[dataIndex] / 254.0f);
-            dataIndex++;
+            if (servo.useInSequences(compIndex))
+            {
+                if (e.data[dataIndex] < 255) // 255 value means don't update
+                    servo.servoGoTo(compIndex, e.data[dataIndex] / 254.0f);
+                dataIndex++;
+            }
         }
         #endif
         #ifdef NUM_STEPPERS

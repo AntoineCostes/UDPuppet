@@ -8,7 +8,7 @@
 class ServoMotor : public Component
 {
 public:
-    ServoMotor(int pin, int min, int max, int start, bool inverse, Adafruit_PWMServoDriver* pwm);
+    ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_PWMServoDriver* pwm);
 
     void initComponent(bool serialDebug);
     void update();

@@ -1,6 +1,6 @@
 #include "LedStrip.h"
 
-LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Component("led_" + String(pin)),
+LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool useInSequences) : Component("led_" + String(pin)),
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
                                                                             brightness(0.3),
@@ -11,6 +11,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Compon
     boolParameters["wifiDebug"] = debug;
     // TODO brightness parameter
     // toast duration parameter
+    Component::useInSequences = useInSequences;
 }
 
 void LedStrip::initComponent(bool serialDebug)

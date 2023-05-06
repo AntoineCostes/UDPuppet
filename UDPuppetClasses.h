@@ -43,6 +43,7 @@ struct UDPuppetLedStrip
     int numLeds;
     bool GRB;
     bool wifiDebug;
+    bool useInSequences;
 };
 
 // TOWERPRO M90D [20, 170]
@@ -54,6 +55,7 @@ struct UDPuppetServo
     int start;
     bool inverse;
     bool isMultiServo;
+    bool useInSequences;
 };
 
 // struct UDPuppetContinuousServo
