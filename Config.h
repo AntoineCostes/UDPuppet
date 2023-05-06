@@ -47,11 +47,12 @@
 //#include "config/Castafiore.h"
 //#include "config/Castafiore_Bouton.h"
 //#include "config/Castafiore_Anecdote.h"
-#include "config/Chantdrier.h"
+//#include "config/Chantdrier.h"
+#include "config/Chantdrier_Jukebox.h"
 //#include "config/Test.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // GENERAL PARAMETERS
 const bool SETUP_DELAY_MS = 0;

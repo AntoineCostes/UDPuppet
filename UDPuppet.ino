@@ -10,6 +10,7 @@
 // checkComponents
 // remember target ip
 // port in handshake ?
+// JSON config files ?
 
 // remove initComponent
 // checkInit only in Manager ?

@@ -450,7 +450,14 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     case ButtonEvent::Type::PRESSED:
         music.stop();
         player.stopPlaying();
+        
+#ifdef NUM_SERVOS
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+#endif
+
+#ifdef NUM_LEDS
+    led.clear();
+#endif
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
@@ -602,6 +609,12 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         player.dbg("ended");
+
+#ifdef BUTTON_JUKEBOX
+#ifdef NUM_LEDS
+for (int i = 0; i < NUM_LEDS; i++) led.setMode(LedStrip::LedMode::WAITING);
+#endif
+#endif
 
 #ifdef CONTINUE_PLAYING
         launchSequence(fileMgr.sequences[trackIndex]);
