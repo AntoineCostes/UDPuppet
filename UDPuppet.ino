@@ -9,6 +9,7 @@
 // remember target ip
 // port in handshake ?
 // JSON config files ?
+// component bool checkRange(float/int min, float/int max)
 
 // remove initComponent
 // checkInit only in Manager ?
@@ -30,8 +31,8 @@ void setup()
 
   master.initManager(); // TODO make singleton and rename ?
 
-  #ifdef NUM_LEDS
-  for (int i = 0; i < NUM_LEDS; i++)
+  #ifdef NUM_STRIPS
+  for (int i = 0; i < NUM_STRIPS; i++)
     master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug, LED_STRIPS[i].useInSequences);
   master.led.setBrightness(LED_INTENSITY);
   #endif

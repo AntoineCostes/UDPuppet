@@ -9,7 +9,7 @@
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 
-#ifdef NUM_LEDS
+#ifdef NUM_STRIPS
 #include "../leds/LedManager.h"
 #endif
 #ifdef NUM_SERVOS
@@ -57,7 +57,7 @@ public:
     BatteryManager battery;
 #endif
 
-#ifdef NUM_LEDS
+#ifdef NUM_STRIPS
     LedManager led;
 #endif
 #ifdef NUM_SERVOS

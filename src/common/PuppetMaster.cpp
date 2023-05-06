@@ -98,7 +98,7 @@ void PuppetMaster::initManager()
     button.initManager();
     button.addListener(std::bind(&PuppetMaster::gotButtonEvent, this, std::placeholders::_1));
 
-#ifdef NUM_LEDS
+#ifdef NUM_STRIPS
     managers.emplace_back(&led);
     led.initManager();
 #endif
@@ -356,7 +356,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiEvent::ConnectionState::CONNECTING:
         wifi.dbg("connecting to wifi...");
-    #ifdef NUM_LEDS
+    #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
@@ -378,7 +378,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         }
 
         // FIXME wifiDebug
-    #ifdef NUM_LEDS
+    #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::READY);
         //led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
@@ -396,7 +396,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::DISCONNECTED:
         wifi.dbg("wifi lost !");
-    #ifdef NUM_LEDS
+    #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;
@@ -453,12 +453,15 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
 #endif
 
-#ifdef NUM_LEDS
+#ifdef NUM_STRIPS
+    led.setMode(LedStrip::LedMode::STREAMING);
     led.clear();
 #endif
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
+    
+        led.setMode(LedStrip::LedMode::WORKING);
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
@@ -553,8 +556,8 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         }
 
         int dataIndex = 0;
-        #ifdef NUM_LEDS
-        for (int compIndex = 0; compIndex < NUM_LEDS; compIndex++)
+        #ifdef NUM_STRIPS
+        for (int compIndex = 0; compIndex < NUM_STRIPS; compIndex++)
         {
             if (led.useInSequences(compIndex))
             {
@@ -611,8 +614,8 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         player.dbg("ended");
 
 #ifdef BUTTON_JUKEBOX
-#ifdef NUM_LEDS
-for (int i = 0; i < NUM_LEDS; i++) led.setMode(LedStrip::LedMode::WAITING);
+#ifdef NUM_STRIPS
+led.setMode(LedStrip::LedMode::WAITING);
 #endif
 #endif
 
