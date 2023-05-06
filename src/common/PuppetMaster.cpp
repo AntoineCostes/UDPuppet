@@ -450,11 +450,11 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
     switch (e.type)
     {
-#ifdef CASTAFIORE_BUTTON
+#ifdef BUTTON_JUKEBOX
     case ButtonEvent::Type::PRESSED:
         music.stop();
         player.stopPlaying();
-        servo.servoGoTo(0, 0.0f);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
@@ -600,6 +600,13 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         compDebug("ended");
+
+#ifdef CONTINUE_PLAYING
+        launchSequence(fileMgr.sequences[trackIndex]);
+        trackIndex++;
+        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        compLog("track index :" + trackIndex);
+#endif
     }
 }
 

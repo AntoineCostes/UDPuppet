@@ -114,7 +114,7 @@ protected:
     void gotStepperEvent(const StepperEvent2 &e);
 #endif
 
-#ifdef CASTAFIORE_BUTTON
+#if defined(BUTTON_JUKEBOX) || defined(CONTINUE_PLAYING)
     int trackIndex;
 #endif
     
