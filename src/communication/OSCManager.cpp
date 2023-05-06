@@ -5,7 +5,7 @@ OSCManager::OSCManager(WifiManager *wifiMgr) : Manager("osc"),
                                                 overrideTargetIp(TARGET_IP_OVERRIDE)
 {
     stringParameters["targetIp"] = OSC_TARGET_IP;
-    serialDebug = OSC_DEBUG;
+    serialDebug = WIFI_DEBUG;
 }
 
 void OSCManager::initManager()
@@ -87,7 +87,7 @@ void OSCManager::update()
             msg.fill(udp.read());
         if (!msg.hasError())
         {
-            compDebug("got osc message");
+            if (OSC_RECEIVE_DEBUG) compLog("got osc message");
                 
             // when receiving messages from new IP, makes this the new target
             if (stringParameters["targetIp"] != udp.remoteIP().toString())
@@ -190,7 +190,7 @@ void OSCManager::sendMessage(OSCMessage &msg)
 
     char addr[32];
     msg.getAddress(addr);
-    compDebug("Send message to " + stringParameters["targetIp"] + "@" + String(OSC_TARGET_PORT) + " : " + String(addr));
+    if (OSC_SEND_DEBUG) compLog("Send message to " + stringParameters["targetIp"] + "@" + String(OSC_TARGET_PORT) + " : " + String(addr));
     udp.beginPacket((char *)stringParameters["targetIp"].c_str(), (uint16_t)OSC_TARGET_PORT);
     msg.send(udp);
     udp.endPacket();

@@ -35,4 +35,19 @@ void Manager::update()
     }
 }
 
+void Manager::dbg(String message)
+{
+    if (serialDebug)
+        Serial.println("[" + name + "] " + message);
+}
+
+void Manager::log(String message)
+{
+    Serial.println("[" + name + "] " + message);
+}
+
+void Manager::err(String message)
+{
+    Serial.println("[" + name + " ERROR] " + message);
+}
 

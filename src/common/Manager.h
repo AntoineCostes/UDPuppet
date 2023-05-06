@@ -12,6 +12,11 @@ public:
     virtual void initManager();
     virtual void update() override;
 
+    // Log helpers
+    void dbg(String message);
+    void log(String message);
+    void err(String message);
+
 protected:
     vector<std::unique_ptr<Component>> props;
     bool registerProp(Component* comp, std::set<int> reservedPins);

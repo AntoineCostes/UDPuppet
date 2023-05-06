@@ -357,26 +357,26 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     switch (e.state)
     {
     case WifiEvent::ConnectionState::CONNECTING:
-        compDebug("connecting to wifi...");
+        wifi.dbg("connecting to wifi...");
     #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
         break;
 
     case WifiEvent::ConnectionState::CONNECTED:
-        compDebug("wifi connected !");
+        wifi.dbg("wifi connected !");
         
 
-        compLog("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
+        wifi.log("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
         if (MDNS.begin(BOARD_NAME.c_str()))
         {
             MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
             MDNS.addService("_http", "_tcp", 80);
-            compDebug("OSC Zeroconf service added sucessfully !");
+             wifi.dbg("OSC Zeroconf service added sucessfully !");
         }
         else
         {
-            compError("could not set up mDNS instance");
+            wifi.err("could not set up mDNS instance");
         }
 
         // FIXME wifiDebug
@@ -397,22 +397,20 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         break;
 
     case WifiEvent::ConnectionState::DISCONNECTED:
-        compDebug("wifi lost !");
+        wifi.dbg("wifi lost !");
     #ifdef NUM_LEDS
         led.setMode(LedStrip::LedMode::ERROR);
     #endif
         break;
 
     default:
-        compError("wifi state not handled");
+        wifi.err("wifi state not handled");
         break;
     }
 }
 
 void PuppetMaster::gotOSCEvent(const OSCEvent &e)
 {
-    //compDebug("got OSC " + String(e.type));
-
     switch (e.type)
     {
     case OSCEvent::Type::CONNECTED:
@@ -446,8 +444,6 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
 
 void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 {
-    compDebug("got button " + String(e.type));
-
     switch (e.type)
     {
 #ifdef BUTTON_JUKEBOX
@@ -595,17 +591,17 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     
     if (e.type == PlayerEvent::Start)
     {
-        compDebug("start playing");
+        player.dbg("start playing");
     }
     
     if (e.type == PlayerEvent::Stop)
     {
-        compDebug("stop playing");
+        player.dbg("stop playing");
     }
     
     if (e.type == PlayerEvent::Ended)
     {
-        compDebug("ended");
+        player.dbg("ended");
 
 #ifdef CONTINUE_PLAYING
         launchSequence(fileMgr.sequences[trackIndex]);
@@ -622,69 +618,24 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
     switch (e.type)
     {
         case FileEvent::Type::UploadStart:
-            compDebug("File upload started");
+            fileMgr.dbg("File upload started");
             // TODO stop everything
             break;
             
         case FileEvent::Type::UploadProgress:
-            compDebug("Uploading..."+String(e.value));
+            fileMgr.dbg("Uploading..."+String(e.value));
             break;
             
         case FileEvent::Type::UploadComplete:
-            compDebug("Complete !");
+            fileMgr.dbg("Complete !");
             fileMgr.printFiles();
             advertiseSequences();
             break;
             
         case FileEvent::Type::Play:
-            compDebug("play !");
+            fileMgr.dbg("play !");
             player.playSequence(e.fileName);
             break;
     }
 
 }
-
-// void PuppetMaster::commandFromOSCMessage(OSCMessage &command)
-// {
-//     char addr[32];
-//     command.getAddress(addr, 1); //remove the first slash
-//     String tc(addr);
-//     int tcIndex = tc.indexOf('/');
-
-//     int numData = command.size();
-//     var *msgData = (var *)malloc(numData * sizeof(var));
-//     int numUsedData = 0;
-
-//     char tmpStr[32][32]; //contains potential strings
-
-//     for (int i = 0; i < command.size(); i++)
-//     {
-//         switch (command.getType(i))
-//         {
-//         case 'i':
-//             msgData[i].value.i = command.getInt(i);
-//             msgData[i].type = 'i';
-//             numUsedData++;
-//             break;
-//         case 'f':
-//             msgData[i].value.f = command.getFloat(i);
-//             msgData[i].type = 'f';
-//             numUsedData++;
-//             break;
-//         case 's':
-//             command.getString(i, tmpStr[i]);
-//             msgData[i].value.s = tmpStr[i];
-//             msgData[i].type = 's';
-//             numUsedData++;
-//             break;
-
-//         default:
-//             break;
-//         }
-//     }
-//     // handle_command(tc.substring(0, tcIndex), tc.substring(tcIndex + 1), msgData, numUsedData);
-//     compDebug(tc.substring(0, tcIndex));
-//     compDebug(tc.substring(tcIndex + 1));
-//     compDebug(String(numUsedData));
-
-// }
