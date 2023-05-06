@@ -60,7 +60,11 @@ void LedManager::setColor(int c)
 
 void LedManager::setColor(int r, int g, int b)
 {
-    for (auto const &strip : strips) strip->setAll(r, g, b);
+    for (auto const &strip : strips) 
+    {
+        strip->mode = LedStrip::LedMode::STREAMING;
+        strip->setAll(r, g, b);
+    }
 }
 
 void LedManager::setBrightness(float value)
@@ -75,16 +79,18 @@ void LedManager::setBrightness(int stripIndex, float value)
 
 void LedManager::setColor(int stripIndex, int c)
 {
-    strips[stripIndex]->setAll(c, c, c);
+    setColor(stripIndex, c, c, c);
 }
 
 void LedManager::setColor(int stripIndex, int r, int g, int b)
 {
+    strips[stripIndex]->mode = LedStrip::LedMode::STREAMING;
     strips[stripIndex]->setAll(r, g, b);
 }
 
 void LedManager::setColor(int stripIndex, int i, int r, int g, int b)
 {
+    strips[stripIndex]->mode = LedStrip::LedMode::STREAMING;
     strips[stripIndex]->setLed(i, r, g, b);
 }
 

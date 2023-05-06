@@ -132,8 +132,6 @@ void LedStrip::setLed(int i, int r, int g, int b)
     if (!checkInit())
         return;
 
-    mode = LedMode::STREAMING;
-
     if (i < 0 || i >= numLeds)
     {
         compError("incorrect index: " + String(i));
