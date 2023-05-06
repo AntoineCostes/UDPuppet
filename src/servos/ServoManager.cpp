@@ -180,7 +180,7 @@ bool ServoManager::handleCommand(OSCMessage &command)
     {
       int index = command.getInt(0);
       int value = command.getInt(1);
-      setServoMin(index, value);
+      setServoMax(index, value);
       return true;
     }
     else if (checkCommandArguments(command, "if", true))

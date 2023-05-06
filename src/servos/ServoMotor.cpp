@@ -82,7 +82,7 @@ void ServoMotor::setMin(int value)
   }
   compDebug("set min value: "+String(value));
   min = value;
-  goToRelative(0.0f);
+  goTo(inverse?max:value);
 }
 
 void ServoMotor::setMax(int value)
@@ -94,7 +94,7 @@ void ServoMotor::setMax(int value)
   }
   compDebug("set max value: "+String(value));
   max = value;
-  goToRelative(1.0f);
+  goTo(inverse?min:value);
 }
 
 void ServoMotor::setMin(float value)
