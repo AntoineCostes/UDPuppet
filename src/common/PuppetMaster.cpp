@@ -33,7 +33,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.7")
+                               firmwareVersion("1.4.8")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
@@ -139,7 +139,7 @@ void PuppetMaster::initManager()
 
 void PuppetMaster::advertiseSequences()
 {
-    OSCMessage msg("/sequences");
+    OSCMessage msg("/files/sequences");
     msg.add(BOARD_NAME.c_str());
     for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
     osc.sendMessage(msg);
@@ -149,24 +149,24 @@ void PuppetMaster::checkComponents()
 {
  // TODO make FileManager singleton
 #ifdef HAS_ADALOGGER_WING
-    OSCMessage msg("/sd");
+    OSCMessage msg("/adalogger/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
 #endif
 
 #ifdef HAS_MUSICMAKER
-    OSCMessage msg3("/tracks");
+    OSCMessage msg3("/musicmaker/tracks");
     msg3.add(BOARD_NAME.c_str());
     for (auto seq : musicmaker.tracks) msg3.add(seq.c_str());
     osc.sendMessage(msg3);
 
-    OSCMessage msg4("/volume");
+    OSCMessage msg4("/musicmaker/volume");
     msg4.add(BOARD_NAME.c_str());
     msg4.add(musicmaker.getVolume());
     osc.sendMessage(msg4);
     
-    OSCMessage msg("/sd");
+    OSCMessage msg("/musicmaker/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(musicmaker.isReady()?1:0);
     osc.sendMessage(msg);
