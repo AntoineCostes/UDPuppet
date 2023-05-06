@@ -461,15 +461,17 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
-        launchSequence(fileMgr.sequences[trackIndex]);
+        // launchSequence(fileMgr.sequences[trackIndex]);
+        launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
-        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        if (trackIndex >= REPERTOIRE->length()) trackIndex = 0;
         compLog("track index :" + trackIndex);
         break;
 #endif
 
     default:
-        compLog("ButtonEvent :" + e.type);
+        button.log("ButtonEvent :" + String(e.type));
         break;
     }
 }

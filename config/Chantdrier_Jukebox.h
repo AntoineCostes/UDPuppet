@@ -5,8 +5,9 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12002;
 
-#define BUTTON_JUKEBOX
 #define HAS_MUSICMAKER
+#define BUTTON_JUKEBOX
+const String REPERTOIRE[] = {"nuit", "contine"};
 
 #define FRAME_SIZE 4 // 4 servos
 
