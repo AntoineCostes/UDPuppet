@@ -50,6 +50,7 @@ void LedManager::update()
 
 void LedManager::clear()
 {
+    setMode(LedStrip::LedMode::STREAMING);
     for (auto const &strip : strips) strip->clear();
 }
 

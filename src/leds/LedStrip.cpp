@@ -58,6 +58,10 @@ void LedStrip::update()
             setAll(50, 0, 0);
             break;
 
+        case LedMode::COIN:
+            setAll(int(250 * slow), int(250 * slow), int(250 * slow));
+            break;
+
         case LedMode::STREAMING:
             break;
         }

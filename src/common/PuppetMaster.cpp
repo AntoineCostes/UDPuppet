@@ -305,6 +305,14 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     }            
 #endif
 
+
+    if (command.match("/coin"))
+    {
+#ifdef NUM_STRIPS
+        led.setMode(LedStrip::LedMode::COIN);
+#endif
+    }
+
     int sepIndex = address.indexOf('/', 1);
     for (auto const &mgr : managers)
     {
@@ -454,14 +462,11 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 #endif
 
 #ifdef NUM_STRIPS
-    led.setMode(LedStrip::LedMode::STREAMING);
     led.clear();
 #endif
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
-    
-        led.setMode(LedStrip::LedMode::WORKING);
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
@@ -613,11 +618,11 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     {
         player.dbg("ended");
 
-#ifdef BUTTON_JUKEBOX
-#ifdef NUM_STRIPS
-led.setMode(LedStrip::LedMode::WAITING);
-#endif
-#endif
+// #ifdef BUTTON_JUKEBOX
+// #ifdef NUM_STRIPS
+// led.setMode(LedStrip::LedMode::WAITING);
+// #endif
+// #endif
 
 #ifdef CONTINUE_PLAYING
         launchSequence(fileMgr.sequences[trackIndex]);
