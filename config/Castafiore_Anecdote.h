@@ -10,9 +10,9 @@ const int OSC_TARGET_PORT = 12003;
 #define HAS_MUSICMAKER
 #define FRAME_SIZE 4
 
-#define NUM_LEDS 1
+#define NUM_STRIPS 1
 const float LED_INTENSITY = 0.8f;
-const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
+const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB?, wifiDebug, useInSequences
     {21, 10, true, false, false}

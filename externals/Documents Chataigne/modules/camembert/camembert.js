@@ -44,7 +44,7 @@ function moduleValueChanged(value) {
 function oscEvent(address, args)
 {
 	script.log("OSC Message received "+address+", "+args.length+" arguments");
-  if (args[0] != "Camembert") return;
+  if (local.parameters.filterWithName.get() && args[0] != "Camembert") return;
 
   if (address == "/yo")
   {
@@ -56,7 +56,7 @@ function oscEvent(address, args)
     local.values.ip.set(args[3]);//+":"+String(args[4]));
   }
 
-  if (address == "/sequences")
+  if (address == "/files/sequences")
   {
     local.parameters.sequences.removeOptions();
     for (var i = 1; i < args.length; i++)
@@ -65,14 +65,14 @@ function oscEvent(address, args)
     }
   }
 
-  if (address == "/tracks")
+  if (address == "/musicmaker/tracks")
   {
     local.parameters.audioTracks.removeOptions();
     for (var i = 1; i < args.length; i++)
       local.parameters.audioTracks.addOption(args[i], i - 1);
   }
 
-  if (address == "/sd")
+  if (address == "/musicmaker/sd")
   {
       local.values.carteSDDetectee.set(args[1]>0);
   }

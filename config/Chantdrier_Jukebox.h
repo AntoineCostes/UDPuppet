@@ -11,9 +11,9 @@ const String REPERTOIRE[] = {"nuit", "contine"};
 
 #define FRAME_SIZE 4 // 4 servos
 
-#define NUM_LEDS 1
+#define NUM_STRIPS 1
 const float LED_INTENSITY = 1.0f;
-const UDPuppetLedStrip LED_STRIPS[NUM_LEDS] = 
+const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
     {21, 10, true, true, false}

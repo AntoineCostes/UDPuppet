@@ -31,6 +31,7 @@ public:
         READY,
         WORKING,
         ERROR,
+        COIN,
         STREAMING
     } mode;
 
