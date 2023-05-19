@@ -1,15 +1,40 @@
 #pragma once
 #include "../common/Component.h"
+#include "../utils/EventBroadcaster.h"
+
+#ifdef NUM_ROOMBAS
+#include <SoftwareSerial.h>
 
 enum RoombaLed
 {
-    DIRT_BLUE,
-    SPOT_GREEN,
     HOME_GREEN,
-    WARNING_RED
+    SPOT_GREEN,
+    WARNING_RED,
+    DIRT_BLUE
 };
 
-class RoombaSerial : public Component
+enum RoombaMode
+{
+    PASSIVE,
+    SAFE,
+    FULL
+};
+
+class RoombaValueEvent
+{
+public:
+    enum Type
+    {
+        BATTERY_VOLTAGE,
+        BATTERY_CHARGE
+
+    } type;
+    int rawValue;
+    RoombaValueEvent(Type type, int rawValue) : type(type), rawValue(rawValue) {}
+};
+
+class RoombaSerial : public Component, 
+                    public EventBroadcaster<RoombaValueEvent>
 {
 public:
     // inPin = roomba RX = brown wire
@@ -19,12 +44,14 @@ public:
     //~RoombaSerial(){Serial.println("delete RoombaSerial");}
     //~RoombaSerial() {}
 
-    void initComponent(bool serialDebug);
-    void update();
+    void initComponent(bool serialDebug) override;
+    void update() override;
     
     // general methods
     void wakeUp();
-    void startSafe();
+    void start(RoombaMode mode);
+    void getBattery();
+    void streamBattery();
 
     // methods for leds
     void setLed(RoombaLed led, bool state);
@@ -39,13 +66,18 @@ public:
     void setDigitLEDFromASCII(byte digit, char letter);
     void writeLEDs (char a, char b, char c, char d);
 
-    // methods for motors
+    // methods for wheels
     void setMaxSpeed(float value);
-    void drive(int velocity, int radius);
-    void driveWheels(int right, int left);
+    void driveVelocityRadius(float velocity, int radius);
+    void driveWheels(float right, float left);
     void driveWheelsPWM(int rightPWM, int leftPWM);
 
+    // methods for motors
+    void setMotors(bool vacuum, bool mainBrush, bool sideBrush);
+
     // methods for sounds
+    void playNote(byte pitch, byte duration);
+
     void imperialSong();
     void victorySong();
     void validateSong();
@@ -167,3 +199,4 @@ protected:
         G_9 = 127
     };
 };
+#endif

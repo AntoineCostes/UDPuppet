@@ -1,12 +1,12 @@
 #include "RoombaSerial.h"
 
-#ifdef NUM_ROOMBAS
+#ifdef HAS_ROOMBA
  RoombaSerial::RoombaSerial(byte inPin, byte outPin, byte wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
                                                                     centerLedBrightness(0),
-                                                                    maxSpeed(0.5)
+                                                                    maxSpeed(1.0)
 {
 }
 
@@ -14,8 +14,8 @@ void RoombaSerial::initComponent(bool serialDebug)
 {
   serial.begin(19200);
   Component::initComponent(serialDebug);
-  //wakeUp();
-  startSafe();
+  wakeUp();
+  start(SAFE);
 }
 
 void RoombaSerial::update()
@@ -24,9 +24,12 @@ void RoombaSerial::update()
       return;
 
   if (serial.available()) {
-    String inString = Serial.readString();
-    // TODO: serialEvent
-    compDebug("char received:"+inString);
+      compDebug("SERIAL");
+      char buffer[10];
+      int nbPackets = Serial.readBytesUntil(byte(19), buffer, 10);
+      
+      for(int i = 0; i < nbPackets; i++)
+        compDebug(String(int(buffer[i])));
   }
 
     //  update 7 segment display
@@ -59,12 +62,46 @@ void RoombaSerial::wakeUp()
   delay(2000);
 }
 
-void RoombaSerial::startSafe()
+void RoombaSerial::start(RoombaMode mode)
 {  
-  compLog("start in safe mode");
-  serial.write(128);  //Start
-  serial.write(131);  //Safe mode
+  switch(mode)
+  {
+    case RoombaMode::PASSIVE:
+      compLog("start in passive mode");
+      serial.write(128);
+      break;
+
+    case RoombaMode::SAFE:
+      compLog("start in safe mode");
+      serial.write(131);
+    break;
+    case RoombaMode::FULL:
+      compLog("start in full mode");
+      serial.write(132);
+    break;
+  }
   delay(1000);
+}
+
+void RoombaSerial::streamBattery()
+{  
+  if (!checkInit())
+    return;
+  
+  compDebug("STREAM BATTERY");
+  serial.write(148);
+  serial.write(1);
+  serial.write(22);
+}
+
+void RoombaSerial::getBattery()
+{  
+  if (!checkInit())
+    return;
+  
+  compDebug("GET BATTERY");
+  serial.write(142);
+  serial.write(22);
 }
 
 void RoombaSerial::setLed(RoombaLed led, bool state)
@@ -99,28 +136,31 @@ void RoombaSerial::setMaxSpeed(float value)
   maxSpeed = constrain(value, 0.0f, 1.0f);
 }
 
-void RoombaSerial::driveWheels(int right, int left)
+void RoombaSerial::driveWheels(float right, float left)
 {
   // TODO change with float -1 1?
-  right = constrain(maxSpeed*right, -500, 500);
-  left = constrain(maxSpeed*left, -500, 500);
+  int r = 500*constrain(maxSpeed*right, -1.0f, 1.0f);
+  int l = 500*constrain(maxSpeed*left, -1.0f, 1.0f);
+
+  compDebug("drive wheels: " + String(r) + " / " + String(l));
   
   serial.write(145);
-  serial.write(right >> 8);
-  serial.write(right);
-  serial.write(left >> 8);
-  serial.write(left);
+  serial.write(r >> 8);
+  serial.write(r);
+  serial.write(l >> 8);
+  serial.write(l);
 }
 
-void RoombaSerial::drive(int velocity, int radius)
+void RoombaSerial::driveVelocityRadius(float velocity, int radius)
 {
-  // TODO change with float -1 1?
-  velocity = constrain(maxSpeed*velocity, -500, 500); //def max and min velocity in mm/s
+  int speed = 500*constrain(maxSpeed*velocity, -1, 1); //def max and min velocity in mm/s
   radius = constrain(radius, -2000, 2000); //def max and min radius in mm
   
+  compDebug("drive wheels radius: " + String(speed) + " / " + String(radius));
+
   serial.write(137);
-  serial.write(velocity >> 8);
-  serial.write(velocity);
+  serial.write(speed >> 8);
+  serial.write(speed);
   serial.write(radius >> 8);
   serial.write(radius);
 }
@@ -131,11 +171,19 @@ void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
   rightPWM = constrain(rightPWM, -255, 255);
   leftPWM = constrain(leftPWM, -255, 255);
   
+  compDebug("drive wheels PWM: " + String(rightPWM) + " / " + String(leftPWM));
+
   serial.write(146);
   serial.write(rightPWM >> 8);
   serial.write(rightPWM);
   serial.write(leftPWM >> 8);
   serial.write(leftPWM);
+}
+    
+void RoombaSerial::setMotors(bool vacuum, bool mainBrush, bool sideBrush)
+{
+  serial.write(138);
+  serial.write(mainBrush >> 2 | vacuum >> 1 | sideBrush);
 }
 
 
@@ -192,6 +240,17 @@ void RoombaSerial::writeLEDs (char a, char b, char c, char d)
   setDigitLEDFromASCII(4, d);
 } 
 
+
+void RoombaSerial::playNote(byte pitch, byte duration)
+{
+    serial.write(140);      // record song
+    serial.write(byte(1));
+    serial.write(1);
+    serial.write(pitch);   
+    serial.write(duration);   
+    serial.write(141);      // play song
+    serial.write(byte(1)); 
+}
 
 // ------------------ songs
 void RoombaSerial::imperialSong()
@@ -306,7 +365,7 @@ void RoombaSerial::cancelSong()
 void RoombaSerial::errorSong()
 {
     serial.write(140);
-    serial.write(byte(4));
+    serial.write(byte(1));
     serial.write(2);
 
     serial.write(Pitch::G_1);
@@ -322,7 +381,7 @@ void RoombaSerial::errorSong()
 void RoombaSerial::kraftwerk()
 {
     serial.write(140);
-    serial.write(byte(4));
+    serial.write(byte(1));
     serial.write(10);
 
     serial.write(Pitch::D_4);
@@ -379,6 +438,6 @@ void RoombaSerial::kraftwerk()
     serial.write(8);
     
     serial.write(141);
-    serial.write(byte(4));
+    serial.write(byte(1));
 }
 #endif
