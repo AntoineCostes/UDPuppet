@@ -35,7 +35,9 @@ void RoombaManager::registerRoomba(int inPin, int outPin, int wakePin)
 
     roombas.emplace_back(new RoombaSerial(inPin, outPin, wakePin));
     roombas.back()->initComponent(serialDebug);
-    compDebug("roomba registered.");
+    roombas.back()->addListener(std::bind(&RoombaManager::gotRoombaEvent, this, std::placeholders::_1));
+
+    compDebug("roomba device registered succesfully !");
 }
 
 void RoombaManager::setText(int index, String text)
@@ -45,14 +47,19 @@ void RoombaManager::setText(int index, String text)
 
 void RoombaManager::drive(int index, float left, float right)
 {
-    left = constrain(left, -1.0f, 1.0f);
-    right = constrain(right, -1.0f, 1.0f);
-    roombas[index]->driveWheels(left*500, right*500);
+    //left = constrain(left, -1.0f, 1.0f);
+    //right = constrain(right, -1.0f, 1.0f);
+    roombas[index]->driveWheels(left, right);
 }
 
 void RoombaManager::setMaxSpeed(int index, float speed)
 {
     roombas[index]->setMaxSpeed(speed);
+}
+
+void RoombaManager::setMotors(int index, bool vacuum, bool mainBrush, bool sideBrush)
+{
+    roombas[index]->setMotors(vacuum, mainBrush, sideBrush);
 }
 
 void RoombaManager::setHomeLed(int index, bool state)
@@ -75,14 +82,19 @@ void RoombaManager::setSpotLed(int index, bool state)
     roombas[index]->setLed(SPOT_GREEN, state);
 }
 
-void RoombaManager::setCenterHue(int index, byte value)
+void RoombaManager::setCenterHue(int index, int value)
 {
     roombas[index]->setCenterHue(value);
 }
 
-void RoombaManager::setCenterBrightness(int index, byte value)
+void RoombaManager::setCenterBrightness(int index, int value)
 {
     roombas[index]->setCenterBrightness(value);
+}
+
+void RoombaManager::gotRoombaEvent(const RoombaValueEvent &e)
+{
+    sendEvent(e);
 }
 
 bool RoombaManager::handleCommand(OSCMessage &command)
@@ -131,6 +143,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         } 
         else if (checkCommandArguments(command, "ii", true))
         {
+            // TODO fix this
             int direction = command.getInt(0);
             switch(command.getInt(1))
             {
@@ -177,6 +190,46 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         else if (checkCommandArguments(command, "if", false))
         {
             setMaxSpeed(command.getInt(0), command.getFloat(1));
+            return true;
+        } 
+    }
+    
+    else if (address.equals("/roomba/vacuum"))
+    {
+        if (checkCommandArguments(command, "ii", false))
+        {
+            setMotors(command.getInt(0), command.getInt(1)>0, false, false);
+            return true;
+        } 
+        else if (checkCommandArguments(command, "ib", false))
+        {
+            setMotors(command.getInt(0), command.getInt(1), false, false);
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/main"))
+    {
+        if (checkCommandArguments(command, "ii", false))
+        {
+            setMotors(command.getInt(0), false, command.getInt(1)>0, false);
+            return true;
+        } 
+        else if (checkCommandArguments(command, "ib", false))
+        {
+            setMotors(command.getInt(0), false, command.getInt(1), false);
+            return true;
+        } 
+    }
+    else if (address.equals("/roomba/side"))
+    {
+        if (checkCommandArguments(command, "ii", false))
+        {
+            setMotors(command.getInt(0), false, false, command.getInt(1)>0);
+            return true;
+        } 
+        else if (checkCommandArguments(command, "ib", false))
+        {
+            setMotors(command.getInt(0), false, false, command.getInt(1));
             return true;
         } 
     }
@@ -255,7 +308,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            setCenterHue(0, (byte)command.getInt(0));
+            setCenterHue(0, command.getInt(0));
             return true;
         } 
     }
@@ -263,7 +316,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     {
         if (checkCommandArguments(command, "i", false))
         {
-            setCenterBrightness(0, (byte)command.getInt(0));
+            setCenterBrightness(0, command.getInt(0));
             return true;
         } 
     }
@@ -279,7 +332,24 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/start"))
     {
-        roombas[0]->startSafe();
+        int mode = command.getInt(0);
+        if (mode >= 0 && mode < 3)
+            roombas[0]->start(RoombaMode(mode));
+        return true;
+    }
+    else if (address.equals("/roomba/note"))
+    {
+        roombas[0]->playNote(command.getInt(0), command.getInt(1));
+        return true;
+    }
+    else if (address.equals("/roomba/battery"))
+    {
+        roombas[0]->getBattery();
+        return true;
+    }
+    else if (address.equals("/roomba/stream"))
+    {
+        roombas[0]->streamBattery();
         return true;
     }
     return false;

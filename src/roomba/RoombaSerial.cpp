@@ -1,7 +1,7 @@
 #include "RoombaSerial.h"
 
-#ifdef HAS_ROOMBA
- RoombaSerial::RoombaSerial(byte inPin, byte outPin, byte wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
+#ifdef NUM_ROOMBAS
+ RoombaSerial::RoombaSerial(int inPin, int outPin, int wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
                                                                     centerLedHue(127),
@@ -30,6 +30,8 @@ void RoombaSerial::update()
       
       for(int i = 0; i < nbPackets; i++)
         compDebug(String(int(buffer[i])));
+      
+      // TODO sendEvent
   }
 
     //  update 7 segment display
@@ -110,13 +112,13 @@ void RoombaSerial::setLed(RoombaLed led, bool state)
   updateLeds();
 }
 
-void RoombaSerial::setCenterHue(byte value)
+void RoombaSerial::setCenterHue(int value)
 {
   centerLedHue = value;
   updateLeds();
 }
 
-void RoombaSerial::setCenterBrightness(byte value)
+void RoombaSerial::setCenterBrightness(int value)
 {
   centerLedBrightness = value;
   updateLeds();
@@ -183,7 +185,11 @@ void RoombaSerial::driveWheelsPWM(int rightPWM, int leftPWM)
 void RoombaSerial::setMotors(bool vacuum, bool mainBrush, bool sideBrush)
 {
   serial.write(138);
-  serial.write(mainBrush >> 2 | vacuum >> 1 | sideBrush);
+  byte value = 0;
+  if (sideBrush) value += 1;
+  if (mainBrush) value += 2;
+  if (vacuum) value += 4;
+  serial.write(value);
 }
 
 

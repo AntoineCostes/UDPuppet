@@ -1,8 +1,13 @@
 #pragma once
 #include "../common/Manager.h"
 #include "RoombaSerial.h"
+#include "../utils/EventBroadcaster.h"
 
-class RoombaManager : public Manager
+
+// TODO play MIDI note
+
+class RoombaManager : public Manager,
+                    public EventBroadcaster<RoombaValueEvent>
 {
 public:
     RoombaManager();
@@ -16,13 +21,16 @@ public:
 
     void drive(int index, float left, float right);
     void setMaxSpeed(int index, float speed);
+    void setMotors(int index, bool vacuum, bool mainBrush, bool sideBrush);
 
     void setHomeLed(int index, bool state);
     void setDirtLed(int index, bool state);
     void setWarningLed(int index, bool state);
     void setSpotLed(int index, bool state);
-    void setCenterHue(int index, byte value);
-    void setCenterBrightness(int index, byte value);
+    void setCenterHue(int index, int value);
+    void setCenterBrightness(int index, int value);
+
+    void gotRoombaEvent(const RoombaValueEvent &e);
 
     bool handleCommand(OSCMessage &command) override;
 

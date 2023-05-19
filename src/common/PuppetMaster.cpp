@@ -37,7 +37,7 @@ PuppetMaster::PuppetMaster() : Manager("master"),
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
-    #elif defined(ROOMBA) // Roomba uses pin 12
+    #elif defined(NUM_ROOMBAS) // Roomba has led on pin 12
     Component::registerPin(LED_BUILTIN); 
     #else
     Component::registerPin(LED_BUILTIN); 
@@ -123,6 +123,7 @@ void PuppetMaster::initManager()
 #ifdef NUM_ROOMBAS
     managers.emplace_back(&roomba);
     roomba.initManager();
+    roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
 #ifdef HAS_MUSICMAKER
@@ -494,6 +495,22 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
+}
+#endif
+
+#ifdef NUM_ROOMBAS
+void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    compDebug("roomba event");
+
+    // OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
+    // msg.add((int)e.position);
+    // msg.add((int)e.speed);
+    // msg.add((float)e.maxSpeed);
+    // osc.sendMessage(msg);
 }
 #endif
 

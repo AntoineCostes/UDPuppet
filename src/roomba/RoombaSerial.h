@@ -2,7 +2,6 @@
 #include "../common/Component.h"
 #include "../utils/EventBroadcaster.h"
 
-#ifdef NUM_ROOMBAS
 #include <SoftwareSerial.h>
 
 enum RoombaLed
@@ -40,7 +39,7 @@ public:
     // inPin = roomba RX = brown wire
     // outPin = roomba TX = black wire
     // wakePin = green wire
-    RoombaSerial(byte inPin, byte outPin, byte wakePin);
+    RoombaSerial(int inPin, int outPin, int wakePin);
     //~RoombaSerial(){Serial.println("delete RoombaSerial");}
     //~RoombaSerial() {}
 
@@ -55,8 +54,8 @@ public:
 
     // methods for leds
     void setLed(RoombaLed led, bool state);
-    void setCenterHue(byte value);
-    void setCenterBrightness(byte value);
+    void setCenterHue(int value);
+    void setCenterBrightness(int value);
     void updateLeds();
     
     // methods for 7 segment display
@@ -86,12 +85,12 @@ public:
     void kraftwerk();
 
 protected:
-    byte wakePin;
+    int wakePin;
     SoftwareSerial serial;
 
     bool ledStates[4];
-    byte centerLedHue;
-    byte centerLedBrightness;
+    int centerLedHue;
+    int centerLedBrightness;
 
     float maxSpeed;
 
@@ -199,4 +198,3 @@ protected:
         G_9 = 127
     };
 };
-#endif
