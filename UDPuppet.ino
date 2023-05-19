@@ -35,6 +35,7 @@ void setup()
   for (int i = 0; i < NUM_STRIPS; i++)
     master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug, LED_STRIPS[i].useInSequences);
   master.led.setBrightness(LED_INTENSITY);
+  master.led.clear();
   #endif
 
   #ifdef NUM_SERVOS
