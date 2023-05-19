@@ -64,6 +64,13 @@ struct UDPuppetServo
 //     bool inverse;
 // };
 
+struct UDPuppetRoomba
+{
+    int inPin;
+    int outPin;
+    int wakePin;
+};
+
 struct UDPuppetButton
 {
     int pin;

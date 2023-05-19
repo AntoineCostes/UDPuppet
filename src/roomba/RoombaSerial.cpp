@@ -1,6 +1,6 @@
 #include "RoombaSerial.h"
 
-#ifdef HAS_ROOMBA
+#ifdef NUM_ROOMBAS
  RoombaSerial::RoombaSerial(byte inPin, byte outPin, byte wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
@@ -14,17 +14,8 @@ void RoombaSerial::initComponent(bool serialDebug)
 {
   serial.begin(19200);
   Component::initComponent(serialDebug);
-  wakeUp();
+  //wakeUp();
   startSafe();
-
-  delay(2000);
-  validateSong();
-  delay(2000);
-  victorySong();
-  delay(2000);
-  cancelSong();
-  delay(2000);
-  errorSong();
 }
 
 void RoombaSerial::update()

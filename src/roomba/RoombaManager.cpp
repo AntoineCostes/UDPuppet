@@ -97,6 +97,11 @@ bool RoombaManager::handleCommand(OSCMessage &command)
 
     if (address.equals("/roomba/move"))
     {
+        if (checkCommandArguments(command, "ff", false))
+        {
+            drive(0, command.getFloat(0), command.getFloat(1));
+            return true;
+        } 
         if (checkCommandArguments(command, "i", false))
         {
             int direction = command.getInt(0);

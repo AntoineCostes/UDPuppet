@@ -120,7 +120,7 @@ void PuppetMaster::initManager()
     stepperdriver.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
 #endif
 
-#ifdef HAS_ROOMBA
+#ifdef NUM_ROOMBAS
     managers.emplace_back(&roomba);
     roomba.initManager();
 #endif

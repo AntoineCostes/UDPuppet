@@ -21,7 +21,7 @@
 #ifdef HAS_STEPPER_DRIVER
 #include "../motorwing/StepperManager.h"
 #endif
-#ifdef HAS_ROOMBA
+#ifdef NUM_ROOMBAS
 #include "../roomba/RoombaManager.h"
 #endif
 #ifdef HAS_MUSICMAKER
@@ -69,7 +69,7 @@ public:
 #ifdef HAS_STEPPER_DRIVER
     StepperManager stepperdriver;
 #endif
-#ifdef HAS_ROOMBA
+#ifdef NUM_ROOMBAS
     RoombaManager roomba;
 #endif
 #ifdef HAS_MUSICMAKER

@@ -38,8 +38,13 @@ void setup()
   #endif
 
   #ifdef NUM_SERVOS
-  for (int i = 0; i < NUM_SERVOS; i++)
+  for (int i = 0; i < NUM_SERVOS; i++)&
     master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo, SERVOS[i].useInSequences);
+  #endif
+
+  #ifdef NUM_ROOMBAS
+  for (int i = 0; i < NUM_ROOMBAS; i++)
+    master.roomba.registerRoomba(ROOMBAS[i].inPin, ROOMBAS[i].outPin, ROOMBAS[i].wakePin);
   #endif
 
   #ifdef NUM_BUTTONS
