@@ -43,10 +43,14 @@ void setup()
     master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo, SERVOS[i].useInSequences);
   #endif
 
-// TODO only one roomba !
-  #ifdef NUM_ROOMBAS
-  for (int i = 0; i < NUM_ROOMBAS; i++)
-    master.roomba.registerRoomba(ROOMBAS[i].inPin, ROOMBAS[i].outPin, ROOMBAS[i].wakePin);
+  #ifdef HAS_ROOMBA
+    #ifdef ROOMBA_IN_PIN
+      #ifdef ROOMBA_OUT_PIN
+        #ifdef ROOMBA_WAKE_PIN
+        master.roomba.registerRoomba(ROOMBA_IN_PIN, ROOMBA_OUT_PIN, ROOMBA_WAKE_PIN);
+        #endif
+      #endif
+    #endif
   #endif
 
   #ifdef NUM_BUTTONS

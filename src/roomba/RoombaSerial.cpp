@@ -1,6 +1,6 @@
 #include "RoombaSerial.h"
 
-#ifdef NUM_ROOMBAS
+#ifdef HAS_ROOMBA
  RoombaSerial::RoombaSerial(int inPin, int outPin, int wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),

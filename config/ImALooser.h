@@ -15,9 +15,7 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
     {12, 10, true, true, true}
 };
 
-#define NUM_ROOMBAS 1
-const UDPuppetRoomba ROOMBAS[NUM_ROOMBAS] = 
-{
-    // pin, num leds, GRB?, wifiDebug, useInSequences
-    {33, 32, 15}
-};
+#define HAS_ROOMBA
+#define ROOMBA_IN_PIN 33
+#define ROOMBA_OUT_PIN 32
+#define ROOMBA_WAKE_PIN 15
