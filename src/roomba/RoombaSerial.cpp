@@ -106,9 +106,27 @@ void RoombaSerial::getBattery()
   serial.write(22);
 }
 
-void RoombaSerial::setLed(RoombaLed led, bool state)
+void RoombaSerial::setHomeLed(bool value)
 {  
-  ledStates[(int)led] = state;
+  homeLedOn = value;
+  updateLeds();
+}
+
+void RoombaSerial::setSpotLed(bool value)
+{  
+  spotLedOn = value;
+  updateLeds();
+}
+
+void RoombaSerial::setWarningLed(bool value)
+{  
+  warningLedOn = value;
+  updateLeds();
+}
+
+void RoombaSerial::setDirtLed(bool value)
+{  
+  dirtLedOn = value;
   updateLeds();
 }
 
@@ -126,8 +144,14 @@ void RoombaSerial::setCenterBrightness(int value)
 
 void RoombaSerial::updateLeds()
 {
+  byte led = 0;
+  if (homeLedOn) led += 1;
+  if (spotLedOn) led += 2;
+  if (warningLedOn) led += 4;
+  if (dirtLedOn) led += 8;
+
   serial.write(139);  
-  serial.write((ledStates[0] ? 1 : 0) + (ledStates[1] ? 2 : 0) + (ledStates[2] ? 4 : 0) + (ledStates[3] ? 8 : 0));
+  serial.write(led);
   serial.write(centerLedHue);
   serial.write(centerLedBrightness);
 }

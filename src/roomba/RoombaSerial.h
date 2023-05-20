@@ -53,7 +53,10 @@ public:
     void streamBattery();
 
     // methods for leds
-    void setLed(RoombaLed led, bool state);
+    void setHomeLed(bool value);
+    void setSpotLed(bool value);
+    void setWarningLed(bool value);
+    void setDirtLed(bool value);
     void setCenterHue(int value);
     void setCenterBrightness(int value);
     void updateLeds();
@@ -87,7 +90,10 @@ protected:
     int wakePin;
     SoftwareSerial serial;
 
-    bool ledStates[4];
+    bool homeLedOn;
+    bool spotLedOn;
+    bool warningLedOn;
+    bool dirtLedOn;
     int centerLedHue;
     int centerLedBrightness;
 

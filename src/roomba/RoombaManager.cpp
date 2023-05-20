@@ -83,22 +83,22 @@ void RoombaManager::setMotors(int index, bool vacuum, bool mainBrush, bool sideB
 
 void RoombaManager::setHomeLed(int index, bool state)
 {
-    roombas[index]->setLed(HOME_GREEN, state);
+    roombas[index]->setHomeLed(state);
 }
 
 void RoombaManager::setDirtLed(int index, bool state)
 {
-    roombas[index]->setLed(DIRT_BLUE, state);
+    roombas[index]->setDirtLed(state);
 }
 
 void RoombaManager::setWarningLed(int index, bool state)
 {
-    roombas[index]->setLed(WARNING_RED, state);
+    roombas[index]->setWarningLed(state);
 }
 
 void RoombaManager::setSpotLed(int index, bool state)
 {
-    roombas[index]->setLed(SPOT_GREEN, state);
+    roombas[index]->setSpotLed(state);
 }
 
 void RoombaManager::setCenterHue(int index, int value)
