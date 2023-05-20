@@ -40,6 +40,25 @@ void RoombaManager::registerRoomba(int inPin, int outPin, int wakePin)
     compDebug("roomba device registered succesfully !");
 }
 
+void RoombaManager::wakeUp(int index)
+{
+    roombas[index]->wakeUp();
+}
+
+void RoombaManager::startMode(int index, RoombaMode mode)
+{
+    roombas[index]->start(mode);
+}
+
+void RoombaManager::getBattery(int index)
+{
+    roombas[index]->getBattery();
+}
+void RoombaManager::streamBattery(int index)
+{
+    roombas[index]->streamBattery();
+}
+
 void RoombaManager::setText(int index, String text)
 {
     roombas[index]->setText(text);
@@ -92,6 +111,21 @@ void RoombaManager::setCenterBrightness(int index, int value)
     roombas[index]->setCenterBrightness(value);
 }
 
+void RoombaManager::playSong(int index, String name)
+{
+    if (name.equals("imperial")) roombas[index]->imperialSong();
+    if (name.equals("victory")) roombas[index]->victorySong();
+    if (name.equals("validate")) roombas[index]->validateSong();
+    if (name.equals("cancel")) roombas[index]->cancelSong();
+    if (name.equals("error")) roombas[index]->errorSong();
+    if (name.equals("kraftwerk")) roombas[index]->kraftwerk();
+}
+
+void RoombaManager::playNote(int index, byte pitch, byte duration)
+{
+    roombas[index]->playNote(pitch, duration);
+}
+
 void RoombaManager::gotRoombaEvent(const RoombaValueEvent &e)
 {
     sendEvent(e);
@@ -114,7 +148,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
             drive(0, command.getFloat(0), command.getFloat(1));
             return true;
         } 
-        if (checkCommandArguments(command, "i", false))
+        else if (checkCommandArguments(command, "i", false))
         {
             int direction = command.getInt(0);
             switch(direction)
@@ -172,117 +206,144 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/stop"))
     {
-        if (checkCommandArguments(command, "i", false))
-        {
-            drive(command.getInt(0), 0, 0);
-            return true;
-        } 
+        // if (checkCommandArguments(command, "i", false))
+        // {
+        //     drive(command.getInt(0), 0, 0);
+        //     return true;
+        // } 
         drive(0, 0, 0);
         return true;
     }
     else if (address.equals("/roomba/speed"))
     {
-        if (checkCommandArguments(command, "f", false))
+        if (checkCommandArguments(command, "f", true))
         {
             setMaxSpeed(0, command.getFloat(0));
             return true;
         } 
-        else if (checkCommandArguments(command, "if", false))
+        // if (checkCommandArguments(command, "if", false))
+        // {
+        //     setMaxSpeed(command.getInt(0), command.getFloat(1));
+        //     return true;
+        // } 
+    }
+    else if (address.equals("/roomba/brushes"))
+    {
+        if (checkCommandArguments(command, "bbb", false))
         {
-            setMaxSpeed(command.getInt(0), command.getFloat(1));
+            setMotors(0, command.getBoolean(0), command.getBoolean(1), command.getBoolean(2));
+            return true;
+        } 
+        // if (checkCommandArguments(command, "ibbb", false))
+        // {
+        //     setMotors(command.getInt(0), command.getBoolean(1), command.getBoolean(2), command.getBoolean(3));
+        //     return true;
+        // } 
+        else if (checkCommandArguments(command, "iii", true))
+        {
+            setMotors(0, command.getInt(0)>0, command.getInt(1)>0, command.getInt(2)>0);
             return true;
         } 
     }
-    
     else if (address.equals("/roomba/vacuum"))
     {
-        if (checkCommandArguments(command, "ii", false))
+        if (checkCommandArguments(command, "b", false))
         {
-            setMotors(command.getInt(0), command.getInt(1)>0, false, false);
+            setMotors(0, command.getBoolean(0), false, false);
             return true;
         } 
-        else if (checkCommandArguments(command, "ib", false))
+        // if (checkCommandArguments(command, "ii", false))
+        // {
+        //     setMotors(command.getInt(0), command.getInt(1)>0, false, false);
+        //     return true;
+        // } 
+        // if (checkCommandArguments(command, "ib", false))
+        // {
+        //     setMotors(command.getInt(0), command.getBoolean(1), false, false);
+        //     return true;
+        // } 
+        else if (checkCommandArguments(command, "i", true))
         {
-            setMotors(command.getInt(0), command.getInt(1), false, false);
+            setMotors(0, command.getInt(0)>0, false, false);
             return true;
         } 
     }
     else if (address.equals("/roomba/main"))
     {
-        if (checkCommandArguments(command, "ii", false))
+        if (checkCommandArguments(command, "b", false))
         {
-            setMotors(command.getInt(0), false, command.getInt(1)>0, false);
+            setMotors(0, false, command.getBoolean(0), false);
             return true;
         } 
-        else if (checkCommandArguments(command, "ib", false))
+        // else if (checkCommandArguments(command, "ii", false))
+        // {
+        //     setMotors(command.getInt(0), false, command.getInt(1)>0, false);
+        //     return true;
+        // } 
+        // else if (checkCommandArguments(command, "ib", false))
+        // {
+        //     setMotors(command.getInt(0), false, command.getBoolean(1), false);
+        //     return true;
+        // } 
+        else if (checkCommandArguments(command, "i", true))
         {
-            setMotors(command.getInt(0), false, command.getInt(1), false);
+            setMotors(0, false, command.getInt(0)>0, false);
             return true;
         } 
     }
     else if (address.equals("/roomba/side"))
     {
-        if (checkCommandArguments(command, "ii", false))
+        if (checkCommandArguments(command, "b", false))
         {
-            setMotors(command.getInt(0), false, false, command.getInt(1)>0);
+            setMotors(0, false, false, command.getBoolean(0));
             return true;
         } 
-        else if (checkCommandArguments(command, "ib", false))
+        // if (checkCommandArguments(command, "ii", false))
+        // {
+        //     setMotors(command.getInt(0), false, false, command.getInt(1)>0);
+        //     return true;
+        // } 
+        // if (checkCommandArguments(command, "ib", false))
+        // {
+        //     setMotors(command.getInt(0), false, false, command.getBoolean(1));
+        //     return true;
+        // } 
+        if (checkCommandArguments(command, "i", true))
         {
-            setMotors(command.getInt(0), false, false, command.getInt(1));
+            setMotors(0, false, false, command.getInt(0)>0);
             return true;
         } 
     }
     else if (address.equals("/roomba/text"))
     {
-        if (checkCommandArguments(command, "s", false))
+        if (checkCommandArguments(command, "s", true))
         {
             char text[32];
             command.getString(0, text);
             setText(0, String(text));
             return true;
         } 
-        else if (checkCommandArguments(command, "is", false))
+        // if (checkCommandArguments(command, "is", false))
+        // {
+        //     char text[32];
+        //     command.getString(1, text);
+        //     setText(command.getInt(0), String(text));
+        //     return true;
+        // } 
+    }
+    else if (address.equals("/roomba/song"))
+    {
+        if (checkCommandArguments(command, "s", true))
         {
-            char text[32];
-            command.getString(1, text);
-            setText(command.getInt(0), String(text));
+            char song[32];
+            command.getString(0, song);
+            playSong(0, String(song));
             return true;
-        } 
-    }
-    else if (address.equals("/roomba/song/imperial"))
-    {
-        roombas[0]->imperialSong();
-        return true;
-    }
-    else if (address.equals("/roomba/song/victory"))
-    {
-        roombas[0]->victorySong();
-        return true;
-    }
-    else if (address.equals("/roomba/song/validate"))
-    {
-        roombas[0]->validateSong();
-        return true;
-    }
-    else if (address.equals("/roomba/song/cancel"))
-    {
-        roombas[0]->cancelSong();
-        return true;
-    }
-    else if (address.equals("/roomba/song/error"))
-    {
-        roombas[0]->errorSong();
-        return true;
-    }
-    else if (address.equals("/roomba/song/kraftwerk"))
-    {
-        roombas[0]->kraftwerk();
-        return true;
+        }
     }
     else if (address.equals("/roomba/home"))
     {
-        if (checkCommandArguments(command, "i", false))
+        if (checkCommandArguments(command, "i", true))
         {
             setHomeLed(0, command.getInt(0)>0);
             return true;
@@ -290,7 +351,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/warning"))
     {
-        if (checkCommandArguments(command, "i", false))
+        if (checkCommandArguments(command, "i", true))
         {
             setWarningLed(0, command.getInt(0)>0);
             return true;
@@ -298,7 +359,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/dirt"))
     {
-        if (checkCommandArguments(command, "i", false))
+        if (checkCommandArguments(command, "i", true))
         {
             setDirtLed(0, command.getInt(0)>0);
             return true;
@@ -306,7 +367,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/hue"))
     {
-        if (checkCommandArguments(command, "i", false))
+        if (checkCommandArguments(command, "i", true))
         {
             setCenterHue(0, command.getInt(0));
             return true;
@@ -314,7 +375,7 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/brightness"))
     {
-        if (checkCommandArguments(command, "i", false))
+        if (checkCommandArguments(command, "i", true))
         {
             setCenterBrightness(0, command.getInt(0));
             return true;
@@ -327,29 +388,37 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/wake"))
     {
-        roombas[0]->wakeUp();
+        wakeUp(0);
         return true;
     }
     else if (address.equals("/roomba/start"))
     {
-        int mode = command.getInt(0);
-        if (mode >= 0 && mode < 3)
-            roombas[0]->start(RoombaMode(mode));
-        return true;
+        if (checkCommandArguments(command, "i", true))
+        {
+            int mode = command.getInt(0);
+            if (mode >= 0 && mode < 3)
+            {
+                startMode(0, RoombaMode(mode));
+                return true;
+            }
+        } 
     }
     else if (address.equals("/roomba/note"))
     {
-        roombas[0]->playNote(command.getInt(0), command.getInt(1));
-        return true;
+        if (checkCommandArguments(command, "ii", true))
+        {
+            playNote(0, command.getInt(0), command.getInt(1));
+            return true;
+        }
     }
     else if (address.equals("/roomba/battery"))
     {
-        roombas[0]->getBattery();
+        getBattery(0);
         return true;
     }
     else if (address.equals("/roomba/stream"))
     {
-        roombas[0]->streamBattery();
+        streamBattery(0);
         return true;
     }
     return false;

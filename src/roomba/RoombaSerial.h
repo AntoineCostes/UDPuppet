@@ -76,7 +76,6 @@ public:
 
     // methods for sounds
     void playNote(byte pitch, byte duration);
-
     void imperialSong();
     void victorySong();
     void validateSong();
