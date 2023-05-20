@@ -79,14 +79,13 @@ public:
 
     // methods for sounds
     void playNote(byte pitch, byte duration);
-    void imperialSong();
-    void victorySong();
-    void validateSong();
-    void cancelSong();
-    void errorSong();
-    void kraftwerk();
+    void playSong0();
+    void playSong1();
+    void playSong2();
+    void playSong3();
 
 protected:
+    int baudRate;
     int wakePin;
     SoftwareSerial serial;
 

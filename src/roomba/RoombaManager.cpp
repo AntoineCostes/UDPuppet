@@ -111,14 +111,12 @@ void RoombaManager::setCenterBrightness(int index, int value)
     roombas[index]->setCenterBrightness(value);
 }
 
-void RoombaManager::playSong(int index, String name)
+void RoombaManager::playSong(int index, int songIndex)
 {
-    if (name.equals("imperial")) roombas[index]->imperialSong();
-    if (name.equals("victory")) roombas[index]->victorySong();
-    if (name.equals("validate")) roombas[index]->validateSong();
-    if (name.equals("cancel")) roombas[index]->cancelSong();
-    if (name.equals("error")) roombas[index]->errorSong();
-    if (name.equals("kraftwerk")) roombas[index]->kraftwerk();
+    if (songIndex == 0) roombas[index]->playSong0();
+    if (songIndex == 1) roombas[index]->playSong1();
+    if (songIndex == 2) roombas[index]->playSong2();
+    if (songIndex == 3) roombas[index]->playSong3();
 }
 
 void RoombaManager::playNote(int index, byte pitch, byte duration)
@@ -333,12 +331,14 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     }
     else if (address.equals("/roomba/song"))
     {
-        if (checkCommandArguments(command, "s", true))
+        if (checkCommandArguments(command, "i", true))
         {
-            char song[32];
-            command.getString(0, song);
-            playSong(0, String(song));
-            return true;
+            int songIndex = command.getInt(0);
+            if (songIndex >= 0 && songIndex < 4)
+            {
+                playSong(0, songIndex);
+                return true;
+            }
         }
     }
     else if (address.equals("/roomba/home"))

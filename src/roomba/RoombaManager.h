@@ -35,7 +35,7 @@ public:
     void setCenterBrightness(int index, int value);
 
     void setText(int index, String text);
-    void playSong(int index, String name);
+    void playSong(int index, int songIndex);
     void playNote(int index, byte pitch, byte duration);
 
     void gotRoombaEvent(const RoombaValueEvent &e);
