@@ -8,7 +8,7 @@ const int OSC_TARGET_PORT = 10005;
 #define FRAME_SIZE 1
 
 #define NUM_STRIPS 1
-const float LED_INTENSITY = 0.8f;
+const float LED_INTENSITY = 0.3f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB?, wifiDebug, useInSequences

@@ -504,13 +504,9 @@ void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
     if (!osc.isConnected)
         return;
 
-    compDebug("roomba event");
-
-    // OSCMessage msg( ( "/" + BOARD_NAME + "/stepper/pos").c_str() ); //+String(e.index)));
-    // msg.add((int)e.position);
-    // msg.add((int)e.speed);
-    // msg.add((float)e.maxSpeed);
-    // osc.sendMessage(msg);
+    OSCMessage msg("/roomba/battery"); 
+    msg.add(e.rawValue);
+    osc.sendMessage(msg);
 }
 #endif
 

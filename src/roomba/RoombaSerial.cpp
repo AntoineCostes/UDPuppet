@@ -11,7 +11,8 @@
                                                                     dirtLedOn(false),
                                                                     centerLedHue(127),
                                                                     centerLedBrightness(0),
-                                                                    maxSpeed(1.0)
+                                                                    maxSpeed(1.0),
+                                                                    lastBatteryCheckMs(0)
 {
   pinMode(inPin, INPUT);
   pinMode(outPin, OUTPUT);
@@ -34,36 +35,55 @@ void RoombaSerial::update()
   if (!checkInit())
       return;
 
-  if (serial.available()) {
-      compDebug("SERIAL");
-      char buffer[10];
-      int nbPackets = Serial.readBytesUntil(byte(19), buffer, 10);
-      
-      for(int i = 0; i < nbPackets; i++)
-        compDebug(String(int(buffer[i])));
-      
-      // TODO sendEvent
+  if (millis() > lastBatteryCheckMs + 15000)
+  {
+    getBattery();
+    lastBatteryCheckMs = millis();
   }
-    if (!textBuffer.equals(""))
-    {
-    //  update 7 segment display
-    if (millis() - lastTextUpdate > ROOMBA_TEXT_UPDATE_MS)
-    {
-        serial.write(164);
-        for (int pos = 0; pos <4; pos++)
+
+  if (serial.available()) {
+      char buffer[10];
+      int nbPackets = serial.readBytesUntil(byte(19), buffer, 10);
+      // is this byte(19) really the ending byte ?
+      // asking for power seensors returns 10-bytes packet
+      
+      compDebug("received packet: "+String(nbPackets));
+      if (serialDebug)
+      {
+        for(int i = 0; i < nbPackets; i++)
         {
-            if (pos < textBuffer.length())
-                serial.write(textBuffer[pos]);
-            else
-                serial.write(' ');
+          Serial.print(String(byte(buffer[i])));
+          Serial.print("-");
         }
-        textBuffer.remove(0, 1);
+        Serial.println("");
+      }
+      // I get 59 and 203
+      // I'm not sure what are those 2 values, should I combine them ?
+      
+      int value = (buffer[0] << 8) | buffer[1];
+      sendEvent(RoombaValueEvent(RoombaValueEvent::Type::BATTERY_VOLTAGE, value));
+  }
+  
+  if (!textBuffer.equals(""))
+  {
+  //  update 7 segment display
+  if (millis() - lastTextUpdate > ROOMBA_TEXT_UPDATE_MS)
+  {
+      serial.write(164);
+      for (int pos = 0; pos <4; pos++)
+      {
+          if (pos < textBuffer.length())
+              serial.write(textBuffer[pos]);
+          else
+              serial.write(' ');
+      }
+      textBuffer.remove(0, 1);
 
-        if (textBuffer.equals("")) serial.write(' ');
+      if (textBuffer.equals("")) serial.write(' ');
 
-        lastTextUpdate = millis();
-    }
-    }
+      lastTextUpdate = millis();
+  }
+  }
 }
 
 // ----------- general methods
@@ -119,7 +139,7 @@ void RoombaSerial::streamBattery()
   if (!checkInit())
     return;
   
-  compDebug("STREAM BATTERY");
+  compLog("STREAM BATTERY ?? AT YOUR OWN RISK...");
   serial.write(148);
   serial.write(1);
   serial.write(22);
@@ -130,7 +150,6 @@ void RoombaSerial::getBattery()
   if (!checkInit())
     return;
   
-  compDebug("GET BATTERY");
   serial.write(142);
   serial.write(22);
 }
@@ -175,7 +194,7 @@ void RoombaSerial::updateLeds()
 {
   byte led = 0;
   if (dirtLedOn) led += 1;
-  if (spotLedOn) led += 2;
+  if (spotLedOn) led += 2; // does not turn off, why ?
   if (homeLedOn) led += 4;
   if (warningLedOn) led += 8;
 

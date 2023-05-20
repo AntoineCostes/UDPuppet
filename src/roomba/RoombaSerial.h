@@ -81,6 +81,7 @@ protected:
     int baudRate;
     int wakePin;
     SoftwareSerial serial;
+    long lastBatteryCheckMs;
 
     bool homeLedOn;
     bool spotLedOn;
