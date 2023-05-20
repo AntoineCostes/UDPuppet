@@ -4,14 +4,6 @@
 
 #include <SoftwareSerial.h>
 
-enum RoombaLed
-{
-    HOME_GREEN,
-    SPOT_GREEN,
-    WARNING_RED,
-    DIRT_BLUE
-};
-
 enum RoombaMode
 {
     PASSIVE,

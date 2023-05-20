@@ -4,6 +4,10 @@
  RoombaSerial::RoombaSerial(int inPin, int outPin, int wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
+                                                                    homeLedOn(false),
+                                                                    spotLedOn(false),
+                                                                    warningLedOn(false),
+                                                                    dirtLedOn(false),
                                                                     centerLedHue(127),
                                                                     centerLedBrightness(0),
                                                                     maxSpeed(1.0)
@@ -145,10 +149,10 @@ void RoombaSerial::setCenterBrightness(int value)
 void RoombaSerial::updateLeds()
 {
   byte led = 0;
-  if (homeLedOn) led += 1;
+  if (dirtLedOn) led += 1;
   if (spotLedOn) led += 2;
-  if (warningLedOn) led += 4;
-  if (dirtLedOn) led += 8;
+  if (homeLedOn) led += 4;
+  if (warningLedOn) led += 8;
 
   serial.write(139);  
   serial.write(led);
