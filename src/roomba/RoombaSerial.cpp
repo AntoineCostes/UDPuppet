@@ -12,6 +12,9 @@
                                                                     centerLedBrightness(0),
                                                                     maxSpeed(1.0)
 {
+  pinMode(inPin, INPUT);
+  pinMode(outPin, OUTPUT);
+  pinMode(wakePin, OUTPUT);
 }
 
 void RoombaSerial::initComponent(bool serialDebug)
@@ -19,7 +22,10 @@ void RoombaSerial::initComponent(bool serialDebug)
   serial.begin(19200);
   Component::initComponent(serialDebug);
   wakeUp(); // in case Roomba is OFF
+  // start(PASSIVE); // in case of battery change - takes too much time !
   start(FULL);
+
+  // TODO init function: set baud rate + 100ms + wake up + passive + full
 }
 
 void RoombaSerial::update()
@@ -37,7 +43,8 @@ void RoombaSerial::update()
       
       // TODO sendEvent
   }
-
+    if (!textBuffer.equals(""))
+    {
     //  update 7 segment display
     if (millis() - lastTextUpdate > ROOMBA_TEXT_UPDATE_MS)
     {
@@ -51,7 +58,10 @@ void RoombaSerial::update()
         }
         textBuffer.remove(0, 1);
 
+        if (textBuffer.equals("")) serial.write(' ');
+
         lastTextUpdate = millis();
+    }
     }
 }
 
@@ -65,7 +75,7 @@ void RoombaSerial::wakeUp()
   digitalWrite(wakePin, LOW);
   delay(500);
   digitalWrite(wakePin, HIGH);
-  delay(2000);
+  // delay(2000);
 }
 
 void RoombaSerial::start(RoombaMode mode)
@@ -80,13 +90,16 @@ void RoombaSerial::start(RoombaMode mode)
     case RoombaMode::SAFE:
       compLog("start in safe mode");
       serial.write(131);
+      delay(100);
     break;
     case RoombaMode::FULL:
       compLog("start in full mode");
       serial.write(132);
+      delay(100);
+      dirtLedOn = true;
+      updateLeds();
     break;
   }
-  delay(1000);
 }
 
 void RoombaSerial::streamBattery()
