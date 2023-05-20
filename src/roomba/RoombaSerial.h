@@ -39,6 +39,7 @@ public:
     void update() override;
     
     // general methods
+    void switchBaudRate();
     void wakeUp();
     void start(RoombaMode mode);
     void getBattery();

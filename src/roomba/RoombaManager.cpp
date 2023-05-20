@@ -421,5 +421,10 @@ bool RoombaManager::handleCommand(OSCMessage &command)
         streamBattery(0);
         return true;
     }
+    else if (address.equals("/roomba/baud"))
+    {
+        roombas[0]->switchBaudRate();
+        return true;
+    }
     return false;
 }

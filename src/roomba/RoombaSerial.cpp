@@ -4,6 +4,7 @@
  RoombaSerial::RoombaSerial(int inPin, int outPin, int wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
+                                                                    baudRate(19200),
                                                                     homeLedOn(false),
                                                                     spotLedOn(false),
                                                                     warningLedOn(false),
@@ -19,7 +20,7 @@
 
 void RoombaSerial::initComponent(bool serialDebug)
 {
-  serial.begin(19200);
+  serial.begin(baudRate);
   Component::initComponent(serialDebug);
   wakeUp(); // in case Roomba is OFF
   // start(PASSIVE); // in case of battery change - takes too much time !
@@ -67,6 +68,17 @@ void RoombaSerial::update()
 
 // ----------- general methods
 
+void RoombaSerial::switchBaudRate()
+{
+  serial.flush();
+  if (baudRate == 115200) baudRate = 19200;
+  else if (baudRate == 19200) baudRate = 115200;
+  serial.begin(baudRate);
+  
+  wakeUp();
+  start(FULL);
+  compLog("New baudrate: "+String(baudRate));
+}
 void RoombaSerial::wakeUp()
 {
   compLog("Wake up !");
