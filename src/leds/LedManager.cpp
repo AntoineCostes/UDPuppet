@@ -162,6 +162,7 @@ bool LedManager::handleCommand(OSCMessage &command)
             float g = command.getFloat(1);
             float b = command.getFloat(2);
             setColor(r * 255, g * 255, b * 255);
+            return true;
         } else if (checkCommandArguments(command, "ifff", true))
         {
             int stripIndex = command.getInt(0);

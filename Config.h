@@ -56,7 +56,7 @@
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // GENERAL PARAMETERS
-const bool SETUP_DELAY_MS = 0;
+const int SETUP_DELAY_MS = 0;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
