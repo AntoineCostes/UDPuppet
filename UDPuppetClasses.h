@@ -22,16 +22,18 @@ enum Networks
     LENET,
     COSTES,
     SANSGRAVITE,
-    SUNSHINE
+    SUNSHINE,
+    AKINDOFMAGIC
 };
 
-const UDPuppetWifiCredentials CREDENTIALS[5] = 
+const UDPuppetWifiCredentials CREDENTIALS[6] = 
 {
     {"", ""},
     {"LeNet", "connectemoi"},
     {"Ouifi", "28101948AC"},
     {"Sans Gravité", "lovecraft"},
-    {"under the sunshine", "bibimbap"}
+    {"under the sunshine", "bibimbap"},
+    {"akindofmagic", "akindofmagic"}
 };
 
 ///////////////////
