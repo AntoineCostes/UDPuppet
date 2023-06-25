@@ -4,7 +4,7 @@ enum BoardType
 {
     HUZZAH32,
     THINGESP8266,
-    HUZZAH8266 // not supported yet
+    HUZZAH32_S3
 };
 
 ///////////////////
