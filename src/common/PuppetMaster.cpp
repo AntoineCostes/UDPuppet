@@ -364,6 +364,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiEvent::ConnectionState::CONNECTING:
         wifi.dbg("connecting to wifi...");
+        digitalWrite(LED_BUILTIN, HIGH);
     #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
@@ -371,6 +372,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::CONNECTED:
         wifi.dbg("wifi connected !");
+        digitalWrite(LED_BUILTIN, LOW);
         
 
         wifi.log("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
@@ -392,9 +394,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
         #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.4f);
         delay(500);
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.5f);
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.6f);
         delay(500);
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
         #endif
@@ -404,6 +406,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::DISCONNECTED:
         wifi.dbg("wifi lost !");
+        digitalWrite(LED_BUILTIN, HIGH);
     #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::ERROR);
     #endif
