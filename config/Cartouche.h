@@ -12,7 +12,7 @@ const float LED_INTENSITY = 0.1f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
-    {12, 5, true, true, false}
+    {33, 5, true, true, false}
 };
 
 #define NUM_SERVOS 1

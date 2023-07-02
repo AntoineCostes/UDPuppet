@@ -18,6 +18,7 @@
 // initComponent (when registering) and updating components automatically
 
 // ERROR mode if prop was not registered successfully
+// all Managers should implement isIndexValid() !
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
