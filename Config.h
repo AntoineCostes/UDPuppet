@@ -86,7 +86,7 @@ const int ROOMBA_TEXT_UPDATE_MS = 200;
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
-const bool BATTERY_DEBUG = false;
+const bool BATTERY_DEBUG = true;
 const bool WIFI_DEBUG = true;
 const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;

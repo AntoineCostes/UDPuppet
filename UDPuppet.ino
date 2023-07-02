@@ -2,13 +2,15 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO
+// make childClass DebugLedStrip with communication methods
+// remember target ip
+// JSON config files ?
+
 // implement microSeconds for servo
 // change debug from Chataigne => oscQuery
 // OSCQuery
 // checkComponents
-// remember target ip
 // port in handshake ?
-// JSON config files ?
 // component bool checkRange(float/int min, float/int max)
 
 // remove initComponent
@@ -16,7 +18,6 @@
 // initComponent (when registering) and updating components automatically
 
 // ERROR mode if prop was not registered successfully
-// make childClass DebugLedStrip with communication methods
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 

@@ -1,5 +1,6 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
+#include "Adafruit_MAX1704X.h"
 
 #ifdef ESP32
 class BatteryEvent
@@ -28,6 +29,10 @@ public:
     void update();
 
 protected:
+    // TODO make child class
+    Adafruit_MAX17048 lipoSensor;
+    bool sensorAvailable;
+
     float smoothedValue;
     float smoothing;
     int lastMeasureMs;

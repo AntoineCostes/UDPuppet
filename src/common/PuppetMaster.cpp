@@ -255,6 +255,9 @@ void PuppetMaster::update()
     case HUZZAH32:
         break;
 
+    case HUZZAH32_S3:
+        break;
+
     default:
         compError("Unknown board type !");
         return;
