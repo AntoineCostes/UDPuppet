@@ -154,11 +154,17 @@ bool ServoManager::handleCommand(OSCMessage &command)
       servoGoToAbsolute(index, value);
       return true;
     }
-    else if (checkCommandArguments(command, "if", true))
+    else if (checkCommandArguments(command, "if", false))
     {
       int index = command.getInt(0);
       float value = command.getFloat(1);
       servoGoTo(index, value);
+      return true;
+    }
+    else if (checkCommandArguments(command, "f", true))
+    {
+      float value = command.getFloat(0);
+      servoGoTo(0, value);
       return true;
     }
   }

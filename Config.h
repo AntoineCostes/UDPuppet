@@ -56,7 +56,7 @@
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::AKINDOFMAGIC];
 
 // GENERAL PARAMETERS
-const bool SETUP_DELAY_MS = 0;
+const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
@@ -64,7 +64,7 @@ const int DELAY_BEFORE_RECONNECT_MS = 3000;
 const int CONNECTION_TIMEOUT_MS = 10000;
 
 // OSC PARAMETERS
-const String OSC_TARGET_IP = "192.168.0.1";
+const String OSC_TARGET_IP = "";
 const int PING_TIMEOUT_MS = 1000;
 const bool TARGET_IP_OVERRIDE = true;
 

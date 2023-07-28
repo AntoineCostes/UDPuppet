@@ -2,6 +2,7 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO
+// put board name in OSC address
 // make childClass DebugLedStrip with communication methods
 // remember target ip
 // JSON config files ?

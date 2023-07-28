@@ -1,7 +1,9 @@
 #include "BatteryManager.h"
 
-#define HIGH_BATTERY 2300 // ~4.15V
-#define LOW_BATTERY 1930  // ~3.5V
+#define HIGH_BATTERY 2100 
+// #define HIGH_BATTERY 2300 // ~4.15V
+#define LOW_BATTERY 1980  
+// #define LOW_BATTERY 1930  // ~3.5V
 
 #ifdef ESP32
 BatteryManager::BatteryManager() : Manager("battery"), smoothing(.9f), sensorAvailable(false)

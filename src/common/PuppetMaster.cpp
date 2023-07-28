@@ -526,7 +526,7 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
         return;
 
     OSCMessage msg("/battery");
-    msg.add(BOARD_NAME.c_str());
+    // msg.add(BOARD_NAME.c_str());
     msg.add(e.level);
     msg.add(e.voltage);
     msg.add(e.analogValue);
