@@ -96,6 +96,7 @@
         "bitset": "cpp",
         "memory_resource": "cpp"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "arduino.useArduinoCli": false
 
 }

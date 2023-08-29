@@ -49,11 +49,11 @@
 //#include "config/Castafiore_Anecdote.h"
 //#include "config/Chantdrier.h"
 //#include "config/Chantdrier_Jukebox.h"
-//#include "config/Test.h"
-#include "config/Cartouche.h"
+#include "config/Test.h"
+//#include "config/Cartouche.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::AKINDOFMAGIC];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;

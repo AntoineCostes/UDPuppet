@@ -2,16 +2,14 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO
-// put board name in OSC address
-// make childClass DebugLedStrip with communication methods
-// remember target ip
-// JSON config files ?
-
+// make battery monitoring a pref option (ESP32)
 // implement microSeconds for servo
 // change debug from Chataigne => oscQuery
 // OSCQuery
 // checkComponents
+// remember target ip
 // port in handshake ?
+// JSON config files ?
 // component bool checkRange(float/int min, float/int max)
 
 // remove initComponent
@@ -19,7 +17,7 @@
 // initComponent (when registering) and updating components automatically
 
 // ERROR mode if prop was not registered successfully
-// all Managers should implement isIndexValid() !
+// make childClass DebugLedStrip with communication methods
 
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
@@ -30,7 +28,10 @@ void setup()
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
+
+  //#ifdef SETUP_DELAY_MS
   delay(SETUP_DELAY_MS);
+  //#endif
 
   master.initManager(); // TODO make singleton and rename ?
 
@@ -38,11 +39,22 @@ void setup()
   for (int i = 0; i < NUM_STRIPS; i++)
     master.led.registerLedStrip(LED_STRIPS[i].pin, LED_STRIPS[i].numLeds, LED_STRIPS[i].GRB?NEO_GRB:NEO_RGB + NEO_KHZ800, LED_STRIPS[i].wifiDebug, LED_STRIPS[i].useInSequences);
     master.led.setBrightness(LED_INTENSITY);
+    master.led.clear();
   #endif
 
   #ifdef NUM_SERVOS
   for (int i = 0; i < NUM_SERVOS; i++)
     master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo, SERVOS[i].useInSequences);
+  #endif
+
+  #ifdef HAS_ROOMBA
+    #ifdef ROOMBA_IN_PIN
+      #ifdef ROOMBA_OUT_PIN
+        #ifdef ROOMBA_WAKE_PIN
+        master.roomba.registerRoomba(ROOMBA_IN_PIN, ROOMBA_OUT_PIN, ROOMBA_WAKE_PIN);
+        #endif
+      #endif
+    #endif
   #endif
 
   #ifdef NUM_BUTTONS
