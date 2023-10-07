@@ -20,15 +20,9 @@ void Button::update()
     bool currentState = !digitalRead(pin);
     if (isPressed != currentState)
     {
-        compDebug("===================");
-        if (currentState) compDebug("currentState TRUE");
-        else compDebug("currentState FALSE");
-        
-        if (isPressed) compDebug("isPressed TRUE");
-        else compDebug("isPressed FALSE");
-
         if (currentState)
         {
+            compDebug("PRESSED");
             sendEvent(ButtonEvent(pin, ButtonEvent::Type::PRESSED));
             isPressed = true;
             isLongPressed = false;
@@ -36,18 +30,19 @@ void Button::update()
         }
         else
         {
+            compDebug("RELEASED");
             if (millis() - lastPressMs < longPressMs)
                 sendEvent(ButtonEvent(pin, ButtonEvent::Type::RELASED_SHORT));
             else
                 sendEvent(ButtonEvent(pin, ButtonEvent::Type::RELEASED_LONG));
             
             isPressed = false;
+            isLongPressed = false;
         }
-        if (isPressed) compDebug("currentState TRUE");
-        else compDebug("currentState FALSE");
 
-    } else if (!isLongPressed && millis() - lastPressMs > longPressMs)
+    } else if (isPressed && !isLongPressed && millis() - lastPressMs > longPressMs)
     {
+        compDebug("MAINTAINED");
         sendEvent(ButtonEvent(pin, ButtonEvent::Type::LONG_PRESS));
         isLongPressed = true;
     }

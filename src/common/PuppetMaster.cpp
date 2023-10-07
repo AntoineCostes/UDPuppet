@@ -474,8 +474,13 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
         // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
-        if (trackIndex >= REPERTOIRE->length()) trackIndex = 0;
-        compLog("track index :" + trackIndex);
+        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+        compLog("track index :" + String(trackIndex));
+        break;
+
+    case ButtonEvent::Type::LONG_PRESS:
+        compLog("long press");
+        musicmaker.play("cancel.mp3");
         break;
 #endif
 

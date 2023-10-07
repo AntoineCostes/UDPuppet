@@ -7,7 +7,8 @@ const int OSC_TARGET_PORT = 12002;
 
 #define HAS_MUSICMAKER
 #define BUTTON_JUKEBOX
-const String REPERTOIRE[] = {"nuit", "contine"};
+const int REPERTOIRE_LENGTH = 2;
+const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine"};
 
 #define FRAME_SIZE 4 // 4 servos
 
