@@ -2,12 +2,13 @@
 #include "src/common/PuppetMaster.h"
 
 // TODO
+// OSC error feedback
+// used pins feedback => give names to reservedPins ?
 // make battery monitoring a pref option (ESP32)
-// implement microSeconds for servo
-// change debug from Chataigne => oscQuery
-// OSCQuery
+// change debug from Chataigne
 // checkComponents
-// remember target ip
+// readFlashParameters for 8266
+// implement microSeconds for servo
 // port in handshake ?
 // JSON config files ?
 // component bool checkRange(float/int min, float/int max)
@@ -29,9 +30,7 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 
-  //#ifdef SETUP_DELAY_MS
   delay(SETUP_DELAY_MS);
-  //#endif
 
   master.initManager(); // TODO make singleton and rename ?
 

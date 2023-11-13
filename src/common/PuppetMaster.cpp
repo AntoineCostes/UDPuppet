@@ -35,14 +35,25 @@ PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
                                firmwareVersion("1.4.9")
 {
-    #ifdef BASE // Base uses pin 12 and 13
-    // don't register
-    #elif defined(HAS_ROOMBA) // Roomba has led on pin 12
+#ifdef BASE 
+    // Base uses pin 12 and 13
+    // don't register any pins
+
+#elif defined(HAS_ROOMBA) 
+    // Roomba has led on pin 12
+    Component::registerPin(LED_BUILTIN)
+    ; 
+#elif defined(HAS_MUSICMAKER) && defined(ESP8266)
+    // musicmaker uses huzzah8662 pin #0
+    
+#else
     Component::registerPin(LED_BUILTIN); 
-    #else
-    Component::registerPin(LED_BUILTIN); 
+
+#if (BOARD_TYPE == HUZZAH32)
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
-    #endif
+#endif
+
+#endif
     
     serialDebug = MASTER_DEBUG;
 }
@@ -256,9 +267,11 @@ void PuppetMaster::update()
     switch (BOARD_TYPE)
     {
     case HUZZAH32:
+    case HUZZAH8266:
+    case THINGESP8266:
+    case HUZZAH32_S3:
         break;
 
-    case HUZZAH32_S3:
         break;
 
     default:

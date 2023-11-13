@@ -3,6 +3,7 @@
 enum BoardType
 {
     HUZZAH32,
+    HUZZAH8266,
     THINGESP8266,
     HUZZAH32_S3
 };

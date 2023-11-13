@@ -52,7 +52,8 @@
 //#include "config/Castafiore_Bouton.h"
 //#include "config/Castafiore_Anecdote.h"
 //#include "config/Chantdrier.h"
-#include "config/Chantdrier_Jukebox.h"
+//#include "config/Chantdrier_Jukebox.h"
+#include "config/Chantdrier_8266.h"
 // #include "config/Test.h"
 //#include "config/Cartouche.h"
 
