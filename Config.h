@@ -5,8 +5,12 @@
 // Leds
 #include <Adafruit_NeoPixel.h>
 // Servos
-#include <ESP32Servo.h>
 #include <Adafruit_PWMServoDriver.h>
+#ifdef ESP32
+#include <ESP32Servo.h>
+#else
+#include <Servo.h>
+#endif
 // motors
 // #include <AccelStepper.h>
 #include "src/AccelStepper_modified/src/AccelStepper.h"

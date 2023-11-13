@@ -1,7 +1,7 @@
 {
-    "port": "COM17",
-    "board": "esp32:esp32:featheresp32",
+    "port": "COM30",
+    "board": "esp8266:esp8266:huzzah",
     "sketch": "UDPuppet.ino",
-    "configuration": "FlashFreq=80,FlashSize=4M,UploadSpeed=115200,PartitionScheme=default",
+    "configuration": "xtal=80,vt=flash,exception=disabled,stacksmash=disabled,ssl=all,mmu=3232,non32xfer=fast,eesz=4M2M,ip=lm2f,dbg=Disabled,lvl=None____,wipe=none,baud=115200",
     "output": "../ArduinoOutput"
 }

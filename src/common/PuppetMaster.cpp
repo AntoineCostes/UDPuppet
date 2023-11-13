@@ -33,11 +33,11 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.8")
+                               firmwareVersion("1.4.9")
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
-    #elif defined(ROOMBA) // Roomba uses pin 12
+    #elif defined(HAS_ROOMBA) // Roomba has led on pin 12
     Component::registerPin(LED_BUILTIN); 
     #else
     Component::registerPin(LED_BUILTIN); 
@@ -84,6 +84,7 @@ void PuppetMaster::initManager()
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
+#ifdef ESP32
     if (FileManager::doesExist("/index.html"))
     {
         managers.emplace_back(&web);
@@ -93,6 +94,7 @@ void PuppetMaster::initManager()
     {
         compError("webserver not initiliazed: index.hmtl was not found");
     }
+#endif
 
     managers.emplace_back(&button);
     button.initManager();
@@ -123,6 +125,7 @@ void PuppetMaster::initManager()
 #ifdef HAS_ROOMBA
     managers.emplace_back(&roomba);
     roomba.initManager();
+    roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
 #ifdef HAS_MUSICMAKER
@@ -393,14 +396,16 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         //led.setColor(0, 0, 50, 0);
         // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
-        #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.4f);
+    #ifdef NUM_SERVOS
+        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
         delay(500);
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.6f);
         delay(500);
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
-        #endif
+    #endif
+    #ifdef ESP32
         web.initServer();
+    #endif
         
         break;
 
@@ -446,7 +451,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
         break;
 
     default:
-        compLog("OSCEvent :" + e.type);
+        compLog("OSCEvent :" + String(e.type));
         break;
     }
 }
@@ -503,6 +508,18 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
     msg.add((int)e.position);
     msg.add((int)e.speed);
     msg.add((float)e.maxSpeed);
+    osc.sendMessage(msg);
+}
+#endif
+
+#ifdef HAS_ROOMBA
+void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    OSCMessage msg("/roomba/battery"); 
+    msg.add(e.rawValue);
     osc.sendMessage(msg);
 }
 #endif
@@ -642,6 +659,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 }
 
 
+#ifdef ESP32
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
     switch (e.type)
@@ -668,3 +686,4 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
     }
 
 }
+#endif

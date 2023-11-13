@@ -4,7 +4,6 @@
 
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
-#include "../files/WebServerManager.h"
 
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
@@ -30,6 +29,7 @@
 #include "../sensors/ButtonManager.h"
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
+#include "../files/WebServerManager.h"
 #endif
 
 class PuppetMaster : public Manager
@@ -46,7 +46,6 @@ public:
 
     WifiManager wifi;
     OSCManager osc;
-    WebServerManager web;
 
     SequencePlayer player;
     FileManager fileMgr;
@@ -55,6 +54,7 @@ public:
     
 #ifdef ESP32
     BatteryManager battery;
+    WebServerManager web;
 #endif
 
 #ifdef NUM_STRIPS
@@ -99,12 +99,12 @@ protected:
     void gotWifiEvent(const WifiEvent &e);
     void gotOSCEvent(const OSCEvent &e);
 
-    void gotFileEvent(const FileEvent &e);
     void gotPlayerEvent(const PlayerEvent &e);
 
     void gotButtonEvent(const ButtonEvent &e);
 #ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
+    void gotFileEvent(const FileEvent &e);
 #endif
 
 #ifdef HAS_MOTORWING
@@ -112,6 +112,10 @@ protected:
 #endif
 #ifdef HAS_STEPPER_DRIVER
     void gotStepperEvent(const StepperEvent2 &e);
+#endif
+
+#ifdef HAS_ROOMBA
+    void gotRoombaValueEvent(const RoombaValueEvent &e);
 #endif
 
 #if defined(BUTTON_JUKEBOX) || defined(CONTINUE_PLAYING)

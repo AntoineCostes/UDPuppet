@@ -1,35 +1,57 @@
 #pragma once
 #include "../common/Component.h"
+#include "../utils/EventBroadcaster.h"
 
-enum RoombaLed
+#include <SoftwareSerial.h>
+
+enum RoombaMode
 {
-    DIRT_BLUE,
-    SPOT_GREEN,
-    HOME_GREEN,
-    WARNING_RED
+    PASSIVE,
+    SAFE,
+    FULL
 };
 
-class RoombaSerial : public Component
+class RoombaValueEvent
+{
+public:
+    enum Type
+    {
+        BATTERY_VOLTAGE,
+        BATTERY_CHARGE
+
+    } type;
+    int rawValue;
+    RoombaValueEvent(Type type, int rawValue) : type(type), rawValue(rawValue) {}
+};
+
+class RoombaSerial : public Component, 
+                    public EventBroadcaster<RoombaValueEvent>
 {
 public:
     // inPin = roomba RX = brown wire
     // outPin = roomba TX = black wire
     // wakePin = green wire
-    RoombaSerial(byte inPin, byte outPin, byte wakePin);
+    RoombaSerial(int inPin, int outPin, int wakePin);
     //~RoombaSerial(){Serial.println("delete RoombaSerial");}
     //~RoombaSerial() {}
 
-    void initComponent(bool serialDebug);
-    void update();
+    void initComponent(bool serialDebug) override;
+    void update() override;
     
     // general methods
+    void switchBaudRate();
     void wakeUp();
-    void startSafe();
+    void start(RoombaMode mode);
+    void getBattery();
+    void streamBattery();
 
     // methods for leds
-    void setLed(RoombaLed led, bool state);
-    void setCenterHue(byte value);
-    void setCenterBrightness(byte value);
+    void setHomeLed(bool value);
+    void setSpotLed(bool value);
+    void setWarningLed(bool value);
+    void setDirtLed(bool value);
+    void setCenterHue(int value);
+    void setCenterBrightness(int value);
     void updateLeds();
     
     // methods for 7 segment display
@@ -39,27 +61,34 @@ public:
     void setDigitLEDFromASCII(byte digit, char letter);
     void writeLEDs (char a, char b, char c, char d);
 
-    // methods for motors
+    // methods for wheels
     void setMaxSpeed(float value);
-    void drive(int velocity, int radius);
-    void driveWheels(int right, int left);
+    void driveVelocityRadius(float velocity, int radius);
+    void driveWheels(float right, float left);
     void driveWheelsPWM(int rightPWM, int leftPWM);
 
+    // methods for motors
+    void setMotors(bool vacuum, bool mainBrush, bool sideBrush);
+
     // methods for sounds
-    void imperialSong();
-    void victorySong();
-    void validateSong();
-    void cancelSong();
-    void errorSong();
-    void kraftwerk();
+    void playNote(byte pitch, byte duration);
+    void playSong0();
+    void playSong1();
+    void playSong2();
+    void playSong3();
 
 protected:
-    byte wakePin;
+    int baudRate;
+    int wakePin;
     SoftwareSerial serial;
+    long lastBatteryCheckMs;
 
-    bool ledStates[4];
-    byte centerLedHue;
-    byte centerLedBrightness;
+    bool homeLedOn;
+    bool spotLedOn;
+    bool warningLedOn;
+    bool dirtLedOn;
+    int centerLedHue;
+    int centerLedBrightness;
 
     float maxSpeed;
 
