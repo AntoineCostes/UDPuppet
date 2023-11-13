@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"UDPuppet",
 
-  "version":"1.4.0",
+  "version":"1.4.8",
   "description":"Contrôle d'un fromage présidentiel par OSC",
 
 
@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Mai2023-1.4.7",
+      "default":"Juin2023-1.4.8",
       "readOnly":true
     },
     "Invocation":
@@ -49,11 +49,13 @@
     },
     "Audio Tracks":
     {
-      "type":"Enum"
+      "type":"Enum",
+      "options": {} 
     },
     "Sequences":
     {
-      "type":"Enum"
+      "type":"Enum",
+      "options": {}
     },
     "Play Sequence":
     {

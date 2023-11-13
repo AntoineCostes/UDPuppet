@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"UDPuppet",
 
-  "version":"1.4.0",
+  "version":"1.4.8",
   "description":"Contrôle d'une boîte de médicament par OSC",
 
 
@@ -36,34 +36,38 @@
     "Version":
     {
       "type":"String",
-      "default":"Avril2022-1.4.0",
-      "readOnly":true
-    },
-    "IP":
-    {
-      "type":"String",
-      "default":"",
+      "default":"Juin2023-1.4.8",
       "readOnly":true
     },
     "Invocation":
     {
       "type":"Trigger"
     },
+    "Filter with name":
+    {
+      "type":"Boolean"
+    },
+    "Audio Tracks":
+    {
+      "type":"Enum",
+      "options": {} 
+    },
     "Sequences":
     {
-      "type":"Enum"
+      "type":"Enum",
+      "options": {}
     },
-    "Play":
+    "Play Sequence":
     {
       "type":"Trigger"
     },
-    "Tracks":
+    "Delete Sequence":
     {
-      "type":"Enum"
+      "type":"Trigger"
     }
   },
 
-  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback", "booleanSendMode"],
 
   "scripts":
   [
@@ -73,6 +77,18 @@
 
   "values":
   {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
     "Batterie":
     {
       "type":"Float",

@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"UDPuppet",
 
-  "version":"1.4.0",
+  "version":"1.4.8",
   "description":"Contrôle d'une chorale de paquets de cigarette par OSC",
 
 
@@ -36,30 +36,34 @@
     "Version":
     {
       "type":"String",
-      "default":"Avril2022-1.4.0",
-      "readOnly":true
-    },
-    "IP":
-    {
-      "type":"String",
-      "default":"",
+      "default":"Juin2023-1.4.8",
       "readOnly":true
     },
     "Invocation":
     {
       "type":"Trigger"
     },
+    "Filter with name":
+    {
+      "type":"Boolean"
+    },
+    "Audio Tracks":
+    {
+      "type":"Enum",
+      "options": {}
+    },
     "Sequences":
     {
-      "type":"Enum"
+      "type":"Enum",
+      "options": {} 
     },
-    "Play":
+    "Play Sequence":
     {
       "type":"Trigger"
     },
-    "Tracks":
+    "Delete Sequence":
     {
-      "type":"Enum"
+      "type":"Trigger"
     }
   },
 
@@ -73,12 +77,29 @@
 
   "values":
   {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
     "Batterie":
     {
       "type":"Float",
       "min": 0,
       "max": 100,
       "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
     }
   },
 
