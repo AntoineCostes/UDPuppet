@@ -18,6 +18,7 @@ local.sendTo("192.168.1.255", 9000, "/yo", 0);
 local.sendTo("192.168.2.255", 9000, "/yo", 0);
 local.sendTo("192.168.10.255", 9000, "/yo", 0);
 local.sendTo("192.168.43.255", 9000, "/yo", 0);
+local.sendTo("192.168.137.255", 9000, "/yo", 0);
 }
 // PARAMETERS
 function moduleParameterChanged(param)
