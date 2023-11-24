@@ -29,7 +29,9 @@
 #include "../sensors/ButtonManager.h"
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
+#ifdef WEBSERVER
 #include "../files/WebServerManager.h"
+#endif
 #endif
 
 class PuppetMaster : public Manager
@@ -54,7 +56,9 @@ public:
     
 #ifdef ESP32
     BatteryManager battery;
+#ifdef WEBSERVER
     WebServerManager web;
+#endif
 #endif
 
 #ifdef NUM_STRIPS
@@ -104,7 +108,9 @@ protected:
     void gotButtonEvent(const ButtonEvent &e);
 #ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
+#ifdef WEBSERVER
     void gotFileEvent(const FileEvent &e);
+#endif
 #endif
 
 #ifdef HAS_MOTORWING

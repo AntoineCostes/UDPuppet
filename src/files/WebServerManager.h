@@ -6,6 +6,7 @@
 #include <ESPAsyncWebServer.h>
 
 #ifdef ESP32
+#ifdef WEBSERVER
 #include <AsyncTCP.h>
 
 class FileEvent
@@ -51,4 +52,5 @@ public:
     void reboot(AsyncWebServerRequest *request);
     void changeFile(AsyncWebServerRequest *request);
 };
+#endif
 #endif

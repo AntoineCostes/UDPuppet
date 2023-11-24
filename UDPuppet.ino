@@ -46,6 +46,16 @@ void setup()
     master.servo.registerServo(SERVOS[i].pin, SERVOS[i].min, SERVOS[i].max, SERVOS[i].start, SERVOS[i].inverse, SERVOS[i].isMultiServo, SERVOS[i].useInSequences);
   #endif
 
+  #ifdef NUM_BUTTONS
+  for (int i = 0; i < NUM_BUTTONS; i++)
+    master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].longPressMs);
+  #endif
+
+  #ifdef NUM_HCSR04
+  for (int i = 0; i < NUM_HCSR04; i++)
+    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin, ULTRASONICS[i].active);
+  #endif
+  
   #ifdef HAS_ROOMBA
     #ifdef ROOMBA_IN_PIN
       #ifdef ROOMBA_OUT_PIN
@@ -56,15 +66,6 @@ void setup()
     #endif
   #endif
 
-  #ifdef NUM_BUTTONS
-  for (int i = 0; i < NUM_BUTTONS; i++)
-    master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].longPressMs);
-  #endif
-
-  #ifdef NUM_HCSR04
-  for (int i = 0; i < NUM_HCSR04; i++)
-    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin, ULTRASONICS[i].active);
-  #endif
 }
 
 void loop()

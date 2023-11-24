@@ -1,6 +1,7 @@
 #include "WebServerManager.h"
 
 #ifdef ESP32
+#ifdef WEBSERVER
 
 // Make size of files human readable
 // source: https://github.com/CelliesProjects/minimalUploadAuthESP32
@@ -182,4 +183,5 @@ void WebServerManager::changeFile(AsyncWebServerRequest *request)
     request->send(400, "text/plain", "ERROR: name and action params required");
   }
 }
+#endif
 #endif

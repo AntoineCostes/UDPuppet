@@ -5,9 +5,9 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
+#define WEBSERVER
 #define BUTTON_JUKEBOX
 #define HAS_MUSICMAKER
-
 
 #define FRAME_SIZE 1 // 1 servo
 

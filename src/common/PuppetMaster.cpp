@@ -33,7 +33,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.9")
+                               firmwareVersion("1.4.10")
 {
 #ifdef BASE 
     // Base uses pin 12 and 13
@@ -96,6 +96,7 @@ void PuppetMaster::initManager()
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
 #ifdef ESP32
+#ifdef WEBSERVER
     if (FileManager::doesExist("/index.html"))
     {
         managers.emplace_back(&web);
@@ -105,6 +106,7 @@ void PuppetMaster::initManager()
     {
         compError("webserver not initiliazed: index.hmtl was not found");
     }
+#endif
 #endif
 
     managers.emplace_back(&button);
@@ -417,7 +419,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
     #endif
     #ifdef ESP32
+    #ifdef WEBSERVER
         web.initServer();
+    #endif
     #endif
         
         break;
@@ -673,6 +677,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 
 
 #ifdef ESP32
+#ifdef WEBSERVER
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
     switch (e.type)
@@ -699,4 +704,5 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
     }
 
 }
+#endif
 #endif

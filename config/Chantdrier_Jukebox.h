@@ -5,6 +5,7 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12002;
 
+#define WEBSERVER
 #define HAS_MUSICMAKER
 #define BUTTON_JUKEBOX
 const int REPERTOIRE_LENGTH = 2;

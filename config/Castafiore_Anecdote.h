@@ -7,6 +7,7 @@ const int OSC_TARGET_PORT = 12003;
 
 #define SERVO_ALLOW_UNSAFE_PINS // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
 
+#define WEBSERVER
 #define HAS_MUSICMAKER
 #define FRAME_SIZE 4
 
