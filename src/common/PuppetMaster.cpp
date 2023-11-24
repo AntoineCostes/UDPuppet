@@ -90,6 +90,11 @@ void PuppetMaster::initManager()
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
 #endif
 
+#ifdef HAS_MUSICMAKER
+    managers.emplace_back(&musicmaker);
+    musicmaker.initManager();
+#endif
+
     fileMgr.init();
     managers.emplace_back(&player);
     player.initManager();
@@ -141,10 +146,6 @@ void PuppetMaster::initManager()
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
-#ifdef HAS_MUSICMAKER
-    managers.emplace_back(&musicmaker);
-    musicmaker.initManager();
-#endif
 
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
