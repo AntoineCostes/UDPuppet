@@ -3,11 +3,14 @@
 #include "FileManager.h"
 #include "../utils/EventBroadcaster.h"
 
+#ifdef WEBSERVER
 #include <ESPAsyncWebServer.h>
 
 #ifdef ESP32
-#ifdef WEBSERVER
 #include <AsyncTCP.h>
+#elif defined (ESP8266)
+#include <ESPAsyncTCP.h>
+#endif
 
 class FileEvent
 {
@@ -52,5 +55,4 @@ public:
     void reboot(AsyncWebServerRequest *request);
     void changeFile(AsyncWebServerRequest *request);
 };
-#endif
 #endif

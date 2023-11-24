@@ -10,9 +10,37 @@ FileManager::FileManager() : Manager("files")
     serialDebug = FILES_DEBUG;
 }
 
-void FileManager::init()
+void FileManager::init(bool SD_initialized)
 {
-#ifdef ESP32
+#ifdef USE_SD
+    std::set<int> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
+
+    if (SD_initialized)
+    {
+        Component::registerPins(pins);
+        compDebug("SD card already initialized");
+        sdIsDetected = true;
+    }
+    else
+    {
+        if (!Component::registerPins(pins))
+        {
+            compError("cannot initialize SD: a needed pin is already registered !");
+            return;
+        }
+        if (SD.begin(SD_CS))
+        {
+            Serial.println("SD Card initialized.");
+            printFiles();
+            sdIsDetected = true;
+        }
+        else
+        {
+            Serial.println("SD Card Initialization failed.");
+            return;
+        }
+    }
+#else
     if(SPIFFS.begin())// Start the SPI Flash Files System
     {
         Serial.println("SPIFFS initialized.");
@@ -37,32 +65,6 @@ void FileManager::init()
             return;
         }
     }
-#elif defined(USE_SD)
-    std::set<int> pins = {SD_SCK, SD_MISO, SD_MOSI, SD_CS};
-
-    if (!Component::registerPins(pins))
-    {
-        compError("cannot initialize SD: a needed pin is already registered !");
-        return;
-    }
-
-#ifdef HAS_MUSICMAKER // HACK TO REMOVE
-    Serial.println("SD Card already there...?");
-    printFiles();
-    sdIsDetected = true;
-#else
-    if (SD.begin(SD_CS))
-    {
-        Serial.println("SD Card initialized.");
-        printFiles();
-        sdIsDetected = true;
-    }
-    else
-    {
-        Serial.println("SD Card Initialization failed.");
-        return;
-    }
-#endif
 #endif
     Manager::initManager();
 }
@@ -73,10 +75,10 @@ void FileManager::update()
 
 boolean FileManager::doesExist(String fileName)
 {
-#ifdef ESP32
-    return SPIFFS.exists(fileName.c_str());
-#elif defined(USE_SD)
+#ifdef USE_SD
     return SD.exists(fileName.c_str());
+#else
+    return SPIFFS.exists(fileName.c_str());
 #endif
 }
 
@@ -89,10 +91,10 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
     if (!fileName.startsWith("/"))
         fileName = "/" + fileName;
 
-#ifdef ESP32
-    File f = SPIFFS.open(fileName.c_str(), forWriting ? "w" : "r");
-#elif defined(USE_SD)
+#ifdef USE_SD
     File f = SD.open(fileName.c_str(), forWriting ? FILE_WRITE : FILE_READ);
+#else
+    File f = SPIFFS.open(fileName.c_str(), forWriting ? "w" : "r");
 #endif
     
     Serial.println("Open file : " + String(f.name()));
@@ -104,17 +106,17 @@ void FileManager::deleteFileIfExists(String path)
     if (!path.startsWith("/"))
         path = "/" + path;
 
-#ifdef ESP32
-    if (SPIFFS.exists(path))
-    {
-        SPIFFS.remove(path);
-        Serial.println("Removed file " + path);
-    } else
-        Serial.println("ERROR could not find file to delete:" + path);
-#elif defined(USE_SD)
+#ifdef USE_SD
     if (SD.exists(path.c_str()))
     {
         SD.remove(path.c_str());
+        Serial.println("Removed file " + path);
+    } else
+        Serial.println("ERROR could not find file to delete:" + path);
+#else
+    if (SPIFFS.exists(path))
+    {
+        SPIFFS.remove(path);
         Serial.println("Removed file " + path);
     } else
         Serial.println("ERROR could not find file to delete:" + path);
@@ -128,10 +130,10 @@ void FileManager::printFiles()
 
 void FileManager::listDir(const char *dirname, uint8_t levels)
 {
-#ifdef ESP32
-    File root = SPIFFS.open(dirname, "r");
-#elif defined(USE_SD)
+#ifdef USE_SD
     File root = SD.open(dirname);
+#else
+    File root = SPIFFS.open(dirname, "r");
 #endif
 
     if (!root)

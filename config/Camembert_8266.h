@@ -6,6 +6,8 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12001;
 
 #define HAS_MUSICMAKER
+#define WEBSERVER
+#define USE_SD
 
 #define FRAME_SIZE 1
 
@@ -13,5 +15,5 @@ const int OSC_TARGET_PORT = 12001;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {16, 50, 100, 50, false, false, true}
+    {4, 0, 180, 50, false, false, true}
 };

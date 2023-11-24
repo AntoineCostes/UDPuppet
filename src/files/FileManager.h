@@ -8,7 +8,6 @@
 #ifdef ESP32
     #include <SPIFFS.h>
     #define SD_CS 33
-
 #elif defined(ESP8266)
     #define SD_CS 15
 #endif
@@ -24,16 +23,6 @@
     #define SD_SCK 13 // Music Maker FeatherWing
 #endif
 
-// use SD instead of SPIFFS
-#ifndef ESP32
-    #ifdef HAS_MUSICMAKER
-        #define USE_SD
-    #endif
-#endif
-#if defined(HAS_ADALOGGER_WING)
-    #define USE_SD
-#endif
-
 class FileManager : public Manager//, public EventBroadcaster<FileEvent>//, public EventBroadcaster<SDEvent>
 {
 public:
@@ -46,7 +35,7 @@ public:
     static bool sdIsDetected;
 #endif
 
-    void init();
+    void init(bool SD_initialized = false);
     void update() override;
     
     //File manipulation

@@ -95,12 +95,11 @@ void PuppetMaster::initManager()
     musicmaker.initManager();
 #endif
 
-    fileMgr.init();
+    fileMgr.init(musicmaker.isReady());
     managers.emplace_back(&player);
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
-#ifdef ESP32
 #ifdef WEBSERVER
     if (FileManager::doesExist("/index.html"))
     {
@@ -111,7 +110,6 @@ void PuppetMaster::initManager()
     {
         compError("webserver not initiliazed: index.hmtl was not found");
     }
-#endif
 #endif
 
     managers.emplace_back(&button);
@@ -419,10 +417,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         delay(500);
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
     #endif
-    #ifdef ESP32
+
     #ifdef WEBSERVER
         web.initServer();
-    #endif
     #endif
         
         break;
@@ -677,7 +674,6 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 }
 
 
-#ifdef ESP32
 #ifdef WEBSERVER
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
@@ -705,5 +701,4 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
     }
 
 }
-#endif
 #endif

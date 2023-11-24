@@ -94,7 +94,8 @@
         "complex": "cpp",
         "regex": "cpp",
         "bitset": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "ranges": "cpp"
     },
     "cmake.configureOnOpen": true,
     "arduino.useArduinoCli": false
