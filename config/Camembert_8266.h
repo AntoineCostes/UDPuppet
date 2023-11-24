@@ -7,7 +7,7 @@ const int OSC_TARGET_PORT = 12001;
 
 #define HAS_MUSICMAKER
 #define WEBSERVER
-#define USE_SD
+// #define USE_SD
 
 #define FRAME_SIZE 1
 

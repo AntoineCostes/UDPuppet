@@ -6,7 +6,7 @@
 #include <SD.h>
 
 #ifdef ESP32
-    #include <SPIFFS.h>
+#include <SPIFFS.h>
     #define SD_CS 33
 #elif defined(ESP8266)
     #define SD_CS 15

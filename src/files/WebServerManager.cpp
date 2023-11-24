@@ -1,6 +1,5 @@
 #include "WebServerManager.h"
 
-#ifdef ESP32
 #ifdef WEBSERVER
 
 // Make size of files human readable
@@ -12,22 +11,40 @@ String humanReadableSize(const size_t bytes) {
   else return String(bytes / 1024.0 / 1024.0 / 1024.0) + " GB";
 }
 
-
 String processor(const String& var) {
   if (var == "FIRMWARE") {
     return "1.0.0";
   }
 
+#ifdef ESP32
+#elif defined (ESP8266)
+  FSInfo FS_INFO;
+  SPIFFS.info(FS_INFO);
+#endif
+
   if (var == "FREESPIFFS") {
+#ifdef ESP32
     return humanReadableSize((SPIFFS.totalBytes() - SPIFFS.usedBytes()));
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.totalBytes - FS_INFO.usedBytes);
+#endif
   }
 
   if (var == "USEDSPIFFS") {
+#ifdef ESP32
     return humanReadableSize(SPIFFS.usedBytes());
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.usedBytes);
+#endif
+
   }
 
   if (var == "TOTALSPIFFS") {
+#ifdef ESP32
     return humanReadableSize(SPIFFS.totalBytes());
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.totalBytes);
+#endif
   }
   return "[unknown template processor]";
 }
@@ -37,6 +54,7 @@ WebServerManager::WebServerManager() : Manager("webserver"),
                                        server(80)
 {
     serialDebug = MASTER_DEBUG;
+    
 }
 
 
@@ -88,7 +106,7 @@ void WebServerManager::listFiles(AsyncWebServerRequest *request)
 {
   String fileshtml = "";
   Serial.println("Listing files stored on SPIFFS");
-  File root = SPIFFS.open("/");
+  File root = SPIFFS.open("/", "r");
   File foundfile = root.openNextFile();
   fileshtml += "<table><tr><th align='left'>Name</th><th align='left'>Size</th><th></th><th></th></tr>";
   
@@ -183,5 +201,4 @@ void WebServerManager::changeFile(AsyncWebServerRequest *request)
     request->send(400, "text/plain", "ERROR: name and action params required");
   }
 }
-#endif
 #endif
