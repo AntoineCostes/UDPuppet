@@ -57,7 +57,7 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
       if (unsafePins.find(pin) != unsafePins.end())
       {
         compError("pin " + String(pin) + " is unsafe for ESP32 to attach Servo !");
-#ifndef SERVO_ALLOW_UNSAFE_PINS
+#ifndef ALLOW_ESP32_SERVO_UNSAFE_PINS
         return;
 #endif
       }

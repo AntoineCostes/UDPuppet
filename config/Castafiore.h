@@ -5,7 +5,7 @@ const BoardType BOARD_TYPE = HUZZAH32;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
-#define SERVO_ALLOW_UNSAFE_PINS // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
+#define ALLOW_ESP32_SERVO_UNSAFE_PINS // 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
 
 #define WEBSERVER
 #define HAS_MUSICMAKER

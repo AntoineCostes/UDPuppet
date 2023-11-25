@@ -36,6 +36,7 @@ void MusicMakerManager::initManager()
     tracks.clear();
     File root =  SD.open("/");
     File file = root.openNextFile();
+    if (file) compDebug("Audio tracks list:");
     String fName;
     while(file)
     {
@@ -43,7 +44,7 @@ void MusicMakerManager::initManager()
         if (fName.endsWith(".mp3") || fName.endsWith(".wav"))
         {
             tracks.emplace_back(fName);
-            compDebug("track detected: "+fName);
+            compDebug(fName);
         }
         file =  root.openNextFile();
     }
