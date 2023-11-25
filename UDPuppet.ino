@@ -34,7 +34,7 @@ void setup()
 
   #ifdef NUM_HCSR04
   for (int i = 0; i < NUM_HCSR04; i++)
-    master.sensorMgr.registerHCSR04Reader(ULTRASONICS[i].niceName, ULTRASONICS[i].triggerPin, ULTRASONICS[i].echoPin, ULTRASONICS[i].active);
+    master.sensorMgr.registerHCSR04(HCSR04[i].niceName, HCSR04[i].triggerPin, HCSR04[i].echoPin, HCSR04[i].active);
   #endif
   
   #ifdef HAS_ROOMBA

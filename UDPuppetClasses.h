@@ -75,6 +75,7 @@ struct UDPuppetButton
 
 struct UDPuppetHCSR04
 {
+    String niceName;
     int triggerPin;
     int echoPin;
     boolean active;

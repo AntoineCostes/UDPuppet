@@ -78,9 +78,9 @@ public:
 #ifdef HAS_MUSICMAKER
     MusicMakerManager musicmaker;
 #endif
-// #ifdef NUM_HCSR04
-//     SensorManager sensorMgr;
-// #endif
+#ifdef NUM_HCSR04
+    SensorManager sensorMgr;
+#endif
 
 protected:
     std::vector<std::unique_ptr<Manager>> managers; // TODO useful ? set instead of vector
