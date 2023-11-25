@@ -132,9 +132,8 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
 {
 #ifdef USE_SD
     File root = SD.open(dirname);
-#else
+#elif defined (ESP32)
     File root = SPIFFS.open(dirname, "r");
-#endif
 
     if (!root)
     {
@@ -162,10 +161,9 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         }
         else
         {
-            Serial.println("  FILE: " + String(file.name()));
-            Serial.println("  SIZE: " + String(file.size()));
-            
             String fileName = String(file.name());
+            compDebug(fileName + " (" + String(dir.fileSize()) + " bytes)");
+            
             if (fileName.endsWith(".dat"))
             {
                 sequences.emplace_back(fileName.substring(0, fileName.length() - 4));
@@ -173,4 +171,34 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         }
         file = root.openNextFile();
     }
+#elif defined(ESP8266)
+    compDebug("Files on SPIFFS:");
+    Dir dir = SPIFFS.openDir("/");
+    
+    sequences.clear();
+    while (dir.next())
+    {
+        if (dir.isDirectory())
+        {
+            compDebug("  DIR : " + String(dir.fileName()));
+            if (levels)
+            {
+                listDir(dir.fileName().c_str(), levels - 1);
+            }
+        }
+        else
+        {
+            String fileName = String(dir.fileName());
+            fileName = fileName.substring(1, fileName.length());
+            File f = SPIFFS.open(fileName, "r");
+            compDebug(fileName + " \t\t" + String(dir.fileSize()) + " bytes");
+            
+            if (fileName.endsWith(".dat"))
+            {
+                sequences.emplace_back(fileName.substring(0, fileName.length() - 4));
+            }
+            f.close();
+        }
+    }
+#endif
 }
