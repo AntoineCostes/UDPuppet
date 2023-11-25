@@ -1,24 +1,8 @@
 #pragma once
 #include "../../Config.h"
+#include "../../ThirdParties.h"
 
-#include <Arduino.h>
-#ifdef ESP32
-#include <Preferences.h>
-#endif
-#include <OSCMessage.h>
-
-#include <vector>
-#include <map>
-#include <set>
-#include <memory>
-#include <string.h>
-#include <iterator>
-
-// Component is an abstract class for each manager, allowing for
-// - dynamic parameter storage in flash memory (to remember value after reboot)
-// - custom log to help debugging
-// - OSC command handling 
-// - pin usage handling
+// TODO write doc
 class Component
 {
 public:

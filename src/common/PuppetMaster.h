@@ -9,6 +9,9 @@
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 
+#ifdef ESP32
+#include "../sensors/BatteryManager.h"
+#endif
 #ifdef NUM_STRIPS
 #include "../leds/LedManager.h"
 #endif
@@ -28,8 +31,8 @@
 #include "../audio/MusicMakerManager.h"
 #endif
 #include "../sensors/ButtonManager.h"
-#ifdef ESP32
-#include "../sensors/BatteryManager.h"
+#ifdef NUM_HCSR04
+#include "../sensors/SensorManager.h"
 #endif
 
 class PuppetMaster : public Manager
@@ -75,6 +78,9 @@ public:
 #ifdef HAS_MUSICMAKER
     MusicMakerManager musicmaker;
 #endif
+// #ifdef NUM_HCSR04
+//     SensorManager sensorMgr;
+// #endif
 
 protected:
     std::vector<std::unique_ptr<Manager>> managers; // TODO useful ? set instead of vector
@@ -110,7 +116,7 @@ protected:
 #endif
 
 #ifdef HAS_MOTORWING
-    void gotStepperEvent(const StepperEvent &e);
+    void gotMotorwingStepperEvent(const StepperEvent &e);
 #endif
 
 #ifdef HAS_STEPPER_DRIVER

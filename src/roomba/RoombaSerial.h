@@ -2,7 +2,6 @@
 #include "../common/Component.h"
 #include "../utils/EventBroadcaster.h"
 
-#include <SoftwareSerial.h>
 
 enum RoombaMode
 {

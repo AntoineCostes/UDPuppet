@@ -2,41 +2,8 @@
 #include <Arduino.h>
 #include "UDPuppetClasses.h"
 
-// Leds
-#include <Adafruit_NeoPixel.h>
-// Servos
-#include <Adafruit_PWMServoDriver.h>
-#ifdef ESP32
-#include <ESP32Servo.h>
-#else
-#include <Servo.h>
-#endif
-// motors
-// #include <AccelStepper.h>
-#include "src/AccelStepper_modified/src/AccelStepper.h"
-#include <Adafruit_MotorShield.h>
-// sensors
-#include <Adafruit_VS1053.h>
-// communication
-#include <SoftwareSerial.h>
-#include <SPI.h>
-#include <SD.h>
-// wifi
-#include <WiFiUdp.h> 
-#include <OSCMessage.h>
-#include <ArduinoOTA.h>
-#ifdef ESP32
-#include <WiFi.h>
-#include <ESPmDNS.h>
-#elif defined (ESP8266)
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ESP8266mDNS.h>
-#else
-#error "This code is meant for ESP32 or ESP8266 only !"
-#endif
-
-
+// NETWORK
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
@@ -49,18 +16,15 @@
 //#include "config/Roomba.h"
 // #include "config/Camembert.h"
 // #include "config/Camembert_S3.h"
-#include "config/Camembert_8266.h"
+// #include "config/Camembert_8266.h"
 //#include "config/Castafiore.h"
 //#include "config/Castafiore_Bouton.h"
 //#include "config/Castafiore_Anecdote.h"
 //#include "config/Chantdrier.h"
 //#include "config/Chantdrier_Jukebox.h"
 //#include "config/Chantdrier_8266.h"
-// #include "config/Test.h"
+#include "config/Test.h"
 //#include "config/Cartouche.h"
-
-// NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;
@@ -98,9 +62,10 @@ const bool WIFI_DEBUG = true;
 const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;
 const bool FILES_DEBUG = true;
-const bool SEQUENCE_DEBUG = false;
+const bool SEQUENCE_DEBUG = true;
 const bool LED_DEBUG = true;
 const bool SERVO_DEBUG = false;
-const bool MOTORWING_DEBUG = true;
+const bool MOTORWING_DEBUG = false;
+const bool STEPPER_DEBUG = false;
 const bool ROOMBA_DEBUG = true;
 const bool BUTTON_DEBUG = false;

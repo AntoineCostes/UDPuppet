@@ -127,7 +127,7 @@ void PuppetMaster::initManager()
 #ifdef HAS_MOTORWING
     managers.emplace_back(&motorwing);
     motorwing.initManager();
-    motorwing.addListener(std::bind(&PuppetMaster::gotStepperEvent, this, std::placeholders::_1));
+    motorwing.addListener(std::bind(&PuppetMaster::gotMotorwingStepperEvent, this, std::placeholders::_1));
 #endif
 
 #ifdef HAS_STEPPER_DRIVER
@@ -507,7 +507,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 }
 
 #ifdef HAS_MOTORWING
-void PuppetMaster::gotStepperEvent(const StepperEvent &e)
+void PuppetMaster::gotMotorwingStepperEvent(const StepperEvent &e)
 {
     if (!osc.isConnected)
         return;

@@ -2,11 +2,7 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
-#include <FS.h>
-#include <SD.h>
-
 #ifdef ESP32
-#include <SPIFFS.h>
     #define SD_CS 33
 #elif defined(ESP8266)
     #define SD_CS 15
@@ -21,6 +17,12 @@
     #define SD_MISO 12 // Music Maker FeatherWing
     #define SD_MOSI 11 // Music Maker FeatherWing
     #define SD_SCK 13 // Music Maker FeatherWing
+#endif
+
+#ifndef USE_SD
+    #ifdef HAS_ADALOGGER_WING
+        #define USE_SD
+    #endif
 #endif
 
 class FileManager : public Manager//, public EventBroadcaster<FileEvent>//, public EventBroadcaster<SDEvent>

@@ -1,6 +1,5 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
-#include "Adafruit_MAX1704X.h"
 
 #ifdef ESP32
 class BatteryEvent
