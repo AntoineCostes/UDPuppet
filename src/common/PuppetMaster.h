@@ -4,6 +4,7 @@
 
 #include "../communication/WifiManager.h"
 #include "../communication/OSCManager.h"
+#include "../files/WebServerManager.h"
 
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
@@ -30,9 +31,6 @@
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
 #endif
-#ifdef WEBSERVER
-#include "../files/WebServerManager.h"
-#endif
 
 class PuppetMaster : public Manager
 {
@@ -51,15 +49,12 @@ public:
 
     SequencePlayer player;
     FileManager fileMgr;
+    WebServerManager web;
 
     ButtonManager button;
     
 #ifdef ESP32
     BatteryManager battery;
-#endif
-
-#ifdef WEBSERVER
-    WebServerManager web;
 #endif
 
 #ifdef NUM_STRIPS
@@ -108,16 +103,16 @@ protected:
 
     void gotButtonEvent(const ButtonEvent &e);
     
+    void gotFileEvent(const FileEvent &e);
+
 #ifdef ESP32
     void gotBatteryEvent(const BatteryEvent &e);
-#endif
-#ifdef WEBSERVER
-    void gotFileEvent(const FileEvent &e);
 #endif
 
 #ifdef HAS_MOTORWING
     void gotStepperEvent(const StepperEvent &e);
 #endif
+
 #ifdef HAS_STEPPER_DRIVER
     void gotStepperEvent(const StepperEvent2 &e);
 #endif

@@ -1,7 +1,5 @@
 #include "WebServerManager.h"
 
-#ifdef WEBSERVER
-
 // Make size of files human readable
 // source: https://github.com/CelliesProjects/minimalUploadAuthESP32
 String humanReadableSize(const size_t bytes) {
@@ -221,4 +219,3 @@ void WebServerManager::changeFile(AsyncWebServerRequest *request)
     request->send(400, "text/plain", "ERROR: name and action params required");
   }
 }
-#endif

@@ -3,7 +3,6 @@
 #include "FileManager.h"
 #include "../utils/EventBroadcaster.h"
 
-#ifdef WEBSERVER
 #include <ESPAsyncWebServer.h>
 
 #ifdef ESP32
@@ -55,4 +54,3 @@ public:
     void reboot(AsyncWebServerRequest *request);
     void changeFile(AsyncWebServerRequest *request);
 };
-#endif

@@ -162,7 +162,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         else
         {
             String fileName = String(file.name());
-            compDebug(fileName + " (" + String(dir.fileSize()) + " bytes)");
+            compDebug(fileName + " (" + String(file.size()) + " bytes)");
             
             if (fileName.endsWith(".dat"))
             {

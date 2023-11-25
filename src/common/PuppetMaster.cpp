@@ -100,7 +100,6 @@ void PuppetMaster::initManager()
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
 
-#ifdef WEBSERVER
     if (FileManager::doesExist("/index.html"))
     {
         managers.emplace_back(&web);
@@ -110,7 +109,6 @@ void PuppetMaster::initManager()
     {
         compError("webserver not initiliazed: index.hmtl was not found");
     }
-#endif
 
     managers.emplace_back(&button);
     button.initManager();
@@ -418,9 +416,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
     #endif
 
-    #ifdef WEBSERVER
         web.initServer();
-    #endif
         
         break;
 
@@ -674,7 +670,6 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 }
 
 
-#ifdef WEBSERVER
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
     switch (e.type)
@@ -701,4 +696,3 @@ void PuppetMaster::gotFileEvent(const FileEvent &e)
     }
 
 }
-#endif
