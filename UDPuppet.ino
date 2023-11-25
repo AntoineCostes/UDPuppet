@@ -1,25 +1,6 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
-// TODO
-// OSC error feedback
-// used pins feedback => give names to reservedPins ?
-// make battery monitoring a pref option (ESP32)
-// change debug from Chataigne
-// checkComponents
-// readFlashParameters for 8266
-// implement microSeconds for servo
-// port in handshake ?
-// JSON config files ?
-// component bool checkRange(float/int min, float/int max)
-
-// remove initComponent
-// checkInit only in Manager ?
-// initComponent (when registering) and updating components automatically
-
-// ERROR mode if prop was not registered successfully
-// make childClass DebugLedStrip with communication methods
-
 // RAPPEL après avoir uploadé il faut rebooter la carte manuellement
 
 PuppetMaster master;
@@ -65,6 +46,8 @@ void setup()
       #endif
     #endif
   #endif
+
+  // TODO ADD STEPPERS AND MOTORWING
 
 }
 

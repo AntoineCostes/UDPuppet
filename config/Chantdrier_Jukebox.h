@@ -6,7 +6,7 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12002;
 
 #define WEBSERVER
-#define HAS_MUSICMAKER
+#define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
 #define BUTTON_JUKEBOX
 const int REPERTOIRE_LENGTH = 2;
 const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine"};

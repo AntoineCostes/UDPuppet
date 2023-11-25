@@ -3,7 +3,7 @@
 using std::vector;
 
 // Manager is an abstract class to handle a given type of hardware (leds, motors, etc)
-// It has a variable list of Components, and keeps track of used pins
+// It has a variable list of Components to update
 class Manager : public Component
 {
 public:

@@ -30,10 +30,10 @@
 #ifdef HAS_MUSICMAKER
 #include "../audio/MusicMakerManager.h"
 #endif
-#include "../sensors/ButtonManager.h"
 #ifdef NUM_HCSR04
 #include "../sensors/SensorManager.h"
 #endif
+#include "../buttons/ButtonManager.h"
 
 class PuppetMaster : public Manager
 {
@@ -43,7 +43,7 @@ public:
     void init();
     void initManager();
     void advertiseSequences();
-    void checkComponents();
+    void advertiseComponents();
     void update();
     static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
 

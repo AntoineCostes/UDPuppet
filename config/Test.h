@@ -37,9 +37,9 @@ const UDPuppetButton BUTTONS[NUM_BUTTONS] =
     {17, 2000}
 };
 
-// #define NUM_HCSR04 1
-// const UDPuppetHCSR04 ULTRASONICS[NUM_HCSR04] = 
-// {
-//     // pin, longPressMs
-//     {20, 21, false}
-// };
+#define NUM_HCSR04 1
+const UDPuppetHCSR04 HCSR04[NUM_HCSR04] = 
+{
+    // pin, longPressMs
+    {"distance", 20, 21, false}
+};

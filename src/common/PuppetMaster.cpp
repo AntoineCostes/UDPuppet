@@ -31,6 +31,26 @@
 // set color silent
 // flash parameter button
 
+// TODO
+// refactor managers log functions (use dbg, log, err)
+// OSC error feedback
+// used pins feedback => give names to reservedPins ?
+// make battery monitoring a pref option (ESP32)
+// change debug from Chataigne
+// checkComponents
+// readFlashParameters for 8266
+// implement microSeconds for servo
+// port in handshake ?
+// JSON config files ?
+// component bool checkRange(float/int min, float/int max)
+
+// remove initComponent
+// checkInit only in Manager ?
+// initComponent (when registering) and updating components automatically
+
+// ERROR mode if prop was not registered successfully
+// make childClass DebugLedStrip with communication methods
+
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
                                firmwareVersion("1.4.10")
@@ -150,39 +170,42 @@ void PuppetMaster::initManager()
     
 }
 
-void PuppetMaster::advertiseSequences()
+void PuppetMaster::advertiseComponents()
 {
-    OSCMessage msg("/files/sequences");
-    msg.add(BOARD_NAME.c_str());
-    for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
-    osc.sendMessage(msg);
-}
+    compDebug("advertise components");
 
-void PuppetMaster::checkComponents()
-{
- // TODO make FileManager singleton
 #ifdef HAS_ADALOGGER_WING
+if (true) // hack to delete OSCMessage object - TODO send(addr, args)
+{
     OSCMessage msg("/adalogger/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
+}
 #endif
 
 #ifdef HAS_MUSICMAKER
-    OSCMessage msg3("/musicmaker/tracks");
-    msg3.add(BOARD_NAME.c_str());
-    for (auto seq : musicmaker.tracks) msg3.add(seq.c_str());
-    osc.sendMessage(msg3);
-
-    OSCMessage msg4("/musicmaker/volume");
-    msg4.add(BOARD_NAME.c_str());
-    msg4.add(musicmaker.getVolume());
-    osc.sendMessage(msg4);
-    
+if (true)
+{
+    OSCMessage msg("/musicmaker/tracks");
+    msg.add(BOARD_NAME.c_str());
+    for (auto seq : musicmaker.tracks) msg.add(seq.c_str());
+    osc.sendMessage(msg);
+}
+if (true)
+{
+    OSCMessage msg("/musicmaker/volume");
+    msg.add(BOARD_NAME.c_str());
+    msg.add(musicmaker.getVolume());
+    osc.sendMessage(msg);
+}
+if (true)
+{
     OSCMessage msg("/musicmaker/sd");
     msg.add(BOARD_NAME.c_str());
     msg.add(musicmaker.isReady()?1:0);
     osc.sendMessage(msg);
+}
 #endif
 
     advertiseSequences();
@@ -259,10 +282,6 @@ motorwing.stepperSetSpeed(0, 0.0f);
 //TODO
 #endif
 */
-}
-
-void PuppetMaster::update()
-{
     switch (BOARD_TYPE)
     {
     case HUZZAH32:
@@ -274,10 +293,24 @@ void PuppetMaster::update()
         break;
 
     default:
-        compError("Unknown board type !");
+        compError("---------------");
+        compError("Can't run: Board type not supported!");
+        while(1);
         return;
     }
 
+}
+
+void PuppetMaster::advertiseSequences()
+{
+    OSCMessage msg("/files/sequences");
+    msg.add(BOARD_NAME.c_str());
+    for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
+    osc.sendMessage(msg);
+}
+
+void PuppetMaster::update()
+{
     for (auto const &mgr : managers)
     {
         if (mgr.get()->checkInit())
@@ -441,7 +474,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
     case OSCEvent::Type::CONNECTED:
         // TODO advertise error
         osc.yo(firmwareVersion);
-        checkComponents();
+        advertiseComponents();
         break;
 
     case OSCEvent::Type::DEAD_PING:
@@ -454,7 +487,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
 
     case OSCEvent::Type::HANDSHAKE:
         osc.yo(firmwareVersion);
-        checkComponents();
+        advertiseComponents();
         break;
 
     case OSCEvent::Type::COMMAND:
