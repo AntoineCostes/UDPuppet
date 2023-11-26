@@ -1,5 +1,6 @@
 
 #pragma once
+#ifdef HAS_MOTORWING || HAS_STEPPER_DRIVER
 #include "../common/Component.h"
 
 class StepperMotor : public Component
@@ -34,3 +35,4 @@ public:
 protected:
   AccelStepper* stepper;
 };
+#endif

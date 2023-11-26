@@ -9,7 +9,7 @@ const int OSC_TARGET_PORT = 12003;
 #define BUTTON_JUKEBOX
 #define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
 
-#define FRAME_SIZE 1 // 1 servo
+#define SEQUENCE_FRAME_SIZE 1 // 1 servo
 
 #define NUM_SERVOS 1
 const UDPuppetServo SERVOS[NUM_SERVOS] = 

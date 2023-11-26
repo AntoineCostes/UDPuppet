@@ -2,6 +2,10 @@
 #include "../common/Manager.h"
 #include "FileManager.h"
 
+#ifndef SEQUENCE_FRAME_SIZE
+#define SEQUENCE_FRAME_SIZE 0
+#endif
+
 class PlayerEvent
 {
 public:
@@ -40,7 +44,7 @@ public:
   bool handleCommand(OSCMessage &command) override;
 
 protected:
-  uint8_t frameData[FRAME_SIZE];
+  uint8_t frameData[SEQUENCE_FRAME_SIZE];
 
   void loadSequence(String path);
   void startSequence(float atTime);
@@ -64,11 +68,11 @@ protected:
 
   // TODO simplify this
   long msToFrame(long timeMs) { return timeMs * fps / 1000; }
-  long msTointPos(long t) { return msToFrame(t) * FRAME_SIZE; } //rgba
+  long msTointPos(long t) { return msToFrame(t) * SEQUENCE_FRAME_SIZE; } //rgba
   long frameToMs(long frame) { return frame * 1000 / fps; }
   float frameToSeconds(long frame) { return frame * 1.0f / fps; };
   long secondsToMs(float s) { return s * 1000; }
-  long intPosToFrame(long pos) { return pos / FRAME_SIZE; }
+  long intPosToFrame(long pos) { return pos / SEQUENCE_FRAME_SIZE; }
   long intPosToMs(long pos) { return frameToMs(intPosToFrame(pos)); }
   long intPosToSeconds(long pos) { return frameToSeconds(intPosToFrame(pos)); }
 

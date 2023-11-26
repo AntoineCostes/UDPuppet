@@ -1,3 +1,4 @@
+#ifdef NUM_STRIPS
 #include "LedManager.h"
 
 LedManager::LedManager() : Manager("led")
@@ -190,3 +191,4 @@ bool LedManager::handleCommand(OSCMessage &command)
     }
     return false;
 }
+#endif

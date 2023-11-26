@@ -1,3 +1,4 @@
+#ifdef HAS_MUSICMAKER
 #include "MusicMakerManager.h"
 
 MusicMakerManager::MusicMakerManager() : Manager("musicmaker"),
@@ -176,3 +177,4 @@ void MusicMakerManager::togglePausePlay()
     }
     player->pausePlaying(!player->paused());
 }
+#endif

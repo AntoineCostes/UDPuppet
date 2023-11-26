@@ -1,6 +1,6 @@
+#ifdef HAS_MOTORWING
 #include "DCMotor.h"
 
-#ifdef HAS_MOTORWING
 DCMotor::DCMotor(Adafruit_DCMotor* motor, int port, int maxSpeed):Component("dc_M" + String(port)), motor(motor), maxSpeed(maxSpeed)
 {
     intParameters["maxSpeed"] = maxSpeed;

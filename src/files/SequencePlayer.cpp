@@ -131,7 +131,7 @@ void SequencePlayer::playFrame()
   prevTimeMs = mil;
 
   long fPos = curFile.position();
-  long pos = msTointPos(curTimeMs); // = curTimeMs * FRAME_SIZE * FPS / 1000;
+  long pos = msTointPos(curTimeMs); // = curTimeMs * SEQUENCE_FRAME_SIZE * FPS / 1000;
 
   if (pos < 0)
     return;
@@ -144,7 +144,7 @@ void SequencePlayer::playFrame()
     skippedFrames++;
     curFile.read();
     fPos = curFile.position();
-    if (curFile.available() < FRAME_SIZE)
+    if (curFile.available() < SEQUENCE_FRAME_SIZE)
     {
       compError("overflowed, should not be here");
       return;
@@ -163,7 +163,7 @@ void SequencePlayer::playFrame()
 
   if (pos%100 < 4)
     compDebug("Playing frame at position " + String(pos));
-  curFile.read(frameData, FRAME_SIZE);
+  curFile.read(frameData, SEQUENCE_FRAME_SIZE);
   sendEvent(PlayerEvent(PlayerEvent::NewFrame, curSequenceName, frameData));
 
   //setServo(0, map(curFile.read(), 0, 255, 0, 180));

@@ -1,6 +1,6 @@
+#ifdef HAS_STEPPER_DRIVER
 #include "StepperManager.h"
 
-#ifdef HAS_STEPPER_DRIVER
 StepperManager::StepperManager() : Manager("stepper")
 {
     serialDebug = STEPPER_DEBUG;

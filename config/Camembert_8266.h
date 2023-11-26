@@ -9,7 +9,7 @@ const int OSC_TARGET_PORT = 12001;
 #define WEBSERVER
 // #define USE_SD
 
-#define FRAME_SIZE 1
+#define SEQUENCE_FRAME_SIZE 1
 
 #define NUM_SERVOS 1
 const UDPuppetServo SERVOS[NUM_SERVOS] = 

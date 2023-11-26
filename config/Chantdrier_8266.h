@@ -10,7 +10,7 @@ const int OSC_TARGET_PORT = 12002;
 const int REPERTOIRE_LENGTH = 2;
 const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine"};
 
-#define FRAME_SIZE 4 // 4 servos
+#define SEQUENCE_FRAME_SIZE 4 // 4 servos
 
 #define NUM_SERVOS 4
 const UDPuppetServo SERVOS[NUM_SERVOS] = 

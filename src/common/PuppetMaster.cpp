@@ -113,9 +113,11 @@ void PuppetMaster::initManager()
 #ifdef HAS_MUSICMAKER
     managers.emplace_back(&musicmaker);
     musicmaker.initManager();
+    fileMgr.init(musicmaker.isReady());
+#else
+    fileMgr.init();
 #endif
 
-    fileMgr.init(musicmaker.isReady());
     managers.emplace_back(&player);
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));

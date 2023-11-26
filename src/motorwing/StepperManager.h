@@ -1,9 +1,9 @@
 #pragma once
+#ifdef HAS_STEPPER_DRIVER
 #include "../common/Manager.h"
 #include "StepperMotor.h"
 #include "../utils/EventBroadcaster.h"
 
-#ifdef HAS_STEPPER_DRIVER
 
 class StepperEvent2
 {

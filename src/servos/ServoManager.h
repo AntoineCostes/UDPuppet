@@ -1,4 +1,5 @@
 #pragma once
+#ifdef NUM_SERVOS
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
@@ -39,3 +40,4 @@ protected:
   Adafruit_PWMServoDriver* pwm;
 
 };
+#endif

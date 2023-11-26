@@ -1,3 +1,4 @@
+#ifdef HAS_MOTORWING
 #include "MotorShield2Manager.h"
 
 MotorShield2Manager::MotorShield2Manager() : Manager("motorwing")
@@ -505,3 +506,4 @@ bool MotorShield2Manager::handleCommand(OSCMessage &command)
     }
     return false;
 }
+#endif

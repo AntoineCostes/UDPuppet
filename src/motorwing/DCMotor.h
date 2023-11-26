@@ -1,3 +1,4 @@
+#ifdef HAS_MOTORWING
 #pragma once
 #include "../common/Component.h"
 
@@ -18,3 +19,4 @@ protected:
     int maxSpeed;
     Adafruit_DCMotor* motor;
 };
+#endif

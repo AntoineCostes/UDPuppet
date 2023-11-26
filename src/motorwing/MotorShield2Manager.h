@@ -1,4 +1,5 @@
 #pragma once
+#ifdef HAS_MOTORWING
 #include "../common/Manager.h"
 #include "StepperMotor.h"
 #include "DCMotor.h"
@@ -82,3 +83,4 @@ private:
   void forward2();
   void backward2();
 };
+#endif

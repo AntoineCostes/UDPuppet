@@ -1,4 +1,5 @@
 #pragma once
+#ifdef NUM_STRIPS
 #include "../common/Manager.h"
 #include "LedStrip.h"
 
@@ -36,3 +37,4 @@ protected:
     unsigned long lastRefreshTime;
     std::vector<LedStrip*> strips; 
 };
+#endif
