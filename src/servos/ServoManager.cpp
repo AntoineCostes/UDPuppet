@@ -52,16 +52,50 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
     }
   } else
   {
-#ifdef ESP32
-    std::set<int> unsafePins = {2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32};
-      if (unsafePins.find(pin) != unsafePins.end())
-      {
-        compError("pin " + String(pin) + " is unsafe for ESP32 to attach Servo !");
-#ifndef ALLOW_ESP32_SERVO_UNSAFE_PINS
-        return;
+    std::set<int> recommendedPins;
+    switch (BOARD_TYPE)
+    {
+      case HUZZAH32:
+        recommendedPins = {2, 4, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33};
+        if (recommendedPins.find(pin) != recommendedPins.end())
+        {
+          compError("Recommended pins to attach Servo on a ESP32 are : 2, 4, 12-19, 21-23, 25-27, 32-33");
+#ifndef ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
+          return;
 #endif
-      }
+        }
+        break;
+
+        case HUZZAH32_S3:
+        recommendedPins = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 10, 21, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,47};
+        if (recommendedPins.find(pin) != recommendedPins.end())
+        {
+          compError("Recommended pins to attach Servo on a ESP32-S3 are : 1-21,35-45,47");
+#ifndef ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
+          return;
 #endif
+        }
+        break;
+
+        case XIAO_C3:
+        recommendedPins = {1, 2, 3, 4, 5, 6, 7, 9, 10, 18, 19, 20, 21};
+        if (recommendedPins.find(pin) != recommendedPins.end())
+        {
+          compError("Recommended pins to attach Servo on a ESP32-C3 are : 1-7, 9-10, 18-21");
+#ifndef ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
+          return;
+#endif
+        }
+        break;
+        
+        case HUZZAH8266:
+        case THINGESP8266:
+        break;
+
+        default:
+          err("Unknwon board type !");
+          break;
+    }
 
     if (!Component::registerPin(pin))
     {

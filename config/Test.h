@@ -5,7 +5,7 @@ const BoardType BOARD_TYPE = HUZZAH8266;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
-#define ALLOW_ESP32_SERVO_UNSAFE_PINS // pins 2, 4, 12, 13, 14, 15, 16, 17, 21, 22, 23, 25, 32
+// #define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
 
 #define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
 #define HAS_ADALOGGER_WING // uses pins (5, 18 ,19)

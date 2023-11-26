@@ -8,12 +8,6 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
 ////////////////////////////////////
-//#include "config/sansgravite/Ampoule.h"
-//#include "config/sansgravite/Base.h"
-//#include "config/sansgravite/Bobine.h"
-//#include "config/sansgravite/Corbeille.h"
-//#include "config/sansgravite/Bouche.h"
-//#include "config/Roomba.h"
 // #include "config/Camembert.h"
 // #include "config/Camembert_S3.h"
 // #include "config/Camembert_8266.h"
@@ -23,8 +17,9 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 //#include "config/Chantdrier.h"
 //#include "config/Chantdrier_Jukebox.h"
 //#include "config/Chantdrier_8266.h"
-#include "config/Test.h"
 //#include "config/Cartouche.h"
+//#include "config/Roomba.h"
+#include "config/Test.h"
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;
@@ -51,6 +46,10 @@ const int PLAYER_REFRESH_MS = 30;
 const int LED_REFRESH_MS = 20;
 
 // SERVO PARAMETERS
+// Recommended PWM GPIO pins on the ESP32 include 2,4,12-19,21-23,25-27,32-33 
+// Possible PWM GPIO pins on the ESP32-S2: 0(used by on-board button),1-17,18(used by on-board LED),19-21,26,33-42
+// Possible PWM GPIO pins on the ESP32-S3: 0(used by on-board button),1-21,35-45,47,48(used by on-board LED)
+// Possible PWM GPIO pins on the ESP32-C3: 0(used by on-board button),1-7,8(used by on-board LED),9-10,18-21
 
 // ROOMBA PARAMETERS
 const int ROOMBA_TEXT_UPDATE_MS = 200;
