@@ -12,7 +12,7 @@ public:
     //~LedStrip() {}
 
     void initComponent(bool serialDebug);
-    void update();
+    void update() override;
     
     // allows to display a given mode for a given duration
     //void toast(LedMode toastedMode, long ms);

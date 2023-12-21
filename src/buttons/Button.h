@@ -25,7 +25,7 @@ public:
     Button(int pin, long longPressMs);
 
     void initComponent(bool serialDebug);
-    void update();
+    void update() override;
     
     void pressed();
     void released();

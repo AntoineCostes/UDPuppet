@@ -24,8 +24,8 @@ class BatteryManager : public Manager,
 public:
     BatteryManager();
 
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
 
 protected:
     // TODO make child class

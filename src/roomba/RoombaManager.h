@@ -13,8 +13,8 @@ class RoombaManager : public Manager,
 public:
     RoombaManager();
 
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
     
     void registerRoomba(int inPin, int outPin, int wakePin);
 

@@ -8,8 +8,8 @@ class LedManager : public Manager
 public:
     LedManager();
 
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
     
     void registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug, bool useInSequences);
 

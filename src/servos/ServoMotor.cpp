@@ -1,4 +1,4 @@
-#ifdef NUM_SERVOS
+// #ifdef NUM_SERVOS
 #include "ServoMotor.h"
 
 ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_PWMServoDriver* pwm) :
@@ -148,4 +148,4 @@ bool ServoMotor::isMultiServo()
 {
   return pwm != nullptr;
 }
-#endif
+// #endif

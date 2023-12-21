@@ -6,7 +6,8 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12001;
 
 #define HAS_MUSICMAKER
-#define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
+
+#define PIN_NEOPIXEL 13
 
 #define SEQUENCE_FRAME_SIZE 1
 
@@ -22,5 +23,5 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 110, 150, 110, true, false, true}
+    {10, 20, 180, 90, true, false, true}
 };

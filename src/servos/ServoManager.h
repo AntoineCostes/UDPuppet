@@ -1,5 +1,5 @@
 #pragma once
-#ifdef NUM_SERVOS
+// #ifdef NUM_SERVOS
 #include "../common/Manager.h"
 #include "ServoMotor.h"
 
@@ -12,7 +12,7 @@ class ServoManager : public Manager
 public:
   ServoManager();
 
-  void initManager();
+  void initManager() override;
 
   void registerServo(int pin, int min, int max, int start, bool inverse, bool isMultiServo, bool useInSequences);
 
@@ -40,4 +40,4 @@ protected:
   Adafruit_PWMServoDriver* pwm;
 
 };
-#endif
+// #endif

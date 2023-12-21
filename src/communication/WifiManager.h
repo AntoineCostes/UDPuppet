@@ -26,8 +26,8 @@ public:
     //~WifiManager() {}
 
 
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
 
     void connect();
     void disconnect();

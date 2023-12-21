@@ -126,7 +126,7 @@ float MusicMakerManager::getVolume()
     return floatParameters["volume"];
 }
 
-float MusicMakerManager::isReady()
+bool MusicMakerManager::isReady()
 {
     return ready;
 }

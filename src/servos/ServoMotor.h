@@ -1,6 +1,6 @@
 
 #pragma once
-#ifdef NUM_SERVOS
+// #ifdef NUM_SERVOS
 #include "../common/Component.h"
 
 #define PWM_MIN 150
@@ -12,7 +12,7 @@ public:
     ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_PWMServoDriver* pwm);
 
     void initComponent(bool serialDebug);
-    void update();
+    void update() override;
     
     // void set(int value);
     void goToRelative(float value);
@@ -48,4 +48,4 @@ protected:
     Adafruit_PWMServoDriver* pwm;
 
 };
-#endif
+// #endif

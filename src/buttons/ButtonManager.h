@@ -10,8 +10,8 @@ class ButtonManager : public Manager,
 public:
     ButtonManager();
 
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
     void registerButton(int pin, long longPressDuration);
     void gotButtonEvent(const ButtonEvent &e);
 

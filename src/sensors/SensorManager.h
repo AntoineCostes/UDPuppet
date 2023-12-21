@@ -17,8 +17,8 @@ class SensorManager : public Manager,
 {
 public:
     SensorManager();
-    void initManager();
-    void update();
+    void initManager() override;
+    void update() override;
     
     bool handleCommand(OSCMessage &command) override;
 

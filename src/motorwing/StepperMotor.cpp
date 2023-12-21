@@ -1,4 +1,4 @@
-#ifdef HAS_MOTORWING || HAS_STEPPER_DRIVER
+#if defined(HAS_MOTORWING) || defined(HAS_STEPPER_DRIVER)
 #include "StepperMotor.h"
 
 StepperMotor::StepperMotor(int id, AccelStepper *stepper) : Component("stepper_" + String(id)),

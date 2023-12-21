@@ -41,10 +41,10 @@ public:
     PuppetMaster();
 
     void init();
-    void initManager();
+    void initManager() override;
     void advertiseSequences();
     void advertiseComponents();
-    void update();
+    void update() override;
     static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
 
     WifiManager wifi;

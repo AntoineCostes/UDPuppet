@@ -30,7 +30,7 @@ class SequencePlayer : public Manager,
 public:
   SequencePlayer();
 
-  void initManager();
+  void initManager() override;
   void update() override;
 
   void setFPS(int value);

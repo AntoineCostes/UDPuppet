@@ -5,6 +5,10 @@
 #define LOW_BATTERY 1980  
 // #define LOW_BATTERY 1930  // ~3.5V
 
+#ifndef A13 
+#define A13 35
+#endif
+
 #ifdef ESP32
 BatteryManager::BatteryManager() : Manager("battery"), smoothing(.9f), sensorAvailable(false)
 {

@@ -14,13 +14,14 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 //#include "config/Castafiore.h"
 //#include "config/Castafiore_Bouton.h"
 //#include "config/Castafiore_Anecdote.h"
+// #include "config/Castafiore_8266.h"
 //#include "config/Chantdrier.h"
 //#include "config/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier_8266.h"
-// #include "config/Xiao.h"
+#include "config/Xiao.h"
 //#include "config/Cartouche.h"
 //#include "config/Roomba.h"
-#include "config/Test.h"
+// #include "config/Test.h"
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;

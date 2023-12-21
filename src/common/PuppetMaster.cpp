@@ -594,10 +594,10 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
         return;
 
     OSCMessage msg("/battery");
-    // msg.add(BOARD_NAME.c_str());
-    msg.add(e.level);
-    msg.add(e.voltage);
-    msg.add(e.analogValue);
+    msg.add(BOARD_NAME.c_str());
+    msg.add((int32_t) e.level);
+    msg.add((int32_t) e.voltage);
+    msg.add((int32_t) e.analogValue);
     osc.sendMessage(msg);
 
     // TODO
@@ -627,7 +627,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         {
             OSCMessage msg("/failed");
             msg.add(BOARD_NAME.c_str());
-            msg.add(player.numFailed);
+            msg.add((int32_t)player.numFailed);
             osc.sendMessage(msg);
         }
 
