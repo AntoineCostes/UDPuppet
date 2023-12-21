@@ -1,5 +1,9 @@
 #include "PuppetMaster.h"
 
+// fix library 
+// AsyncWebSocket.cpp l832 
+// return IPAddress((uint32_t) 0U);
+
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
@@ -53,7 +57,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.10")
+                               firmwareVersion("1.4.11")
 {
 #ifdef BASE 
     // Base uses pin 12 and 13
@@ -290,6 +294,7 @@ motorwing.stepperSetSpeed(0, 0.0f);
     case HUZZAH8266:
     case THINGESP8266:
     case HUZZAH32_S3:
+    case XIAO_C3:
         break;
 
         break;

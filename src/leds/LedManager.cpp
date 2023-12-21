@@ -17,6 +17,8 @@ void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool 
     if (!checkInit())
         return;
 
+    compDebug("registering led strip on pin " + String(pin));
+
     if (!Component::registerPin(pin))
     {
         compError("cannot register led strip !");
