@@ -1,6 +1,5 @@
 
 #pragma once
-#ifdef NUM_STRIPS
 #include "../common/Component.h"
 #include "../utils/Timer.h"
 
@@ -43,4 +42,3 @@ protected:
     Timer toastTimer;
     LedMode toastMode;
 };
-#endif

@@ -1,15 +1,20 @@
 #pragma once
 
 const String BOARD_NAME = "Castafiore";    // name used for mDNS services 
-const BoardType BOARD_TYPE = HUZZAH8266;
+const BoardType BOARD_TYPE = XIAO_C3;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
+
+// define LED for Xiao ESP32-C3
+#ifndef LED_BUILTIN
+#define LED_BUILTIN 2
+#endif
 
 // #define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
 
 // #define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
 // #define HAS_ADALOGGER_WING // uses pins (5, 18 ,19)
-// #define HAS_MOTORWING
+// // #define HAS_MOTORWING
 // #define HAS_STEPPER_DRIVER
 
 // #define SEQUENCE_FRAME_SIZE 1

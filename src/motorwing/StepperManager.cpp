@@ -1,4 +1,3 @@
-#ifdef HAS_STEPPER_DRIVER
 #include "StepperManager.h"
 
 StepperManager::StepperManager() : Manager("stepper")
@@ -312,4 +311,3 @@ bool StepperManager::handleCommand(OSCMessage &command)
     }
     return false;
 }
-#endif

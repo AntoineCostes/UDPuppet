@@ -17,33 +17,22 @@
 #endif
 
 // leds
-#ifdef NUM_STRIPS
-    #include <Adafruit_NeoPixel.h>
-#endif
+#include <Adafruit_NeoPixel.h>
 
 // servos
-#ifdef NUM_SERVOS
-    #include <Adafruit_PWMServoDriver.h>
-    #ifdef ESP32
-        #include <ESP32Servo.h>
-    #else
-        #include <Servo.h>
-    #endif
+#include <Adafruit_PWMServoDriver.h>
+#ifdef ESP32
+    #include <ESP32Servo.h>
+#else
+    #include <Servo.h>
 #endif
 
 // motors
-#ifdef HAS_MOTORWING
-    #include <Adafruit_MotorShield.h>
-#endif
-#ifdef HAS_STEPPER_DRIVER
-    // #include <AccelStepper.h>
-    #include "src/AccelStepper_modified/src/AccelStepper.h"
-#endif
+#include <Adafruit_MotorShield.h>
+#include "src/AccelStepper_modified/src/AccelStepper.h"
 
 // audio
-#ifdef HAS_MUSICMAKER
-    #include <Adafruit_VS1053.h>
-#endif
+#include <Adafruit_VS1053.h>
 
 // files
 #include <SD.h>

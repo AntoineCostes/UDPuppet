@@ -1,5 +1,4 @@
 #pragma once
-#ifdef HAS_STEPPER_DRIVER
 #include "../common/Manager.h"
 #include "StepperMotor.h"
 #include "../utils/EventBroadcaster.h"
@@ -57,4 +56,3 @@ protected:
   long lastEventPos;
 
 };
-#endif

@@ -1,6 +1,5 @@
 #include "RoombaSerial.h"
 
-#ifdef HAS_ROOMBA
  RoombaSerial::RoombaSerial(int inPin, int outPin, int wakePin) : Component("roomba-" + String(inPin)+"-"+ String(outPin)+"-"+ String(wakePin)),
                                                                     serial(outPin, inPin),
                                                                     wakePin(wakePin),
@@ -432,6 +431,3 @@ void RoombaSerial::playSong3()
     serial.write(141);      // play song
     serial.write(3);  // #3
 }
-
-
-#endif

@@ -185,7 +185,7 @@ if (true) // hack to delete OSCMessage object - TODO send(addr, args)
 {
     OSCMessage msg("/adalogger/sd");
     msg.add(BOARD_NAME.c_str());
-    msg.add(fileMgr.sdIsDetected?1:0);
+    msg.add(fileMgr.sdIsDetected?(int32_t)1:(int32_t)0);
     osc.sendMessage(msg);
 }
 #endif
@@ -209,7 +209,7 @@ if (true)
 {
     OSCMessage msg("/musicmaker/sd");
     msg.add(BOARD_NAME.c_str());
-    msg.add(musicmaker.isReady()?1:0);
+    msg.add(musicmaker.isReady()?(int32_t)1:(int32_t)0);
     osc.sendMessage(msg);
 }
 #endif
@@ -223,7 +223,7 @@ if (true)
         String addr = "/dc/maxspeed/"+String(int(pair.first));
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
-        msg.add(pair.second->getMaxSpeed());
+        msg.add((int32_t)pair.second->getMaxSpeed());
         osc.sendMessage(msg);
     }
     
@@ -556,8 +556,8 @@ void PuppetMaster::gotMotorwingStepperEvent(const StepperEvent &e)
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
-    msg.add((int)e.position);
-    msg.add((int)e.speed);
+    msg.add((int32_t)e.position);
+    msg.add((int32_t)e.speed);
     msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
@@ -570,7 +570,7 @@ void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
         return;
 
     OSCMessage msg("/roomba/battery"); 
-    msg.add(e.rawValue);
+    msg.add((int32_t)e.rawValue);
     osc.sendMessage(msg);
 }
 #endif
@@ -585,8 +585,8 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
-    msg.add((int)e.position);
-    msg.add((int)e.speed);
+    msg.add((int32_t)e.position);
+    msg.add((int32_t)e.speed);
     msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }

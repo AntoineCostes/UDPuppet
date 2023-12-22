@@ -1,6 +1,5 @@
 
 #pragma once
-// #ifdef NUM_SERVOS
 #include "../common/Component.h"
 
 #define PWM_MIN 150
@@ -48,4 +47,3 @@ protected:
     Adafruit_PWMServoDriver* pwm;
 
 };
-// #endif

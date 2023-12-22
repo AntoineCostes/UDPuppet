@@ -1,5 +1,4 @@
 #pragma once
-#ifdef HAS_MUSICMAKER
 #include "../common/Manager.h"
 
 #define VS1053_RESET   -1     // VS1053 reset pin (not used!)
@@ -48,4 +47,3 @@ protected:
   bool ready;
 
 };
-#endif

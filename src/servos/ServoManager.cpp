@@ -1,4 +1,3 @@
-// #ifdef NUM_SERVOS
 #include "ServoManager.h"
 
 ServoManager::ServoManager() : Manager("servo")
@@ -258,4 +257,3 @@ bool ServoManager::handleCommand(OSCMessage &command)
   }
   return false;
 }
-// #endif
