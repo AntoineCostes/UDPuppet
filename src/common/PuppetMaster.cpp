@@ -4,6 +4,10 @@
 // AsyncWebSocket.cpp l832 
 // return IPAddress((uint32_t) 0U);
 
+// json config files
+// register led_builtin as an general param
+// console in webserver
+
 // CLEAN
 // passe sur les TODO et les FIXME
 // separer stepper et DC
@@ -64,14 +68,14 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     // don't register any pins
 
 #elif defined(HAS_ROOMBA) 
-    // Roomba has led on pin 12
-    Component::registerPin(LED_BUILTIN)
-    ; 
+    // don't register pin 12, it is used for the led
 #elif defined(HAS_MUSICMAKER) && defined(ESP8266)
-    // musicmaker uses huzzah8662 pin #0
-    
+    // musicmaker uses pin #0 (huzzah8662 led builltin)
+    Component::registerPin(0);
 #else
+  #ifdef LED_BUILTIN
     Component::registerPin(LED_BUILTIN); 
+  #endif
 
 #if (BOARD_TYPE == HUZZAH32)
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
@@ -339,7 +343,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     char buf[32];
     command.getAddress(buf);
     String address = String(buf);
-    compDebug("command " + address);
+    // compDebug("command " + address);
 
     // TODO change with featherwing/stepper
 #ifdef HAS_MOTORWING
@@ -419,7 +423,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiEvent::ConnectionState::CONNECTING:
         wifi.dbg("connecting to wifi...");
+  #ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, HIGH);
+  #endif
     #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::WORKING);
     #endif
@@ -427,8 +433,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::CONNECTED:
         wifi.dbg("wifi connected !");
+  #ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, LOW);
-        
+  #endif
 
         wifi.log("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
         if (MDNS.begin(BOARD_NAME.c_str()))
@@ -462,7 +469,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::DISCONNECTED:
         wifi.dbg("wifi lost !");
+  #ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, HIGH);
+  #endif
     #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::ERROR);
     #endif

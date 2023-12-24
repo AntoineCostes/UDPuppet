@@ -7,11 +7,6 @@ const int OSC_TARGET_PORT = 12003;
 
 // #define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS 
 
-// define LED for Xiao ESP32-C3
-#ifndef LED_BUILTIN
-#define LED_BUILTIN 2
-#endif
-
 #define SEQUENCE_FRAME_SIZE 1
 
 #define NUM_SERVOS 1

@@ -8,8 +8,11 @@ PuppetMaster master;
 void setup()
 {
   Serial.begin(115200);
+  
+  #ifdef LED_BUILTIN
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
+  #endif
 
   delay(SETUP_DELAY_MS);
 
