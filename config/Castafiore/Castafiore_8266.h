@@ -3,10 +3,10 @@
 const String BOARD_NAME = "Castafiore";    // name used for mDNS services 
 const BoardType BOARD_TYPE = HUZZAH8266;
 const int OSC_LISTENING_PORT = 9000;
-const int OSC_TARGET_PORT = 12001;
+const int OSC_TARGET_PORT = 12003;
 
 #define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
-#define WEBSERVER
+
 // #define USE_SD
 
 #define SEQUENCE_FRAME_SIZE 1

@@ -1,9 +1,9 @@
 #pragma once
 
-const String BOARD_NAME = "XiaoBox";    // name used for mDNS services 
+const String BOARD_NAME = "VacheQuiProute";    // name used for mDNS services 
 const BoardType BOARD_TYPE = XIAO_C3;
 const int OSC_LISTENING_PORT = 9000;
-const int OSC_TARGET_PORT = 12003;
+const int OSC_TARGET_PORT = 12004;
 
 #define HAS_SERIAL_MP3
 #define BUTTON_JUKEBOX
@@ -14,7 +14,7 @@ const int OSC_TARGET_PORT = 12003;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 0, 180, 0, false, false, true}
+    {10, 0, 90, 0, false, false, true}
 
 };
 

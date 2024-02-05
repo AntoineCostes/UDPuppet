@@ -33,6 +33,7 @@
 
 // audio
 #include <Adafruit_VS1053.h>
+#include <MD_YX5300.h>
 
 // files
 #include <SD.h>

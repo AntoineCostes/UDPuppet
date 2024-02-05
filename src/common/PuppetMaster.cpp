@@ -61,7 +61,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.11")
+                               firmwareVersion("1.4.12")
 {
 #ifdef BASE 
     // Base uses pin 12 and 13
@@ -122,8 +122,12 @@ void PuppetMaster::initManager()
     managers.emplace_back(&musicmaker);
     musicmaker.initManager();
     fileMgr.init(musicmaker.isReady());
+#elif defined(HAS_SERIAL_MP3)
+    managers.emplace_back(&serialmp3);
+    serialmp3.initManager();
+    fileMgr.init(false);
 #else
-    fileMgr.init();
+    fileMgr.init(false);
 #endif
 
     managers.emplace_back(&player);
@@ -386,9 +390,16 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     {
         // for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
 
-        char str[32];
-        command.getString(0, str);
-        launchSequence(String(str));
+        if (checkCommandArguments(command, "s", true))
+        {
+            char str[32];
+            command.getString(0, str);
+            launchSequence(String(str));
+        }
+        if (checkCommandArguments(command, "i", true))
+        {
+            launchSequence(command.getInt(0));
+        }
     } 
 
     if (command.match("/delete"))
@@ -414,6 +425,17 @@ void PuppetMaster::launchSequence(String sequenceName)
     player.playSequence(sequenceName);
     #ifdef HAS_MUSICMAKER
     musicmaker.play(sequenceName+".mp3");
+    #endif 
+}
+
+void PuppetMaster::launchSequence(int sequenceIndex)
+{   
+    compDebug("launch sequence"+String(sequenceIndex));
+    if (sequenceIndex > 0 && sequenceIndex <= fileMgr.sequences.size())
+        player.playSequence(fileMgr.sequences[sequenceIndex]);
+
+    #ifdef HAS_SERIAL_MP3
+    serialmp3.play(sequenceIndex);
     #endif 
 }
 
@@ -522,7 +544,11 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     {
 #ifdef BUTTON_JUKEBOX
     case ButtonEvent::Type::PRESSED:
+    #ifdef HAS_MUSICMAKER
         musicmaker.stop();
+    #elif defined(HAS_SERIAL_MP3)
+        serialmp3.stop();
+    #endif
         player.stopPlaying();
         
 #ifdef NUM_SERVOS
@@ -535,17 +561,27 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
+    #ifdef HAS_MUSICMAKER
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
         // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
         if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+    #elif defined(HAS_SERIAL_MP3)
+        launchSequence(trackIndex);
+        trackIndex++;
+        if (trackIndex >= serialmp3.numTracks) trackIndex = 0;
+    #endif
         compLog("track index :" + String(trackIndex));
         break;
 
     case ButtonEvent::Type::LONG_PRESS:
         compLog("long press");
+    #ifdef HAS_MUSICMAKER
         musicmaker.play("cancel.mp3");
+    #elif defined(HAS_SERIAL_MP3)
+        if (serialmp3.numTracks > 0) serialmp3.play(serialmp3.numTracks-1);
+    #endif
         break;
 #endif
 

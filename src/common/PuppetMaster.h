@@ -30,6 +30,9 @@
 #ifdef HAS_MUSICMAKER
 #include "../audio/MusicMakerManager.h"
 #endif
+#ifdef HAS_SERIAL_MP3
+#include "../audio/SerialMP3Manager.h"
+#endif
 #ifdef NUM_HCSR04
 #include "../sensors/SensorManager.h"
 #endif
@@ -78,6 +81,9 @@ public:
 #ifdef HAS_MUSICMAKER
     MusicMakerManager musicmaker;
 #endif
+#ifdef HAS_SERIAL_MP3
+    SerialMP3Manager serialmp3;
+#endif
 #ifdef NUM_HCSR04
     SensorManager sensorMgr;
 #endif
@@ -92,6 +98,7 @@ protected:
     String firmwareVersion;
 
     void launchSequence(String sequenceName);
+    void launchSequence(int sequenceIndex);
 
     enum State
     {

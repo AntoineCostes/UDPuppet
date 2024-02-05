@@ -11,16 +11,23 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Camembert/Camembert.h"
 // #include "config/Camembert/Camembert_S3.h"
 // #include "config/Camembert/Camembert_8266.h"
+// #include "config/Camembert/Camembert_Xiao.h"
+
 // #include "config/Castafiore/Castafiore.h"
 // #include "config/Castafiore/Castafiore_Bouton.h"
 // #include "config/Castafiore/Castafiore_Anecdote.h"
 // #include "config/Castafiore/Castafiore_8266.h"
+
 // #include "config/Chantdrier/Chantdrier.h"
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
+
+#include "config/Vache/VacheQuiProute.h"
+
 // #include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
-#include "config/Xiao/XiaoBox_Button.h"
+// #include "config/Xiao/XiaoBox_Button.h"
+
 // #include "config/Cartouche/Cartouche.h"
 // #include "config/Roomba.h"
 // #include "config/Test.h"
@@ -61,13 +68,13 @@ const int ROOMBA_TEXT_UPDATE_MS = 200;
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = true;
-const bool WIFI_DEBUG = true;
+const bool WIFI_DEBUG = false;
 const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;
 const bool FILES_DEBUG = true;
-const bool SEQUENCE_DEBUG = true;
+const bool SEQUENCE_DEBUG = false;
 const bool LED_DEBUG = true;
-const bool SERVO_DEBUG = false;
+const bool SERVO_DEBUG = true;
 const bool MOTORWING_DEBUG = false;
 const bool STEPPER_DEBUG = false;
 const bool ROOMBA_DEBUG = true;
