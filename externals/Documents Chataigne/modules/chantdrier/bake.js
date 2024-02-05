@@ -1,3 +1,5 @@
+var directoryName = "chantdrier";
+
 var seqParam = script.addTargetParameter("Sequence","");
 seqParam.setAttribute("root",root.sequences);
 seqParam.setAttribute("targetType","container");
@@ -58,7 +60,7 @@ function bake()
 // if all layers are defined
 if (layer1Param.get() != "" || layer2Param.get() != "" || layer3Param.get() != "" || layer4Param.get() != "")
 {
-		var obj = getObject("Chantdrier");
+		var obj = getObject(directoryName);
 		obj.layerParams = [];
 		obj.layerParams[0] = {"name":"servo1", "param":layer1Param, "type":"Mapping"};
 		obj.layerParams[1] = {"name":"servo2", "param":layer2Param, "type":"Mapping"};

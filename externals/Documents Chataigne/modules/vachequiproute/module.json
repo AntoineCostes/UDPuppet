@@ -1,0 +1,153 @@
+{
+  "name":"Vache Qui Proute",
+  "type":"OSC",
+  "path":"UDPuppet",
+
+  "version":"1.4.12",
+  "description":"Contrôle d'une boîte de vache qui rit par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":12004
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"vachequiproute.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Fevrier2024-1.4.12",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Filter with name":
+    {
+      "type":"Boolean"
+    },
+    "Sequences":
+    {
+      "type":"Enum",
+      "options": {}
+    },
+    "Play Sequence":
+    {
+      "type":"Trigger"
+    },
+    "Delete Sequence":
+    {
+      "type":"Trigger"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback", "booleanSendMode"],
+
+  "scripts":
+  [
+    "vachequiproute.js",
+    "bake.js"
+  ],
+
+  "values":
+  {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 100,
+      "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    }
+  },
+
+  "commands":
+  {
+    "Set servo":
+    {
+      "callback":"setServo",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Set volume":
+    {
+      "callback":"setVolume",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"Integer",
+          "min":0,
+          "max":10,
+          "default":0
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
+  }
+}

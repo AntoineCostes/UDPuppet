@@ -45,7 +45,7 @@ function moduleValueChanged(value) {
 function oscEvent(address, args)
 {
 	script.log("OSC Message received "+address+", "+args.length+" arguments");
-  if (local.parameters.filterWithName.get() && args[0] != "Chantdrier") return;
+  if (local.parameters.filterWithName.get() && args[0] != "VacheQuiProute") return;
 
     if (address == "/yo")
     {
@@ -66,36 +66,24 @@ function oscEvent(address, args)
       }
     }
 
-    if (address == "/musicmaker/tracks")
-    {
-      local.parameters.audioTracks.removeOptions();
-      for (var i = 1; i < args.length; i++)
-        local.parameters.audioTracks.addOption(args[i], i - 1);
-    }
-
-    if (address == "/musicmaker/sd")
-    {
-        local.values.carteSDDetectee.set(args[1]>0);
-    }
-
-    if (address == "/battery")
-    {
-        local.values.batterie.set(args[1]);
-    }
+    // if (address == "/battery")
+    // {
+    //     local.values.batterie.set(args[1]);
+    // }
 }
 
 // COMMANDS
-function setServo(index, val) {
+function setServo(val) {
   script.log("Set servo " + val);
-  local.send("/servo", index, val);
+  local.send("/servo", 0, val);
 }
 
 function setVolume(val) {
-  local.send("/musicmaker/volume", val);
+  local.send("/serialmp3/volume", val);
 }
 
-function playSequence(name) {
-  local.send("/play", name);
+function playSequence(index) {
+  local.send("/play", index);
 }
 
 function deleteSequence(name) {
@@ -103,6 +91,6 @@ function deleteSequence(name) {
 }
 
 function stopSequence() {
-local.send("/musicmaker/stop");
+local.send("/serialmp3/stop");
 local.send("/player/stop");
 }

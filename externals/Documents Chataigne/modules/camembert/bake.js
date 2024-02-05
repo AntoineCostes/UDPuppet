@@ -1,3 +1,5 @@
+var directoryName = "camembert";
+
 var seqParam = script.addTargetParameter("Sequence","");
 seqParam.setAttribute("root",root.sequences);
 seqParam.setAttribute("targetType","container");
@@ -37,7 +39,7 @@ function scriptParameterChanged(param)
 
 function bake()
 {
-	var o = {"name":"Camembert", "layers":[], "data":[]};
+	var o = {"name":directoryName, "layers":[], "data":[]};
 	var oLayers = o.layerParams;
 	oLayers = [];
 	oLayers[0] = {"name":"servo", "param":servoLayerParam, "type":"Mapping"};

@@ -1,9 +1,9 @@
 {
-  "name":"Castafiore",
+  "name":"Florence",
   "type":"OSC",
   "path":"UDPuppet",
 
-  "version":"1.4.8",
+  "version":"1.4.12",
   "description":"Contrôle d'une boîte de médicament par OSC",
 
 
@@ -25,7 +25,7 @@
 			"OSC Output":
       {
         "local":false,
-        "remoteHost":"castafiore.local",
+        "remoteHost":"florence.local",
         "remotePort":9000
       }
     }
@@ -36,7 +36,7 @@
     "Version":
     {
       "type":"String",
-      "default":"Juin2023-1.4.8",
+      "default":"Fevrier2024-1.4.12",
       "readOnly":true
     },
     "Invocation":
@@ -55,7 +55,7 @@
     "Sequences":
     {
       "type":"Enum",
-      "options": {}
+      "options": {} 
     },
     "Play Sequence":
     {
@@ -71,7 +71,7 @@
 
   "scripts":
   [
-    "castafiore.js",
+    "florence.js",
     "bake.js"
   ],
 

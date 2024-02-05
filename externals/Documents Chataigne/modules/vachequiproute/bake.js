@@ -1,13 +1,13 @@
-var directoryName = "cartouche";
+var directoryName = "vache";
 
-var seqParam = script.addTargetParameter("Target sequence","");
+var seqParam = script.addTargetParameter("Sequence","");
 seqParam.setAttribute("root",root.sequences);
 seqParam.setAttribute("targetType","container");
 seqParam.setAttribute("searchLevel",0);
 
 var bakeFPS = script.addIntParameter("Bake FPS","", 30,1,100);
 
-var servoLayerParam = script.addTargetParameter("Target mapping layer","");
+var servoLayerParam = script.addTargetParameter("Servo","");
 servoLayerParam.setAttribute("targetType","container");
 servoLayerParam.setAttribute("searchLevel",0);
 servoLayerParam.setAttribute("readOnly",true);
