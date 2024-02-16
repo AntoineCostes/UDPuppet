@@ -124,7 +124,8 @@ float SerialMP3Manager::getVolume()
 
 void SerialMP3Manager::play(int trackIndex)
 {
-    mp3.playTrack(trackIndex);
+    compDebug("play track "+String(trackIndex));
+    mp3.playTrack(trackIndex+1);
 }
 
 void SerialMP3Manager::stop()

@@ -343,7 +343,6 @@ void PuppetMaster::sendDebugMsg(String componentName, String msg)
 
 void PuppetMaster::sendCommand(OSCMessage &command)
 {
-
     char buf[32];
     command.getAddress(buf);
     String address = String(buf);
@@ -368,13 +367,47 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     }            
 #endif
 
-
+//TODO make handleCommand method for puppetmaster handling everything not matching a manager
     if (command.match("/coin"))
     {
 #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::COIN);
+        return;
 #endif
     }
+    
+    if (command.match("/play"))
+    {
+        if (checkCommandArguments(command, "s", false))
+        {
+            char str[32];
+            command.getString(0, str);
+            launchSequence(String(str));
+            return;
+        }
+        else if (checkCommandArguments(command, "i", true))
+        {
+            launchSequence(command.getInt(0));
+            return;
+        }
+    } 
+
+    if (command.match("/delete"))
+    {
+        char str[32];
+        command.getString(0, str);
+        fileMgr.deleteFileIfExists("/"+String(str)+".dat");
+        advertiseSequences();
+        return;
+    } 
+
+    // if (command.match("/debug"))
+    // {
+    //     if (command.getInt(0))
+    //         led.setColor(0, 50, 0);
+    //     else
+    //         led.setColor(0, 0, 0);
+    // }
 
     int sepIndex = address.indexOf('/', 1);
     for (auto const &mgr : managers)
@@ -385,38 +418,6 @@ void PuppetMaster::sendCommand(OSCMessage &command)
                 compError(mgr.get()->name + " could not handle command");
         }
     }
-    
-    if (command.match("/play"))
-    {
-        // for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
-
-        if (checkCommandArguments(command, "s", true))
-        {
-            char str[32];
-            command.getString(0, str);
-            launchSequence(String(str));
-        }
-        if (checkCommandArguments(command, "i", true))
-        {
-            launchSequence(command.getInt(0));
-        }
-    } 
-
-    if (command.match("/delete"))
-    {
-        char str[32];
-        command.getString(0, str);
-        fileMgr.deleteFileIfExists("/"+String(str)+".dat");
-        advertiseSequences();
-    } 
-
-    // if (command.match("/debug"))
-    // {
-    //     if (command.getInt(0))
-    //         led.setColor(0, 50, 0);
-    //     else
-    //         led.setColor(0, 0, 0);
-    // }
 }
 
 void PuppetMaster::launchSequence(String sequenceName)
@@ -430,8 +431,8 @@ void PuppetMaster::launchSequence(String sequenceName)
 
 void PuppetMaster::launchSequence(int sequenceIndex)
 {   
-    compDebug("launch sequence"+String(sequenceIndex));
-    if (sequenceIndex > 0 && sequenceIndex <= fileMgr.sequences.size())
+    compDebug("launch sequence "+String(sequenceIndex));
+    if (sequenceIndex >= 0 && sequenceIndex <= fileMgr.sequences.size())
         player.playSequence(fileMgr.sequences[sequenceIndex]);
 
     #ifdef HAS_SERIAL_MP3
@@ -561,18 +562,16 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
-    #ifdef HAS_MUSICMAKER
+    #ifdef REPERTOIRE
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
-        // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
-        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
-    #elif defined(HAS_SERIAL_MP3)
+    #else
         launchSequence(trackIndex);
         trackIndex++;
-        if (trackIndex >= serialmp3.numTracks) trackIndex = 0;
+        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
     #endif
-        compLog("track index :" + String(trackIndex));
+        compLog("new track index :" + String(trackIndex));
         break;
 
     case ButtonEvent::Type::LONG_PRESS:
