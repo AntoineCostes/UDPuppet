@@ -14,7 +14,7 @@ const int OSC_TARGET_PORT = 12004;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 0, 90, 0, false, false, true}
+    {10, 0, 70, 0, false, false, true}
 
 };
 
@@ -22,5 +22,5 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, longPressMs
-    {9, 2000}
+    {9, 1000}
 };

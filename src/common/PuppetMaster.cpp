@@ -176,6 +176,9 @@ void PuppetMaster::initManager()
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
+    #ifdef HAS_SERIAL_MP3
+    serialmp3.play(serialmp3.numTracks-2);
+    #endif 
 
     // TODO give this info on demand
     // compDebug("forbidden pins: ");

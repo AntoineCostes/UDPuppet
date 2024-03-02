@@ -74,12 +74,12 @@ function oscEvent(address, args)
 
 // COMMANDS
 function setServo(val) {
-  script.log("Set servo " + val);
   local.send("/servo", 0, val);
 }
 
 function setVolume(val) {
-  local.send("/serialmp3/volume", val);
+  if (local.parameters.audioType.get() == 0) local.send("/musicmaker/volume", val);
+  if (local.parameters.audioType.get() == 1) local.send("/serialmp3/volume", val);
 }
 
 function playSequence(index) {
@@ -91,6 +91,6 @@ function deleteSequence(name) {
 }
 
 function stopSequence() {
-local.send("/serialmp3/stop");
 local.send("/player/stop");
+if (local.parameters.audioType.get() == 1) local.send("/serialmp3/stop");
 }

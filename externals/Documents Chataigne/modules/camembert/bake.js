@@ -39,7 +39,7 @@ function scriptParameterChanged(param)
 
 function bake()
 {
-	var o = {"name":directoryName, "layers":[], "data":[]};
+	var o = getObject(directoryName);
 	var oLayers = o.layerParams;
 	oLayers = [];
 	oLayers[0] = {"name":"servo", "param":servoLayerParam, "type":"Mapping"};

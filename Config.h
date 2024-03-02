@@ -22,9 +22,9 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 
-#include "config/Vache/VacheQuiProute.h"
+// #include "config/Vache/VacheQuiProute.h"
 
-// #include "config/Xiao/XiaoLed.h"
+#include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
 // #include "config/Xiao/XiaoBox_Button.h"
 
@@ -33,7 +33,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Test.h"
 
 // GENERAL PARAMETERS
-const int SETUP_DELAY_MS = 2000;
+const int SETUP_DELAY_MS = 000;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
@@ -63,19 +63,19 @@ const int LED_REFRESH_MS = 20;
 // Possible PWM GPIO pins on the ESP32-C3: 0(used by on-board button),1-7,8(used by on-board LED),9-10,18-21
 
 // ROOMBA PARAMETERS
-const int ROOMBA_TEXT_UPDATE_MS = 200;
+const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
-const bool BATTERY_DEBUG = true;
+const bool BATTERY_DEBUG = false;
 const bool WIFI_DEBUG = false;
 const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;
 const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = false;
 const bool LED_DEBUG = true;
-const bool SERVO_DEBUG = true;
-const bool MOTORWING_DEBUG = false;
-const bool STEPPER_DEBUG = false;
+const bool SERVO_DEBUG = false;
+const bool MOTORWING_DEBUG = true;
+const bool STEPPER_DEBUG = true;
 const bool ROOMBA_DEBUG = true;
 const bool BUTTON_DEBUG = false;

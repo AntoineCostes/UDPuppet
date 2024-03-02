@@ -47,6 +47,11 @@
     {
       "type":"Boolean"
     },
+    "Audio type":
+    {
+      "type":"Enum",
+      "options": {"Music Maker":0, "Serial mp3":1}
+    },
     "Sequences":
     {
       "type":"Enum",

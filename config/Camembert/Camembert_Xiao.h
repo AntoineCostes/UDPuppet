@@ -5,7 +5,8 @@ const BoardType BOARD_TYPE = XIAO_C3;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12001;
 
-#define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS // Recommended pins to attach Servo on a ESP32-C3 are : 1-7, 9-10, 18-21
+#define HAS_SERIAL_MP3
+#define BUTTON_JUKEBOX
 
 #define SEQUENCE_FRAME_SIZE 1
 
@@ -13,5 +14,13 @@ const int OSC_TARGET_PORT = 12001;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 0, 100, 100, false, false, true}
+    {10, 0, 50, 0, false, false, true}
+
+};
+
+#define NUM_BUTTONS 1
+const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
+{
+    // pin, longPressMs
+    {9, 1000}
 };
