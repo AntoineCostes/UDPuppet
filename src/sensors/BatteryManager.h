@@ -1,7 +1,6 @@
 #include "../common/Manager.h"
 #include "../utils/EventBroadcaster.h"
 
-#ifdef ESP32
 class BatteryEvent
 {
 public:
@@ -40,4 +39,3 @@ protected:
     int level;
     long lastPingMs;
 };
-#endif

@@ -9,7 +9,6 @@
 #define A13 35
 #endif
 
-#ifdef ESP32
 BatteryManager::BatteryManager() : Manager("battery"), smoothing(.9f), sensorAvailable(false)
 {
     serialDebug = BATTERY_DEBUG;
@@ -32,6 +31,10 @@ void BatteryManager::initManager()
         if (!lipoSensor.begin()) {
             compError("Lipo sensor MAX17048 not found, make sure a battery is plugged in!");
         } else sensorAvailable = true;
+        break;
+
+    case XIAO_C3:
+        compLog("Yet to be implemented");
         break;
 
     default:
@@ -94,4 +97,3 @@ void BatteryManager::update()
             break;
     }
 }
-#endif
