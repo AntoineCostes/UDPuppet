@@ -463,7 +463,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, LOW);
   #endif
 
-        wifi.log("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
+        wifi.dbg("creating mDNS instance: " + BOARD_NAME);
         if (MDNS.begin(BOARD_NAME.c_str()))
         {
             MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);

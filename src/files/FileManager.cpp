@@ -43,25 +43,25 @@ void FileManager::init(bool SD_initialized)
 #else
     if(SPIFFS.begin())// Start the SPI Flash Files System
     {
-        Serial.println("SPIFFS initialized.");
+        compDebug("SPIFFS initialized.");
         printFiles();
     } else
     {
-        Serial.println("Error initializing SPIFFS");
+        compError("SPIFFS not initialized");
 
-        Serial.println("Trying to format...");
+        compLog("Trying to format...");
         if(SPIFFS.format())
         {
-            Serial.println("File System Formated");
+            compLog("File System Formated");
             if(SPIFFS.begin())// Start the SPI Flash Files System
             {
-                Serial.println("SPIFFS initialized.");
+                compLog("SPIFFS initialized.");
                 printFiles();
             } else return;
         }
         else
         {
-            Serial.println("File System Formatting Error");
+            compError("SPIFFS could not be formatted");
             return;
         }
     }
@@ -97,7 +97,7 @@ File FileManager::openFile(String fileName, bool forWriting, bool deleteIfExists
     File f = SPIFFS.open(fileName.c_str(), forWriting ? "w" : "r");
 #endif
     
-    Serial.println("Open file : " + String(f.name()));
+    if (FILES_DEBUG) Serial.println("Open file : " + String(f.name()));
     return f;
 }
 

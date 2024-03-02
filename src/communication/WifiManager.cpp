@@ -64,7 +64,7 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
       }
 
       // NOTE: if updating FS this would be the place to unmount FS using FS.end()
-      Serial.println("Start updating " + type);
+      Serial.println("[OTA] Start updating " + type);
     });
     ArduinoOTA.onEnd([]() {
       Serial.println("\nEnd");
@@ -73,7 +73,7 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
       Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
     });
     ArduinoOTA.onError([](ota_error_t error) {
-      Serial.printf("Error[%u]: ", error);
+      Serial.printf("[OTA] Error[%u]: ", error);
       if (error == OTA_AUTH_ERROR) {
         Serial.println("Auth Failed");
       } else if (error == OTA_BEGIN_ERROR) {
@@ -96,7 +96,7 @@ void WifiManager::connect()
   if (connectionState == WifiEvent::ConnectionState::CONNECTED || connectionState == WifiEvent::ConnectionState::HOTSPOT)
     WiFi.disconnect();
 
-  compLog("Connecting to " + stringParameters["ssid"] + " (" + stringParameters["pass"] + ")...");
+  compDebug("Connecting to " + stringParameters["ssid"] + " (" + stringParameters["pass"] + ")...");
   WiFi.begin(stringParameters["ssid"].c_str(), stringParameters["pass"].c_str());
 
   changeConnectionState(WifiEvent::ConnectionState::CONNECTING);

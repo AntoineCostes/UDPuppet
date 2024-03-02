@@ -5,7 +5,7 @@ OSCManager::OSCManager(WifiManager *wifiMgr) : Manager("osc"),
                                                 overrideTargetIp(TARGET_IP_OVERRIDE)
 {
     stringParameters["targetIp"] = OSC_TARGET_IP;
-    serialDebug = WIFI_DEBUG;
+    serialDebug = OSC_CONNECTION_DEBUG;
 }
 
 void OSCManager::initManager()
@@ -42,10 +42,10 @@ void OSCManager::connect()
     if (!checkInit())
         return;
 
-    compLog("Listening on " + String(OSC_LISTENING_PORT));
-    compLog("Targeting " + stringParameters["targetIp"] + "@" + String(OSC_TARGET_PORT));
+    compDebug("Listening on " + String(OSC_LISTENING_PORT));
+    compDebug("Targeting " + stringParameters["targetIp"] + "@" + String(OSC_TARGET_PORT));
 
-    compLog("Local IP: " + wifi->getIP());
+    compDebug("Local IP: " + wifi->getIP());
 
     udp.begin(OSC_LISTENING_PORT);
     udp.flush();
@@ -53,6 +53,7 @@ void OSCManager::connect()
     
     isConnected = true;
     sendEvent(OSCEvent(OSCEvent::Type::CONNECTED));
+    
 }
 
 // TODO: is that really clean ?
@@ -95,7 +96,7 @@ void OSCManager::update()
                 stringParameters["targetIp"] = udp.remoteIP().toString();
                 if (overrideTargetIp)
                     overrideFlashParameters();
-                compLog("new target: " + String(OSC_TARGET_PORT) + "@" + stringParameters["targetIp"]);
+                compDebug("new target: " + String(OSC_TARGET_PORT) + "@" + stringParameters["targetIp"]);
             }
 
             if (msg.match("/yo"))
@@ -224,7 +225,7 @@ void OSCManager::broadcastMessage(OSCMessage &msg)
     broadcastIp.fromString(stringParameters["targetIp"]);
     broadcastIp[3] = 255;
 
-    compLog("Broadcast message to " + broadcastIp.toString()+ "@" + String(OSC_TARGET_PORT) + " : " + String(addr));
+    if (OSC_SEND_DEBUG) compLog("Broadcast message to " + broadcastIp.toString()+ "@" + String(OSC_TARGET_PORT) + " : " + String(addr));
     udp.beginPacket((char *)broadcastIp.toString().c_str(), (uint16_t)9000);
     msg.send(udp);
     udp.endPacket();

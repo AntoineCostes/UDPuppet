@@ -34,7 +34,7 @@ void BatteryManager::initManager()
         break;
 
     case XIAO_C3:
-        compLog("Yet to be implemented");
+        compDebug("Yet to be implemented");
         break;
 
     default:

@@ -26,7 +26,7 @@ void ButtonManager::registerButton(int pin, long longPressDuration)
     buttons.back()->initComponent(serialDebug);
     
     buttons.back()->addListener(std::bind(&ButtonManager::gotButtonEvent, this, std::placeholders::_1));
-    compLog("registered button on pin "+String(pin));
+    compDebug("registered button on pin "+String(pin));
 }
 
 void ButtonManager::update()

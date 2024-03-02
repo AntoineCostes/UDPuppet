@@ -51,7 +51,7 @@ WebServerManager::WebServerManager() : Manager("webserver"),
                                        isUploading(false),
                                        server(80)
 {
-    serialDebug = MASTER_DEBUG;
+    serialDebug = WEBSERVER_DEBUG;
     
 }
 
