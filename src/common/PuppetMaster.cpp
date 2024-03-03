@@ -544,7 +544,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     switch (e.type)
     {
         case ButtonEvent::Type::PRESSED:
-            if (e.clearOnPressed)
+            if (e.behavior.clearOnPressed)
             {
             player.stopPlaying();
 
@@ -565,7 +565,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             break;
 
         case ButtonEvent::Type::RELASED_SHORT:
-            if (e.playSequencesOnShort)
+            if (e.behavior.playSequencesOnShort)
             {
 #ifdef HAS_MUSICMAKER
             // launchSequence(fileMgr.sequences[trackIndex]);
@@ -583,7 +583,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
 
         case ButtonEvent::Type::LONG_PRESS:
-            if (e.cancelSoundOnLongPress)
+            if (e.behavior.cancelSoundOnLongPress)
             {
 #ifdef HAS_MUSICMAKER
             musicmaker.play("cancel.mp3");
@@ -591,7 +591,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             serialmp3.playCancelSound();
 #endif
             }
-            if (e.enableHotspotOnLong)
+            if (e.behavior.enableHotspotOnLong)
             {
                 // TODO implement this
             }

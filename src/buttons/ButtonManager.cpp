@@ -11,8 +11,7 @@ void ButtonManager::initManager()
     Manager::initManager();
 }
 
-void ButtonManager::registerButton(int pin, long shortPressDuration, long longPressDuration, 
-bool clearOnPressed, bool playSequencesOnShort, bool cancelSoundOnLongPress, bool enableHotspotOnLong)
+void ButtonManager::registerButton(int pin, long shortPressDuration, long longPressDuration, UDPuppetButtonBehavior behavior)
 {
     if (!checkInit())
         return;
@@ -23,7 +22,7 @@ bool clearOnPressed, bool playSequencesOnShort, bool cancelSoundOnLongPress, boo
         return;
     }
     
-    buttons.emplace_back(new Button(pin, shortPressDuration, longPressDuration, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong));
+    buttons.emplace_back(new Button(pin, shortPressDuration, longPressDuration, behavior));
     buttons.back()->initComponent(serialDebug);
     
     buttons.back()->addListener(std::bind(&ButtonManager::gotButtonEvent, this, std::placeholders::_1));

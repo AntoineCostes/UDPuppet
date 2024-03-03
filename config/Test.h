@@ -36,13 +36,13 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 #define NUM_BUTTONS 1
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
-    // pin, longPressMs
-    {17, 10, 2000}
+    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
+    {17, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
 };
 
 #define NUM_HCSR04 1
 const UDPuppetHCSR04 HCSR04[NUM_HCSR04] = 
 {
-    // pin, longPressMs
+    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
     {"distance", 20, 21, false}
 };

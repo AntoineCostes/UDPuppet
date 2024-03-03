@@ -68,33 +68,21 @@ struct UDPuppetServo
 //     bool inverse;
 // };
 
-struct UDPuppetButton
+struct UDPuppetButtonBehavior
 {
-    int pin;
-    int shortPressMs;
-    int longPressMs;
-
     bool clearOnPressed;
     bool playSequencesOnShort;
     bool cancelSoundOnLongPress;
     bool enableHotspotOnLong;
 };
 
-// struct UDPuppetButtonBehavior
-// {
-//     bool clearOnPressed;
-//     bool playSequencesOnShort;
-//     bool cancelSoundOnLongPress;
-//     bool enableHotspotOnLong;
-// }
-
-// struct UDPuppetButton
-// {
-//     int pin;
-//     int shortPressMs;
-//     int longPressMs;
-//     UDPuppetButtonBehavior behavior;
-// };
+struct UDPuppetButton
+{
+    int pin;
+    int shortPressMs;
+    int longPressMs;
+    UDPuppetButtonBehavior behavior;
+};
 
 struct UDPuppetHCSR04
 {

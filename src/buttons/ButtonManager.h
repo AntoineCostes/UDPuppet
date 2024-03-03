@@ -12,7 +12,7 @@ public:
 
     void initManager() override;
     void update() override;
-    void registerButton(int pin, long shortPressDuration, long longPressDuration, bool clearOnPressed, bool playSequencesOnShort, bool cancelSoundOnLongPress, bool enableHotspotOnLong);
+    void registerButton(int pin, long shortPressDuration, long longPressDuration, UDPuppetButtonBehavior behavior);
     void gotButtonEvent(const ButtonEvent &e);
 
 protected:

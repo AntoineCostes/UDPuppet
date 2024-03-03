@@ -15,24 +15,15 @@ public:
         RELEASED_LONG
     } type;
 
-    bool clearOnPressed;
-    bool playSequencesOnShort;
-    bool cancelSoundOnLongPress;
-    bool enableHotspotOnLong;
-
-    ButtonEvent(Type type, 
-    bool clearOnPressed, bool playSequencesOnShort, bool cancelSoundOnLongPress, bool enableHotspotOnLong) : type(type), 
-                                        clearOnPressed(clearOnPressed),
-                                        playSequencesOnShort(playSequencesOnShort),
-                                        cancelSoundOnLongPress(cancelSoundOnLongPress),
-                                        enableHotspotOnLong(enableHotspotOnLong) {}
+    UDPuppetButtonBehavior behavior;
+    ButtonEvent(Type type, UDPuppetButtonBehavior behavior) : type(type), behavior(behavior){}
 };
 
 class Button : public Component,
                 public EventBroadcaster<ButtonEvent>
 {
 public:
-    Button(int pin, long shortPressMs, long longPressMs, bool clearOnPressed, bool playSequencesOnShort, bool cancelSoundOnLongPress, bool enableHotspotOnLong);
+    Button(int pin, long shortPressMs, long longPressMs, UDPuppetButtonBehavior behavior);
 
     void initComponent(bool serialDebug);
     void update() override;
@@ -40,10 +31,7 @@ public:
     void pressed();
     void released();
 
-    bool clearOnPressed;
-    bool playSequencesOnShort;
-    bool cancelSoundOnLongPress;
-    bool enableHotspotOnLong;
+    UDPuppetButtonBehavior behavior;
     
 protected:
     int pin;

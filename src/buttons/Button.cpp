@@ -1,16 +1,11 @@
 #include "Button.h"
 
-Button::Button(int pin, long shortPressMs, long longPressMs, 
-bool clearOnPressed, bool playSequencesOnShort, 
-bool cancelSoundOnLongPress, bool enableHotspotOnLong): Component("btn_" + String(pin)), 
+Button::Button(int pin, long shortPressMs, long longPressMs, UDPuppetButtonBehavior behavior): Component("btn_" + String(pin)), 
                                         pin(pin), 
                                         isPressed(false),
                                         shortPressMs(shortPressMs),
                                         longPressMs(longPressMs), 
-                                        clearOnPressed(clearOnPressed),
-                                        playSequencesOnShort(playSequencesOnShort),
-                                        cancelSoundOnLongPress(cancelSoundOnLongPress),
-                                        enableHotspotOnLong(enableHotspotOnLong),
+                                        behavior(behavior),
                                         lastPressMs(0),
                                         isLongPressed(true)
 {
@@ -31,7 +26,7 @@ void Button::update()
         if (currentState && millis() - lastPressMs > shortPressMs)
         {
             compDebug("PRESSED");
-            sendEvent(ButtonEvent(ButtonEvent::Type::PRESSED, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong));
+            sendEvent(ButtonEvent(ButtonEvent::Type::PRESSED, behavior));
             isPressed = true;
             isLongPressed = false;
             lastPressMs = millis();
@@ -40,9 +35,9 @@ void Button::update()
         {
             compDebug("RELEASED");
             if (millis() - lastPressMs < longPressMs)
-                sendEvent(ButtonEvent(ButtonEvent::Type::RELASED_SHORT, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong));
+                sendEvent(ButtonEvent(ButtonEvent::Type::RELASED_SHORT, behavior));
             else
-                sendEvent(ButtonEvent(ButtonEvent::Type::RELEASED_LONG, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong));
+                sendEvent(ButtonEvent(ButtonEvent::Type::RELEASED_LONG, behavior));
             
             isPressed = false;
             isLongPressed = false;
@@ -51,7 +46,7 @@ void Button::update()
     } else if (isPressed && !isLongPressed && millis() - lastPressMs > longPressMs)
     {
         compDebug("MAINTAINED");
-        sendEvent(ButtonEvent(ButtonEvent::Type::LONG_PRESS, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong));
+        sendEvent(ButtonEvent(ButtonEvent::Type::LONG_PRESS, behavior));
         isLongPressed = true;
     }
 }

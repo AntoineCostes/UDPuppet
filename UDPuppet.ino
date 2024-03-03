@@ -32,7 +32,7 @@ void setup()
 
   #ifdef NUM_BUTTONS
   for (int i = 0; i < NUM_BUTTONS; i++)
-    master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].shortPressMs, BUTTONS[i].longPressMs, BUTTONS[i].clearOnPressed, BUTTONS[i].playSequencesOnShort, BUTTONS[i].cancelSoundOnLongPress, BUTTONS[i].enableHotspotOnLong);
+    master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].shortPressMs, BUTTONS[i].longPressMs, BUTTONS[i].behavior);
   #endif
 
   #ifdef NUM_HCSR04
