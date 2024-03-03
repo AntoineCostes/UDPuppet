@@ -118,6 +118,18 @@ void PuppetMaster::initManager()
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
 #endif
 
+#ifdef HAS_MUSICMAKER
+    managers.emplace_back(&musicmaker);
+    musicmaker.initManager();
+    fileMgr.init(musicmaker.isReady());
+#elif defined(HAS_SERIAL_MP3)
+    managers.emplace_back(&serialmp3);
+    serialmp3.initManager();
+    fileMgr.init(false);
+#else
+    fileMgr.init(false);
+#endif
+
     managers.emplace_back(&player);
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
@@ -162,18 +174,6 @@ void PuppetMaster::initManager()
     managers.emplace_back(&roomba);
     roomba.initManager();
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
-#endif
-
-#ifdef HAS_MUSICMAKER
-    managers.emplace_back(&musicmaker);
-    musicmaker.initManager();
-    fileMgr.init(musicmaker.isReady());
-#elif defined(HAS_SERIAL_MP3)
-    managers.emplace_back(&serialmp3);
-    serialmp3.initManager();
-    fileMgr.init(false);
-#else
-    fileMgr.init(false);
 #endif
 
     // TODO give this info on demand
