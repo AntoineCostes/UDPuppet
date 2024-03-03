@@ -84,4 +84,4 @@ const bool SERIALMP3_DEBUG = true;
 const bool MOTORWING_DEBUG = true;
 const bool STEPPER_DEBUG = true;
 const bool ROOMBA_DEBUG = true;
-const bool BUTTON_DEBUG = true;
+const bool BUTTON_DEBUG = false;

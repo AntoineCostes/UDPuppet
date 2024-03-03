@@ -61,7 +61,7 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.12")
+                               firmwareVersion("1.4.13")
 {
 #ifdef BASE 
     // Base uses pin 12 and 13
@@ -433,6 +433,7 @@ void PuppetMaster::launchSequence(int sequenceIndex)
     compDebug("launch sequence "+String(sequenceIndex));
     if (sequenceIndex >= 0 && sequenceIndex < fileMgr.sequences.size())
         player.playSequence(fileMgr.sequences[sequenceIndex]);
+    // playSequence(index)
 
     #ifdef HAS_SERIAL_MP3
     serialmp3.play(sequenceIndex);
@@ -542,48 +543,62 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 {
     switch (e.type)
     {
-#ifdef BUTTON_JUKEBOX
-    case ButtonEvent::Type::PRESSED:
+        case ButtonEvent::Type::PRESSED:
+            if (e.clearOnPressed)
+            {
+            player.stopPlaying();
+
 #ifdef HAS_MUSICMAKER
-        musicmaker.stop();
+            musicmaker.stop();
 #elif defined(HAS_SERIAL_MP3)
-        if(serialmp3.isPlaying())  serialmp3.stop();
+            if(serialmp3.isPlaying())  serialmp3.stop();
 #endif
-        player.stopPlaying();
-        
+            
 #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+            for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
 #endif
 
 #ifdef NUM_STRIPS
-    led.clear();
+            led.clear();
 #endif
-        break;
+            }
+            break;
 
-    case ButtonEvent::Type::RELASED_SHORT:
-#ifdef REPERTOIRE
-        // launchSequence(fileMgr.sequences[trackIndex]);
-        launchSequence(REPERTOIRE[trackIndex]);
-        trackIndex++;
-        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
-        compLog("new track index :" + String(trackIndex));
-        
-#elif defined(BUTTON_JUKEBOX)
-        launchSequence(serialmp3.getNextTrackIndex());
-#endif
-    break;
-
-    case ButtonEvent::Type::LONG_PRESS:
+        case ButtonEvent::Type::RELASED_SHORT:
+            if (e.playSequencesOnShort)
+            {
 #ifdef HAS_MUSICMAKER
-        musicmaker.play("cancel.mp3");
-#elif defined(HAS_SERIAL_MP3)
-        serialmp3.playCancelSound();
-#endif
-        break;
-#endif
+            // launchSequence(fileMgr.sequences[trackIndex]);
+            // launchSequence(REPERTOIRE[trackIndex]);
+            // trackIndex++;
+            // if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+            // compLog("new track index :" + String(trackIndex));
+            launchSequence(player.getNextSequenceIndex);
 
-    case ButtonEvent::Type::RELEASED_LONG:
-        break;
+#elif defined(HAS_SERIAL_MP3)
+                launchSequence(serialmp3.getNextTrackIndex());
+#endif
+            }
+            break;
+
+
+        case ButtonEvent::Type::LONG_PRESS:
+            if (e.cancelSoundOnLongPress)
+            {
+#ifdef HAS_MUSICMAKER
+            musicmaker.play("cancel.mp3");
+#elif defined(HAS_SERIAL_MP3)
+            serialmp3.playCancelSound();
+#endif
+            }
+            if (e.enableHotspotOnLong)
+            {
+                // TODO implement this
+            }
+            break;
+
+        case ButtonEvent::Type::RELEASED_LONG:
+            break;
     }
 }
 
