@@ -577,7 +577,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 #ifdef HAS_MUSICMAKER
         musicmaker.play("cancel.mp3");
 #elif defined(HAS_SERIAL_MP3)
-        if (serialmp3.getNumTracks() > 0) serialmp3.play(serialmp3.getNumTracks()-1);
+        serialmp3.playCancelSound();
 #endif
         break;
 #endif

@@ -14,6 +14,8 @@ public:
     void setVolume(float value);
     void play(int trackIndex);
     void playNext();
+    void playConfirmSound();
+    void playCancelSound();
     void stop();
 
     float getVolume();

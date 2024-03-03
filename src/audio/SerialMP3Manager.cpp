@@ -12,6 +12,9 @@ SerialMP3Manager::SerialMP3Manager() : Manager("serialmp3"),
     serialDebug = SERIALMP3_DEBUG;
 }
 
+// the library doesn't seem to handle folders
+// => the two last sounds on the SD card are used for confirm and cancel notification
+
 void SerialMP3Manager::initManager()
 {
     Manager::initManager();
@@ -41,9 +44,9 @@ void SerialMP3Manager::update()
                 break;
 
             case MD_YX5300::STS_TOT_FILES:  
-                numTracks = status->data;
+                numTracks = status->data - 2; // the two last tracks are cancel and confirm sounds
                 compDebug("number of tracks: "+String(numTracks));  
-                play(numTracks);
+                playConfirmSound();
                 break;
                 
             case MD_YX5300::STS_ERR_FILE:   
@@ -110,7 +113,7 @@ void SerialMP3Manager::play(int trackIndex)
 
     lastPlayedIndex = trackIndex;
     playing = true;
-    compDebug("is playing now !");
+    // compDebug("is playing now !");
 }
 
 void SerialMP3Manager::stop()
@@ -190,11 +193,35 @@ int SerialMP3Manager::getNextTrackIndex()
 
 bool SerialMP3Manager::isPlaying()
 {
-    compDebug("is playing ? " + String(playing));
+    // compDebug("is playing ? " + String(playing));
     return playing;
 }
 
 void SerialMP3Manager::playNext()
 {
     play(getNextTrackIndex());
+}
+
+void SerialMP3Manager::playConfirmSound()
+{
+    if (!ready)
+    {
+        compError("not ready yet, querying files...");
+        mp3.queryFilesCount();
+        return;
+    }
+    mp3.playTrack((uint8_t)(numTracks + 2)); 
+    playing = true;
+}
+
+void SerialMP3Manager::playCancelSound()
+{
+    if (!ready)
+    {
+        compError("not ready yet, querying files...");
+        mp3.queryFilesCount();
+        return;
+    }
+    mp3.playTrack((uint8_t)(numTracks + 1)); 
+    playing = true;
 }
