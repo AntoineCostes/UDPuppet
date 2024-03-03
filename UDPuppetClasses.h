@@ -71,6 +71,7 @@ struct UDPuppetServo
 struct UDPuppetButton
 {
     int pin;
+    int shortPressMs;
     int longPressMs;
 };
 

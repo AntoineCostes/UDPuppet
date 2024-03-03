@@ -1,8 +1,9 @@
 #include "Button.h"
 
-Button::Button(int pin, long longPressMs): Component("btn_" + String(pin)), 
+Button::Button(int pin, long shortPressMs, long longPressMs): Component("btn_" + String(pin)), 
                                         pin(pin), 
                                         isPressed(false),
+                                        shortPressMs(shortPressMs),
                                         longPressMs(longPressMs), 
                                         lastPressMs(0),
                                         isLongPressed(true)
@@ -18,9 +19,10 @@ void Button::initComponent(bool serialDebug)
 void Button::update()
 {
     bool currentState = !digitalRead(pin);
+
     if (isPressed != currentState)
     {
-        if (currentState)
+        if (currentState && millis() - lastPressMs > shortPressMs)
         {
             compDebug("PRESSED");
             sendEvent(ButtonEvent(pin, ButtonEvent::Type::PRESSED));
@@ -28,7 +30,7 @@ void Button::update()
             isLongPressed = false;
             lastPressMs = millis();
         }
-        else
+        else if (millis() - lastPressMs > shortPressMs)
         {
             compDebug("RELEASED");
             if (millis() - lastPressMs < longPressMs)

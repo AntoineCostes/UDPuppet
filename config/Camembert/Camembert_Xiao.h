@@ -22,5 +22,5 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, longPressMs
-    {9, 1000}
+    {9, 10, 1000}
 };

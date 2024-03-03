@@ -22,7 +22,7 @@ class Button : public Component,
                 public EventBroadcaster<ButtonEvent>
 {
 public:
-    Button(int pin, long longPressMs);
+    Button(int pin, long shortPressMs, long longPressMs);
 
     void initComponent(bool serialDebug);
     void update() override;
@@ -34,6 +34,7 @@ public:
 protected:
     int pin;
     bool isPressed;
+    long shortPressMs;
     long longPressMs;
     bool isLongPressed;
     long lastPressMs;

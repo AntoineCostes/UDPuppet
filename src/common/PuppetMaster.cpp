@@ -118,18 +118,6 @@ void PuppetMaster::initManager()
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
 #endif
 
-#ifdef HAS_MUSICMAKER
-    managers.emplace_back(&musicmaker);
-    musicmaker.initManager();
-    fileMgr.init(musicmaker.isReady());
-#elif defined(HAS_SERIAL_MP3)
-    managers.emplace_back(&serialmp3);
-    serialmp3.initManager();
-    fileMgr.init(false);
-#else
-    fileMgr.init(false);
-#endif
-
     managers.emplace_back(&player);
     player.initManager();
     player.addListener(std::bind(&PuppetMaster::gotPlayerEvent, this, std::placeholders::_1));
@@ -176,9 +164,17 @@ void PuppetMaster::initManager()
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
-    #ifdef HAS_SERIAL_MP3
-    serialmp3.play(serialmp3.numTracks-2);
-    #endif 
+#ifdef HAS_MUSICMAKER
+    managers.emplace_back(&musicmaker);
+    musicmaker.initManager();
+    fileMgr.init(musicmaker.isReady());
+#elif defined(HAS_SERIAL_MP3)
+    managers.emplace_back(&serialmp3);
+    serialmp3.initManager();
+    fileMgr.init(false);
+#else
+    fileMgr.init(false);
+#endif
 
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
@@ -435,7 +431,7 @@ void PuppetMaster::launchSequence(String sequenceName)
 void PuppetMaster::launchSequence(int sequenceIndex)
 {   
     compDebug("launch sequence "+String(sequenceIndex));
-    if (sequenceIndex >= 0 && sequenceIndex <= fileMgr.sequences.size())
+    if (sequenceIndex >= 0 && sequenceIndex < fileMgr.sequences.size())
         player.playSequence(fileMgr.sequences[sequenceIndex]);
 
     #ifdef HAS_SERIAL_MP3
@@ -548,11 +544,11 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     {
 #ifdef BUTTON_JUKEBOX
     case ButtonEvent::Type::PRESSED:
-    #ifdef HAS_MUSICMAKER
+#ifdef HAS_MUSICMAKER
         musicmaker.stop();
-    #elif defined(HAS_SERIAL_MP3)
-        serialmp3.stop();
-    #endif
+#elif defined(HAS_SERIAL_MP3)
+        if(serialmp3.isPlaying())  serialmp3.stop();
+#endif
         player.stopPlaying();
         
 #ifdef NUM_SERVOS
@@ -565,30 +561,28 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         break;
 
     case ButtonEvent::Type::RELASED_SHORT:
-    #ifdef REPERTOIRE
+#ifdef REPERTOIRE
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
-    #else
-        launchSequence(trackIndex);
-        trackIndex++;
-        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
-    #endif
+        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
         compLog("new track index :" + String(trackIndex));
-        break;
+        
+#elif defined(BUTTON_JUKEBOX)
+        launchSequence(serialmp3.getNextTrackIndex());
+#endif
+    break;
 
     case ButtonEvent::Type::LONG_PRESS:
-        compLog("long press");
-    #ifdef HAS_MUSICMAKER
+#ifdef HAS_MUSICMAKER
         musicmaker.play("cancel.mp3");
-    #elif defined(HAS_SERIAL_MP3)
-        if (serialmp3.numTracks > 0) serialmp3.play(serialmp3.numTracks-1);
-    #endif
+#elif defined(HAS_SERIAL_MP3)
+        if (serialmp3.getNumTracks() > 0) serialmp3.play(serialmp3.getNumTracks()-1);
+#endif
         break;
 #endif
 
-    default:
-        button.log("ButtonEvent :" + String(e.type));
+    case ButtonEvent::Type::RELEASED_LONG:
         break;
     }
 }

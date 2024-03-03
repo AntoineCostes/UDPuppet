@@ -22,9 +22,9 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 
-// #include "config/Vache/VacheQuiProute.h"
+#include "config/Vache/VacheQuiProute.h"
 
-#include "config/Xiao/XiaoLed.h"
+// #include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
 // #include "config/Xiao/XiaoBox_Button.h"
 
@@ -33,7 +33,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Test.h"
 
 // GENERAL PARAMETERS
-const int SETUP_DELAY_MS = 000;
+const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
 const bool OVERRIDE_WIFI_CREDS = true;
@@ -68,14 +68,20 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = false;
+
 const bool WIFI_DEBUG = false;
-const bool OSC_RECEIVE_DEBUG = false;
+const bool OSC_CONNECTION_DEBUG = false;
+const bool OSC_RECEIVE_DEBUG = true;
 const bool OSC_SEND_DEBUG = false;
-const bool FILES_DEBUG = true;
+const bool WEBSERVER_DEBUG = false;
+
+const bool FILES_DEBUG = false;
 const bool SEQUENCE_DEBUG = false;
+
 const bool LED_DEBUG = true;
 const bool SERVO_DEBUG = false;
+const bool SERIALMP3_DEBUG = true;
 const bool MOTORWING_DEBUG = true;
 const bool STEPPER_DEBUG = true;
 const bool ROOMBA_DEBUG = true;
-const bool BUTTON_DEBUG = false;
+const bool BUTTON_DEBUG = true;

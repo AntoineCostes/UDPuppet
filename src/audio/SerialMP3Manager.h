@@ -14,14 +14,20 @@ public:
 
     void setVolume(float value);
     void play(int trackIndex);
+    void playNext();
     void stop();
 
     float getVolume();
+    bool isPlaying();
+    int getNumTracks();
+    int getNextTrackIndex();
 
-    uint8_t numTracks;
 
 protected:
     bool ready;
+    bool playing;
+    int lastPlayedIndex;
+    int numTracks;
     HardwareSerial MySerial0;
     MD_YX5300 mp3; 
 

@@ -37,7 +37,7 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, longPressMs
-    {17, 2000}
+    {17, 10, 2000}
 };
 
 #define NUM_HCSR04 1
