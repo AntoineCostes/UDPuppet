@@ -7,6 +7,7 @@ class WifiEvent
 public:
     enum ConnectionState
     {
+        OFF,
         DISCONNECTED,
         CONNECTING,
         CONNECTED,
@@ -45,6 +46,10 @@ public:
 protected:
     unsigned long lastConnectTime;
     unsigned long lastDisconnectTime;
+
+    void initOTA();
+    // void initHotspot();
+    // void initSTA();
 
     void changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError = WifiManager::Error::NONE);
     WifiEvent::ConnectionState connectionState;
