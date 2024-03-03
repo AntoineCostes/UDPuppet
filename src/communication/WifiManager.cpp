@@ -1,6 +1,6 @@
 #include "WifiManager.h"
 
-WifiManager::WifiManager() : Manager("wifi")
+WifiManager::WifiManager() : Manager("wifi"), numConnectionFails(0)
 {
   serialDebug = WIFI_DEBUG;
 }
@@ -32,10 +32,10 @@ void WifiManager::initManager()
   stringParameters["pass"] = WIFI_CREDENTIALS.password;
   #endif
   
-  WiFi.mode(WIFI_STA);
-  WiFi.setAutoConnect(true);
+  // WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
   WiFi.setSleep(false);
+  WiFi.onEvent(WiFiEvent);
 #ifdef ESP32
   WiFi.setTxPower(WIFI_POWER_19dBm);
 #endif 
@@ -66,13 +66,8 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
 
 void WifiManager::connect()
 {
-  if (connectionState == WifiEvent::ConnectionState::CONNECTED || connectionState == WifiEvent::ConnectionState::HOTSPOT)
-    WiFi.disconnect();
-
-  compDebug("Connecting to " + stringParameters["ssid"] + " (" + stringParameters["pass"] + ")...");
-  WiFi.begin(stringParameters["ssid"].c_str(), stringParameters["pass"].c_str());
-
-  changeConnectionState(WifiEvent::ConnectionState::CONNECTING);
+  initSTA();
+  
 }
 
 void WifiManager::disconnect()
@@ -102,6 +97,7 @@ void WifiManager::update()
     {
       changeConnectionState(WifiEvent::ConnectionState::CONNECTED);
       compLog("Successfully connected, local IP: " + getIP());
+      numConnectionFails = 0;
       return;
     }
 
@@ -109,6 +105,8 @@ void WifiManager::update()
     {
       compError("timeout expired");
       changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED, WifiManager::Error::TIMEOUT);
+      numConnectionFails++;
+      if (numConnectionFails >= 5) initAP();
       return;
     }
     break;
@@ -165,7 +163,6 @@ String WifiManager::getMAC()
   //return String((uint32_t)(did >> 32)) + String((uint32_t)(did & 0xffffffff));
 }
 
-
 void WifiManager::initOTA()
 {
     ArduinoOTA.setHostname(BOARD_NAME.c_str());
@@ -201,4 +198,68 @@ void WifiManager::initOTA()
       }
     });
     ArduinoOTA.begin();
+}
+
+void WifiManager::initAP()
+{
+  if (connectionState == WifiEvent::ConnectionState::CONNECTED)
+    WiFi.disconnect();
+  
+  compDebug("Opening AP");
+
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(BOARD_NAME.c_str());
+
+  changeConnectionState(WifiEvent::ConnectionState::HOTSPOT);
+}
+
+void WifiManager::initSTA()
+{
+  WiFi.mode(WIFI_STA);
+  
+  if (connectionState == WifiEvent::ConnectionState::CONNECTED || connectionState == WifiEvent::ConnectionState::HOTSPOT)
+    WiFi.disconnect();
+
+  compDebug("Connecting to " + stringParameters["ssid"] + " (" + stringParameters["pass"] + ")...");
+  WiFi.begin(stringParameters["ssid"].c_str(), stringParameters["pass"].c_str());
+
+  changeConnectionState(WifiEvent::ConnectionState::CONNECTING);
+  
+}
+
+
+void WifiManager::WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info) 
+{
+    switch(event) {
+        case ARDUINO_EVENT_WIFI_AP_START:
+            Serial.println("AP Started");
+            break;
+        case ARDUINO_EVENT_WIFI_AP_STOP:
+            Serial.println("AP Stopped");
+            break;
+        case ARDUINO_EVENT_WIFI_STA_START:
+            Serial.println("STA Started");
+            break;
+        case ARDUINO_EVENT_WIFI_STA_CONNECTED:
+            Serial.println("STA Connected");
+            WiFi.enableIpV6();
+            break;
+        case ARDUINO_EVENT_WIFI_STA_GOT_IP6:
+            Serial.print("STA IPv6: ");
+            Serial.println(WiFi.localIPv6());
+            break;
+        case ARDUINO_EVENT_WIFI_STA_GOT_IP:
+            Serial.print("STA IPv4: ");
+            Serial.println(WiFi.localIP());
+            break;
+        case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
+            Serial.println("STA Disconnected");
+            break;
+        case ARDUINO_EVENT_WIFI_STA_STOP:
+            Serial.println("STA Stopped");
+            break;
+        default:
+            break;
+    }
+    
 }

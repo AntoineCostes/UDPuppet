@@ -33,12 +33,13 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Test.h"
 
 // GENERAL PARAMETERS
-const int SETUP_DELAY_MS = 000;
+const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
+const bool CONNECT_ON_BOOT = true;
 const bool OVERRIDE_WIFI_CREDS = true;
-const int DELAY_BEFORE_RECONNECT_MS = 3000;
-const int CONNECTION_TIMEOUT_MS = 10000;
+const int DELAY_BEFORE_RECONNECT_MS = 1000;
+const int CONNECTION_TIMEOUT_MS = 3000;
 
 // OSC PARAMETERS
 const String OSC_TARGET_IP = "";
@@ -69,13 +70,13 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = false;
 
-const bool WIFI_DEBUG = false;
+const bool WIFI_DEBUG = true;
 const bool OSC_CONNECTION_DEBUG = false;
 const bool OSC_RECEIVE_DEBUG = true;
 const bool OSC_SEND_DEBUG = false;
 const bool WEBSERVER_DEBUG = false;
 
-const bool FILES_DEBUG = false;
+const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = false;
 
 const bool LED_DEBUG = true;

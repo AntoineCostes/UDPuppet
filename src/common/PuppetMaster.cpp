@@ -492,6 +492,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 
     case WifiEvent::ConnectionState::DISCONNECTED:
         wifi.dbg("wifi lost !");
+        web.closeServer();
   #ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, HIGH);
   #endif
@@ -500,6 +501,15 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     #endif
         break;
 
+    case WifiEvent::ConnectionState::OFF:
+        wifi.dbg("wifi disconnected");
+        break;
+        
+    case WifiEvent::ConnectionState::HOTSPOT:
+        wifi.dbg("hotspot started");
+        web.initServer();
+        break;
+        
     default:
         wifi.err("wifi state not handled");
         break;
@@ -593,7 +603,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             }
             if (e.behavior.enableHotspotOnLong)
             {
-                // TODO implement this
+                wifi.initAP();
             }
             break;
 
