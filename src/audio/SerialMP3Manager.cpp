@@ -18,11 +18,14 @@ void SerialMP3Manager::initManager()
     
     MySerial0.begin(MD_YX5300::SERIAL_BPS, SERIAL_8N1, -1, -1); // default RX TY pins
     mp3.begin();
-    mp3.setSynchronous(false); // enables status callbacks
-    mp3.queryFilesCount();
+    mp3.setSynchronous(false);              // returns STS_ACK_OK
+    mp3.queryFilesCount();                  // STS_TOT_FILES
     delay(50);
     update();
-    setVolume(floatParameters["volume"]);
+    setVolume(floatParameters["volume"]);   // returns STS_ACK_OK
+    delay(50);
+    update();
+    // those delays + update were found empirically to ensure proper init
 }
 
 void SerialMP3Manager::update()
@@ -107,7 +110,7 @@ void SerialMP3Manager::play(int trackIndex)
 
     lastPlayedIndex = trackIndex;
     playing = true;
-    compDebug("is playing now");
+    compDebug("is playing now !");
 }
 
 void SerialMP3Manager::stop()

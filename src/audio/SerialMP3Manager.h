@@ -9,7 +9,6 @@ public:
 
     void initManager() override;
     void update() override;
-    
     bool handleCommand(OSCMessage &command) override;
 
     void setVolume(float value);
@@ -22,7 +21,6 @@ public:
     int getNumTracks();
     int getNextTrackIndex();
 
-
 protected:
     bool ready;
     bool playing;
@@ -30,5 +28,4 @@ protected:
     int numTracks;
     HardwareSerial MySerial0;
     MD_YX5300 mp3; 
-
 };
