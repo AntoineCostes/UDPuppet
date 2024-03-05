@@ -475,8 +475,6 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         // FIXME wifiDebug
     #ifdef NUM_STRIPS
         led.setMode(LedStrip::LedMode::READY);
-        //led.setColor(0, 0, 50, 0);
-        // led.toast(LedStrip::LedMode::READY, 1000); // probleme: ca reste vert si pas de stream
     #endif
     #ifdef NUM_SERVOS
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
@@ -583,7 +581,8 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             // trackIndex++;
             // if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
             // compLog("new track index :" + String(trackIndex));
-            launchSequence(player.getNextSequenceIndex);
+
+            // launchSequence(player.getNextSequenceIndex());
 
 #elif defined(HAS_SERIAL_MP3)
                 launchSequence(serialmp3.getNextTrackIndex());
@@ -760,18 +759,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     {
         player.dbg("ended");
 
-// #ifdef BUTTON_JUKEBOX
-// #ifdef NUM_STRIPS
-// led.setMode(LedStrip::LedMode::WAITING);
-// #endif
-// #endif
-
-#ifdef CONTINUE_PLAYING
-        launchSequence(fileMgr.sequences[trackIndex]);
-        trackIndex++;
-        if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
-        compLog("track index :" + trackIndex);
-#endif
+        // TODO turn leds off/on depending on player behavior ?
     }
 }
 

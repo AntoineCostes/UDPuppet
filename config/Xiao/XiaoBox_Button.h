@@ -6,7 +6,7 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12003;
 
 #define HAS_SERIAL_MP3
-#define BUTTON_JUKEBOX
+
 
 #define SEQUENCE_FRAME_SIZE 1
 

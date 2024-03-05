@@ -72,7 +72,7 @@ const bool BATTERY_DEBUG = false;
 
 const bool WIFI_DEBUG = true;
 const bool OSC_CONNECTION_DEBUG = false;
-const bool OSC_RECEIVE_DEBUG = true;
+const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;
 const bool WEBSERVER_DEBUG = false;
 

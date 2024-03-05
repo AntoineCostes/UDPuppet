@@ -6,7 +6,7 @@ const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12004;
 
 #define HAS_SERIAL_MP3
-#define BUTTON_JUKEBOX
+
 
 #define SEQUENCE_FRAME_SIZE 1
 
@@ -22,5 +22,5 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 1000, UDPuppetButtonBehavior{true, true, true, false}}
+    {9, 5, 1000, UDPuppetButtonBehavior{true, true, true, true}}
 };
