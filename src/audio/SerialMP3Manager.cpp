@@ -47,6 +47,7 @@ void SerialMP3Manager::update()
                 numTracks = status->data - 2; // the two last tracks are cancel and confirm sounds
                 compDebug("number of tracks: "+String(numTracks));  
                 playConfirmSound();
+                lastPlayedIndex = numTracks; 
                 break;
                 
             case MD_YX5300::STS_ERR_FILE:   
@@ -104,12 +105,12 @@ void SerialMP3Manager::play(int trackIndex)
         mp3.queryFilesCount();
         return;
     }
-    if (trackIndex <= 0 || trackIndex > numTracks)
+    if (trackIndex < 0 || trackIndex > numTracks - 1)
     {
-        compError("track index should be between [1-" + String(numTracks) +"]");
+        compError("track index = "+ String(trackIndex) + " should be within [0-" + String(numTracks - 1) +"]");
         return;
     }
-    mp3.playTrack((uint8_t)trackIndex); // the index starts at 1
+    mp3.playTrack((uint8_t) (trackIndex + 1) ); // the index starts at 1
 
     lastPlayedIndex = trackIndex;
     playing = true;
@@ -187,8 +188,8 @@ int SerialMP3Manager::getNumTracks()
 int SerialMP3Manager::getNextTrackIndex()
 {
     // compDebug("get next, current = " + String(lastPlayedIndex) + " / " + String(numTracks));
-    if (lastPlayedIndex < numTracks) return lastPlayedIndex + 1;
-    else return 1;
+    if (lastPlayedIndex < numTracks - 1) return lastPlayedIndex + 1;
+    else return 0;
 }
 
 bool SerialMP3Manager::isPlaying()

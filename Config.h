@@ -72,7 +72,7 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = false;
 
-const bool WIFI_DEBUG = true;
+const bool WIFI_DEBUG = false;
 const bool OSC_CONNECTION_DEBUG = false;
 const bool OSC_RECEIVE_DEBUG = false;
 const bool OSC_SEND_DEBUG = false;
