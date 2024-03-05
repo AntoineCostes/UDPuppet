@@ -4,11 +4,11 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool use
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
                                                                             brightness(0.3),
-                                                                            mode(LedMode::WAITING),
-                                                                            toastTimer(0)
+                                                                            isNotifying(false)
 {
     // instantiate strip in init ?
-    boolParameters["wifiDebug"] = debug;
+    wifiDebug = debug;
+    // boolParameters["wifiDebug"] = debug;
     // TODO brightness parameter
     // toast duration parameter
     Component::useInSequences = useInSequences;
@@ -17,6 +17,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool use
 void LedStrip::initComponent(bool serialDebug)
 {
     strip.begin();
+    lastRefreshTime = millis();
     Component::initComponent(serialDebug);
 }
 
@@ -24,48 +25,11 @@ void LedStrip::update()
 {
     if (!checkInit())
         return;
-
-    float slow = abs(sin(0.001f * millis()));
-    float fast = abs(sin(0.002f * millis()));
-
-    toastTimer.update();
-    LedMode currentMode = toastTimer.isRunning ? toastMode : mode;
-
-    // clear leds
-    //if (!toastTimer.isRunning && toastMode != mode)
-    //{
-    //    compDebug("end toast");
-    //    toastMode = mode;
-    //    setColor(0, 0, 0);
-    //}
-
-    if (boolParameters["wifiDebug"])
-        switch (currentMode)
-        {
-        case LedMode::WAITING:
-            setAll(0, 0, int(50 * slow));
-            break;
-
-        case LedMode::READY:
-            setAll(0, 100, 0);
-            break;
-
-        case LedMode::WORKING:
-            setAll(int(50 * fast), 0, int(50 * fast));
-            break;
-
-        case LedMode::ERROR:
-            setAll(50, 0, 0);
-            break;
-
-        case LedMode::COIN:
-            setAll(int(250 * slow), int(250 * slow), int(250 * slow));
-            break;
-
-        case LedMode::STREAMING:
-            break;
-        }
-    strip.show();
+    if (millis() - lastRefreshTime > LED_REFRESH_MS)
+    {
+        strip.show();
+        lastRefreshTime = millis();
+    }
 }
 
 void LedStrip::clear()
@@ -73,16 +37,23 @@ void LedStrip::clear()
     if (!checkInit())
         return;
 
+    isNotifying = false;
     strip.clear();
     strip.show();
 }
 
 void LedStrip::setWifiDebug(bool value)
 {
-    boolParameters["wifiDebug"] = value;
-    overrideFlashParameters();
+    wifiDebug = value;
+    //boolParameters["wifiDebug"] = value;
+    //overrideFlashParameters();
 }
 
+bool LedStrip::isWifiDebug()
+{
+    return wifiDebug;
+    //boolParameters["wifiDebug"];
+}
 /* TODO make childClass DebugLedStrip with communication methods
 void LedStrip::setMode(LedMode newMode)
 {
@@ -150,7 +121,7 @@ void LedStrip::setLed(int i, int r, int g, int b)
 
     if (g < 0 || g > 255)
     {
-        compError("incorrect rg value: " + String(g));
+        compError("incorrect g value: " + String(g));
         return;
     }
 
@@ -160,5 +131,4 @@ void LedStrip::setLed(int i, int r, int g, int b)
         return;
     }
     strip.setPixelColor(i, strip.Color((int)(r), (int)(g), (int)(b)));
-    //strip.show();
 }

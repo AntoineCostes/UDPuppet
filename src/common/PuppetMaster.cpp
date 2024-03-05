@@ -372,7 +372,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     if (command.match("/coin"))
     {
 #ifdef NUM_STRIPS
-        led.setMode(LedStrip::LedMode::COIN);
+        led.notify(LedManager::Notification::WORKING);
         return;
 #endif
     }
@@ -424,6 +424,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 void PuppetMaster::launchSequence(String sequenceName)
 {
     // TODO get File from fileManager and give it to player ?
+    // TODO auto check if mp3 or wav
     player.playSequence(sequenceName);
     #ifdef HAS_MUSICMAKER
     musicmaker.play(sequenceName+".mp3");
@@ -452,7 +453,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, HIGH);
   #endif
     #ifdef NUM_STRIPS
-        led.setMode(LedStrip::LedMode::WORKING);
+        led.notify(LedManager::Notification::WORKING);
     #endif
         break;
 
@@ -474,10 +475,10 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
             wifi.err("could not set up mDNS instance");
         }
 
-        // FIXME wifiDebug
     #ifdef NUM_STRIPS
-        led.setMode(LedStrip::LedMode::READY);
+        led.notify(LedManager::Notification::READY);
     #endif
+
     #ifdef NUM_SERVOS
         for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
         delay(500);
@@ -497,7 +498,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, HIGH);
   #endif
     #ifdef NUM_STRIPS
-        led.setMode(LedStrip::LedMode::ERROR);
+        led.notify(LedManager::Notification::ERROR);
     #endif
         break;
 
@@ -554,6 +555,8 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     switch (e.type)
     {
         case ButtonEvent::Type::PRESSED:
+            osc.sendMessage("/button/pressed");
+
             if (e.behavior.clearOnPressed)
             {
             player.stopPlaying();
@@ -575,6 +578,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             break;
 
         case ButtonEvent::Type::RELASED_SHORT:
+            osc.sendMessage("/button/released");
             if (e.behavior.playSequencesOnShort)
             {
 #ifdef HAS_MUSICMAKER
@@ -589,11 +593,20 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 #elif defined(HAS_SERIAL_MP3)
                 launchSequence(serialmp3.getNextTrackIndex());
 #endif
+
+#ifdef NUM_STRIPS
+                led.notify(LedManager::Notification::WORKING);
+#endif
             }
             break;
 
 
         case ButtonEvent::Type::LONG_PRESS:
+#ifdef NUM_STRIPS
+        led.notify(LedManager::Notification::WAITING);
+#endif
+            osc.sendMessage("/button/longpress");
+
             if (e.behavior.cancelSoundOnLongPress)
             {
 #ifdef HAS_MUSICMAKER
@@ -602,6 +615,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             serialmp3.playCancelSound();
 #endif
             }
+
             if (e.behavior.enableHotspotOnLong)
             {
                 wifi.initAP();
@@ -609,6 +623,11 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             break;
 
         case ButtonEvent::Type::RELEASED_LONG:
+#ifdef NUM_STRIPS
+        led.notify(LedManager::Notification::WAITING);
+#endif
+            osc.sendMessage("/button/longrelease");
+            
             break;
     }
 }

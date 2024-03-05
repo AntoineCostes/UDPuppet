@@ -12,10 +12,6 @@ public:
 
     void initComponent(bool serialDebug);
     void update() override;
-    
-    // allows to display a given mode for a given duration
-    //void toast(LedMode toastedMode, long ms);
-    //void setMode(LedMode mode);
 
     void clear();
     void setWifiDebug(bool value);
@@ -25,20 +21,13 @@ public:
     void setLed(int i, int c);
     void setLed(int i, int r, int g, int b);
 
-    enum LedMode
-    {
-        WAITING,
-        READY,
-        WORKING,
-        ERROR,
-        COIN,
-        STREAMING
-    } mode;
+    bool isWifiDebug();
+    bool isNotifying;
 
 protected:
     int numLeds;
     float brightness;
+    bool wifiDebug;
+    unsigned long lastRefreshTime;
     Adafruit_NeoPixel strip;
-    Timer toastTimer;
-    LedMode toastMode;
 };

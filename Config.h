@@ -24,7 +24,8 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 
 // #include "config/Vache/VacheQuiProute.h"
-#include "config/Vache/VacheQuiProute_Kavan.h"
+// #include "config/Vache/VacheQuiProute_Kavan.h"
+#include "config/Vache/VacheQuiBlague.h"
 
 // #include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
