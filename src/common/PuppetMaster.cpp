@@ -113,9 +113,11 @@ void PuppetMaster::initManager()
     osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
 
 #ifdef ESP32
+#ifdef HAS_LIPO
     managers.emplace_back(&battery);
     battery.initManager();
     battery.addListener(std::bind(&PuppetMaster::gotBatteryEvent, this, std::placeholders::_1));
+#endif
 #endif
 
 #ifdef HAS_MUSICMAKER
@@ -658,6 +660,7 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
 #endif
 
 #ifdef ESP32
+#ifdef HAS_LIPO
 void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 {
     if (!osc.isConnected)
@@ -686,6 +689,7 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
         break;
     }
 }
+#endif
 #endif
 
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)

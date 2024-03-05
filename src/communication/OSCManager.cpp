@@ -88,7 +88,7 @@ void OSCManager::update()
             msg.fill(udp.read());
         if (!msg.hasError())
         {
-            if (OSC_RECEIVE_DEBUG) compLog("got osc message");
+            if (OSC_RECEIVE_DEBUG) compLog("got osc message: "+String(msg.getAddress()));
                 
             // when receiving messages from new IP, makes this the new target
             if (stringParameters["targetIp"] != udp.remoteIP().toString())

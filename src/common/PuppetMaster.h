@@ -60,7 +60,9 @@ public:
     ButtonManager button;
     
 #ifdef ESP32
+#ifdef HAS_LIPO
     BatteryManager battery;
+#endif
 #endif
 
 #ifdef NUM_STRIPS
@@ -119,7 +121,9 @@ protected:
     void gotFileEvent(const FileEvent &e);
 
 #ifdef ESP32
+#ifdef HAS_LIPO
     void gotBatteryEvent(const BatteryEvent &e);
+#endif
 #endif
 
 #ifdef HAS_MOTORWING
