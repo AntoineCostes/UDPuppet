@@ -12,16 +12,8 @@ public:
     
     void registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug, bool useInSequences);
 
-    enum Notification
-    {
-        READY,
-        ERROR,
-        CONNECTED,
-        WORKING,
-        WAITING
-    } currentNotification;
-
-    void notify(Notification notification);
+    void notify(LedStrip::Notification notification);
+    void forceNotify(int stripIndex, LedStrip::Notification notification);
     
     // set all strips
     void clear();
@@ -42,6 +34,6 @@ public:
     bool handleCommand(OSCMessage &command) override;
 
 protected:
-    float notificationLight;
+    unsigned long lastRefreshTime;
     std::vector<LedStrip*> strips; 
 };

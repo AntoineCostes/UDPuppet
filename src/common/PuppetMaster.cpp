@@ -153,6 +153,7 @@ void PuppetMaster::initManager()
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
     led.initManager();
+    led.notify(LedStrip::Notification::WORKING);
 #endif
 
 #ifdef NUM_SERVOS
@@ -372,7 +373,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     if (command.match("/coin"))
     {
 #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::WORKING);
+        led.notify(LedStrip::Notification::WORKING);
         return;
 #endif
     }
@@ -453,7 +454,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, HIGH);
   #endif
     #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::WORKING);
+        led.notify(LedStrip::Notification::WORKING);
     #endif
         break;
 
@@ -476,7 +477,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         }
 
     #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::READY);
+        led.notify(LedStrip::Notification::READY);
     #endif
 
     #ifdef NUM_SERVOS
@@ -498,7 +499,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, HIGH);
   #endif
     #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::ERROR);
+        led.notify(LedStrip::Notification::ERROR);
     #endif
         break;
 
@@ -593,17 +594,13 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 #elif defined(HAS_SERIAL_MP3)
                 launchSequence(serialmp3.getNextTrackIndex());
 #endif
-
-#ifdef NUM_STRIPS
-                led.notify(LedManager::Notification::WORKING);
-#endif
             }
             break;
 
 
         case ButtonEvent::Type::LONG_PRESS:
 #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::WAITING);
+        led.notify(LedStrip::Notification::WAITING);
 #endif
             osc.sendMessage("/button/longpress");
 
@@ -624,7 +621,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
         case ButtonEvent::Type::RELEASED_LONG:
 #ifdef NUM_STRIPS
-        led.notify(LedManager::Notification::WAITING);
+        led.notify(LedStrip::Notification::WAITING);
 #endif
             osc.sendMessage("/button/longrelease");
             

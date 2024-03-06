@@ -22,12 +22,23 @@ public:
     void setLed(int i, int r, int g, int b);
 
     bool isWifiDebug();
+    
+    enum Notification
+    {
+        READY,
+        ERROR,
+        BOOTING,
+        CONNECTED,
+        WORKING,
+        WAITING
+    } currentNotification;
+    void notify(LedStrip::Notification notification);
     bool isNotifying;
 
 protected:
     int numLeds;
     float brightness;
     bool wifiDebug;
-    unsigned long lastRefreshTime;
+    float notificationFade;
     Adafruit_NeoPixel strip;
 };

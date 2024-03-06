@@ -4,6 +4,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool use
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
                                                                             brightness(0.3),
+                                                                            notificationFade(0),
                                                                             isNotifying(false)
 {
     // instantiate strip in init ?
@@ -17,19 +18,68 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool use
 void LedStrip::initComponent(bool serialDebug)
 {
     strip.begin();
-    lastRefreshTime = millis();
     Component::initComponent(serialDebug);
+}
+
+void LedStrip::notify(LedStrip::Notification notification)
+{
+    switch (notification)
+    {
+        case Notification::READY:
+            // compDebug("========= READY");
+            notificationFade = 1.0f;
+            break;
+
+        case Notification::ERROR:
+            // compDebug("========= ERROR");
+            break;
+
+        case Notification::WORKING:
+            // compDebug("========= WORKING");
+            break;
+
+        case Notification::WAITING:
+            // compDebug("========= WAITING");
+            break;
+    }
+    currentNotification = notification;
 }
 
 void LedStrip::update()
 {
     if (!checkInit())
         return;
-    if (millis() - lastRefreshTime > LED_REFRESH_MS)
-    {
-        strip.show();
-        lastRefreshTime = millis();
-    }
+
+    float slow = abs(sin(0.001f * millis()));
+    float fast = abs(sin(0.002f * millis()));
+    
+    if (isNotifying)
+        switch (currentNotification)
+        {
+        case Notification::READY:
+            setAll(100 * notificationFade, 100 * notificationFade, 100 * notificationFade);
+            notificationFade *= 0.95f;
+            break;
+
+        case Notification::ERROR:
+            setAll(50, 0, 0);
+            break;
+
+        case Notification::BOOTING:
+            setAll(0, 0, int(50 * slow));
+            break;
+
+        case Notification::WORKING:
+            setAll(int(50 * fast), 0, int(50 * fast));
+            break;
+
+        case Notification::WAITING:
+            setAll(int(50 * slow), 0, int(50 * slow));
+            break;
+            
+    //         setAll(int(250 * slow), int(250 * slow), int(250 * slow));
+        }
+    strip.show();
 }
 
 void LedStrip::clear()

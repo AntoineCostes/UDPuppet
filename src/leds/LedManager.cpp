@@ -9,6 +9,7 @@ LedManager::LedManager() : Manager("led")
 void LedManager::initManager()
 {
     Manager::initManager();
+    lastRefreshTime = millis();
 }
 
 void LedManager::registerLedStrip(int pin, int numLeds, neoPixelType type, bool wifiDebug, bool useInSequences)
@@ -34,40 +35,12 @@ void LedManager::update()
     if (!checkInit())
         return;
 
-    float slow = abs(sin(0.001f * millis()));
-    float fast = abs(sin(0.002f * millis()));
-
-    // notify
-    for (auto const &strip : strips) 
+    // no Manager::update(), leds are refreshed periodically
+    if (millis() - lastRefreshTime > LED_REFRESH_MS)
     {
-        if (strip->isNotifying)
-        {
-            switch (currentNotification)
-            {
-            case Notification::READY:
-                strip->setAll(100 * notificationLight, 100 * notificationLight, 100 * notificationLight);
-                notificationLight *= 0.999f;
-                break;
-
-            case Notification::ERROR:
-                strip->setAll(50, 0, 0);
-                break;
-
-            case Notification::WORKING:
-                strip->setAll(int(50 * fast), 0, int(50 * fast));
-                break;
-
-            case Notification::WAITING:
-                strip->setAll(0, 0, int(50 * slow));
-                break;
-                
-//         setAll(int(250 * slow), int(250 * slow), int(250 * slow));
-            }
-        }
-        strip->update();
+        for (auto const &strip : strips) strip->update();
+        lastRefreshTime = millis();
     }
-    
-    Manager::update(); // led strips will refresh periodically
 }
 
 void LedManager::clear()
@@ -84,7 +57,6 @@ void LedManager::setColor(int r, int g, int b)
 {
     for (auto const &strip : strips) 
     {
-        strip->isNotifying = false;
         strip->setAll(r, g, b);
     }
 }
@@ -101,7 +73,6 @@ void LedManager::setBrightness(int stripIndex, float value)
 
 void LedManager::setColor(int stripIndex, int c)
 {
-    strips[stripIndex]->isNotifying = false;
     setColor(stripIndex, c, c, c);
 }
 
@@ -127,41 +98,17 @@ bool LedManager::useInSequences(int stripIndex)
     return strips[stripIndex]->useInSequences;
 }
 
-void LedManager::notify(Notification notification)
+void LedManager::notify(LedStrip::Notification notification)
 {
-    currentNotification = notification;
-
     for (auto const &strip : strips)  
         if (strip->isWifiDebug())
-            strip->isNotifying = true;
-    
-    switch (currentNotification)
-    {
-        case Notification::READY:
-            compDebug("========= READY");
-            notificationLight = 1.0f;
-            break;
-
-        case Notification::ERROR:
-            compDebug("========= ERROR");
-            break;
-
-        case Notification::WORKING:
-            compDebug("========= WORKING");
-            break;
-
-        case Notification::WAITING:
-            compDebug("========= WAITING");
-            break;
-    }
+            strip->notify(notification);
 }
 
-// void LedManager::forceNotify(int stripIndex, Notification notification)
-// {
-//     currentNotification = notification;
-    
-//     strips[stripIndex]->isNotifying = true;
-// }
+void LedManager::forceNotify(int stripIndex, LedStrip::Notification notification)
+{
+    strips[stripIndex]->notify(notification);
+}
 
 bool LedManager::handleCommand(OSCMessage &command)
 {
@@ -171,7 +118,7 @@ bool LedManager::handleCommand(OSCMessage &command)
     char buf[32];
     command.getAddress(buf);
     String address = String(buf);
-    compLog("handle command : " + address);
+    // compLog("handle command : " + address);
 
     if (address.equals("/led/debug"))
     {
