@@ -14,7 +14,7 @@ const int OSC_TARGET_PORT = 9000;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 10, 80, 10, false, false, true}
+    {10, 0, 80, 0, false, false, true}
 
 };
 
@@ -23,9 +23,9 @@ const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB?, wifiDebug, useInSequences
-    {5, 20, true, true, false},
+    {5, 20, true, true, false}, // TODO remove
     {8, 20, true, false, false},
-    {7, 20, true, true, false}
+    {7, 20, false, true, false}
 };
 
 
@@ -33,5 +33,5 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 2000, UDPuppetButtonBehavior{true, true, false, false}}
+    {9, 5, 1500, UDPuppetButtonBehavior{true, true, false, false}}
 };
