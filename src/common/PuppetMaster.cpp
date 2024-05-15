@@ -179,12 +179,24 @@ void PuppetMaster::initManager()
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
+#ifdef COIN_PIN
+  pinMode(COIN_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(COIN_PIN), PuppetMaster::ReceiveCoin, RISING);
+  //attachInterrupt(digitalPinToInterrupt(D0), std::bind(&PuppetMaster::Handler, this, std::placeholders::_0)), RISING);
+#endif
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
     
 }
+
+void PuppetMaster::ReceiveCoin() {  
+  Serial.println("");
+  Serial.println("Pushed!");
+  PuppetMaster::hasCredit = true;
+}
+
 
 void PuppetMaster::advertiseComponents()
 {
@@ -333,6 +345,23 @@ void PuppetMaster::update()
         if (mgr.get()->checkInit())
             mgr.get()->update();
     }
+
+#ifdef BUTTON_JUKEBOX
+    if (PuppetMaster::hasCredit)
+    {
+        Serial.println("got credit !");
+        PuppetMaster::hasCredit = false;
+        
+        musicmaker.stop();
+        player.stopPlaying();
+        // launchSequence(fileMgr.sequences[trackIndex]);
+        launchSequence(REPERTOIRE[trackIndex]);
+        trackIndex++;
+        // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+        compLog("track index :" + String(trackIndex));
+    }
+#endif
 }
 
 void PuppetMaster::sendDebugMsg(String componentName, String msg)

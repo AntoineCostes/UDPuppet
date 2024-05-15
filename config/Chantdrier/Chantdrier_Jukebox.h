@@ -13,6 +13,8 @@ const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine"};
 
 #define SEQUENCE_FRAME_SIZE 4 // 4 servos
 
+#define COIN_PIN 16
+
 #define NUM_STRIPS 1
 const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
