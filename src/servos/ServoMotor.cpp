@@ -1,6 +1,6 @@
 #include "ServoMotor.h"
 
-ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_PWMServoDriver* pwm) :
+ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_MS_PWMServoDriver* pwm) :
                         Component("servo_" + String(pin)),
                         pin(pin),
                         min(min),

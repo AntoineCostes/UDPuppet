@@ -12,7 +12,7 @@ void ServoManager::initManager()
     compError("Adafruit_PWMServoDriver needs SCL/SDA ports to be free !");
     return;
   }
-  pwm = new Adafruit_PWMServoDriver();  
+  pwm = new Adafruit_MS_PWMServoDriver();  
   pwm->begin();
   pwm->setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 
@@ -80,10 +80,11 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
         break;
 
         case XIAO_C3:
-        recommendedPins = {1, 2, 3, 4, 5, 6, 7, 9, 10, 18, 19, 20, 21};
+        recommendedPins = {1, 2, 3, 4, 5, 9, 10};
         if (recommendedPins.find(pin) == recommendedPins.end())
         {
-          compError("Recommended pins to attach Servo on a ESP32-C3 are : 1-7, 9-10, 18-21");
+          //compError("Recommended pins to attach Servo on a ESP32-C3 are : 1-7, 9-10, 18-21");
+          compError("Recommended pins to attach Servo on a XIAO ESP32C3 are : 1-5, 9-10");
 #ifndef ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
           return;
 #endif
@@ -99,11 +100,21 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
           break;
     }
 
+  if (isMultiServo)
+  {
+    compDebug("check SDA & SCL");
+    // TODO how to register virtual pins ?
+    if (Component::forbiddenPins.find(SDA) == Component::forbiddenPins.end())  Component::registerPin(SDA);
+    if (Component::forbiddenPins.find(SCL) == Component::forbiddenPins.end())  Component::registerPin(SCL);
+  }
+  else
+  {
     if (!Component::registerPin(pin))
     {
         compError("cannot register servo : pin #"  +String(pin) + " is already used!");
         return;
     }
+  }
   }
   servos.emplace_back(new ServoMotor(pin, min, max, start, inverse, useInSequences, isMultiServo?pwm:nullptr));
   servos.back()->initComponent(serialDebug);
