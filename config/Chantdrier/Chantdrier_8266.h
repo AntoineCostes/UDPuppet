@@ -21,3 +21,18 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
     {2, 10, 110, 15, true, true, true},
     {3, 10, 110, 15, true, true, true}
 };
+
+// #define NUM_STRIPS 1
+// const float LED_INTENSITY = 1.0f;
+// const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
+// {
+//     // pin, num leds, GRB, wifiDebug, useInSequences
+//     {1, 10, true, true, false}
+// };
+
+#define NUM_BUTTONS 1
+const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
+{
+    // pin, longPressMs
+    {3, 2000}
+};

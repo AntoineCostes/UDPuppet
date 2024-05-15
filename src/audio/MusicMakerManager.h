@@ -35,7 +35,7 @@ public:
 
   std::vector<String> tracks;
   void setVolume(float value);
-  void play(String trackName);
+  bool play(String trackName);
   void stop();
   void togglePausePlay();
 

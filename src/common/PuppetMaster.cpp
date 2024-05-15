@@ -71,7 +71,7 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     // don't register pin 12, it is used for the led
 #elif defined(HAS_MUSICMAKER) && defined(ESP8266)
     // musicmaker uses pin #0 (huzzah8662 led builltin)
-    Component::registerPin(0);
+    // Component::registerPin(0);
 #else
   #ifdef LED_BUILTIN
     Component::registerPin(LED_BUILTIN); 
@@ -424,12 +424,22 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 
 void PuppetMaster::launchSequence(String sequenceName)
 {
+#ifdef NUM_STRIPS
+    led.setMode(LedStrip::LedMode::WAITING);
+#endif
+
     // TODO get File from fileManager and give it to player ?
     // TODO auto check if mp3 or wav
     player.playSequence(sequenceName);
-    #ifdef HAS_MUSICMAKER
-    musicmaker.play(sequenceName+".mp3");
-    #endif 
+#ifdef HAS_MUSICMAKER
+    if (!musicmaker.play(sequenceName+".mp3"))
+    {
+#ifdef NUM_STRIPS
+    led.setMode(LedStrip::LedMode::ERROR);
+#endif
+    }
+#endif 
+    
 }
 
 void PuppetMaster::launchSequence(int sequenceIndex)
@@ -778,6 +788,11 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         player.dbg("ended");
+        
+#ifdef NUM_STRIPS
+    led.setMode(LedStrip::LedMode::STREAMING);
+    led.clear();
+#endif
 
         // TODO turn leds off/on depending on player behavior ?
     }
