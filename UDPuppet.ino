@@ -52,6 +52,12 @@ void setup()
 
   // TODO ADD STEPPERS AND MOTORWING
 
+  for (int i = 255 ; i >= 0; i--) 
+  {
+    master.led.setColor(i);
+    master.led.update();
+    delay(5);
+  }
 }
 
 void loop()

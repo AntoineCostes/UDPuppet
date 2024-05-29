@@ -51,8 +51,6 @@ void MusicMakerManager::initManager()
         file =  root.openNextFile();
     }
     setVolume(floatParameters["volume"]);
-
-    play("confirm.mp3");
 }
 
 void MusicMakerManager::update()

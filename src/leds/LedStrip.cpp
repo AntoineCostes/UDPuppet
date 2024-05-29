@@ -68,6 +68,10 @@ void LedStrip::update()
         case Notification::BOOTING:
             setAll(0, 0, int(50 * slow));
             break;
+            
+        case LedMode::SHOW:
+            setAll(250, 168, 60);
+            break;
 
         case Notification::WORKING:
             setAll(int(50 * fast), 0, int(50 * fast));

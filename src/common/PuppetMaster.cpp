@@ -189,11 +189,15 @@ void PuppetMaster::initManager()
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
     
+    
+#ifdef HAS_MUSICMAKER
+musicmaker.setVolume(1.0f);
+    musicmaker.play("confirm.mp3");
+#endif
 }
 
 void PuppetMaster::ReceiveCoin() {  
-  Serial.println("");
-  Serial.println("Pushed!");
+  PuppetMaster::credit++;
   PuppetMaster::hasCredit = true;
 }
 
@@ -349,11 +353,20 @@ void PuppetMaster::update()
 #ifdef BUTTON_JUKEBOX
     if (PuppetMaster::hasCredit)
     {
-        Serial.println("got credit !");
+        Serial.println("got credit:"+String(PuppetMaster::credit));
+        PuppetMaster::credit--;
         PuppetMaster::hasCredit = false;
-        
+
+        if (player.isPlaying)
+        {
+#ifdef NUM_STRIPS
+        led.clear();
+#endif
         musicmaker.stop();
         player.stopPlaying();
+        delay(1000);
+
+        }
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
         trackIndex++;
@@ -454,7 +467,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 void PuppetMaster::launchSequence(String sequenceName)
 {
 #ifdef NUM_STRIPS
-    led.setMode(LedStrip::LedMode::WAITING);
+    led.setMode(LedStrip::LedMode::SHOW);
 #endif
 
     // TODO get File from fileManager and give it to player ?
