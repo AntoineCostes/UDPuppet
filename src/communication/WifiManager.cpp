@@ -28,8 +28,8 @@ void WifiManager::initManager()
   }
   prefs.end();
   #else 
-  stringParameters["ssid"] = WIFI_SSID;
-  stringParameters["pass"] = WIFI_PASSWORD;
+  stringParameters["ssid"] = WIFI_CREDENTIALS.ssid;
+  stringParameters["pass"] = WIFI_CREDENTIALS.password;
   #endif
 
   WiFi.mode(WIFI_STA);

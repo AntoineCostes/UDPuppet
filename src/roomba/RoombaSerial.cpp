@@ -99,6 +99,7 @@ void RoombaSerial::switchBaudRate()
   start(FULL);
   compLog("New baudrate: "+String(baudRate));
 }
+
 void RoombaSerial::wakeUp()
 {
   compLog("Wake up !");
@@ -132,6 +133,20 @@ void RoombaSerial::start(RoombaMode mode)
       updateLeds();
     break;
   }
+}
+
+void RoombaSerial::initAfterBatteryChange()
+{  
+  // TODO init function: set baud rate + 100ms + wake up + passive + full
+  // serial.flush();
+  // baudRate = 19200;
+  // serial.begin(baudRate);
+  // delay(100);
+  // wakeUp();
+  // delay(100);
+  // start(PASSIVE);
+  // delay(100);
+  // start(FULL);
 }
 
 void RoombaSerial::streamBattery()

@@ -42,6 +42,7 @@ public:
     void switchBaudRate();
     void wakeUp();
     void start(RoombaMode mode);
+    void initAfterBatteryChange();
     void getBattery();
     void streamBattery();
 

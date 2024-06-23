@@ -9,22 +9,40 @@ String humanReadableSize(const size_t bytes) {
   else return String(bytes / 1024.0 / 1024.0 / 1024.0) + " GB";
 }
 
-
 String processor(const String& var) {
   if (var == "FIRMWARE") {
     return "1.0.0";
   }
 
+#ifdef ESP32
+#elif defined (ESP8266)
+  FSInfo FS_INFO;
+  SPIFFS.info(FS_INFO);
+#endif
+
   if (var == "FREESPIFFS") {
+#ifdef ESP32
     return humanReadableSize((SPIFFS.totalBytes() - SPIFFS.usedBytes()));
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.totalBytes - FS_INFO.usedBytes);
+#endif
   }
 
   if (var == "USEDSPIFFS") {
+#ifdef ESP32
     return humanReadableSize(SPIFFS.usedBytes());
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.usedBytes);
+#endif
+
   }
 
   if (var == "TOTALSPIFFS") {
+#ifdef ESP32
     return humanReadableSize(SPIFFS.totalBytes());
+#elif defined (ESP8266)
+    return humanReadableSize(FS_INFO.totalBytes);
+#endif
   }
   return "[unknown template processor]";
 }
@@ -34,13 +52,12 @@ WebServerManager::WebServerManager() : Manager("webserver"),
                                        server(80)
 {
     serialDebug = MASTER_DEBUG;
+    
 }
 
 
 void WebServerManager::update()
 {
-    // if (serverIsEnabled)
-    //     server.handleClient(); WebServer, no need with ASyncWebServer
 }
 
 void WebServerManager::initServer()
@@ -84,13 +101,16 @@ void WebServerManager::serveIndex(AsyncWebServerRequest *request)
 void WebServerManager::listFiles(AsyncWebServerRequest *request)
 {
   String fileshtml = "";
-  Serial.println("Listing files stored on SPIFFS");
-  File root = SPIFFS.open("/");
+  compDebug("Listing files stored on SPIFFS");
+  
+#ifdef ESP32
+  File root = SPIFFS.open("/", "r");
   File foundfile = root.openNextFile();
   fileshtml += "<table><tr><th align='left'>Name</th><th align='left'>Size</th><th></th><th></th></tr>";
   
   while (foundfile) {
     String fName = String(foundfile.name());
+    compDebug(fName);
     if (fName != "index.html" && fName != "reboot.html") // hide webserver files
     {
     fileshtml += "<tr align='left'><td>" + fName + "</td><td>" + humanReadableSize(foundfile.size()) + "</td>";
@@ -104,7 +124,26 @@ void WebServerManager::listFiles(AsyncWebServerRequest *request)
   fileshtml += "</table>";
   root.close();
   foundfile.close();
+
+#elif defined(ESP8266)
+  Dir dir = SPIFFS.openDir("/");
+  fileshtml += "<table><tr><th align='left'>Name</th><th align='left'>Size</th><th></th><th></th></tr>";
   
+  while (dir.next()) {
+      String fName = String(dir.fileName().substring(1, dir.fileName().length()));
+      compDebug(fName);
+      if (fName != "index.html" && fName != "reboot.html") // hide webserver files
+      {
+      fileshtml += "<tr align='left'><td>" + fName + "</td><td>" + humanReadableSize(dir.fileSize()) + "</td>";
+      fileshtml += "<td><button onclick=\"downloadDeleteButton(\'" + fName + "\', \'download\')\">Download</button>";
+      fileshtml += "<td><button onclick=\"downloadDeleteButton(\'" + fName + "\', \'delete\')\">Delete</button>";
+      if (fName.endsWith(".dat")) fileshtml += "<td><button onclick=\"Play(\'" + fName + "\', \'play\')\">Play</button>";
+      fileshtml += "</tr>";
+      }
+    }
+    fileshtml += "</table>";
+#endif
+
   request->send(200, "text/plain", fileshtml);
 }
 

@@ -37,8 +37,9 @@ PuppetMaster::PuppetMaster() : Manager("master"),
 {
     #ifdef BASE // Base uses pin 12 and 13
     // don't register
-    #elif defined(HAS_ROOMBA) // Roomba has led on pin 12
-    Component::registerPin(LED_BUILTIN); 
+    #elif defined(HAS_ROOMBA) 
+    // Roomba has led on pin 12
+    // Component::registerPin(12); 
     #else
     Component::registerPin(LED_BUILTIN); 
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
@@ -375,7 +376,11 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         wifi.log("creating mDNS instance: " + BOARD_NAME);// BOARD_NAME+ " v" + "1.3.5"));
         if (MDNS.begin(BOARD_NAME.c_str()))
         {
+#ifdef ESP32
             MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
+#else
+            MDNS.addService("osc", "udp", OSC_LISTENING_PORT);
+#endif
             MDNS.addService("_http", "_tcp", 80);
              wifi.dbg("OSC Zeroconf service added sucessfully !");
         }
@@ -442,7 +447,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
         break;
 
     default:
-        compLog("OSCEvent :" + e.type);
+        compLog("OSCEvent :" + String(e.type));
         break;
     }
 }

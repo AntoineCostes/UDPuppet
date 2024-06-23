@@ -5,8 +5,13 @@
 // Leds
 #include <Adafruit_NeoPixel.h>
 // Servos
-#include <ESP32Servo.h>
-#include <Adafruit_PWMServoDriver.h>
+#ifdef ESP32
+// #include <ESP32Servo.h>
+#else
+#include <Servo.h>
+#endif
+// Adafruit_PWMServoDriver included in Adafruit_MotorShield
+
 // motors
 // #include <AccelStepper.h>
 #include "src/AccelStepper_modified/src/AccelStepper.h"
@@ -50,7 +55,8 @@
 //#include "config/Chantdrier.h"
 //#include "config/Chantdrier_Jukebox.h"
 //#include "config/Test.h"
-#include "config/ImALooser.h"
+// #include "config/ImALooser.h"
+#include "config/ImALooser_8266.h"
 
 // NETWORK
 const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
@@ -85,7 +91,7 @@ const int LED_REFRESH_MS = 20;
 const int ROOMBA_TEXT_UPDATE_MS = 200;
 
 // DEBUG PARAMETERS
-const bool MASTER_DEBUG = true;
+const bool MASTER_DEBUG = false;
 const bool BATTERY_DEBUG = false;
 const bool WIFI_DEBUG = true;
 const bool OSC_RECEIVE_DEBUG = false;

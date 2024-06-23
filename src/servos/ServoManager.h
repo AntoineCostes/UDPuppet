@@ -36,6 +36,6 @@ public:
 protected:
   bool isIndexValid(int index);
   std::vector<ServoMotor *> servos;
-  Adafruit_PWMServoDriver* pwm;
+  Adafruit_MS_PWMServoDriver* pwm;
 
 };

@@ -9,10 +9,10 @@ void ServoManager::initManager()
 {
   if (Component::forbiddenPins.find(22) != Component::forbiddenPins.end() || Component::forbiddenPins.find(23) != Component::forbiddenPins.end())
   {
-    compError("Adafruit_PWMServoDriver needs SCL/SDA ports to be free !");
+    compError("Adafruit_MS_PWMServoDriver needs SCL/SDA ports to be free !");
     return;
   }
-  pwm = new Adafruit_PWMServoDriver();  
+  pwm = new Adafruit_MS_PWMServoDriver();  
   pwm->begin();
   pwm->setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 

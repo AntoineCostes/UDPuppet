@@ -21,7 +21,8 @@ public:
     void wakeUp(int index);
     void startMode(int index, RoombaMode mode);
     void getBattery(int index);
-    void streamBattery(int index);
+    void streamBattery(int index); 
+    void initAfterBatteryChange(int index);
 
     void drive(int index, float left, float right);
     void setMaxSpeed(int index, float speed);

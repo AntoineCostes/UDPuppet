@@ -50,6 +50,11 @@ void RoombaManager::startMode(int index, RoombaMode mode)
     roombas[index]->start(mode);
 }
 
+void RoombaManager::initAfterBatteryChange(int index)
+{
+    roombas[index]->initAfterBatteryChange();
+}
+
 void RoombaManager::getBattery(int index)
 {
     roombas[index]->getBattery();
