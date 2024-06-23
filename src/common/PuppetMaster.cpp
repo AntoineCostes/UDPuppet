@@ -71,7 +71,7 @@ PuppetMaster::PuppetMaster() : Manager("master"),
     // don't register pin 12, it is used for the led
 #elif defined(HAS_MUSICMAKER) && defined(ESP8266)
     // musicmaker uses pin #0 (huzzah8662 led builltin)
-    Component::registerPin(0);
+    // Component::registerPin(0);
 #else
   #ifdef LED_BUILTIN
     Component::registerPin(LED_BUILTIN); 
@@ -179,12 +179,28 @@ void PuppetMaster::initManager()
     roomba.addListener(std::bind(&PuppetMaster::gotRoombaValueEvent, this, std::placeholders::_1));
 #endif
 
+#ifdef COIN_PIN
+  pinMode(COIN_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(COIN_PIN), PuppetMaster::ReceiveCoin, RISING);
+  //attachInterrupt(digitalPinToInterrupt(D0), std::bind(&PuppetMaster::Handler, this, std::placeholders::_0)), RISING);
+#endif
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
     
+    
+#ifdef HAS_MUSICMAKER
+musicmaker.setVolume(1.0f);
+    musicmaker.play("confirm.mp3");
+#endif
 }
+
+void PuppetMaster::ReceiveCoin() {  
+  PuppetMaster::credit++;
+  PuppetMaster::hasCredit = true;
+}
+
 
 void PuppetMaster::advertiseComponents()
 {
@@ -333,6 +349,32 @@ void PuppetMaster::update()
         if (mgr.get()->checkInit())
             mgr.get()->update();
     }
+
+#ifdef BUTTON_JUKEBOX
+    if (PuppetMaster::hasCredit)
+    {
+        Serial.println("got credit:"+String(PuppetMaster::credit));
+        PuppetMaster::credit--;
+        PuppetMaster::hasCredit = false;
+
+        if (player.isPlaying)
+        {
+#ifdef NUM_STRIPS
+        led.clear();
+#endif
+        musicmaker.stop();
+        player.stopPlaying();
+        delay(1000);
+
+        }
+        // launchSequence(fileMgr.sequences[trackIndex]);
+        launchSequence(REPERTOIRE[trackIndex]);
+        trackIndex++;
+        // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+        compLog("track index :" + String(trackIndex));
+    }
+#endif
 }
 
 void PuppetMaster::sendDebugMsg(String componentName, String msg)
@@ -424,12 +466,22 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 
 void PuppetMaster::launchSequence(String sequenceName)
 {
+#ifdef NUM_STRIPS
+    led.notify(LedStrip::Notification::SHOW);
+#endif
+
     // TODO get File from fileManager and give it to player ?
     // TODO auto check if mp3 or wav
     player.playSequence(sequenceName);
-    #ifdef HAS_MUSICMAKER
-    musicmaker.play(sequenceName+".mp3");
-    #endif 
+#ifdef HAS_MUSICMAKER
+    if (!musicmaker.play(sequenceName+".mp3"))
+    {
+#ifdef NUM_STRIPS
+    led.notify(LedStrip::Notification::ERROR);
+#endif
+    }
+#endif 
+    
 }
 
 void PuppetMaster::launchSequence(int sequenceIndex)
@@ -778,6 +830,11 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Ended)
     {
         player.dbg("ended");
+        
+#ifdef NUM_STRIPS
+    led.notify(LedStrip::Notification::STREAMING);
+    led.clear();
+#endif
 
         // TODO turn leds off/on depending on player behavior ?
     }

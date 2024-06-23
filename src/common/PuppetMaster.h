@@ -49,6 +49,9 @@ public:
     void advertiseComponents();
     void update() override;
     static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
+    static void ReceiveCoin();
+    inline static int credit;
+    inline static bool hasCredit;
 
     WifiManager wifi;
     OSCManager osc;
@@ -89,6 +92,7 @@ public:
 #ifdef NUM_HCSR04
     SensorManager sensorMgr;
 #endif
+
 
 protected:
     std::vector<std::unique_ptr<Manager>> managers; // TODO useful ? set instead of vector

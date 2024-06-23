@@ -11,14 +11,16 @@ const int OSC_TARGET_PORT = 12002;
 const int REPERTOIRE_LENGTH = 2;
 const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine"};
 
-#define SEQUENCE_FRAME_SIZE 4 // 4 servos
+#define SEQUENCE_FRAME_SIZE 4 // 4 servos + RGB
+
+// #define COIN_PIN 16
 
 #define NUM_STRIPS 1
 const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
-    {21, 10, true, true, false}
+    {21, 20, true, true, false}
 };
 
 #define NUM_SERVOS 4

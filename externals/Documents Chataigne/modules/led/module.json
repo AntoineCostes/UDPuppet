@@ -1,0 +1,121 @@
+{
+  "name":"Led",
+  "type":"OSC",
+  "path":"UDPuppet",
+
+  "version":"1.4.8",
+  "description":"Contrôle d'une led par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":12006
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"pierre.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Avril2024-1.4.8",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Filter with name":
+    {
+      "type":"Boolean"
+    },
+    "Sequences":
+    {
+      "type":"Enum",
+      "options": {}
+    },
+    "Play Sequence":
+    {
+      "type":"Trigger"
+    },
+    "Delete Sequence":
+    {
+      "type":"Trigger"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback", "booleanSendMode"],
+
+  "scripts":
+  [
+    "led.js",
+    "bake.js"
+  ],
+
+  "values":
+  {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    }
+  },
+
+  "commands":
+  {
+    "Couleur":
+    {
+      "callback":"setColor",
+      "parameters":
+      {
+        "Couleur":
+        {
+          "type":"Color"
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        }
+      }
+    },
+    "Arrêter Sequence":
+    {
+      "callback":"stopSequence",
+      "parameters":
+      {
+      }
+    }
+  }
+}

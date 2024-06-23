@@ -20,7 +20,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // servos
-#include <Adafruit_PWMServoDriver.h>
+// #include <Adafruit_PWMServoDriver.h> // included in Motorshield library
 #ifdef ESP32
     #include <ESP32Servo.h>
 #else
@@ -28,7 +28,7 @@
 #endif
 
 // motors
-#include <Adafruit_MotorShield.h>
+#include <Adafruit_MotorShield.h> 
 #include "src/AccelStepper_modified/src/AccelStepper.h"
 
 // audio
@@ -63,4 +63,3 @@
 #elif defined (ESP8266)
     #include <ESPAsyncTCP.h>
 #endif
-

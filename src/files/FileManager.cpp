@@ -125,7 +125,7 @@ void FileManager::deleteFileIfExists(String path)
 
 void FileManager::printFiles()
 {
-    if (serialDebug) listDir("/", 0);
+    listDir("/", 0);
 }
 
 void FileManager::listDir(const char *dirname, uint8_t levels)

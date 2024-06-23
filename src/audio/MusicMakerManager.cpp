@@ -11,7 +11,7 @@ void MusicMakerManager::initManager()
 {
     Manager::initManager();
     
-    std::set<int> pins = {VS1053_CS, VS1053_DCS, VS1053_DREQ, CARDCS};
+    std::set<int> pins = {VS1053_CS, VS1053_DCS, VS1053_DREQ, CARDCS, MISO, MOSI, SCK};
     if (!Component::registerPins(pins))
     {
         compError("cannot register Music Maker: a pin is already registered !");
@@ -29,7 +29,9 @@ void MusicMakerManager::initManager()
         compError("Couldn't mount SD!");
         return;
     }
-    //player->useInterrupt(VS1053_FILEPLAYER_PIN_INT); fait crasher !!
+#ifndef ESP32
+    player->useInterrupt(VS1053_DREQ); // fait crasher l'ESP32
+#endif
 
     ready = true;
 
@@ -53,7 +55,9 @@ void MusicMakerManager::initManager()
 
 void MusicMakerManager::update()
 {
-    if (player->playingMusic) player->feedBuffer();
+#ifdef ESP32
+    if (player->playingMusic) player->feedBuffer(); // a la place d'un interrupt
+#endif
 }
 
 bool MusicMakerManager::handleCommand(OSCMessage &command)
@@ -130,26 +134,28 @@ bool MusicMakerManager::isReady()
     return ready;
 }
 
-void MusicMakerManager::play(String trackName)
+bool MusicMakerManager::play(String trackName)
 {
     if (!ready)
     {
         compError("music maker not ready");
-        return;
+        return false;
     }
     
     stop();
     
     compDebug("play " + trackName);
 
-    String filePath = "/"+trackName;
-    if (!SD.exists(filePath))
+    if (std::find(tracks.begin(), tracks.end(), trackName) == tracks.end()) 
     {
-        compError(filePath+" file does not exist!");
-        return;
+        compError(trackName+" file does not exist!");
+        return false;
     }
+    trackName = "/"+trackName;
+
     compDebug("start playing");
-    player->startPlayingFile(filePath.c_str());
+    player->startPlayingFile(trackName.c_str());
+    return true;
 }
 
 void MusicMakerManager::stop()
