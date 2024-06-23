@@ -11,7 +11,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Camembert/Camembert.h"
 // #include "config/Camembert/Camembert_S3.h"
 // #include "config/Camembert/Camembert_8266.h"
-#include "config/Camembert/Camembert_Xiao.h"
+// #include "config/Camembert/Camembert_Xiao.h"
 
 // #include "config/Castafiore/Castafiore.h"
 // #include "config/Castafiore/Castafiore_Bouton.h"
@@ -28,7 +28,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Vache/VacheQuiBlague.h"
 
 // #include "config/Xiao/XiaoLed.h"
-// #include "config/Xiao/XiaoBox.h"
+#include "config/Xiao/XiaoBox.h"
 // #include "config/Xiao/XiaoBox_Button.h"
 
 // #include "config/Cartouche/Cartouche.h"

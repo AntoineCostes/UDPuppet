@@ -1,0 +1,999 @@
+{
+  "modules": [
+    {
+      "niceName": "Sound Card",
+      "type": "Sound Card",
+      "scripts": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "params": {
+        "containers": {
+          "inputVolumes": {
+          },
+          "outputVolumes": {
+            "editorIsCollapsed": true
+          },
+          "monitor": {
+            "parameters": [
+              {
+                "value": false,
+                "controlAddress": "/enabled"
+              }
+            ]
+          },
+          "fftAnalysis": {
+            "parameters": [
+              {
+                "value": false,
+                "controlAddress": "/enabled"
+              }
+            ],
+            "editorIsCollapsed": true,
+            "viewOffset": [
+              0,
+              0
+            ],
+            "viewZoom": 1.0
+          },
+          "ltc": {
+            "parameters": [
+              {
+                "value": false,
+                "controlAddress": "/enabled"
+              }
+            ]
+          }
+        }
+      },
+      "templates": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "analyzer": {
+        "parameters": [
+          {
+            "value": false,
+            "controlAddress": "/enabled"
+          }
+        ],
+        "editorIsCollapsed": true,
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      }
+    },
+    {
+      "niceName": "TermAnimator",
+      "type": "TermAnimator",
+      "scripts": {
+        "items": [
+          {
+            "niceName": "animator",
+            "type": "BaseItem",
+            "scriptParams": {
+              "parameters": [
+                {
+                  "value": "",
+                  "controlAddress": "/sequence"
+                }
+              ]
+            }
+          },
+          {
+            "niceName": "manuel",
+            "type": "BaseItem",
+            "scriptParams": {
+              "parameters": [
+                {
+                  "value": "bake/Vache/pythie4.dat",
+                  "controlAddress": "/partition"
+                },
+                {
+                  "value": "http://puppet.local",
+                  "controlAddress": "/targetAddress"
+                }
+              ]
+            }
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "params": {
+        "parameters": [
+          {
+            "value": "http://vachequiproute.local",
+            "controlAddress": "/baseAddress"
+          },
+          {
+            "value": false,
+            "controlAddress": "/autoAdd"
+          }
+        ],
+        "containers": {
+          "authentication": {
+            "parameters": [
+              {
+                "value": false,
+                "controlAddress": "/enabled"
+              }
+            ],
+            "hideInEditor": true
+          }
+        }
+      },
+      "templates": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "values": {
+      }
+    },
+    {
+      "niceName": "OSC",
+      "type": "OSC",
+      "scripts": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "params": {
+        "containers": {
+          "oscInput": {
+            "parameters": [
+              {
+                "value": 9000,
+                "hexMode": false,
+                "controlAddress": "/localPort"
+              }
+            ]
+          },
+          "oscOutputs": {
+            "items": [
+              {
+                "parameters": [
+                  {
+                    "value": false,
+                    "controlAddress": "/local"
+                  },
+                  {
+                    "value": "192.168.74.183",
+                    "controlAddress": "/remoteHost"
+                  }
+                ],
+                "niceName": "OSC Output",
+                "type": "BaseItem"
+              }
+            ],
+            "viewOffset": [
+              0,
+              0
+            ],
+            "viewZoom": 1.0
+          },
+          "pass_through": {
+          }
+        }
+      },
+      "templates": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "values": {
+        "parameters": [
+          {
+            "value": 0.0,
+            "controlAddress": "/_servo",
+            "type": "Float",
+            "niceName": "/servo",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_servo"
+          },
+          {
+            "value": 0.002476268680766225,
+            "minValue": 0,
+            "maxValue": 1,
+            "default": 0.07139533013105392,
+            "controlAddress": "/_servo_1",
+            "type": "Float",
+            "niceName": "/servo/1",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_servo_1"
+          },
+          {
+            "value": 0.6853903532028198,
+            "minValue": 0,
+            "maxValue": 1,
+            "default": 0.003495220094919205,
+            "controlAddress": "/_servo_2",
+            "type": "Float",
+            "niceName": "/servo/2",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_servo_2"
+          },
+          {
+            "value": 0.7476813197135925,
+            "minValue": 0,
+            "maxValue": 1,
+            "default": 0.004516168963164091,
+            "controlAddress": "/_servo_3",
+            "type": "Float",
+            "niceName": "/servo/3",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_servo_3"
+          },
+          {
+            "value": 0.7621891498565674,
+            "minValue": 0,
+            "maxValue": 1,
+            "default": 0.005581777077168226,
+            "controlAddress": "/_servo_4",
+            "type": "Float",
+            "niceName": "/servo/4",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_servo_4"
+          },
+          {
+            "hexMode": false,
+            "controlAddress": "/_yo",
+            "type": "Integer",
+            "niceName": "/yo",
+            "customizable": true,
+            "removable": true,
+            "description": "",
+            "hideInEditor": false,
+            "feedbackOnly": false,
+            "shortName": "_yo"
+          }
+        ]
+      }
+    },
+    {
+      "parameters": [
+        {
+          "value": true,
+          "controlAddress": "/enabled"
+        },
+        {
+          "value": true,
+          "controlAddress": "/logOutgoing"
+        }
+      ],
+      "niceName": "Chantdrier",
+      "type": "Chantdrier",
+      "scripts": {
+        "items": [
+          {
+            "niceName": "chantdrier",
+            "type": "BaseItem",
+            "scriptParams": {
+              "hideInEditor": true
+            }
+          },
+          {
+            "niceName": "bake",
+            "type": "BaseItem",
+            "scriptParams": {
+              "parameters": [
+                {
+                  "value": "",
+                  "controlAddress": "/sequence"
+                }
+              ]
+            }
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "params": {
+        "parameters": [
+          {
+            "value": false,
+            "controlAddress": "/autoAdd"
+          },
+          {
+            "value": "contine.mp3",
+            "controlAddress": "/audioTracks"
+          },
+          {
+            "value": "queen1",
+            "controlAddress": "/sequences"
+          }
+        ],
+        "containers": {
+          "oscInput": {
+            "parameters": [
+              {
+                "value": 12002,
+                "hexMode": false,
+                "controlAddress": "/localPort"
+              }
+            ]
+          },
+          "oscOutputs": {
+            "items": [
+              {
+                "parameters": [
+                  {
+                    "value": false,
+                    "controlAddress": "/local"
+                  },
+                  {
+                    "value": "192.168.74.183",
+                    "controlAddress": "/remoteHost"
+                  }
+                ],
+                "niceName": "OSC Output",
+                "type": "BaseItem"
+              }
+            ],
+            "viewOffset": [
+              0,
+              0
+            ],
+            "viewZoom": 1.0
+          },
+          "pass_through": {
+            "hideInEditor": true
+          }
+        }
+      },
+      "templates": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "values": {
+      }
+    }
+  ],
+  "customVariables": null,
+  "states": [
+    {
+      "parameters": [
+        {
+          "value": [
+            -7.0,
+            -452.0
+          ],
+          "controlAddress": "/viewUIPosition"
+        },
+        {
+          "value": true,
+          "controlAddress": "/active"
+        }
+      ],
+      "niceName": "State 2",
+      "type": "State",
+      "processors": {
+        "items": [
+          {
+            "niceName": "Mapping",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/osc/values/_servo_1",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/sendOnOutputChangeOnly"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "items": [
+                {
+                  "niceName": "Remap",
+                  "type": "Remap",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": [
+                          0.0,
+                          1.0
+                        ],
+                        "controlAddress": "/inputMin_Max"
+                      },
+                      {
+                        "value": [
+                          0.0,
+                          0.949999988079071
+                        ],
+                        "controlAddress": "/targetMin_Max"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "osc",
+                  "commandPath": "",
+                  "commandType": "Custom Message",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "/servo",
+                        "controlAddress": "/address"
+                      }
+                    ],
+                    "paramLinks": {
+                    },
+                    "argManager": {
+                      "items": [
+                        {
+                          "parameters": [
+                            {
+                              "value": 3,
+                              "hexMode": false,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#1",
+                          "type": "Integer",
+                          "param": {
+                            "value": 3,
+                            "hexMode": false,
+                            "controlAddress": "/states/state2/processors/mapping/outputs/mappingOutput/command/arguments/#1/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 0
+                          }
+                        },
+                        {
+                          "parameters": [
+                            {
+                              "value": 0.002352455165237188,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#2",
+                          "type": "Float",
+                          "param": {
+                            "value": 0.002352455165237188,
+                            "controlAddress": "/states/state2/processors/mapping/outputs/mappingOutput/command/arguments/#2/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 1,
+                            "mappingValueIndex": 0
+                          }
+                        }
+                      ],
+                      "viewOffset": [
+                        0,
+                        0
+                      ],
+                      "viewZoom": 1.0
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "Mapping 1",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/osc/values/_servo_2",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/sendOnOutputChangeOnly"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "items": [
+                {
+                  "niceName": "Remap",
+                  "type": "Remap",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": [
+                          0.0,
+                          1.0
+                        ],
+                        "controlAddress": "/inputMin_Max"
+                      },
+                      {
+                        "value": [
+                          0.0,
+                          0.949999988079071
+                        ],
+                        "controlAddress": "/targetMin_Max"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "osc",
+                  "commandPath": "",
+                  "commandType": "Custom Message",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "/servo",
+                        "controlAddress": "/address"
+                      }
+                    ],
+                    "paramLinks": {
+                    },
+                    "argManager": {
+                      "items": [
+                        {
+                          "parameters": [
+                            {
+                              "value": 2,
+                              "hexMode": false,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#1",
+                          "type": "Integer",
+                          "param": {
+                            "value": 2,
+                            "hexMode": false,
+                            "controlAddress": "/states/state2/processors/mapping1/outputs/mappingOutput/command/arguments/#1/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 0
+                          }
+                        },
+                        {
+                          "parameters": [
+                            {
+                              "value": 0.6511208415031433,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#2",
+                          "type": "Float",
+                          "param": {
+                            "value": 0.6511208415031433,
+                            "controlAddress": "/states/state2/processors/mapping1/outputs/mappingOutput/command/arguments/#2/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 1,
+                            "mappingValueIndex": 0
+                          }
+                        }
+                      ],
+                      "viewOffset": [
+                        0,
+                        0
+                      ],
+                      "viewZoom": 1.0
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "Mapping 2",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/osc/values/_servo_3",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/sendOnOutputChangeOnly"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "items": [
+                {
+                  "niceName": "Remap",
+                  "type": "Remap",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": [
+                          0.0,
+                          1.0
+                        ],
+                        "controlAddress": "/inputMin_Max"
+                      },
+                      {
+                        "value": [
+                          0.0,
+                          0.949999988079071
+                        ],
+                        "controlAddress": "/targetMin_Max"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "osc",
+                  "commandPath": "",
+                  "commandType": "Custom Message",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "/servo",
+                        "controlAddress": "/address"
+                      }
+                    ],
+                    "paramLinks": {
+                    },
+                    "argManager": {
+                      "items": [
+                        {
+                          "parameters": [
+                            {
+                              "value": 1,
+                              "hexMode": false,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#1",
+                          "type": "Integer",
+                          "param": {
+                            "value": 1,
+                            "hexMode": false,
+                            "controlAddress": "/states/state2/processors/mapping2/outputs/mappingOutput/command/arguments/#1/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 0
+                          }
+                        },
+                        {
+                          "parameters": [
+                            {
+                              "value": 0.7102972269058228,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#2",
+                          "type": "Float",
+                          "param": {
+                            "value": 0.7102972269058228,
+                            "controlAddress": "/states/state2/processors/mapping2/outputs/mappingOutput/command/arguments/#2/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 1,
+                            "mappingValueIndex": 0
+                          }
+                        }
+                      ],
+                      "viewOffset": [
+                        0,
+                        0
+                      ],
+                      "viewZoom": 1.0
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "Mapping 3",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/osc/values/_servo_4",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                },
+                {
+                  "value": false,
+                  "controlAddress": "/sendOnOutputChangeOnly"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "items": [
+                {
+                  "niceName": "Remap",
+                  "type": "Remap",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": [
+                          0.0,
+                          1.0
+                        ],
+                        "controlAddress": "/inputMin_Max"
+                      },
+                      {
+                        "value": [
+                          0.0,
+                          0.949999988079071
+                        ],
+                        "controlAddress": "/targetMin_Max"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "osc",
+                  "commandPath": "",
+                  "commandType": "Custom Message",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "/servo",
+                        "controlAddress": "/address"
+                      }
+                    ],
+                    "paramLinks": {
+                    },
+                    "argManager": {
+                      "items": [
+                        {
+                          "parameters": [
+                            {
+                              "value": 0,
+                              "hexMode": false,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#1",
+                          "type": "Integer",
+                          "param": {
+                            "value": 0,
+                            "hexMode": false,
+                            "controlAddress": "/states/state2/processors/mapping3/outputs/mappingOutput/command/arguments/#1/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 0
+                          }
+                        },
+                        {
+                          "parameters": [
+                            {
+                              "value": 0.7240796685218811,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#2",
+                          "type": "Float",
+                          "param": {
+                            "value": 0.7240796685218811,
+                            "controlAddress": "/states/state2/processors/mapping3/outputs/mappingOutput/command/arguments/#2/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 1,
+                            "mappingValueIndex": 0
+                          }
+                        }
+                      ],
+                      "viewOffset": [
+                        0,
+                        0
+                      ],
+                      "viewZoom": 1.0
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      }
+    }
+  ],
+  "sequences": null,
+  "routers": null
+}

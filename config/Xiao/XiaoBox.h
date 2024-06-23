@@ -11,6 +11,6 @@ const int OSC_TARGET_PORT = 12003;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 0, 90, 0, false, false, true}
+    {10, 0, 100, 0, false, false, true}
 
 };
