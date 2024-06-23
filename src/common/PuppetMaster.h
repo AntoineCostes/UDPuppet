@@ -50,6 +50,7 @@ public:
     void update() override;
     static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
     static void ReceiveCoin();
+    inline static int credit;
     inline static bool hasCredit;
 
     WifiManager wifi;

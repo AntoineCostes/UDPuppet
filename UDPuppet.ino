@@ -51,6 +51,7 @@ void setup()
 #endif
 
   // TODO ADD STEPPERS AND MOTORWING
+#ifdef NUM_STRIPS
 
   for (int i = 255 ; i >= 0; i--) 
   {
@@ -58,6 +59,7 @@ void setup()
     master.led.update();
     delay(5);
   }
+  #endif
 }
 
 void loop()

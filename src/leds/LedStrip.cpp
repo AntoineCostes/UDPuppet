@@ -69,7 +69,7 @@ void LedStrip::update()
             setAll(0, 0, int(50 * slow));
             break;
             
-        case LedMode::SHOW:
+        case Notification::SHOW:
             setAll(250, 168, 60);
             break;
 

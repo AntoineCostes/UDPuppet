@@ -467,7 +467,7 @@ void PuppetMaster::sendCommand(OSCMessage &command)
 void PuppetMaster::launchSequence(String sequenceName)
 {
 #ifdef NUM_STRIPS
-    led.setMode(LedStrip::LedMode::SHOW);
+    led.notify(LedStrip::Notification::SHOW);
 #endif
 
     // TODO get File from fileManager and give it to player ?
@@ -477,7 +477,7 @@ void PuppetMaster::launchSequence(String sequenceName)
     if (!musicmaker.play(sequenceName+".mp3"))
     {
 #ifdef NUM_STRIPS
-    led.setMode(LedStrip::LedMode::ERROR);
+    led.notify(LedStrip::Notification::ERROR);
 #endif
     }
 #endif 
@@ -832,7 +832,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         player.dbg("ended");
         
 #ifdef NUM_STRIPS
-    led.setMode(LedStrip::LedMode::STREAMING);
+    led.notify(LedStrip::Notification::STREAMING);
     led.clear();
 #endif
 
