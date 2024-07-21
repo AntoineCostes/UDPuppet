@@ -19,6 +19,10 @@ public:
     void registerRoomba(int inPin, int outPin, int wakePin);
 
     void wakeUp(int index);
+    void clean(int index);
+    void spot(int index);
+    void seekDock(int index);
+    void powerDown(int index);
     void startMode(int index, RoombaMode mode);
     void getBattery(int index);
     void streamBattery(int index); 

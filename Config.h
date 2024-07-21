@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 // Servos
 #ifdef ESP32
-// #include <ESP32Servo.h>
+#include <ESP32Servo.h>
 #else
 #include <Servo.h>
 #endif
@@ -21,7 +21,7 @@
 // communication
 #include <SoftwareSerial.h>
 #include <SPI.h>
-#include <SD.h>
+// #include <SD.h>
 // wifi
 #include <WiFiUdp.h> 
 #include <OSCMessage.h>

@@ -41,6 +41,10 @@ public:
     // general methods
     void switchBaudRate();
     void wakeUp();
+    void clean();
+    void spot();
+    void seekDock();
+    void powerDown();
     void start(RoombaMode mode);
     void initAfterBatteryChange();
     void getBattery();

@@ -48,6 +48,22 @@ function wakeUp() {
   local.send("/roomba/wake");
 }
 
+function clean() {
+  local.send("/roomba/clean");
+}
+
+function spot() {
+  local.send("/roomba/spot");
+}
+
+function dock() {
+  local.send("/roomba/dock");
+}
+
+function off() {
+  local.send("/roomba/off");
+}
+
 function switchBaudRate() {
   local.send("/roomba/baud");
 }

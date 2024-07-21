@@ -45,6 +45,26 @@ void RoombaManager::wakeUp(int index)
     roombas[index]->wakeUp();
 }
 
+void RoombaManager::clean(int index)
+{
+    roombas[index]->clean();
+}
+
+void RoombaManager::spot(int index)
+{
+    roombas[index]->spot();
+}
+
+void RoombaManager::seekDock(int index)
+{
+    roombas[index]->seekDock();
+}
+
+void RoombaManager::powerDown(int index)
+{
+    roombas[index]->powerDown();
+}
+
 void RoombaManager::startMode(int index, RoombaMode mode)
 {
     roombas[index]->start(mode);
@@ -394,6 +414,26 @@ bool RoombaManager::handleCommand(OSCMessage &command)
     else if (address.equals("/roomba/wake"))
     {
         wakeUp(0);
+        return true;
+    }
+    else if (address.equals("/roomba/clean"))
+    {
+        clean(0);
+        return true;
+    }
+    else if (address.equals("/roomba/spot"))
+    {
+        spot(0);
+        return true;
+    }
+    else if (address.equals("/roomba/dock"))
+    {
+        seekDock(0);
+        return true;
+    }
+    else if (address.equals("/roomba/off"))
+    {
+        powerDown(0);
         return true;
     }
     else if (address.equals("/roomba/start"))

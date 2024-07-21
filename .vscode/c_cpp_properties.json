@@ -19,7 +19,7 @@
             "includePath": [
                 "C:\\Users\\Antoine\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.1.2\\tools\\sdk\\include",
                 "C:\\Users\\Antoine\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.1.2\\tools\\sdk\\lwip2\\include",
-                "c:\\Users\\Antoine\\Desktop\\UDPUPPET\\ArduinoOutput\\core",
+                "c:\\Users\\Antoine\\git\\ArduinoOutput\\core",
                 "C:\\Users\\Antoine\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.1.2\\cores\\esp8266",
                 "C:\\Users\\Antoine\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.1.2\\variants\\adafruit",
                 "C:\\Users\\Antoine\\Documents\\Arduino\\libraries\\Adafruit_NeoPixel",
@@ -65,7 +65,7 @@
                 "TCP_MSS=536",
                 "LWIP_FEATURES=1",
                 "LWIP_IPV6=0",
-                "ARDUINO=10815",
+                "ARDUINO=10819",
                 "ARDUINO_ESP8266_ADAFRUIT_HUZZAH",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_BOARD=\"ESP8266_ADAFRUIT_HUZZAH\"",

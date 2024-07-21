@@ -111,6 +111,30 @@ void RoombaSerial::wakeUp()
   // delay(2000);
 }
 
+void RoombaSerial::clean()
+{  
+    compLog("clean");
+    serial.write(135);
+}
+
+void RoombaSerial::spot()
+{  
+    compLog("spot");
+    serial.write(134);
+}
+
+void RoombaSerial::seekDock()
+{  
+    compLog("seek dock");
+    serial.write(143);
+}
+
+void RoombaSerial::powerDown()
+{  
+    compLog("power down");
+    serial.write(133);
+}
+
 void RoombaSerial::start(RoombaMode mode)
 {  
   switch(mode)

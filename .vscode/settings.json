@@ -6,7 +6,7 @@
     "arduino.disableTestingOpen": false,
     "arduino.skipHeaderProvider": false,
     "arduino.defaultBaudRate": 115200,
-    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.intelliSenseEngine": "Tag Parser",
     "files.associations": {
         "iosfwd": "cpp",
         "xlocbuf": "cpp",
@@ -96,6 +96,12 @@
         "bitset": "cpp",
         "memory_resource": "cpp"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "arduino.disableIntelliSenseAutoGen": false,
+    "arduino.useArduinoCli": false,
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    }
 
 }

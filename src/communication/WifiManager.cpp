@@ -35,8 +35,8 @@ void WifiManager::initManager()
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
-  WiFi.setSleep(false);
   #ifdef ESP32
+  WiFi.setSleep(false);
   WiFi.setTxPower(WIFI_POWER_19dBm);
   #endif 
 }

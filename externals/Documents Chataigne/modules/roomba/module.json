@@ -75,15 +75,35 @@
       "menu":"System",
       "callback":"wakeUp",
     },
-    "Switch Baud Rate":
+    "Clean":
     {
       "menu":"System",
-      "callback":"switchBaudRate",
+      "callback":"clean",
+    },
+    "Spot":
+    {
+      "menu":"System",
+      "callback":"spot",
+    },
+    "Seek dock":
+    {
+      "menu":"System",
+      "callback":"dock",
+    },
+    "Power down":
+    {
+      "menu":"System",
+      "callback":"off",
     },
     "Init after battery change":
     {
-      "menu":"System",
+      "menu":"Communication",
       "callback":"init",
+    },
+    "Switch Baud Rate":
+    {
+      "menu":"Communication",
+      "callback":"switchBaudRate",
     },
     "Move":
     {
