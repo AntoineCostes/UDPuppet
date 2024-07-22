@@ -635,12 +635,12 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             if (e.behavior.playSequencesOnShort)
             {
 #ifdef HAS_MUSICMAKER
-            // launchSequence(fileMgr.sequences[trackIndex]);
-            // launchSequence(REPERTOIRE[trackIndex]);
-            // trackIndex++;
-            // if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
-            // compLog("new track index :" + String(trackIndex));
+            launchSequence(REPERTOIRE[trackIndex]);
+            trackIndex++;
+            if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
+            compLog("new track index :" + String(trackIndex));
 
+            // TODO replace trackIndex with this
             // launchSequence(player.getNextSequenceIndex());
 
 #elif defined(HAS_SERIAL_MP3)
@@ -652,7 +652,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
         case ButtonEvent::Type::LONG_PRESS:
 #ifdef NUM_STRIPS
-        led.notify(LedStrip::Notification::WAITING);
+        // led.notify(LedStrip::Notification::READY); TODO shorter notif
 #endif
             osc.sendMessage("/button/longpress");
 
@@ -673,7 +673,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
         case ButtonEvent::Type::RELEASED_LONG:
 #ifdef NUM_STRIPS
-        led.notify(LedStrip::Notification::WAITING);
+        led.clear();
 #endif
             osc.sendMessage("/button/longrelease");
             

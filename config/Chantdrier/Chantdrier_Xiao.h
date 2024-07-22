@@ -1,41 +1,35 @@
 #pragma once
 
 const String BOARD_NAME = "Chantdrier";    // name used for mDNS services 
-const BoardType BOARD_TYPE = HUZZAH32;
+const BoardType BOARD_TYPE = XIAO_C3;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12002;
 
+#define HAS_SERIAL_MP3 // uses pins 6 and 7
 
-#define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
-
-#define BUTTON_JUKEBOX
-#define COIN_PIN 16
-const int REPERTOIRE_LENGTH = 4;
-const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine", "graves", "godonlyknows"};
-
-#define SEQUENCE_FRAME_SIZE 4 // 4 servos + RGB
+#define SEQUENCE_FRAME_SIZE 4 // 4 servos
 
 #define NUM_STRIPS 1
 const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
-    {21, 20, true, true, false}
+    {10, 20, true, true, false}
 };
 
 #define NUM_SERVOS 4
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {0, 10, 110, 15, true, true, true},
-    {1, 10, 110, 15, true, true, true},
-    {2, 10, 110, 15, true, true, true},
-    {3, 10, 110, 15, true, true, true}
+    {2, 25, 115, 25, true, false, true},
+    {3, 25, 115, 25, true, false, true},
+    {4, 25, 115, 25, true, false, true},
+    {5, 25, 115, 25, true, false, true}
 };
 
 #define NUM_BUTTONS 1
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {17, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
+    {9, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
 };

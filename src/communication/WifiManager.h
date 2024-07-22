@@ -48,6 +48,7 @@ public:
     static void WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info);
     
 protected:
+    DNSServer dnsServer;
     unsigned long lastConnectTime;
     unsigned long lastDisconnectTime;
 
@@ -56,5 +57,6 @@ protected:
     void changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError = WifiManager::Error::NONE);
     WifiEvent::ConnectionState connectionState;
     WifiManager::Error errorState;
-    int numConnectionFails;
+    int remainingConnectionAttempts;
+    void resetAttempts();
 };

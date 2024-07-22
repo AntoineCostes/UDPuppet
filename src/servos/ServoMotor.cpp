@@ -1,6 +1,6 @@
 #include "ServoMotor.h"
 
-ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse, bool useInSequences, Adafruit_MS_PWMServoDriver* pwm) :
+ServoMotor::ServoMotor(int pin, int min, int max, int start, int freq, bool inverse, bool useInSequences, Adafruit_MS_PWMServoDriver* pwm) :
                         Component("servo_" + String(pin)),
                         pin(pin),
                         min(min),
@@ -13,6 +13,7 @@ ServoMotor::ServoMotor(int pin, int min, int max, int start, bool inverse, bool 
   if (max < 0 || max > 180) max = 180;
   if (start < 0 || start > 180) start = 90;
   Component::useInSequences = useInSequences;
+  servo.setPeriodHertz(freq);
 }
 
 void ServoMotor::update()

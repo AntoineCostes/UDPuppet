@@ -116,9 +116,11 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
     }
   }
   }
-  servos.emplace_back(new ServoMotor(pin, min, max, start, inverse, useInSequences, isMultiServo?pwm:nullptr));
+
+  int freq = 50 + 50*servos.size();
+  servos.emplace_back(new ServoMotor(pin, min, max, start, freq, inverse, useInSequences, isMultiServo?pwm:nullptr));
   servos.back()->initComponent(serialDebug);
-  compLog("registered servo: " + String(servos.back()->name));
+  compLog("registered servo: " + String(servos.back()->name) + " at " + String(freq)+ "Hz");
 }
 
 void ServoManager::servoGoToAbsolute(int index, int value)

@@ -11,7 +11,7 @@ String humanReadableSize(const size_t bytes) {
 
 String processor(const String& var) {
   if (var == "FIRMWARE") {
-    return "1.0.0";
+    return "1.0.0"; // FIXME 
   }
 
 #ifdef ESP32
@@ -52,7 +52,6 @@ WebServerManager::WebServerManager() : Manager("webserver"),
                                        server(80)
 {
     serialDebug = WEBSERVER_DEBUG;
-    
 }
 
 
@@ -62,6 +61,13 @@ void WebServerManager::update()
 
 void WebServerManager::initServer()
 {
+  
+  server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+  
+  // FIXME serve index.html on AP
+    // server.on("/", HTTP_ANY, std::bind(&WebServerManager::serveAP, this, std::placeholders::_1)).setFilter(ON_AP_FILTER);//only when requested from AP
+    // server.on("/get", HTTP_GET, std::bind(&WebServerManager::serveGET, this, std::placeholders::_1)).setFilter(ON_AP_FILTER);//only when requested from AP
+
     server.on("/", HTTP_GET, std::bind(&WebServerManager::serveIndex, this, std::placeholders::_1));
 
     server.onFileUpload(std::bind(&WebServerManager::handleFileUpload, this, 
@@ -94,10 +100,21 @@ void WebServerManager::handleNotFound(AsyncWebServerRequest *request)
 
 void WebServerManager::serveIndex(AsyncWebServerRequest *request)
 {
+  Serial.println("========== SERVE INDEX");
     request->send(SPIFFS, "/index.html", String(), false, processor);
 }
 
+void WebServerManager::serveAP(AsyncWebServerRequest *request)
+{
+  Serial.println("========== SERVE AP");
+    request->send_P(200, "text/html", index_html); 
+}
 
+void WebServerManager::serveGET(AsyncWebServerRequest *request)
+{
+  Serial.println("========== SERVE GET");
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+}
 void WebServerManager::listFiles(AsyncWebServerRequest *request)
 {
   String fileshtml = "";

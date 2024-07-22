@@ -1,8 +1,9 @@
 #include "WifiManager.h"
 
-WifiManager::WifiManager() : Manager("wifi"), numConnectionFails(0)
+WifiManager::WifiManager() : Manager("wifi"), remainingConnectionAttempts(CONNECTION_ATTEMPTS)
 {
   serialDebug = WIFI_DEBUG;
+  // resetAttempts();
 }
 
 void WifiManager::initManager()
@@ -33,17 +34,17 @@ void WifiManager::initManager()
   #endif
   
   // WiFi.setAutoConnect(true);
-  WiFi.setAutoReconnect(true);
-  WiFi.setSleep(false);
+  WiFi.setAutoReconnect(true); // TODO needed ?
   WiFi.onEvent(WiFiEvent);
 #ifdef ESP32
+  WiFi.setSleep(false);
   WiFi.setTxPower(WIFI_POWER_19dBm);
 #endif 
 }
 
 void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError)
 {
-  // compLog("new state: "+String(newState));
+  // compDebug("new state: "+String(newState));
   connectionState = newState;
   errorState = compError;
 
@@ -61,6 +62,11 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
   {
     initOTA();
   }
+  
+  if (newState == WifiEvent::ConnectionState::HOTSPOT)
+  {
+    resetAttempts();
+  }
   sendEvent(WifiEvent(connectionState));
 }
 
@@ -74,6 +80,11 @@ void WifiManager::disconnect()
 {
   WiFi.disconnect();
   changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED);
+}
+
+void WifiManager::resetAttempts()
+{
+  remainingConnectionAttempts = CONNECTION_ATTEMPTS;
 }
 
 // TODO check previous connection state to include state change in this switch
@@ -97,16 +108,15 @@ void WifiManager::update()
     {
       changeConnectionState(WifiEvent::ConnectionState::CONNECTED);
       compLog("Successfully connected, local IP: " + getIP());
-      numConnectionFails = 0;
       return;
     }
 
     if (millis() - lastConnectTime > CONNECTION_TIMEOUT_MS)
     {
-      compError("timeout expired");
+      remainingConnectionAttempts--;
+      compError("timeout expired. Remaining attempts: "+String(remainingConnectionAttempts));
       changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED, WifiManager::Error::TIMEOUT);
-      numConnectionFails++;
-      if (numConnectionFails >= 5) initAP();
+      if (remainingConnectionAttempts == 0) initAP();
       return;
     }
     break;
@@ -120,6 +130,11 @@ void WifiManager::update()
     {
       ArduinoOTA.handle();
     }
+    break;
+  
+  case WifiEvent::ConnectionState::HOTSPOT:
+      ArduinoOTA.handle();
+      dnsServer.processNextRequest();
     break;
 
   case WifiEvent::ConnectionState::OFF:
@@ -209,6 +224,7 @@ void WifiManager::initAP()
 
   WiFi.mode(WIFI_AP);
   WiFi.softAP(BOARD_NAME.c_str());
+  dnsServer.start(53, "*", WiFi.softAPIP());
 
   changeConnectionState(WifiEvent::ConnectionState::HOTSPOT);
 }
@@ -232,7 +248,8 @@ void WifiManager::WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info)
 {
     switch(event) {
         case ARDUINO_EVENT_WIFI_AP_START:
-            Serial.println("AP Started");
+            Serial.print("AP Started - local IP:");
+            Serial.println(WiFi.softAPIP());
             break;
         case ARDUINO_EVENT_WIFI_AP_STOP:
             Serial.println("AP Stopped");
@@ -242,14 +259,14 @@ void WifiManager::WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info)
             break;
         case ARDUINO_EVENT_WIFI_STA_CONNECTED:
             Serial.println("STA Connected");
-            WiFi.enableIpV6();
+            // WiFi.enableIpV6();
             break;
         case ARDUINO_EVENT_WIFI_STA_GOT_IP6:
-            Serial.print("STA IPv6: ");
+            Serial.print("STA IPv6 - local IP:");
             Serial.println(WiFi.localIPv6());
             break;
         case ARDUINO_EVENT_WIFI_STA_GOT_IP:
-            Serial.print("STA IPv4: ");
+            Serial.print("STA IPv4 - local IP:");
             Serial.println(WiFi.localIP());
             break;
         case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:

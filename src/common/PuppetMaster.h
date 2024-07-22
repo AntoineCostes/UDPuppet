@@ -142,4 +142,7 @@ protected:
     void gotRoombaValueEvent(const RoombaValueEvent &e);
 #endif
     
+#if defined(BUTTON_JUKEBOX) || defined(CONTINUE_PLAYING)
+    int trackIndex;
+#endif
 };

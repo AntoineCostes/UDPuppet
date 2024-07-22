@@ -45,6 +45,7 @@
 
 // wifi
 #include <WiFiUdp.h> 
+#include <DNSServer.h>
 #include <OSCMessage.h>
 #include <ArduinoOTA.h>
 #ifdef ESP32
