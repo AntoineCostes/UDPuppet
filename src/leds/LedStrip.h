@@ -31,8 +31,7 @@ public:
         CONNECTED,
         WORKING,
         WAITING,
-        SHOW,
-        STREAMING
+        SHOW
     } currentNotification;
     void notify(LedStrip::Notification notification);
     bool isNotifying;

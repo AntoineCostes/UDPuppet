@@ -153,7 +153,7 @@ void PuppetMaster::initManager()
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
     led.initManager();
-    led.notify(LedStrip::Notification::WORKING);
+    led.notify(LedStrip::Notification::BOOTING);
 #endif
 
 #ifdef NUM_SERVOS
@@ -840,7 +840,6 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         player.dbg("ended");
         
 #ifdef NUM_STRIPS
-    led.notify(LedStrip::Notification::STREAMING);
     led.clear();
 #endif
 

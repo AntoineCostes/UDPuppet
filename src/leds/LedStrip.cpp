@@ -26,24 +26,7 @@ void LedStrip::notify(LedStrip::Notification notification)
     switch (notification)
     {
         case Notification::READY:
-            compDebug("========= READY");
             notificationFade = 1.0f;
-            break;
-
-        case Notification::ERROR:
-            compDebug("========= ERROR");
-            break;
-
-        case Notification::WORKING:
-            compDebug("========= WORKING");
-            break;
-
-        case Notification::WAITING:
-            compDebug("========= WAITING");
-            break;
-
-        case Notification::SHOW:
-            compDebug("========= SHOW");
             break;
     }
     currentNotification = notification;
