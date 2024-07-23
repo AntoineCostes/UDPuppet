@@ -10,8 +10,8 @@ const int OSC_TARGET_PORT = 12002;
 
 #define BUTTON_JUKEBOX
 #define COIN_PIN 16
-const int REPERTOIRE_LENGTH = 4;
-const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine", "graves", "godonlyknows"};
+const int REPERTOIRE_LENGTH = 3;
+const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "contine", "graves"};
 
 #define SEQUENCE_FRAME_SIZE 4 // 4 servos + RGB
 
@@ -27,10 +27,10 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {0, 10, 110, 15, true, true, true},
-    {1, 10, 110, 15, true, true, true},
-    {2, 10, 110, 15, true, true, true},
-    {3, 10, 110, 15, true, true, true}
+    {0, 10, 100, 10, true, true, true},
+    {1, 10, 100, 10, true, true, true},
+    {2, 10, 100, 10, true, true, true},
+    {3, 10, 100, 10, true, true, true}
 };
 
 #define NUM_BUTTONS 1

@@ -19,11 +19,13 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Castafiore/Castafiore_8266.h"
 
 // #include "config/Chantdrier/Chantdrier.h"
-// #include "config/Chantdrier/Chantdrier_Jukebox.h"
+#include "config/Chantdrier/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
+// #include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
+// #include "config/Chantdrier/Chantdrier_Xiao.h"
 
-#include "config/Vache/VacheQuiProute.h"
+// #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
 // #include "config/Vache/VacheQuiBlague.h"
 
@@ -34,12 +36,13 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Cartouche/Cartouche.h"
 // #include "config/Roomba.h"
 // #include "config/Test.h"
+// #include "config/CoinAcceptor.h"
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
-const bool CONNECT_ON_BOOT = true;
+const bool CONNECT_ON_BOOT = false;
 const unsigned CONNECTION_ATTEMPTS = 3;
 const bool OVERRIDE_WIFI_CREDS = true;
 const int DELAY_BEFORE_RECONNECT_MS = 1000;

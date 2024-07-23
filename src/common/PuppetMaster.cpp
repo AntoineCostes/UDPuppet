@@ -189,10 +189,9 @@ void PuppetMaster::initManager()
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
     
-    
 #ifdef HAS_MUSICMAKER
-musicmaker.setVolume(1.0f);
-    musicmaker.play("confirm.mp3");
+    musicmaker.setVolume(1.0f);
+    musicmaker.play("cancel_.mp3");
 #endif
 }
 
@@ -350,22 +349,31 @@ void PuppetMaster::update()
             mgr.get()->update();
     }
 
-#ifdef BUTTON_JUKEBOX
     if (PuppetMaster::hasCredit)
     {
         Serial.println("got credit:"+String(PuppetMaster::credit));
+        
+        OSCMessage msg("/credit");
+        msg.add(PuppetMaster::credit);
+        osc.sendMessage(msg);
+
+#ifdef BUTTON_JUKEBOX
         PuppetMaster::credit--;
         PuppetMaster::hasCredit = false;
-
+        
         if (player.isPlaying)
         {
 #ifdef NUM_STRIPS
-        led.clear();
+            led.clear();
 #endif
-        musicmaker.stop();
-        player.stopPlaying();
-        delay(1000);
-
+  
+#ifdef NUM_SERVOS
+            for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+#endif
+            musicmaker.stop();
+            player.stopPlaying();
+            
+            delay(1000);
         }
         // launchSequence(fileMgr.sequences[trackIndex]);
         launchSequence(REPERTOIRE[trackIndex]);
@@ -373,8 +381,8 @@ void PuppetMaster::update()
         // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
         if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
         compLog("track index :" + String(trackIndex));
-    }
 #endif
+    }
 }
 
 void PuppetMaster::sendDebugMsg(String componentName, String msg)
