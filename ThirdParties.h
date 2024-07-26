@@ -1,5 +1,9 @@
 #pragma once
 
+// fixed library 
+// AsyncWebSocket.cpp l832 
+// return IPAddress((uint32_t) 0U);
+
 // general
 #include <vector>
 #include <map>

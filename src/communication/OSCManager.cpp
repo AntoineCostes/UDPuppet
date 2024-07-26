@@ -23,7 +23,10 @@ void OSCManager::gotWifiEvent(const WifiEvent &e)
     switch (e.state)
     {
     case WifiEvent::ConnectionState::CONNECTED:
-        compDebug("wifi connected, try to connect");
+        connect();
+        break;
+        
+    case WifiEvent::ConnectionState::HOTSPOT:
         connect();
         break;
 

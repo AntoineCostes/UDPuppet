@@ -1,12 +1,10 @@
 #include "PuppetMaster.h"
 
-// fix library 
-// AsyncWebSocket.cpp l832 
-// return IPAddress((uint32_t) 0U);
-
 // json config files
 // register led_builtin as an general param
 // console in webserver
+
+// OSC API: /BOARDNAME/module/parameter values
 
 // CLEAN
 // passe sur les TODO et les FIXME
@@ -149,6 +147,10 @@ void PuppetMaster::initManager()
     managers.emplace_back(&button);
     button.initManager();
     button.addListener(std::bind(&PuppetMaster::gotButtonEvent, this, std::placeholders::_1));
+
+    analog.initManager();
+    analog.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
+    managers.emplace_back(&analog);
 
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
@@ -354,7 +356,7 @@ void PuppetMaster::update()
         Serial.println("got credit:"+String(PuppetMaster::credit));
         
         OSCMessage msg("/credit");
-        msg.add(PuppetMaster::credit);
+        msg.add((int32_t)PuppetMaster::credit);
         osc.sendMessage(msg);
 
 #ifdef BUTTON_JUKEBOX
@@ -734,6 +736,18 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
     osc.sendMessage(msg);
 }
 #endif
+
+void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
+{
+    if (!osc.isConnected)
+        return;
+
+    OSCMessage msg(("/analog/"+e.niceName).c_str());
+    // msg.add(BOARD_NAME.c_str());
+    msg.add((float)e.normValue);
+    msg.add((int32_t)e.rawValue);
+    osc.sendMessage(msg);
+}
 
 #ifdef ESP32
 #ifdef HAS_LIPO

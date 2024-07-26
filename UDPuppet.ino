@@ -50,6 +50,7 @@ void setup()
 #endif
 #endif
 
+master.analog.registerAnalogReader("potar", A0);
   // TODO ADD STEPPERS AND MOTORWING
 
 #ifdef NUM_STRIPS

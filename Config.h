@@ -19,7 +19,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Castafiore/Castafiore_8266.h"
 
 // #include "config/Chantdrier/Chantdrier.h"
-#include "config/Chantdrier/Chantdrier_Jukebox.h"
+// #include "config/Chantdrier/Chantdrier_Jukebox.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
@@ -27,7 +27,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
-// #include "config/Vache/VacheQuiBlague.h"
+#include "config/Vache/VacheQuiBlague.h"
 
 // #include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
@@ -42,8 +42,8 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
-const bool CONNECT_ON_BOOT = false;
-const unsigned CONNECTION_ATTEMPTS = 3;
+const bool CONNECT_ON_BOOT = true;
+const unsigned CONNECTION_ATTEMPTS = 5;
 const bool OVERRIDE_WIFI_CREDS = true;
 const int DELAY_BEFORE_RECONNECT_MS = 1000;
 const int CONNECTION_TIMEOUT_MS = 3000;
@@ -86,7 +86,7 @@ const bool WEBSERVER_DEBUG = false;
 const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = false;
 
-const bool LED_DEBUG = true;
+const bool LED_DEBUG = false;
 const bool SERVO_DEBUG = false;
 const bool SERIALMP3_DEBUG = true;
 const bool MOTORWING_DEBUG = true;

@@ -9,6 +9,8 @@
 #include "../files/FileManager.h"
 #include "../files/SequencePlayer.h"
 
+#include "../sensors/AnalogManager.h"
+
 #ifdef ESP32
 #include "../sensors/BatteryManager.h"
 #endif
@@ -61,6 +63,7 @@ public:
     WebServerManager web;
 
     ButtonManager button;
+    AnalogManager analog;
     
 #ifdef ESP32
 #ifdef HAS_LIPO
@@ -121,6 +124,8 @@ protected:
     void gotPlayerEvent(const PlayerEvent &e);
 
     void gotButtonEvent(const ButtonEvent &e);
+    
+    void gotAnalogEvent(const AnalogEvent &e);
     
     void gotFileEvent(const FileEvent &e);
 

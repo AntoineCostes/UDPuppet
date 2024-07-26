@@ -23,9 +23,9 @@ const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB?, wifiDebug, useInSequences
-    {5, 20, true, true, false}, // TODO remove
-    {8, 20, true, false, false},
-    {7, 20, false, true, false}
+    // {2, 20, true, false, false}, // debug
+    {3, 20, true, false, false}, // bouton
+    {4, 20, false, false, false} // micro
 };
 
 
@@ -33,5 +33,5 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 1500, UDPuppetButtonBehavior{true, true, false, false}}
+    {9, 50, 1500, UDPuppetButtonBehavior{true, true, false, false}}
 };
