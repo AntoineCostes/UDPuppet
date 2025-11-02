@@ -45,7 +45,7 @@ void MusicMakerManager::initManager()
         fName = file.name();
         if (fName.endsWith(".mp3") || fName.endsWith(".wav"))
         {
-            tracks.emplace_back(fName);
+            if (!fName.startsWith("cancel") && !fName.startsWith("confirm")) tracks.emplace_back(fName);
             compDebug(fName);
         }
         file =  root.openNextFile();

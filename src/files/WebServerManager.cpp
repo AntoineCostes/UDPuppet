@@ -22,7 +22,11 @@ String processor(const String& var) {
 
   if (var == "FREESPIFFS") {
 #ifdef ESP32
+  #ifdef USE_SD
+    return humanReadableSize((SD.totalBytes() - SD.usedBytes()));
+  #else
     return humanReadableSize((SPIFFS.totalBytes() - SPIFFS.usedBytes()));
+  #endif
 #elif defined (ESP8266)
     return humanReadableSize(FS_INFO.totalBytes - FS_INFO.usedBytes);
 #endif
@@ -30,7 +34,11 @@ String processor(const String& var) {
 
   if (var == "USEDSPIFFS") {
 #ifdef ESP32
+  #ifdef USE_SD
+    return humanReadableSize(SD.usedBytes());
+  #else
     return humanReadableSize(SPIFFS.usedBytes());
+  #endif
 #elif defined (ESP8266)
     return humanReadableSize(FS_INFO.usedBytes);
 #endif
@@ -39,7 +47,11 @@ String processor(const String& var) {
 
   if (var == "TOTALSPIFFS") {
 #ifdef ESP32
+  #ifdef USE_SD
+    return humanReadableSize(SD.totalBytes());
+  #else
     return humanReadableSize(SPIFFS.totalBytes());
+  #endif
 #elif defined (ESP8266)
     return humanReadableSize(FS_INFO.totalBytes);
 #endif
@@ -62,7 +74,7 @@ void WebServerManager::update()
 void WebServerManager::initServer()
 {
   
-  server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+  // server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
   
   // FIXME serve index.html on AP
     // server.on("/", HTTP_ANY, std::bind(&WebServerManager::serveAP, this, std::placeholders::_1)).setFilter(ON_AP_FILTER);//only when requested from AP
@@ -101,27 +113,40 @@ void WebServerManager::handleNotFound(AsyncWebServerRequest *request)
 void WebServerManager::serveIndex(AsyncWebServerRequest *request)
 {
   Serial.println("========== SERVE INDEX");
+  
+
+  #ifdef USE_SD
+    request->send(SD, "/index.html", String(), false, processor);
+  #else
     request->send(SPIFFS, "/index.html", String(), false, processor);
+  #endif
 }
 
 void WebServerManager::serveAP(AsyncWebServerRequest *request)
 {
   Serial.println("========== SERVE AP");
-    request->send_P(200, "text/html", index_html); 
+  #ifdef USE_SD
+    request->send(SD, "/index.html", String(), false, processor);
+  #else
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+  #endif
 }
 
 void WebServerManager::serveGET(AsyncWebServerRequest *request)
 {
   Serial.println("========== SERVE GET");
+  #ifdef USE_SD
+    request->send(SD, "/index.html", String(), false, processor);
+  #else
     request->send(SPIFFS, "/index.html", String(), false, processor);
+  #endif
 }
 void WebServerManager::listFiles(AsyncWebServerRequest *request)
 {
   String fileshtml = "";
-  compDebug("Listing files stored on SPIFFS");
+  compDebug("Listing files stored on FS");
   
-#ifdef ESP32
-  File root = SPIFFS.open("/", "r");
+  File root = FileManager::openFile("/");
   File foundfile = root.openNextFile();
   fileshtml += "<table><tr><th align='left'>Name</th><th align='left'>Size</th><th></th><th></th></tr>";
   
@@ -142,25 +167,6 @@ void WebServerManager::listFiles(AsyncWebServerRequest *request)
   root.close();
   foundfile.close();
 
-#elif defined(ESP8266)
-  Dir dir = SPIFFS.openDir("/");
-  fileshtml += "<table><tr><th align='left'>Name</th><th align='left'>Size</th><th></th><th></th></tr>";
-  
-  while (dir.next()) {
-      String fName = String(dir.fileName().substring(1, dir.fileName().length()));
-      compDebug(fName);
-      if (fName != "index.html" && fName != "reboot.html") // hide webserver files
-      {
-      fileshtml += "<tr align='left'><td>" + fName + "</td><td>" + humanReadableSize(dir.fileSize()) + "</td>";
-      fileshtml += "<td><button onclick=\"downloadDeleteButton(\'" + fName + "\', \'download\')\">Download</button>";
-      fileshtml += "<td><button onclick=\"downloadDeleteButton(\'" + fName + "\', \'delete\')\">Delete</button>";
-      if (fName.endsWith(".dat")) fileshtml += "<td><button onclick=\"Play(\'" + fName + "\', \'play\')\">Play</button>";
-      fileshtml += "</tr>";
-      }
-    }
-    fileshtml += "</table>";
-#endif
-
   request->send(200, "text/plain", fileshtml);
 }
 
@@ -168,7 +174,11 @@ void WebServerManager::handleFileUpload(AsyncWebServerRequest *request, String f
 {
     if (!index) {
       // open the file on first call and store the file handle in the request object
+  #ifdef USE_SD
+      request->_tempFile = SD.open("/" + filename, "w");
+  #else
       request->_tempFile = SPIFFS.open("/" + filename, "w");
+  #endif
       sendEvent(FileEvent(FileEvent::UploadStart, filename));
     }
     
@@ -208,18 +218,32 @@ void WebServerManager::changeFile(AsyncWebServerRequest *request)
 
     String filePath = "/"+String(fileName);
 
+    
+  #ifdef USE_SD
+    if (!SD.exists(filePath)) {
+  #else
     if (!SPIFFS.exists(filePath)) {
+  #endif
       compError(logmessage + " ERROR: file does not exist");
       request->send(400, "text/plain", "ERROR: file does not exist");
     } else {
       compDebug(logmessage + " file exists");
       if (strcmp(fileAction, "download") == 0) {
         logmessage += " downloaded";
+  #ifdef USE_SD
+        request->send(SD, filePath, "application/octet-stream");
+  #else
         request->send(SPIFFS, filePath, "application/octet-stream");
+  #endif
       } else if (strcmp(fileAction, "delete") == 0) {
         logmessage += " deleted";
         request->send(200, "text/plain", "Deleting... File: " + String(fileName));
+        
+  #ifdef USE_SD
+        SD.remove(filePath);
+  #else
         SPIFFS.remove(filePath);
+  #endif
         request->send(200, "text/plain", "Deleted File: " + String(fileName));
       } else if (strcmp(fileAction, "play") == 0) {
         logmessage += " playing";

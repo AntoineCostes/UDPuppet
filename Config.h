@@ -20,30 +20,34 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 // #include "config/Chantdrier/Chantdrier.h"
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
+ #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
-// #include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
+//#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
 // #include "config/Chantdrier/Chantdrier_Xiao.h"
 
 // #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
-#include "config/Vache/VacheQuiBlague.h"
+// #include "config/Vache/VacheQuiBlague.h"
 
-// #include "config/Xiao/XiaoLed.h"
+//  #include "config/Xiao/XiaoLed.h"
 // #include "config/Xiao/XiaoBox.h"
+//#include "config/Xiao/XiaoBox_180.h"
 // #include "config/Xiao/XiaoBox_Button.h"
 
 // #include "config/Cartouche/Cartouche.h"
 // #include "config/Roomba.h"
 // #include "config/Test.h"
 // #include "config/CoinAcceptor.h"
+// #include "config/Jumbo_Xiao.h"
+// #include "config/Lu7.h"
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
 const bool CONNECT_ON_BOOT = true;
-const unsigned CONNECTION_ATTEMPTS = 5;
+const unsigned CONNECTION_ATTEMPTS = 1;
 const bool OVERRIDE_WIFI_CREDS = true;
 const int DELAY_BEFORE_RECONNECT_MS = 1000;
 const int CONNECTION_TIMEOUT_MS = 3000;
@@ -77,14 +81,14 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 const bool MASTER_DEBUG = true;
 const bool BATTERY_DEBUG = false;
 
-const bool WIFI_DEBUG = false;
+const bool WIFI_DEBUG = true;
 const bool OSC_CONNECTION_DEBUG = false;
-const bool OSC_RECEIVE_DEBUG = false;
+const bool OSC_RECEIVE_DEBUG = true;
 const bool OSC_SEND_DEBUG = false;
-const bool WEBSERVER_DEBUG = false;
+const bool WEBSERVER_DEBUG = true;
 
 const bool FILES_DEBUG = true;
-const bool SEQUENCE_DEBUG = false;
+const bool SEQUENCE_DEBUG = true;
 
 const bool LED_DEBUG = false;
 const bool SERVO_DEBUG = false;

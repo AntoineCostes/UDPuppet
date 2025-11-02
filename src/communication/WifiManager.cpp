@@ -261,9 +261,10 @@ void WifiManager::WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info)
             Serial.println("STA Connected");
             // WiFi.enableIpV6();
             break;
-        case ARDUINO_EVENT_WIFI_STA_GOT_IP6:
-            Serial.print("STA IPv6 - local IP:");
-            Serial.println(WiFi.localIPv6());
+        // not compatible with ESP32C3 (?)
+        // case ARDUINO_EVENT_WIFI_STA_GOT_IP6:
+        //     Serial.print("STA IPv6 - local IP:");
+        //     Serial.println(WiFi.localIPv6());
             break;
         case ARDUINO_EVENT_WIFI_STA_GOT_IP:
             Serial.print("STA IPv4 - local IP:");

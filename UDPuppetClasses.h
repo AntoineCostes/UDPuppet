@@ -6,7 +6,8 @@ enum BoardType
     HUZZAH8266,
     THINGESP8266,
     HUZZAH32_S3,
-    XIAO_C3
+    XIAO_C3,
+    XIAO_S3
 };
 
 ///////////////////
@@ -25,17 +26,19 @@ enum Networks
     COSTES,
     SANSGRAVITE,
     SUNSHINE,
-    AKINDOFMAGIC
+    AKINDOFMAGIC,
+    SCHBAFFE
 };
 
-const UDPuppetWifiCredentials CREDENTIALS[6] = 
+const UDPuppetWifiCredentials CREDENTIALS[7] = 
 {
     {"", ""},
     {"LeNet", "connectemoi"},
     {"Ouifi", "28101948AC"},
     {"Sans Gravité", "lovecraft"},
     {"under the sunshine", "bibimbap"},
-    {"akindofmagic", "akindofmagic"}
+    {"akindofmagic", "akindofmagic"},
+    {"Schbaffe", "Papillon"}
 };
 
 ///////////////////

@@ -13,8 +13,8 @@ public:
     } type;
     int level;
     float voltage;
-    int analogValue;
-    BatteryEvent(Type type, int level, float voltage, int analogValue) : type(type), level(level), voltage(voltage), analogValue(analogValue) {}
+    int rawValue;
+    BatteryEvent(Type type, int level, float voltage, int rawValue) : type(type), level(level), voltage(voltage), rawValue(rawValue) {}
 };
 
 class BatteryManager : public Manager,

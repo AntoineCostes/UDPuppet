@@ -95,7 +95,9 @@
         "regex": "cpp",
         "bitset": "cpp",
         "memory_resource": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp"
     },
     "cmake.configureOnOpen": true,
     "arduino.useArduinoCli": false,

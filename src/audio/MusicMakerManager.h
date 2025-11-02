@@ -10,6 +10,11 @@
 // DREQ should be an Int pin *if possible* (not possible on 32u4)
 #define VS1053_DREQ     9     // VS1053 Data request, ideally an Interrupt pin
 
+#elif defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S3)
+#define CARDCS 5
+#define VS1053_CS      6
+#define VS1053_DREQ    9 
+ #define VS1053_DCS     10
 #elif defined(ESP32)
 #define VS1053_CS      32     // VS1053 chip select pin (output)
 #define VS1053_DCS     33     // VS1053 Data/command select pin (output)

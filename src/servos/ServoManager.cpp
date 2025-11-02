@@ -69,6 +69,7 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
         break;
 
         case HUZZAH32_S3:
+        case XIAO_S3:
         recommendedPins = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 10, 21, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,47};
         if (recommendedPins.find(pin) == recommendedPins.end())
         {

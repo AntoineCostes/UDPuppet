@@ -148,9 +148,9 @@ void PuppetMaster::initManager()
     button.initManager();
     button.addListener(std::bind(&PuppetMaster::gotButtonEvent, this, std::placeholders::_1));
 
-    analog.initManager();
-    analog.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
-    managers.emplace_back(&analog);
+    // analog.initManager();
+    // analog.addListener(std::bind(&PuppetMaster::gotAnalogEvent, this, std::placeholders::_1));
+    // managers.emplace_back(&analog);
 
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
@@ -322,8 +322,7 @@ motorwing.stepperSetSpeed(0, 0.0f);
     case THINGESP8266:
     case HUZZAH32_S3:
     case XIAO_C3:
-        break;
-
+    case XIAO_S3:
         break;
 
     default:
@@ -337,6 +336,8 @@ motorwing.stepperSetSpeed(0, 0.0f);
 
 void PuppetMaster::advertiseSequences()
 {
+    // String addr = "/" + BOARD_NAME + "/files/sequences";
+    // OSCMessage msg(addr.c_str());
     OSCMessage msg("/files/sequences");
     msg.add(BOARD_NAME.c_str());
     for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
@@ -756,11 +757,13 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     if (!osc.isConnected)
         return;
 
+    // String addr = "/" + BOARD_NAME + "/battery";
+    // OSCMessage msg(addr.c_str());
     OSCMessage msg("/battery");
     msg.add(BOARD_NAME.c_str());
     msg.add((int32_t) e.level);
-    msg.add((int32_t) e.voltage);
-    msg.add((int32_t) e.analogValue);
+    msg.add((float) e.voltage);
+    msg.add((int32_t) e.rawValue);
     osc.sendMessage(msg);
 
     // TODO

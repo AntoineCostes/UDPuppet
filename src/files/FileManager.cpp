@@ -19,6 +19,7 @@ void FileManager::init(bool SD_initialized)
     {
         Component::registerPins(pins);
         compDebug("SD card already initialized");
+        printFiles();
         sdIsDetected = true;
     }
     else
@@ -134,7 +135,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
     File root = SD.open(dirname);
 #elif defined (ESP32)
     File root = SPIFFS.open(dirname, "r");
-
+#endif
     if (!root)
     {
         Serial.println("Failed to open directory");
@@ -156,7 +157,7 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
             Serial.println("  DIR : " + String(file.name()));
             if (levels)
             {
-                listDir(file.name(), levels - 1);
+                listDir(file.path(), levels - 1);
             }
         }
         else
@@ -166,12 +167,14 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
             
             if (fileName.endsWith(".dat"))
             {
+                compDebug("add sequence");
                 sequences.emplace_back(fileName.substring(0, fileName.length() - 4));
             }
         }
         file = root.openNextFile();
     }
-#elif defined(ESP8266)
+    
+#if defined(ESP8266)
     compDebug("Files on SPIFFS:");
     Dir dir = SPIFFS.openDir("/");
     

@@ -79,6 +79,8 @@ void OSCManager::update()
     {
         OSCMessage pingMsg("/ping");
         pingMsg.add(BOARD_NAME.c_str());
+        // String addr = "/" + BOARD_NAME + "/ping";
+        // OSCMessage pingMsg(addr.c_str());
         sendMessage(pingMsg);
         lastSentPingMs = millis();
     }
@@ -159,6 +161,8 @@ void OSCManager::update()
 
 void OSCManager::pong()
 {
+    // String addr = "/" + BOARD_NAME + "/pong";
+    // OSCMessage pongMsg(addr.c_str());
     OSCMessage pongMsg("/pong");
     pongMsg.add(BOARD_NAME.c_str());
     pongMsg.add(wifi->getMAC().c_str());
@@ -168,6 +172,8 @@ void OSCManager::pong()
 void OSCManager::yo(String firmwareVersion)
 {
     compLog("sending yo");
+    // String addr = "/" + BOARD_NAME + "/yo";
+    // OSCMessage answerMsg(addr.c_str());
     OSCMessage answerMsg("/yo");
     answerMsg.add(BOARD_NAME.c_str());
     answerMsg.add(firmwareVersion.c_str());

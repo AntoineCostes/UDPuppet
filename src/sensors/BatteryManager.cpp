@@ -34,8 +34,11 @@ void BatteryManager::initManager()
         break;
 
     case XIAO_C3:
-        compDebug("Yet to be implemented");
+    case XIAO_S3:
+        compLog("Lipo monitoring on A0");
+        pinMode(A0, INPUT);
         break;
+
 
     default:
         compError("Unknown board type !");
@@ -47,6 +50,40 @@ void BatteryManager::update()
 {
     switch (BOARD_TYPE)
     {
+        case XIAO_C3:
+        case XIAO_S3:
+        
+            if (millis() > lastMeasureMs + BATTERY_WINDOW_MS)
+            {
+                uint32_t numMeasures = 64;
+                uint32_t VBatt = 0;
+                for(int i = 0; i < numMeasures; i++)  VBatt = VBatt + 2*analogReadMilliVolts(A0);
+                VBatt /= numMeasures;
+
+                smoothedValue = ((1.0f-smoothing) * VBatt) + smoothing*smoothedValue;
+                lastMeasureMs = millis();
+            }
+            
+            // send level and voltage based on smoothed value
+            if (millis() > lastPingMs + BATTERY_TIMEOUT_MS)
+            {
+                // estimate percentage from 3.5V (estimated 5%) to 4.1V
+                level = map(int(smoothedValue), 3500, 4100, 5, 100); 
+                level = min(100, max(0, level)); 
+                
+                voltage = (float)smoothedValue/1000.0f;
+
+                compDebug(String(smoothedValue) + "\t voltage = " + String(voltage) + "V\t " + level + "%");
+
+                if (voltage < 3.5f) 
+                    sendEvent(BatteryEvent(BatteryEvent::Type::BATTERY_LOW, level, voltage, int(smoothedValue)));
+                else
+                    sendEvent(BatteryEvent(BatteryEvent::Type::PING, level, voltage, int(smoothedValue)));
+
+                lastPingMs = millis();
+            }
+            break;
+
         case HUZZAH32:
             // smooth measurement at 10Hz
             if (millis() > lastMeasureMs + BATTERY_WINDOW_MS)

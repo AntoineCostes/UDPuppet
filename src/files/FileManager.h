@@ -3,7 +3,11 @@
 #include "../utils/EventBroadcaster.h"
 
 #ifdef ESP32
-    #define SD_CS 33
+    #if defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S3)
+        #define SD_CS 10
+    #else
+        #define SD_CS 33
+    #endif
 #elif defined(ESP8266)
     #define SD_CS 15
 #endif
@@ -14,9 +18,15 @@
     #define SD_SCK 5 // Adalogger FeatherWing
 
 #elif defined(HAS_MUSICMAKER)
+    #if defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S3)
+    #define SD_MISO 12 // Music Maker FeatherWing
+    #define SD_MOSI 6 // Music Maker FeatherWing
+    #define SD_SCK 5 // Music Maker FeatherWing
+    #else
     #define SD_MISO 12 // Music Maker FeatherWing
     #define SD_MOSI 11 // Music Maker FeatherWing
     #define SD_SCK 13 // Music Maker FeatherWing
+    #endif
 #endif
 
 #ifndef USE_SD
