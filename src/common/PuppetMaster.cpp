@@ -139,7 +139,7 @@ void PuppetMaster::checkComponents()
 #ifdef HAS_ADALOGGER_WING
     OSCMessage msg("/sd");
     msg.add(BOARD_NAME.c_str());
-    msg.add(fileMgr.sdIsDetected?1:0);
+    msg.add((int32_t)fileMgr.sdIsDetected?1:0);
     osc.sendMessage(msg);
 #endif
 
@@ -165,7 +165,7 @@ void PuppetMaster::checkComponents()
         String addr = "/dc/maxspeed/"+String(int(pair.first));
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
-        msg.add(pair.second->getMaxSpeed());
+        msg.add((float)pair.second->getMaxSpeed());
         osc.sendMessage(msg);
     }
     
@@ -176,7 +176,7 @@ void PuppetMaster::checkComponents()
         String addr = "/stepper/"+String(i)+"/maxspeed";
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
-        msg.add(motorwing.steppers[i]->maxSpeed());
+        msg.add((float)motorwing.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
         
        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
@@ -199,7 +199,7 @@ void PuppetMaster::checkComponents()
         String addr = "/stepper/"+String(i)+"/maxspeed";
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
-        msg.add(stepperdriver.steppers[i]->maxSpeed());
+        msg.add((float)stepperdriver.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
         
        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
@@ -275,17 +275,17 @@ void PuppetMaster::sendCommand(OSCMessage &command)
         if (!motorwing.handleCommand(command))
             compError("motorwing could not handle command");
 
-    if (command.match("/dc/run"))
-    {
-        float value = abs(command.getFloat(1));
-        if (command.getInt(0) == 2)
-            for (int i = 0; i < 6 ; i++)
-                led.setColor(0, i, 0, value*255, 0);
+    // if (command.match("/dc/run"))
+    // {
+    //     float value = abs(command.getFloat(1));
+    //     if (command.getInt(0) == 2)
+    //         for (int i = 0; i < 6 ; i++)
+    //             led.setColor(0, i, 0, value*255, 0);
                 
-        if (command.getInt(0) == 1)
-            for (int i = 6; i < 12 ; i++)
-                led.setColor(0, i, 0, 0, value*255);
-    }            
+    //     if (command.getInt(0) == 1)
+    //         for (int i = 6; i < 12 ; i++)
+    //             led.setColor(0, i, 0, 0, value*255);
+    // }            
 #endif
 
     int sepIndex = address.indexOf('/', 1);
@@ -460,8 +460,8 @@ void PuppetMaster::gotStepperEvent(const StepperEvent &e)
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
-    msg.add((int)e.position);
-    msg.add((int)e.speed);
+    msg.add((int32_t)e.position);
+    msg.add((int32_t)e.speed);
     msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
@@ -477,8 +477,8 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
-    msg.add((int)e.position);
-    msg.add((int)e.speed);
+    msg.add((int32_t)e.position);
+    msg.add((int32_t)e.speed);
     msg.add((float)e.maxSpeed);
     osc.sendMessage(msg);
 }
@@ -492,9 +492,9 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 
     OSCMessage msg("/battery");
     msg.add(BOARD_NAME.c_str());
-    msg.add(e.normValue);
-    msg.add(e.analogValue);
-    msg.add(e.voltage);
+    msg.add((float)e.normValue);
+    msg.add((int32_t)e.analogValue);
+    msg.add((float)e.voltage);
     osc.sendMessage(msg);
 }
 #endif
@@ -508,7 +508,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         {
             OSCMessage msg("/failed");
             msg.add(BOARD_NAME.c_str());
-            msg.add(player.numFailed);
+            msg.add((int32_t)player.numFailed);
             osc.sendMessage(msg);
         }
 

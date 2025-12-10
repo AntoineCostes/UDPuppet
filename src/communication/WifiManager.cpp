@@ -33,7 +33,7 @@ void WifiManager::initManager()
   #endif
 
   WiFi.mode(WIFI_STA);
-  WiFi.setAutoConnect(true);
+  // WiFi.setAutoConnect(true);
   WiFi.setAutoReconnect(true);
   WiFi.setSleep(false);
   #ifdef ESP32

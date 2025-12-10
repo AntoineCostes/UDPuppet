@@ -17,6 +17,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug) : Compon
 void LedStrip::initComponent(bool serialDebug)
 {
     strip.begin();
+    strip.clear();
     Component::initComponent(serialDebug);
 }
 
@@ -61,7 +62,7 @@ void LedStrip::update()
         case LedMode::STREAMING:
             break;
         }
-    strip.show();
+     strip.show();
 }
 
 void LedStrip::clear()

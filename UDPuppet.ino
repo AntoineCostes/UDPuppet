@@ -70,7 +70,7 @@ void setup()
 
 #ifdef BASE
   // led
-  master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
+  // master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // OUI
   master.servo.registerServo(27, 50, 140, 70); // pin, min, max, start
   master.servo.setServoInverse(0, false);

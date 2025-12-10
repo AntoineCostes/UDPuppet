@@ -2,15 +2,15 @@
 #include <Arduino.h>
 
 // NETWORKS - DEFAULT TO LENET
-#define SANS_GRAVITE
+// #define SANS_GRAVITE
 //#define JEREM
-//#define COSTES
+// #define COSTES
 
 // HARDWARE - SELECT ONE
-//#define AMPOULE
-//#define BASE
+#define AMPOULE
+// #define BASE
 //#define BOBINE
-#define BOBINETTE
+//#define BOBINETTE
 //#define CORBEILLE
 //#define BOUCHE
 //#define ROOMBA
