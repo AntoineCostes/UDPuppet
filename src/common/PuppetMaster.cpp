@@ -645,7 +645,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
             osc.sendMessage("/button/released");
             if (e.behavior.playSequencesOnShort)
             {
-#ifdef HAS_MUSICMAKER
+#ifdef BUTTON_JUKEBOX
             launchSequence(REPERTOIRE[trackIndex]);
             trackIndex++;
             if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
