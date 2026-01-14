@@ -1,0 +1,260 @@
+{
+  "modules": null,
+  "customVariables": null,
+  "states": [
+    {
+      "parameters": [
+        {
+          "value": [
+            -578.0,
+            928.0
+          ],
+          "controlAddress": "/viewUIPosition"
+        },
+        {
+          "value": true,
+          "controlAddress": "/active"
+        }
+      ],
+      "niceName": "State 1",
+      "type": "State",
+      "processors": {
+        "items": [
+          {
+            "niceName": "L2",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/gamepad/values/axes/axis5",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "R2",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/gamepad/values/axes/axis6",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "aaah",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/gamepad/values/buttons/button10",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value",
+                  "comparator": {
+                    "parameters": [
+                      {
+                        "value": true,
+                        "controlAddress": "/reference"
+                      }
+                    ],
+                    "hideInEditor": true
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "monk",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/gamepad/values/buttons/button11",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value",
+                  "comparator": {
+                    "parameters": [
+                      {
+                        "value": true,
+                        "controlAddress": "/reference"
+                      }
+                    ],
+                    "hideInEditor": true
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      }
+    }
+  ],
+  "sequences": null,
+  "routers": null
+}
