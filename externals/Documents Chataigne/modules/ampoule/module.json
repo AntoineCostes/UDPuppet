@@ -81,7 +81,7 @@
     }
   },
 
-  "hideDefaultParameters": ["useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
+  "hideDefaultParameters": ["networkInterface", "autoAdd", "splitArguments", "useHierarchy",  "autoFeedback", "colorSendMode", "booleanSendMode", "clearValues", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback"],
 
   "scripts":
   [

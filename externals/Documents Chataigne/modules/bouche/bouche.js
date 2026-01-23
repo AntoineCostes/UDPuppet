@@ -44,6 +44,7 @@ function oscEvent(address, args)
 
   if (address == "/yo")
   {
+    local.parameters.oscOutputs.oscOutput.remoteHost.set(args[1]);
     local.parameters.ip.set(args[1]);
   }
 
