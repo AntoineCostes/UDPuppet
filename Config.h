@@ -4,11 +4,11 @@
 // NETWORKS - DEFAULT TO LENET
 // #define SANS_GRAVITE
 //#define JEREM
-// #define COSTES
+ #define COSTES
 
 // HARDWARE - SELECT ONE
-#define AMPOULE
-// #define BASE
+//#define AMPOULE
+#define BASE
 //#define BOBINE
 //#define BOBINETTE
 //#define CORBEILLE
@@ -24,8 +24,8 @@
 const String WIFI_SSID = "Sans Gravité";
 const String WIFI_PASSWORD = "lovecraft";
 #elif defined(COSTES)
-const String WIFI_SSID = "Ouifi";
-const String WIFI_PASSWORD = "28101948AC";
+const String WIFI_SSID = "under the sunshine";
+const String WIFI_PASSWORD = "bibimbap";
 #elif defined(JEREM)
 const String WIFI_SSID = "TP-LINK_AP_E97865";
 const String WIFI_PASSWORD = "";

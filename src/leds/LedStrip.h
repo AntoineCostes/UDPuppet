@@ -5,7 +5,9 @@
 
 
 #ifdef HAS_LED
-#include "../libs/Adafruit_NeoPixel/Adafruit_NeoPixel.h"
+// #include "../libs/Adafruit_NeoPixel/Adafruit_NeoPixel.h"
+// #include <driver/rmt.h>
+#include <Adafruit_NeoPixel.h>
 class LedStrip : public Component
 {
 public:

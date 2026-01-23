@@ -8,7 +8,6 @@
 #include "../files/SequencePlayer.h"
 #include "../leds/LedManager.h"
 #include "../motors/ServoManager.h"
-#include "../motorwing/MotorShield2Manager.h"
 #include "../motorwing/StepperManager.h"
 #include "../roomba/RoombaManager.h"
 #include "../audio/MusicMakerManager.h"
@@ -20,6 +19,10 @@
 #include <ESPmDNS.h>
 #elif defined (ESP8266)
 #include <ESP8266mDNS.h>
+#endif
+
+#ifdef HAS_MOTORWING
+#include "../motorwing/MotorShield2Manager.h"
 #endif
 
 #ifdef HAS_MULTISERVO

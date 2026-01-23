@@ -159,6 +159,5 @@ void LedStrip::setLed(int i, int r, int g, int b)
         return;
     }
     strip.setPixelColor(i, strip.Color((int)(r), (int)(g), (int)(b)));
-    //strip.show();
 }
 #endif
