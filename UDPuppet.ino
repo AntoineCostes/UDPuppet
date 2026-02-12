@@ -72,10 +72,10 @@ void setup()
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // OUI
-  master.servo.registerServo(27, 50, 140, 70); // pin, min, max, start
+  master.servo.registerServo(27, 15, 140, 15); // pin, min, max, start
   master.servo.setServoInverse(0, false);
   // PIED
-  master.servo.registerServo(12, 60, 120, 120); // pin, min, max, start
+  master.servo.registerServo(12, 50, 150, 50); // pin, min, max, start
   master.servo.setServoInverse(1, true);
   //rotation
   master.motorwing.registerStepper(14, 15, 32, 13);
@@ -121,3 +121,4 @@ void loop()
 {
   master.update();  
 }
+

@@ -9,7 +9,7 @@ function init() {
 }
 
 function update()
-{
+{/*
   if (speed > 0 && ghostPos < 1.0)
   {
     script.log("increase");
@@ -21,7 +21,7 @@ function update()
     script.log("decrease");
     ghostPos += speed *0.001;
     setHeadAngle(ghostPos);
-  }
+  }*/
 }
 
 function yo()
