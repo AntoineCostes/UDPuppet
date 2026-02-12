@@ -11,7 +11,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE]
 // #include "config/Camembert/Camembert.h"
 // #include "config/Camembert/Camembert_S3.h"
 // #include "config/Camembert/Camembert_8266.h"
-// #include "config/Camembert/Camembert_Xiao.h"
+// #include "config/Camembert/Camembert_Xiao_lipo.h"
 
 // #include "config/Castafiore/Castafiore.h"
 // #include "config/Castafiore/Castafiore_Bouton.h"
@@ -20,7 +20,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE]
 
 // #include "config/Chantdrier/Chantdrier.h"
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
- //#include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
+//  #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
@@ -37,9 +37,9 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE]
 
 // #include "config/Cartouche/Cartouche.h"
 // #include "config/Roomba.h"
- #include "config/Test.h"
+// #include "config/Test.h"
 // #include "config/CoinAcceptor.h"
-// #include "config/Jumbo_Xiao.h"
+#include "config/Jumbo_Xiao.h"
 // #include "config/Lu7.h"
 
 // GENERAL PARAMETERS
@@ -79,7 +79,7 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
-const bool BATTERY_DEBUG = false;
+const bool BATTERY_DEBUG = true;
 
 const bool WIFI_DEBUG = true;
 const bool OSC_CONNECTION_DEBUG = false;

@@ -13,7 +13,7 @@ const int OSC_TARGET_PORT = 12000;
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {10, 30, 130, 30, true, false, true}
+    {9, 30, 130, 30, true, false, true}
 };
 
 #define NUM_STRIPS 1
@@ -21,7 +21,7 @@ const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
-    {9, 1, true, true, false}
+    {10, 1, true, true, false}
 };
 
 #define NUM_BUTTONS 1
