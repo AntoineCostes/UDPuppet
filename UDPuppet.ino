@@ -80,7 +80,7 @@ void setup()
   //rotation
   master.motorwing.registerStepper(14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
-  master.motorwing.stepperSetAccel(0, 4000.0f);
+  master.motorwing.stepperSetAccel(0, 5000.0f);
   // TODO #define REVOLUTION_STEPS 1025 ?
 #endif
 
