@@ -72,15 +72,15 @@ void setup()
   // led
   master.led.registerLedStrip(0, 21, 10, NEO_GRB + NEO_KHZ800);
   // OUI
-  master.servo.registerServo(27, 15, 140, 15); // pin, min, max, start
+  master.servo.registerServo(27, 60, 140, 80); // pin, min, max, start
   master.servo.setServoInverse(0, false);
   // PIED
-  master.servo.registerServo(12, 50, 150, 50); // pin, min, max, start
+  master.servo.registerServo(12, 50, 120, 70); // pin, min, max, start
   master.servo.setServoInverse(1, true);
   //rotation
   master.motorwing.registerStepper(14, 15, 32, 13);
   master.motorwing.stepperSetMaxSpeed(0, 500.0f); // MAX VALUE WITH CHINESE DRIVER
-  master.motorwing.stepperSetAccel(0, 250.0f);
+  master.motorwing.stepperSetAccel(0, 4000.0f);
   // TODO #define REVOLUTION_STEPS 1025 ?
 #endif
 
