@@ -3,7 +3,7 @@
 #include "UDPuppetClasses.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
@@ -20,7 +20,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE]
 
 // #include "config/Chantdrier/Chantdrier.h"
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
-//  #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
+  #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
@@ -39,7 +39,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE]
 // #include "config/Roomba.h"
 // #include "config/Test.h"
 // #include "config/CoinAcceptor.h"
-#include "config/Jumbo_Xiao.h"
+//#include "config/Jumbo_Xiao.h"
 // #include "config/Lu7.h"
 
 // GENERAL PARAMETERS
