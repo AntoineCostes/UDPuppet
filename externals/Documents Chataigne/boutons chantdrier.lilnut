@@ -1,0 +1,710 @@
+{
+  "modules": null,
+  "customVariables": [
+    {
+      "niceName": "Group",
+      "type": "CVGroup",
+      "params": {
+      },
+      "variables": {
+        "items": [
+          {
+            "parameters": [
+              {
+                "value": 1.0,
+                "minValue": 0,
+                "maxValue": 1,
+                "default": 0.0,
+                "controlAddress": "/volume",
+                "feedbackOnly": false,
+                "type": "Float",
+                "niceName": "volume",
+                "customizable": true,
+                "removable": false,
+                "description": "Custom control of type Float",
+                "hideInEditor": false
+              }
+            ],
+            "niceName": "volume",
+            "editorIsCollapsed": true,
+            "type": "Float Parameter"
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      },
+      "presets": {
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      }
+    }
+  ],
+  "states": [
+    {
+      "parameters": [
+        {
+          "value": [
+            516.0,
+            -333.0
+          ],
+          "controlAddress": "/viewUIPosition"
+        },
+        {
+          "value": [
+            276.0,
+            258.0
+          ],
+          "controlAddress": "/viewUISize"
+        },
+        {
+          "value": true,
+          "controlAddress": "/active"
+        }
+      ],
+      "niceName": "State",
+      "type": "State",
+      "processors": {
+        "items": [
+          {
+            "niceName": "Mapping",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/modules/osc/values/_basse",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                },
+                {
+                  "value": true,
+                  "controlAddress": "/sendOnOutputChangeOnly"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": true,
+                      "controlAddress": "/enabled"
+                    }
+                  ],
+                  "niceName": "FPS",
+                  "type": "FPS",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": 30.0,
+                        "controlAddress": "/frequency"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "parameters": [
+                    {
+                      "value": false,
+                      "controlAddress": "/enabled"
+                    },
+                    {
+                      "value": 4.0,
+                      "controlAddress": "/minCutoff"
+                    },
+                    {
+                      "value": 2.0,
+                      "controlAddress": "/beta"
+                    }
+                  ],
+                  "niceName": "One Euro",
+                  "editorIsCollapsed": true,
+                  "type": "One Euro",
+                  "filterParams": {
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "niceName": "Remap",
+                  "type": "Remap",
+                  "filterParams": {
+                    "parameters": [
+                      {
+                        "value": [
+                          0.0,
+                          1.0
+                        ],
+                        "controlAddress": "/inputMin_Max"
+                      },
+                      {
+                        "value": [
+                          0.0,
+                          1.5
+                        ],
+                        "controlAddress": "/targetMin_Max"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "osc",
+                  "commandPath": "",
+                  "commandType": "Custom Message",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "/servo",
+                        "controlAddress": "/address"
+                      }
+                    ],
+                    "paramLinks": {
+                    },
+                    "argManager": {
+                      "items": [
+                        {
+                          "parameters": [
+                            {
+                              "value": 0,
+                              "hexMode": false,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#1",
+                          "type": "Integer",
+                          "param": {
+                            "value": 0,
+                            "hexMode": false,
+                            "controlAddress": "/states/state/processors/mapping/outputs/mappingOutput/command/arguments/#1/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 0
+                          }
+                        },
+                        {
+                          "parameters": [
+                            {
+                              "value": 0.000129229272715747,
+                              "controlAddress": "/#1"
+                            }
+                          ],
+                          "niceName": "#2",
+                          "type": "Float",
+                          "param": {
+                            "value": 0.000129229272715747,
+                            "controlAddress": "/states/state/processors/mapping/outputs/mappingOutput/command/arguments/#2/#1"
+                          },
+                          "paramLink": {
+                            "linkType": 1,
+                            "mappingValueIndex": 0
+                          }
+                        }
+                      ],
+                      "viewOffset": [
+                        0,
+                        0
+                      ],
+                      "viewZoom": 1.0
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "stop",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Arr\u00eater Sequence",
+                  "command": {
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "niceName": "Consequence 1",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Set servo",
+                  "command": {
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "niceName": "Consequence 2",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Set servo",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": 1,
+                        "hexMode": false,
+                        "controlAddress": "/index"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "niceName": "Consequence 3",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Set servo",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": 2,
+                        "hexMode": false,
+                        "controlAddress": "/index"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                },
+                {
+                  "niceName": "Consequence 4",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Set servo",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": 3,
+                        "hexMode": false,
+                        "controlAddress": "/index"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "grave",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Lancer Sequence",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "graves",
+                        "controlAddress": "/name"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "nuit",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Lancer Sequence",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "nuit",
+                        "controlAddress": "/name"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "ahs",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Lancer Sequence",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "ahs",
+                        "controlAddress": "/name"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "alien",
+            "editorIsCollapsed": true,
+            "type": "Action",
+            "conditions": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "From Input Value",
+                  "type": "From Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequences": {
+              "parameters": [
+                {
+                  "value": false,
+                  "controlAddress": "/cancelDelaysOnTrigger"
+                }
+              ],
+              "items": [
+                {
+                  "niceName": "Consequence",
+                  "type": "Consequence",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Lancer Sequence",
+                  "command": {
+                    "parameters": [
+                      {
+                        "value": "alien",
+                        "controlAddress": "/name"
+                      }
+                    ],
+                    "paramLinks": {
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "consequencesOff": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          },
+          {
+            "niceName": "volume",
+            "editorIsCollapsed": true,
+            "type": "Mapping",
+            "im": {
+              "items": [
+                {
+                  "parameters": [
+                    {
+                      "value": "/customVariables/customVariables/values/group/volume",
+                      "controlAddress": "/inputValue"
+                    }
+                  ],
+                  "niceName": "Input Value",
+                  "type": "Input Value"
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "params": {
+              "parameters": [
+                {
+                  "value": 50,
+                  "hexMode": false,
+                  "controlAddress": "/updateRate"
+                }
+              ],
+              "editorIsCollapsed": true
+            },
+            "filters": {
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            },
+            "outputs": {
+              "items": [
+                {
+                  "niceName": "MappingOutput",
+                  "type": "BaseItem",
+                  "commandModule": "chantdrier",
+                  "commandPath": "",
+                  "commandType": "Set volume",
+                  "command": {
+                    "paramLinks": {
+                      "value": {
+                        "linkType": 1,
+                        "mappingValueIndex": 0
+                      }
+                    }
+                  }
+                }
+              ],
+              "viewOffset": [
+                0,
+                0
+              ],
+              "viewZoom": 1.0
+            }
+          }
+        ],
+        "viewOffset": [
+          0,
+          0
+        ],
+        "viewZoom": 1.0
+      }
+    }
+  ],
+  "sequences": null,
+  "routers": null
+}
