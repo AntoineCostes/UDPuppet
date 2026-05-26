@@ -3,7 +3,7 @@
 #include "UDPuppetClasses.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::AKINDOFMAGIC];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE];
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
@@ -20,11 +20,11 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::AKINDOFMA
 
 // #include "config/Chantdrier/Chantdrier.h"
 // #include "config/Chantdrier/Chantdrier_Jukebox.h"
-  #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
+  // #include "config/Chantdrier/Chantdrier_Jukebox_S3.h"
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
-// #include "config/Chantdrier/Chantdrier_Xiao.h"
+#include "config/Chantdrier/Chantdrier_Xiao.h"
 
 // #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
@@ -39,7 +39,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::AKINDOFMA
 // #include "config/Roomba.h"
 // #include "config/Test.h"
 // #include "config/CoinAcceptor.h"
-//#include "config/Jumbo_Xiao.h"
+// #include "config/Jumbo_Xiao.h"
 // #include "config/Lu7.h"
 
 // GENERAL PARAMETERS
@@ -91,7 +91,7 @@ const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = true;
 
 const bool LED_DEBUG = false;
-const bool SERVO_DEBUG = false;
+const bool SERVO_DEBUG = true;
 const bool SERIALMP3_DEBUG = true;
 const bool MOTORWING_DEBUG = true;
 const bool STEPPER_DEBUG = true;

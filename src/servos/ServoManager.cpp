@@ -16,6 +16,11 @@ void ServoManager::initManager()
   pwm->begin();
   pwm->setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 
+	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
+  
   Manager::initManager();
 }
 
@@ -117,8 +122,8 @@ void ServoManager::registerServo(int pin, int min, int max, int start, bool inve
     }
   }
   }
-
-  int freq = 50 + 50*servos.size();
+  
+  int freq = 50;//, + 50*servos.size();
   servos.emplace_back(new ServoMotor(pin, min, max, start, freq, inverse, useInSequences, isMultiServo?pwm:nullptr));
   servos.back()->initComponent(serialDebug);
   compLog("registered servo: " + String(servos.back()->name) + " at " + String(freq)+ "Hz");

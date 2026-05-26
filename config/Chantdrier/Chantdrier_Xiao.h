@@ -17,7 +17,7 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
     {10, 20, true, true, false}
 };
 
-#define NUM_SERVOS 4
+#define NUM_SERVOS 2
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
@@ -27,9 +27,9 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
     {5, 25, 115, 25, true, false, true}
 };
 
-#define NUM_BUTTONS 1
-const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
-{
-    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
-};
+// #define NUM_BUTTONS 1
+// const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
+// {
+//     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
+//     {9, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
+// };
