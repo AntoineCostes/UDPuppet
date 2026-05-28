@@ -10,8 +10,8 @@ const int OSC_TARGET_PORT = 12002;
 #define HAS_MUSICMAKER // uses pins (14, 15, 32, 33) on esp32, (0, 2, 15, 16) on esp8266 // and (11, 12, 13) for manipulating files on SD
 #define ALLOW_ESP32_SERVO_UNRECOMMENDED_PINS
 
-#define BUTTON_JUKEBOX
 #define COIN_PIN 16
+#define JUKEBOX
 const int REPERTOIRE_LENGTH = 2;
 const String REPERTOIRE[REPERTOIRE_LENGTH] = {"nuit", "graves"};
 

@@ -62,7 +62,7 @@ void LedStrip::update()
             break;
 
         case Notification::WORKING:
-            setAll(int(50 * fast), 0, int(50 * fast));
+            setAll(int(50 * fast), int(50 * fast), int(50 * fast));
             break;
 
         case Notification::WAITING:

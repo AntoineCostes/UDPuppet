@@ -61,26 +61,26 @@ PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
                                firmwareVersion("1.4.13")
 {
-#ifdef BASE 
+#ifdef BASE
     // Base uses pin 12 and 13
     // don't register any pins
 
-#elif defined(HAS_ROOMBA) 
+#elif defined(HAS_ROOMBA)
     // don't register pin 12, it is used for the led
 #elif defined(HAS_MUSICMAKER) && defined(ESP8266)
     // musicmaker uses pin #0 (huzzah8662 led builltin)
     // Component::registerPin(0);
 #else
-  #ifdef LED_BUILTIN
-    Component::registerPin(LED_BUILTIN); 
-  #endif
+#ifdef LED_BUILTIN
+    Component::registerPin(LED_BUILTIN);
+#endif
 
 #if (BOARD_TYPE == HUZZAH32)
     Component::registerPin(12); // This pin has a pull-down resistor built into it, we recommend using it as an output only, or making sure that the pull-down is not affected during boot.
 #endif
 
 #endif
-    
+
     serialDebug = MASTER_DEBUG;
 }
 
@@ -94,7 +94,7 @@ void PuppetMaster::initManager()
     compLog("");
     compLog("");
     compLog("");
-    compLog("-------------- " + BOARD_NAME + " v" + firmwareVersion + " " + __DATE__ +" ----------------");
+    compLog("-------------- " + BOARD_NAME + " v" + firmwareVersion + " " + __DATE__ + " ----------------");
 
     Manager::initManager();
 
@@ -139,7 +139,8 @@ void PuppetMaster::initManager()
         managers.emplace_back(&web);
         web.initManager();
         web.addListener(std::bind(&PuppetMaster::gotFileEvent, this, std::placeholders::_1));
-    } else
+    }
+    else
     {
         compError("webserver not initiliazed: index.hmtl was not found");
     }
@@ -182,63 +183,64 @@ void PuppetMaster::initManager()
 #endif
 
 #ifdef COIN_PIN
-  pinMode(COIN_PIN, INPUT); // hard 5V pullup (10kohm) required
-  attachInterrupt(digitalPinToInterrupt(COIN_PIN), PuppetMaster::ReceiveCoin, RISING);
-  //attachInterrupt(digitalPinToInterrupt(D0), std::bind(&PuppetMaster::Handler, this, std::placeholders::_0)), RISING);
+    pinMode(COIN_PIN, INPUT); // hard 5V pullup (10kohm) required
+    attachInterrupt(digitalPinToInterrupt(COIN_PIN), PuppetMaster::ReceiveCoin, RISING);
+    // attachInterrupt(digitalPinToInterrupt(D0), std::bind(&PuppetMaster::Handler, this, std::placeholders::_0)), RISING);
 #endif
     // TODO give this info on demand
     // compDebug("forbidden pins: ");
     // for (int pin : Component::forbiddenPins)
     //     compDebug(String(pin));
-    
+
 #ifdef HAS_MUSICMAKER
     musicmaker.setVolume(1.0f);
     musicmaker.play("cancel_.mp3");
 #endif
 }
 
-void PuppetMaster::ReceiveCoin() {  
-  PuppetMaster::credit++;
-  PuppetMaster::hasCredit = true;
+void PuppetMaster::ReceiveCoin()
+{
+    PuppetMaster::credit++;
+    PuppetMaster::gotCredit = true;
 }
-
 
 void PuppetMaster::advertiseComponents()
 {
     compDebug("advertise components");
 
 #ifdef HAS_ADALOGGER_WING
-if (true) // hack to delete OSCMessage object - TODO send(addr, args)
-{
-    OSCMessage msg("/adalogger/sd");
-    msg.add(BOARD_NAME.c_str());
-    msg.add(fileMgr.sdIsDetected?(int32_t)1:(int32_t)0);
-    osc.sendMessage(msg);
-}
+    if (true) // hack to delete OSCMessage object - TODO send(addr, args)
+    {
+        OSCMessage msg("/adalogger/sd");
+        msg.add(BOARD_NAME.c_str());
+        msg.add(fileMgr.sdIsDetected ? (int32_t)1 : (int32_t)0);
+        osc.sendMessage(msg);
+    }
 #endif
 
 #ifdef HAS_MUSICMAKER
-if (true)
-{
-    OSCMessage msg("/musicmaker/tracks");
-    msg.add(BOARD_NAME.c_str());
-    for (auto seq : musicmaker.tracks) msg.add(seq.c_str());
-    osc.sendMessage(msg);
-}
-if (true)
-{
-    OSCMessage msg("/musicmaker/volume");
-    msg.add(BOARD_NAME.c_str());
-    msg.add(musicmaker.getVolume());
-    osc.sendMessage(msg);
-}
-if (true)
-{
-    OSCMessage msg("/musicmaker/sd");
-    msg.add(BOARD_NAME.c_str());
-    msg.add(musicmaker.isReady()?(int32_t)1:(int32_t)0);
-    osc.sendMessage(msg);
-}
+    if (true)
+    {
+        OSCMessage msg("/musicmaker/tracks");
+        msg.add(BOARD_NAME.c_str());
+        for (auto seq : musicmaker.tracks)
+            msg.add(seq.c_str());
+        osc.sendMessage(msg);
+    }
+    if (true)
+    {
+        OSCMessage msg("/musicmaker/volume");
+        msg.add(BOARD_NAME.c_str());
+        msg.add(musicmaker.getVolume());
+        osc.sendMessage(msg);
+    }
+    if (true)
+    {
+        OSCMessage msg("/musicmaker/sd");
+        msg.add(BOARD_NAME.c_str());
+        msg.add(musicmaker.isReady() ? (int32_t)1 : (int32_t)0);
+        osc.sendMessage(msg);
+    }
 #endif
 
     advertiseSequences();
@@ -247,74 +249,73 @@ if (true)
 #ifdef HAS_MOTORWING
     for (auto &pair : motorwing.dcMotors)
     {
-        String addr = "/dc/maxspeed/"+String(int(pair.first));
+        String addr = "/dc/maxspeed/" + String(int(pair.first));
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
         msg.add((int32_t)pair.second->getMaxSpeed());
         osc.sendMessage(msg);
     }
-    
-    for(std::size_t i = 0; i < motorwing.steppers.size(); ++i)
-    //for (auto &stepper : motorwing.steppers)
+
+    for (std::size_t i = 0; i < motorwing.steppers.size(); ++i)
+    // for (auto &stepper : motorwing.steppers)
     {
         compDebug("check stepper");
-        String addr = "/stepper/"+String(i)+"/maxspeed";
+        String addr = "/stepper/" + String(i) + "/maxspeed";
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
         msg.add(motorwing.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
-        
-       // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
+
+        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
         // String addr2 = "/stepper/"+String(int(pair.first)+"/acceleration");
         // OSCMessage msg2(addr.c_str());
         // msg2.add(BOARD_NAME.c_str());
         // msg2.add(pair.second->acceleration());  // FIXME acceleration la même pour AccelStepper et StepperMotor ou pas ?
         // osc.sendMessage(msg2);
-        
+
         // compDebug(String(pair.second->acceleration()));
     }
 #endif
 
-
 #ifdef HAS_STEPPER_DRIVER
-    
-    for(std::size_t i = 0; i < stepperdriver.steppers.size(); ++i)
+
+    for (std::size_t i = 0; i < stepperdriver.steppers.size(); ++i)
     {
         compDebug("check stepper");
-        String addr = "/stepper/"+String(i)+"/maxspeed";
+        String addr = "/stepper/" + String(i) + "/maxspeed";
         OSCMessage msg(addr.c_str());
         msg.add(BOARD_NAME.c_str());
         msg.add(stepperdriver.steppers[i]->maxSpeed());
         osc.sendMessage(msg);
-        
-       // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
+
+        // FIXME AccelStepper ne donne pas acces à l'acceleration, modifier la classe ?
         // String addr2 = "/stepper/"+String(int(pair.first)+"/acceleration");
         // OSCMessage msg2(addr.c_str());
         // msg2.add(BOARD_NAME.c_str());
         // msg2.add(pair.second->acceleration());  // FIXME acceleration la même pour AccelStepper et StepperMotor ou pas ?
         // osc.sendMessage(msg2);
-        
+
         // compDebug(String(pair.second->acceleration()));
     }
 #endif
 
-// CONFIX
-// TODO advertise component parameters
-/*
-#ifdef AMPOULE
-//TODO
-#elif defined BASE
-//TODO
-#elif defined BOBINE
-motorwing.stepperSetSpeed(0, 600.0f);
-delay(1000);
-motorwing.stepperSetSpeed(0, -600.0f);
-delay(1000);
-motorwing.stepperSetSpeed(0, 0.0f);
-#elif defined CORBEILLE
-//TODO
-#endif
-*/
+    // CONFIX
+    // TODO advertise component parameters
+    /*
+    #ifdef AMPOULE
+    //TODO
+    #elif defined BASE
+    //TODO
+    #elif defined BOBINE
+    motorwing.stepperSetSpeed(0, 600.0f);
+    delay(1000);
+    motorwing.stepperSetSpeed(0, -600.0f);
+    delay(1000);
+    motorwing.stepperSetSpeed(0, 0.0f);
+    #elif defined CORBEILLE
+    //TODO
+    #endif
+    */
     switch (BOARD_TYPE)
     {
     case HUZZAH32:
@@ -328,10 +329,10 @@ motorwing.stepperSetSpeed(0, 0.0f);
     default:
         compError("---------------");
         compError("Can't run: Board type not supported!");
-        while(1);
+        while (1)
+            ;
         return;
     }
-
 }
 
 void PuppetMaster::advertiseSequences()
@@ -340,7 +341,8 @@ void PuppetMaster::advertiseSequences()
     // OSCMessage msg(addr.c_str());
     OSCMessage msg("/files/sequences");
     msg.add(BOARD_NAME.c_str());
-    for (auto seq : fileMgr.sequences) msg.add(seq.c_str());
+    for (auto seq : fileMgr.sequences)
+        msg.add(seq.c_str());
     osc.sendMessage(msg);
 }
 
@@ -352,64 +354,76 @@ void PuppetMaster::update()
             mgr.get()->update();
     }
 
-    if (PuppetMaster::hasCredit)
+    if (PuppetMaster::gotCredit)
     {
-        Serial.println("got credit ! "+String(PuppetMaster::credit));
-        delay(700);   // wait for all credit impulsions
-        Serial.println("balance:"+String(PuppetMaster::credit));
+        Serial.println("got credit ! " + String(PuppetMaster::credit));
+        delay(700); // wait for all credit impulsions
+        Serial.println("balance:" + String(PuppetMaster::credit));
         OSCMessage msg("/credit");
         msg.add((int32_t)PuppetMaster::credit);
         osc.sendMessage(msg);
-        
-        // PuppetMaster::credit--;
-        PuppetMaster::credit = 0;
-        PuppetMaster::hasCredit = false;
+        PuppetMaster::gotCredit = false;
 
-#ifdef HAS_SERIAL_MP3
-launchSequence(serialmp3.getNextTrackIndex());
-// if (serialmp3.isPlaying())
-// {
-//     serialmp3.stop();
-    
-//     #ifdef NUM_SERVOS
-//                 for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
-//     #endif
-//             delay(1000);
-// }
-
-// player.playSequence(fileMgr.sequences[serialmp3.getNextTrackIndex()]);
-// serialmp3.playNext();
-#endif
-#ifdef BUTTON_JUKEBOX
-        
-        if (player.isPlaying)
-        {
+#ifdef COIN_PIN
 #ifdef NUM_STRIPS
-            led.clear();
+        led.notify(LedStrip::Notification::WORKING);
 #endif
-  
-#ifdef NUM_SERVOS
-            for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
-#endif
-            musicmaker.stop();
-            player.stopPlaying();
-            
-            delay(1000);
-        }
-        // launchSequence(fileMgr.sequences[trackIndex]);
-        launchSequence(REPERTOIRE[trackIndex]);
-        trackIndex++;
-        // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
-        if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
-        compLog("track index :" + String(trackIndex));
+#elif
+        useCredit();
 #endif
     }
+}
+
+void PuppetMaster::useCredit()
+{
+    Serial.println("USE CREDIT");
+
+    // PuppetMaster::credit--;
+    PuppetMaster::credit = 0;
+    PuppetMaster::gotCredit = false;
+
+    if (player.isPlaying)
+    {
+        compDebug("STOP");
+#ifdef NUM_STRIPS
+        led.clear();
+#endif
+
+#ifdef NUM_SERVOS
+        for (int i = 0; i < NUM_SERVOS; i++)
+            servo.servoGoTo(i, 0.0f);
+#endif
+
+#ifdef HAS_MUSICMAKER
+        musicmaker.stop();
+#endif
+#ifdef HAS_SERIAL_MP3
+        player.stopPlaying();
+#endif
+
+        player.stopPlaying();
+        delay(1000);
+    }
+
+#ifdef JUKEBOX
+    // launchSequence(fileMgr.sequences[trackIndex]);
+    launchSequence(REPERTOIRE[trackIndex]);
+    trackIndex++;
+    // if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
+    if (trackIndex >= REPERTOIRE_LENGTH)
+        trackIndex = 0;
+    compLog("track index :" + String(trackIndex));
+#elif defined(HAS_SERIAL_MP3)
+    compDebug("next please");
+    compDebug(String(serialmp3.getNextTrackIndex()));
+    launchSequence(serialmp3.getNextTrackIndex());
+#endif
 }
 
 void PuppetMaster::sendDebugMsg(String componentName, String msg)
 {
     // ifdef SERIAL_DEBUG
-    Serial.println("["+componentName+"] "+msg);
+    Serial.println("[" + componentName + "] " + msg);
     // ifdef OSC_DEBUG
     // static osc send
 }
@@ -431,24 +445,23 @@ void PuppetMaster::sendCommand(OSCMessage &command)
     {
         float value = abs(command.getFloat(1));
         if (command.getInt(0) == 2)
-            for (int i = 0; i < 6 ; i++)
-                led.setColor(0, i, 0, value*255, 0);
-                
+            for (int i = 0; i < 6; i++)
+                led.setColor(0, i, 0, value * 255, 0);
+
         if (command.getInt(0) == 1)
-            for (int i = 6; i < 12 ; i++)
-                led.setColor(0, i, 0, 0, value*255);
-    }            
+            for (int i = 6; i < 12; i++)
+                led.setColor(0, i, 0, 0, value * 255);
+    }
 #endif
 
-//TODO make handleCommand method for puppetmaster handling everything not matching a manager
+    // TODO make handleCommand method for puppetmaster handling everything not matching a manager
     if (command.match("/coin"))
     {
-#ifdef NUM_STRIPS
-        led.notify(LedStrip::Notification::WORKING);
+        PuppetMaster::credit++;
+        PuppetMaster::gotCredit = true;
         return;
-#endif
     }
-    
+
     if (command.match("/play"))
     {
         if (checkCommandArguments(command, "s", false))
@@ -463,16 +476,16 @@ void PuppetMaster::sendCommand(OSCMessage &command)
             launchSequence(command.getInt(0));
             return;
         }
-    } 
+    }
 
     if (command.match("/delete"))
     {
         char str[32];
         command.getString(0, str);
-        fileMgr.deleteFileIfExists("/"+String(str)+".dat");
+        fileMgr.deleteFileIfExists("/" + String(str) + ".dat");
         advertiseSequences();
         return;
-    } 
+    }
 
     // if (command.match("/debug"))
     // {
@@ -503,26 +516,35 @@ void PuppetMaster::launchSequence(String sequenceName)
     // TODO auto check if mp3 or wav
     player.playSequence(sequenceName);
 #ifdef HAS_MUSICMAKER
-    if (!musicmaker.play(sequenceName+".mp3"))
+    if (!musicmaker.play(sequenceName + ".mp3"))
     {
 #ifdef NUM_STRIPS
-    led.notify(LedStrip::Notification::ERROR);
+        led.notify(LedStrip::Notification::ERROR);
 #endif
     }
-#endif 
-    
+#endif
 }
 
 void PuppetMaster::launchSequence(int sequenceIndex)
-{   
-    compDebug("launch sequence "+String(sequenceIndex));
+{
+    compDebug("launch sequence " + String(sequenceIndex));
     if (sequenceIndex >= 0 && sequenceIndex < fileMgr.sequences.size())
+    {
         player.playSequence(fileMgr.sequences[sequenceIndex]);
-    // playSequence(index)
 
-    #ifdef HAS_SERIAL_MP3
-    serialmp3.play(sequenceIndex);
-    #endif 
+#ifdef NUM_STRIPS
+        led.notify(LedStrip::Notification::SHOW);
+#endif
+
+#ifdef HAS_SERIAL_MP3
+        serialmp3.play(sequenceIndex);
+#endif
+    }
+    else
+    {
+        compError("invalid sequence index");
+        compLog(String(fileMgr.sequences.size()));
+    }
 }
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
@@ -531,68 +553,71 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     {
     case WifiEvent::ConnectionState::CONNECTING:
         wifi.dbg("connecting to wifi...");
-  #ifdef LED_BUILTIN
+#ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, HIGH);
-  #endif
-    #ifdef NUM_STRIPS
+#endif
+#ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::WORKING);
-    #endif
+#endif
         break;
 
     case WifiEvent::ConnectionState::CONNECTED:
         wifi.dbg("wifi connected !");
-  #ifdef LED_BUILTIN
+#ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, LOW);
-  #endif
+#endif
 
         wifi.dbg("creating mDNS instance: " + BOARD_NAME);
         if (MDNS.begin(BOARD_NAME.c_str()))
         {
             MDNS.addService("_osc", "_udp", OSC_LISTENING_PORT);
             MDNS.addService("_http", "_tcp", 80);
-             wifi.dbg("OSC Zeroconf service added sucessfully !");
+            wifi.dbg("OSC Zeroconf service added sucessfully !");
         }
         else
         {
             wifi.err("could not set up mDNS instance");
         }
 
-    #ifdef NUM_STRIPS
+#ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::READY);
-    #endif
+#endif
 
-    #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+#ifdef NUM_SERVOS
+        for (int i = 0; i < NUM_SERVOS; i++)
+            servo.servoGoTo(i, 0.0f);
         delay(500);
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.6f);
+        for (int i = 0; i < NUM_SERVOS; i++)
+            servo.servoGoTo(i, 0.6f);
         delay(500);
-        for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoToStart(i);
-    #endif
+        for (int i = 0; i < NUM_SERVOS; i++)
+            servo.servoGoToStart(i);
+#endif
 
         web.initServer();
-        
+
         break;
 
     case WifiEvent::ConnectionState::DISCONNECTED:
         wifi.dbg("wifi lost !");
         web.closeServer();
-  #ifdef LED_BUILTIN
+#ifdef LED_BUILTIN
         digitalWrite(LED_BUILTIN, HIGH);
-  #endif
-    #ifdef NUM_STRIPS
+#endif
+#ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::ERROR);
-    #endif
+#endif
         break;
 
     case WifiEvent::ConnectionState::OFF:
         wifi.dbg("wifi disconnected");
         break;
-        
+
     case WifiEvent::ConnectionState::HOTSPOT:
         wifi.dbg("hotspot started");
         web.initServer();
         break;
-        
+
     default:
         wifi.err("wifi state not handled");
         break;
@@ -614,7 +639,7 @@ void PuppetMaster::gotOSCEvent(const OSCEvent &e)
         break;
 
     case OSCEvent::Type::PING_ALIVE: // not used
-        //osc.pong();
+        // osc.pong();
         break;
 
     case OSCEvent::Type::HANDSHAKE:
@@ -636,77 +661,71 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 {
     switch (e.type)
     {
-        case ButtonEvent::Type::PRESSED:
-            osc.sendMessage("/button/pressed");
+    case ButtonEvent::Type::PRESSED:
+        Serial.println("PRESSED");
+        osc.sendMessage("/button/pressed");
 
-            if (e.behavior.clearOnPressed)
-            {
+        if (e.behavior.clearOnPressed)
+        {
             player.stopPlaying();
 
 #ifdef HAS_MUSICMAKER
             musicmaker.stop();
 #elif defined(HAS_SERIAL_MP3)
-            if(serialmp3.isPlaying())  serialmp3.stop();
+            serialmp3.stop();
 #endif
-            
+
 #ifdef NUM_SERVOS
-            for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+            for (int i = 0; i < NUM_SERVOS; i++)
+                servo.servoGoTo(i, 0.0f);
 #endif
 
 #ifdef NUM_STRIPS
             led.clear();
 #endif
-            }
-            break;
+        }
+        break;
 
-        case ButtonEvent::Type::RELASED_SHORT:
-            osc.sendMessage("/button/released");
-            if (e.behavior.playSequencesOnShort)
-            {
-#ifdef BUTTON_JUKEBOX
-            launchSequence(REPERTOIRE[trackIndex]);
-            trackIndex++;
-            if (trackIndex >= REPERTOIRE_LENGTH) trackIndex = 0;
-            compLog("new track index :" + String(trackIndex));
-
-            // TODO replace trackIndex with this
-            // launchSequence(player.getNextSequenceIndex());
-
-#elif defined(HAS_SERIAL_MP3)
-                launchSequence(serialmp3.getNextTrackIndex());
+    case ButtonEvent::Type::RELASED_SHORT:
+        osc.sendMessage("/button/released");
+        if (e.behavior.playSequencesOnShort)
+        {
+#ifdef COIN_PIN
+            if (PuppetMaster::credit > 0)
+                useCredit();
+            else
+                Serial.println("no credit !");
+#else
+            useCredit();
 #endif
-            }
-            break;
+        }
+        break;
 
-
-        case ButtonEvent::Type::LONG_PRESS:
+    case ButtonEvent::Type::LONG_PRESS:
 #ifdef NUM_STRIPS
         // led.notify(LedStrip::Notification::READY); TODO shorter notif
 #endif
-            osc.sendMessage("/button/longpress");
+        osc.sendMessage("/button/longpress");
 
-            if (e.behavior.cancelSoundOnLongPress)
-            {
+        if (e.behavior.cancelSoundOnLongPress)
+        {
 #ifdef HAS_MUSICMAKER
             musicmaker.play("cancel.mp3");
 #elif defined(HAS_SERIAL_MP3)
             serialmp3.playCancelSound();
 #endif
-            }
+        }
 
-            if (e.behavior.enableHotspotOnLong)
-            {
-                wifi.initAP();
-            }
-            break;
+        if (e.behavior.enableHotspotOnLong)
+        {
+            wifi.initAP();
+        }
+        break;
 
-        case ButtonEvent::Type::RELEASED_LONG:
-#ifdef NUM_STRIPS
-        led.clear();
-#endif
-            osc.sendMessage("/button/longrelease");
-            
-            break;
+    case ButtonEvent::Type::RELEASED_LONG:
+        osc.sendMessage("/button/longrelease");
+        useCredit(); // jukebox hack
+        break;
     }
 }
 
@@ -716,7 +735,7 @@ void PuppetMaster::gotMotorwingStepperEvent(const StepperEvent &e)
     if (!osc.isConnected)
         return;
 
-    //compDebug("stepper event");
+    // compDebug("stepper event");
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
@@ -733,7 +752,7 @@ void PuppetMaster::gotRoombaValueEvent(const RoombaValueEvent &e)
     if (!osc.isConnected)
         return;
 
-    OSCMessage msg("/roomba/battery"); 
+    OSCMessage msg("/roomba/battery");
     msg.add((int32_t)e.rawValue);
     osc.sendMessage(msg);
 }
@@ -745,7 +764,7 @@ void PuppetMaster::gotStepperEvent(const StepperEvent2 &e)
     if (!osc.isConnected)
         return;
 
-    //compDebug("stepper event");
+    // compDebug("stepper event");
 
     OSCMessage msg("/stepper/pos"); //+String(e.index)));
     msg.add(BOARD_NAME.c_str());
@@ -761,7 +780,7 @@ void PuppetMaster::gotAnalogEvent(const AnalogEvent &e)
     if (!osc.isConnected)
         return;
 
-    OSCMessage msg(("/analog/"+e.niceName).c_str());
+    OSCMessage msg(("/analog/" + e.niceName).c_str());
     // msg.add(BOARD_NAME.c_str());
     msg.add((float)e.normValue);
     msg.add((int32_t)e.rawValue);
@@ -779,24 +798,24 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
     // OSCMessage msg(addr.c_str());
     OSCMessage msg("/battery");
     msg.add(BOARD_NAME.c_str());
-    msg.add((int32_t) e.level);
-    msg.add((float) e.voltage);
-    msg.add((int32_t) e.rawValue);
+    msg.add((int32_t)e.level);
+    msg.add((float)e.voltage);
+    msg.add((int32_t)e.rawValue);
     osc.sendMessage(msg);
 
     // TODO
     switch (e.type)
     {
-        case BatteryEvent::Type::PING:
-        break;
-        
-        case BatteryEvent::Type::BATTERY_FULL:
+    case BatteryEvent::Type::PING:
         break;
 
-        case BatteryEvent::Type::BATTERY_LOW:
+    case BatteryEvent::Type::BATTERY_FULL:
         break;
 
-        case BatteryEvent::Type::BATTERY_DEAD:
+    case BatteryEvent::Type::BATTERY_LOW:
+        break;
+
+    case BatteryEvent::Type::BATTERY_DEAD:
         break;
     }
 }
@@ -805,7 +824,7 @@ void PuppetMaster::gotBatteryEvent(const BatteryEvent &e)
 
 void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 {
-    
+
     if (e.type == PlayerEvent::NewFrame)
     {
         if (player.numFailed > 0)
@@ -817,18 +836,18 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         }
 
         int dataIndex = 0;
-        #ifdef NUM_STRIPS
+#ifdef NUM_STRIPS
         for (int compIndex = 0; compIndex < NUM_STRIPS; compIndex++)
         {
             if (led.useInSequences(compIndex))
             {
-                if (e.data[dataIndex] < 255 && e.data[dataIndex + 1] < 255  && e.data[dataIndex + 2] < 255) // 255 value means don't update
-                    led.setColor(compIndex, (int)e.data[dataIndex], (int)e.data[dataIndex + 1], (int)e.data[dataIndex+2]);
+                if (e.data[dataIndex] < 255 && e.data[dataIndex + 1] < 255 && e.data[dataIndex + 2] < 255) // 255 value means don't update
+                    led.setColor(compIndex, (int)e.data[dataIndex], (int)e.data[dataIndex + 1], (int)e.data[dataIndex + 2]);
                 dataIndex += 3;
             }
         }
-        #endif
-        #ifdef NUM_SERVOS
+#endif
+#ifdef NUM_SERVOS
         for (int compIndex = 0; compIndex < NUM_SERVOS; compIndex++)
         {
             if (servo.useInSequences(compIndex))
@@ -838,17 +857,17 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
                 dataIndex++;
             }
         }
-        #endif
-        #ifdef NUM_STEPPERS
+#endif
+#ifdef NUM_STEPPERS
         for (int compIndex = 0; compIndex < NUM_STEPPERS; compIndex++)
         {
             // TODO A TESTER
             if (e.data[dataIndex] < 255) // 255 value means don't update
-            motorwing.stepperSetSpeedRel(compIndex, e.data[dataIndex] / 127.0f - 1.0f);
+                motorwing.stepperSetSpeedRel(compIndex, e.data[dataIndex] / 127.0f - 1.0f);
             dataIndex++;
         }
-        #endif
-        #ifdef HAS_DCPORT
+#endif
+#ifdef HAS_DCPORT
         // TODO A TESTER
         if (e.data[dataIndex] < 255) // 255 value means don't update
             motorwing.dcRun(MotorShield2Manager::DCPort::M1, e.data[dataIndex] / 127.0f - 1.0f);
@@ -856,56 +875,54 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         if (e.data[dataIndex] < 255) // 255 value means don't update
             motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[dataIndex] / 127.0f - 1.0f);
         dataIndex++;
-        }
-        #endif
     }
-    
-    if (e.type == PlayerEvent::Start)
-    {
-        // player.dbg("start playing");
-    }
-    
-    if (e.type == PlayerEvent::Stop)
-    {
-        player.dbg("stop playing");
-    }
-    
-    if (e.type == PlayerEvent::Ended)
-    {
-        player.dbg("ended");
-        
+#endif
+}
+
+if (e.type == PlayerEvent::Start)
+{
+    // player.dbg("start playing");
+}
+
+if (e.type == PlayerEvent::Stop)
+{
+    player.dbg("stop playing");
+}
+
+if (e.type == PlayerEvent::Ended)
+{
+    player.dbg("ended");
+
 #ifdef NUM_STRIPS
     led.clear();
 #endif
 
-        // TODO turn leds off/on depending on player behavior ?
-    }
+    // TODO turn leds off/on depending on player behavior ?
 }
-
+}
 
 void PuppetMaster::gotFileEvent(const FileEvent &e)
 {
     switch (e.type)
     {
-        case FileEvent::Type::UploadStart:
-            fileMgr.dbg("File upload started");
-            // TODO stop everything
-            break;
-            
-        case FileEvent::Type::UploadProgress:
-            fileMgr.dbg("Uploading..."+String(e.value));
-            break;
-            
-        case FileEvent::Type::UploadComplete:
-            fileMgr.dbg("Complete !");
-            fileMgr.printFiles();
-            advertiseSequences();
-            break;
-            
-        case FileEvent::Type::Play:
-            fileMgr.dbg("play !");
-            player.playSequence(e.fileName);
-            break;
-    }
+    case FileEvent::Type::UploadStart:
+        fileMgr.dbg("File upload started");
+        // TODO stop everything
+        break;
 
+    case FileEvent::Type::UploadProgress:
+        fileMgr.dbg("Uploading..." + String(e.value));
+        break;
+
+    case FileEvent::Type::UploadComplete:
+        fileMgr.dbg("Complete !");
+        fileMgr.printFiles();
+        advertiseSequences();
+        break;
+
+    case FileEvent::Type::Play:
+        fileMgr.dbg("play !");
+        player.playSequence(e.fileName);
+        break;
+    }
 }

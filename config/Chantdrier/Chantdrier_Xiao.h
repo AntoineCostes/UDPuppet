@@ -32,5 +32,5 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 2000, UDPuppetButtonBehavior{true, true, true, false}}
+    {9, 5, 2000, UDPuppetButtonBehavior{true, true, false, true}}
 };

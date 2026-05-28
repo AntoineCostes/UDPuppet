@@ -53,7 +53,7 @@ public:
     static void sendDebugMsg(String componentName, String msg); // compilation problem with including PuppetMaster in FileManager
     static void ReceiveCoin();
     inline static int credit = 0;
-    inline static bool hasCredit = false;
+    inline static bool gotCredit = false;
 
     WifiManager wifi;
     OSCManager osc;
@@ -108,6 +108,7 @@ protected:
 
     void launchSequence(String sequenceName);
     void launchSequence(int sequenceIndex);
+    void useCredit();
 
     enum State
     {
@@ -147,7 +148,7 @@ protected:
     void gotRoombaValueEvent(const RoombaValueEvent &e);
 #endif
     
-#if defined(BUTTON_JUKEBOX) || defined(CONTINUE_PLAYING)
+#if defined(JUKEBOX)
     int trackIndex;
 #endif
 };

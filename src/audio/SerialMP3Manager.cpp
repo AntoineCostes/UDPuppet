@@ -119,10 +119,13 @@ void SerialMP3Manager::play(int trackIndex)
 
 void SerialMP3Manager::stop()
 { 
+    if (isPlaying())
+    {
     compDebug("stop playing");
     mp3.playStop();
     playing = false;
-}
+    } else compDebug("stop playing (wasn't)");
+} 
 
 bool SerialMP3Manager::handleCommand(OSCMessage &command)
 {
