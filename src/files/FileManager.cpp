@@ -163,13 +163,13 @@ void FileManager::listDir(const char *dirname, uint8_t levels)
         else
         {
             String fileName = String(file.name());
-            compDebug(fileName + " (" + String(file.size()) + " bytes)");
             
             if (fileName.endsWith(".dat"))
             {
-                compDebug("add sequence");
+                compDebug("add sequence :" + fileName + " (" + String(file.size()) + " bytes)");
                 sequences.emplace_back(fileName.substring(0, fileName.length() - 4));
-            }
+            } else
+                compDebug(fileName );
         }
         file = root.openNextFile();
     }

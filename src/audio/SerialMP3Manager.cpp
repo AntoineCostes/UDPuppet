@@ -205,6 +205,7 @@ void SerialMP3Manager::playNext()
 
 void SerialMP3Manager::playConfirmSound()
 {
+    compLog("play confirm");
     if (!ready)
     {
         compError("not ready yet, querying files...");
@@ -217,6 +218,7 @@ void SerialMP3Manager::playConfirmSound()
 
 void SerialMP3Manager::playCancelSound()
 {
+    compLog("play cancel");
     if (!ready)
     {
         compError("not ready yet, querying files...");

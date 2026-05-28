@@ -182,7 +182,7 @@ void PuppetMaster::initManager()
 #endif
 
 #ifdef COIN_PIN
-  pinMode(COIN_PIN, INPUT_PULLUP);
+  pinMode(COIN_PIN, INPUT); // hard 5V pullup (10kohm) required
   attachInterrupt(digitalPinToInterrupt(COIN_PIN), PuppetMaster::ReceiveCoin, RISING);
   //attachInterrupt(digitalPinToInterrupt(D0), std::bind(&PuppetMaster::Handler, this, std::placeholders::_0)), RISING);
 #endif
@@ -354,15 +354,33 @@ void PuppetMaster::update()
 
     if (PuppetMaster::hasCredit)
     {
-        Serial.println("got credit:"+String(PuppetMaster::credit));
-        
+        Serial.println("got credit ! "+String(PuppetMaster::credit));
+        delay(700);   // wait for all credit impulsions
+        Serial.println("balance:"+String(PuppetMaster::credit));
         OSCMessage msg("/credit");
         msg.add((int32_t)PuppetMaster::credit);
         osc.sendMessage(msg);
-
-#ifdef BUTTON_JUKEBOX
-        PuppetMaster::credit--;
+        
+        // PuppetMaster::credit--;
+        PuppetMaster::credit = 0;
         PuppetMaster::hasCredit = false;
+
+#ifdef HAS_SERIAL_MP3
+launchSequence(serialmp3.getNextTrackIndex());
+// if (serialmp3.isPlaying())
+// {
+//     serialmp3.stop();
+    
+//     #ifdef NUM_SERVOS
+//                 for (int i = 0; i < NUM_SERVOS; i++) servo.servoGoTo(i, 0.0f);
+//     #endif
+//             delay(1000);
+// }
+
+// player.playSequence(fileMgr.sequences[serialmp3.getNextTrackIndex()]);
+// serialmp3.playNext();
+#endif
+#ifdef BUTTON_JUKEBOX
         
         if (player.isPlaying)
         {

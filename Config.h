@@ -91,7 +91,7 @@ const bool FILES_DEBUG = true;
 const bool SEQUENCE_DEBUG = true;
 
 const bool LED_DEBUG = false;
-const bool SERVO_DEBUG = true;
+const bool SERVO_DEBUG = false;
 const bool SERIALMP3_DEBUG = true;
 const bool MOTORWING_DEBUG = true;
 const bool STEPPER_DEBUG = true;
