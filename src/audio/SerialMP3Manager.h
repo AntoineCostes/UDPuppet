@@ -30,4 +30,5 @@ protected:
     int numTracks;
     HardwareSerial MySerial0;
     MD_YX5300 mp3; 
+    long lastStopMs;
 };

@@ -6,7 +6,8 @@ SerialMP3Manager::SerialMP3Manager() : Manager("serialmp3"),
                                             numTracks(0),
                                             lastPlayedIndex(0),
                                             MySerial0(0),
-                                            mp3(MySerial0)
+                                            mp3(MySerial0),
+                                            lastStopMs(0)
 {
     floatParameters["volume"] = 0.5f;
     serialDebug = SERIALMP3_DEBUG;
@@ -33,6 +34,12 @@ void SerialMP3Manager::initManager()
 
 void SerialMP3Manager::update()
 {
+    // hack for speaker standby :  after 5mn silence play a sound 
+    if (!isPlaying() && millis() - lastStopMs > 300000)
+    {
+        playConfirmSound();
+    }
+
     if (mp3.check())
     {
         const MD_YX5300::cbData *status = mp3.getStatus();
@@ -63,6 +70,7 @@ void SerialMP3Manager::update()
             case MD_YX5300::STS_FILE_END:   
                 compDebug("STS_FILE_END " + String(status->data));  
                 playing = false;
+                lastStopMs = millis();
                 break;
                 
             case MD_YX5300::STS_TF_INSERT:  
@@ -124,6 +132,7 @@ void SerialMP3Manager::stop()
     compDebug("stop playing");
     mp3.playStop();
     playing = false;
+    lastStopMs = millis();
     } else compDebug("stop playing (wasn't)");
 } 
 
