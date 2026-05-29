@@ -97,18 +97,26 @@ void PuppetMaster::initManager()
     compLog("-------------- " + BOARD_NAME + " v" + firmwareVersion + " " + __DATE__ + " ----------------");
 
     Manager::initManager();
-
-    // init managers and subscribe to their events
-    if (WIFI_CREDENTIALS.ssid != "")
+    
+    // XIAO JUKEBOX HACK
+#ifdef BUTTON_AP
+    if (digitalRead(9) == false) 
     {
-        managers.emplace_back(&wifi);
-        wifi.initManager();
-    }
-
-    managers.emplace_back(&osc);
-    osc.initManager();
-    wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
-    osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
+#endif
+        // init managers and subscribe to their events
+        if (WIFI_CREDENTIALS.ssid != "")
+        {
+            managers.emplace_back(&wifi);
+            wifi.initManager();
+        }
+        
+        managers.emplace_back(&osc);
+        osc.initManager();
+        wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
+        osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
+#ifdef BUTTON_AP
+}
+#endif
 
 #ifdef ESP32
 #ifdef HAS_LIPO
@@ -156,7 +164,7 @@ void PuppetMaster::initManager()
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
     led.initManager();
-    led.notify(LedStrip::Notification::BOOTING);
+    // led.notify(LedStrip::Notification::BOOTING);
 #endif
 
 #ifdef NUM_SERVOS
@@ -196,6 +204,7 @@ void PuppetMaster::initManager()
     musicmaker.setVolume(1.0f);
     musicmaker.play("cancel_.mp3");
 #endif
+
 }
 
 void PuppetMaster::ReceiveCoin()
@@ -398,7 +407,7 @@ void PuppetMaster::useCredit()
         musicmaker.stop();
 #endif
 #ifdef HAS_SERIAL_MP3
-        player.stopPlaying();
+        serialmp3.stopPlaying();
 #endif
 
         player.stopPlaying();
@@ -414,7 +423,6 @@ void PuppetMaster::useCredit()
         trackIndex = 0;
     compLog("track index :" + String(trackIndex));
 #elif defined(HAS_SERIAL_MP3)
-    compDebug("next please");
     compDebug(String(serialmp3.getNextTrackIndex()));
     launchSequence(serialmp3.getNextTrackIndex());
 #endif
@@ -557,7 +565,7 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
         digitalWrite(LED_BUILTIN, HIGH);
 #endif
 #ifdef NUM_STRIPS
-        led.notify(LedStrip::Notification::WORKING);
+        led.notify(LedStrip::Notification::BOOTING);
 #endif
         break;
 
@@ -616,6 +624,9 @@ void PuppetMaster::gotWifiEvent(const WifiEvent &e)
     case WifiEvent::ConnectionState::HOTSPOT:
         wifi.dbg("hotspot started");
         web.initServer();
+#ifdef NUM_STRIPS
+        led.notify(LedStrip::Notification::WAITING);
+#endif
         break;
 
     default:
@@ -662,7 +673,6 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
     switch (e.type)
     {
     case ButtonEvent::Type::PRESSED:
-        Serial.println("PRESSED");
         osc.sendMessage("/button/pressed");
 
         if (e.behavior.clearOnPressed)
@@ -688,6 +698,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
     case ButtonEvent::Type::RELASED_SHORT:
         osc.sendMessage("/button/released");
+
         if (e.behavior.playSequencesOnShort)
         {
 #ifdef COIN_PIN
@@ -702,9 +713,6 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         break;
 
     case ButtonEvent::Type::LONG_PRESS:
-#ifdef NUM_STRIPS
-        // led.notify(LedStrip::Notification::READY); TODO shorter notif
-#endif
         osc.sendMessage("/button/longpress");
 
         if (e.behavior.cancelSoundOnLongPress)
@@ -724,6 +732,9 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
     case ButtonEvent::Type::RELEASED_LONG:
         osc.sendMessage("/button/longrelease");
+#ifdef NUM_STRIPS
+            led.clear();
+#endif
         useCredit(); // jukebox hack
         break;
     }

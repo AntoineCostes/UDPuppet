@@ -72,7 +72,8 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
 
 void WifiManager::connect()
 {
-  initSTA();
+  if (remainingConnectionAttempts == 0) initAP();
+  else initSTA();
   
 }
 
@@ -116,7 +117,6 @@ void WifiManager::update()
       remainingConnectionAttempts--;
       compError("timeout expired. Remaining attempts: "+String(remainingConnectionAttempts));
       changeConnectionState(WifiEvent::ConnectionState::DISCONNECTED, WifiManager::Error::TIMEOUT);
-      if (remainingConnectionAttempts == 0) initAP();
       return;
     }
     break;

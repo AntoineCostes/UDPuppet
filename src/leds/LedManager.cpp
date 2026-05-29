@@ -57,6 +57,7 @@ void LedManager::setColor(int r, int g, int b)
 {
     for (auto const &strip : strips) 
     {
+        strip->isNotifying = false;
         strip->setAll(r, g, b);
     }
 }

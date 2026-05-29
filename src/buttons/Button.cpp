@@ -15,6 +15,8 @@ void Button::initComponent(bool serialDebug)
 {
     Component::initComponent(serialDebug);
     pinMode(pin, INPUT_PULLUP);
+    
+    isPressed =!digitalRead(pin);
 }
 
 void Button::update()

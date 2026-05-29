@@ -23,6 +23,8 @@ void LedStrip::initComponent(bool serialDebug)
 
 void LedStrip::notify(LedStrip::Notification notification)
 {
+    Serial.println("NOTIFY "+String(notification));
+
     switch (notification)
     {
         case Notification::READY:
@@ -45,7 +47,7 @@ void LedStrip::update()
         switch (currentNotification)
         {
         case Notification::READY:
-            setAll(100 * notificationFade, 100 * notificationFade, 100 * notificationFade);
+            setAll(0, 100 * notificationFade, 0);
             notificationFade *= 0.95f;
             break;
 
@@ -58,11 +60,13 @@ void LedStrip::update()
             break;
             
         case Notification::SHOW:
-            setAll(250, 168, 60);
+            setAll(0, int(50 * slow), int(50));
+            // setAll(250, 168, 60);
             break;
 
         case Notification::WORKING:
-            setAll(int(50 * fast), int(50 * fast), int(50 * fast));
+            setAll(fast>0.7f?250:0, fast>0.7f?168:0, fast>0.7f?60:0);
+            // setAll(int(50 * fast), int(50 * fast), int(50 * fast));
             break;
 
         case Notification::WAITING:
@@ -78,6 +82,7 @@ void LedStrip::clear()
 {
     if (!checkInit())
         return;
+    Serial.println("CLEAR");
 
     isNotifying = false;
     strip.clear();
