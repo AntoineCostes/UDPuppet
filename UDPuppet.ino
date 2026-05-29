@@ -53,9 +53,9 @@ void setup()
 // master.analog.registerAnalogReader("potar", A0);
   // TODO ADD STEPPERS AND MOTORWING
 
-// #ifdef NUM_STRIPS
-//   master.led.notify(LedStrip::Notification::READY);
-// #endif
+#ifdef NUM_STRIPS
+  master.led.notify(LedStrip::Notification::READY);
+#endif
 }
 
 void loop()

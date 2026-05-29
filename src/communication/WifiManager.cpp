@@ -44,7 +44,7 @@ void WifiManager::initManager()
 
 void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, WifiManager::Error compError)
 {
-  // compDebug("new state: "+String(newState));
+  compDebug("new state: "+String(newState));
   connectionState = newState;
   errorState = compError;
 
@@ -66,6 +66,7 @@ void WifiManager::changeConnectionState(WifiEvent::ConnectionState newState, Wif
   if (newState == WifiEvent::ConnectionState::HOTSPOT)
   {
     resetAttempts();
+    initOTA();
   }
   sendEvent(WifiEvent(connectionState));
 }

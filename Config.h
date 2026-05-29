@@ -46,11 +46,11 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
-const bool CONNECT_ON_BOOT = true;
-const unsigned CONNECTION_ATTEMPTS = 0;
+const bool CONNECT_ON_BOOT = false;
+const unsigned CONNECTION_ATTEMPTS = 3;
 const bool OVERRIDE_WIFI_CREDS = true;
-const int DELAY_BEFORE_RECONNECT_MS = 500; // JUKEBOX HACK
-const int CONNECTION_TIMEOUT_MS = 500; // JUKEBOX HACK
+const int DELAY_BEFORE_RECONNECT_MS = 1000;
+const int CONNECTION_TIMEOUT_MS = 3000;
 
 // OSC PARAMETERS
 const String OSC_TARGET_IP = "";

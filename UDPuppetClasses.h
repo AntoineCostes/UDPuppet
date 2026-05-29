@@ -77,6 +77,7 @@ struct UDPuppetButtonBehavior
     bool playSequencesOnShort;
     bool cancelSoundOnLongPress;
     bool enableHotspotOnLong;
+    bool playSequencesOnLong;
 };
 
 struct UDPuppetButton

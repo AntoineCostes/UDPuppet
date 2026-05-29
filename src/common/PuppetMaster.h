@@ -108,6 +108,8 @@ protected:
 
     void launchSequence(String sequenceName);
     void launchSequence(int sequenceIndex);
+    void stopSequence();
+    void launchNextSequence();
     void useCredit();
 
     enum State

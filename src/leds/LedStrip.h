@@ -40,6 +40,6 @@ protected:
     int numLeds;
     float brightness;
     bool wifiDebug;
-    float notificationFade;
     Adafruit_NeoPixel strip;
+    long startMs;
 };

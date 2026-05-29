@@ -4,7 +4,7 @@ LedStrip::LedStrip(int pin, int numLeds, neoPixelType type, bool debug, bool use
                                                                             numLeds(numLeds),
                                                                             strip(numLeds, pin, type),
                                                                             brightness(0.3),
-                                                                            notificationFade(0),
+                                                                            startMs(0),
                                                                             isNotifying(false)
 {
     // instantiate strip in init ?
@@ -23,16 +23,10 @@ void LedStrip::initComponent(bool serialDebug)
 
 void LedStrip::notify(LedStrip::Notification notification)
 {
-    Serial.println("NOTIFY "+String(notification));
-
-    switch (notification)
-    {
-        case Notification::READY:
-            notificationFade = 1.0f;
-            break;
-    }
+    // Serial.println("NOTIFY "+String(notification));
     currentNotification = notification;
     isNotifying = true;
+    startMs = millis();
 }
 
 void LedStrip::update()
@@ -40,19 +34,22 @@ void LedStrip::update()
     if (!checkInit())
         return;
 
-    float slow = abs(sin(0.001f * millis()));
-    float fast = abs(sin(0.002f * millis()));
+    float t = 0.001f *(millis() - startMs);
+    float slow = abs(sin(t));
+    float fast = abs(sin(3*t));
+    float fast_cos = abs(cos(4*t));
+    float fade = 1.0f - t*t*0.75f;
+    fade = min(1.0f, max(0.0f, fade));
     
     if (isNotifying)
         switch (currentNotification)
         {
         case Notification::READY:
-            setAll(0, 100 * notificationFade, 0);
-            notificationFade *= 0.95f;
+            setAll(0, 100 * fade, 0);
             break;
 
         case Notification::ERROR:
-            setAll(50, 0, 0);
+            setAll(t<1.0f?50:0, 0, 0);
             break;
 
         case Notification::BOOTING:
@@ -60,12 +57,13 @@ void LedStrip::update()
             break;
             
         case Notification::SHOW:
-            setAll(0, int(50 * slow), int(50));
+            setAll(0, int(50 * (1-slow)), int(50));
             // setAll(250, 168, 60);
             break;
 
         case Notification::WORKING:
-            setAll(fast>0.7f?250:0, fast>0.7f?168:0, fast>0.7f?60:0);
+            // setAll(0, fast>0.7f?168:0, 0);
+            setAll(fast_cos>0.7f?250:0, fast_cos>0.7f?168:0, fast_cos>0.7f?60:0);
             // setAll(int(50 * fast), int(50 * fast), int(50 * fast));
             break;
 
@@ -82,7 +80,6 @@ void LedStrip::clear()
 {
     if (!checkInit())
         return;
-    Serial.println("CLEAR");
 
     isNotifying = false;
     strip.clear();

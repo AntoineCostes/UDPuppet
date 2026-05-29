@@ -7,7 +7,6 @@ const int OSC_TARGET_PORT = 12002;
 
 #define HAS_SERIAL_MP3 // uses pins 6 and 7
 #define COIN_PIN 8
-#define BUTTON_AP
 
 #define SEQUENCE_FRAME_SIZE 4 // 4 servos
 
@@ -29,9 +28,10 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
     {5, 25, 115, 25, true, false, true}
 };
 
-#define NUM_BUTTONS 1
+#define NUM_BUTTONS 2
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
-    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {9, 5, 2000, UDPuppetButtonBehavior{false, true, false, false}}
+    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong, playSequencesOnLong
+    {9, 5, 2000, UDPuppetButtonBehavior{false, true, false, false, true}},
+    {7, 5, 2000, UDPuppetButtonBehavior{false, false, false, true}}
 };

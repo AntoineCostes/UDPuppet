@@ -97,26 +97,18 @@ void PuppetMaster::initManager()
     compLog("-------------- " + BOARD_NAME + " v" + firmwareVersion + " " + __DATE__ + " ----------------");
 
     Manager::initManager();
-    
-    // XIAO JUKEBOX HACK
-#ifdef BUTTON_AP
-    if (digitalRead(9) == false) 
+
+    // init managers and subscribe to their events
+    if (WIFI_CREDENTIALS.ssid != "")
     {
-#endif
-        // init managers and subscribe to their events
-        if (WIFI_CREDENTIALS.ssid != "")
-        {
-            managers.emplace_back(&wifi);
-            wifi.initManager();
-        }
-        
-        managers.emplace_back(&osc);
-        osc.initManager();
-        wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
-        osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
-#ifdef BUTTON_AP
-}
-#endif
+        managers.emplace_back(&wifi);
+        wifi.initManager();
+    }
+
+    managers.emplace_back(&osc);
+    osc.initManager();
+    wifi.addListener(std::bind(&PuppetMaster::gotWifiEvent, this, std::placeholders::_1));
+    osc.addListener(std::bind(&PuppetMaster::gotOSCEvent, this, std::placeholders::_1));
 
 #ifdef ESP32
 #ifdef HAS_LIPO
@@ -164,7 +156,6 @@ void PuppetMaster::initManager()
 #ifdef NUM_STRIPS
     managers.emplace_back(&led);
     led.initManager();
-    // led.notify(LedStrip::Notification::BOOTING);
 #endif
 
 #ifdef NUM_SERVOS
@@ -204,7 +195,6 @@ void PuppetMaster::initManager()
     musicmaker.setVolume(1.0f);
     musicmaker.play("cancel_.mp3");
 #endif
-
 }
 
 void PuppetMaster::ReceiveCoin()
@@ -383,38 +373,62 @@ void PuppetMaster::update()
     }
 }
 
-void PuppetMaster::useCredit()
+void PuppetMaster::stopSequence()
 {
-    Serial.println("USE CREDIT");
-
-    // PuppetMaster::credit--;
-    PuppetMaster::credit = 0;
-    PuppetMaster::gotCredit = false;
-
-    if (player.isPlaying)
-    {
-        compDebug("STOP");
+    compDebug("STOP");
 #ifdef NUM_STRIPS
-        led.clear();
+    led.clear();
 #endif
 
 #ifdef NUM_SERVOS
-        for (int i = 0; i < NUM_SERVOS; i++)
-            servo.servoGoTo(i, 0.0f);
+    for (int i = 0; i < NUM_SERVOS; i++)
+        servo.servoGoTo(i, 0.0f);
 #endif
 
 #ifdef HAS_MUSICMAKER
-        musicmaker.stop();
+    musicmaker.stop();
 #endif
 #ifdef HAS_SERIAL_MP3
-        serialmp3.stopPlaying();
+    serialmp3.stop();
 #endif
 
-        player.stopPlaying();
-        delay(1000);
+    player.stopPlaying();
+}
+
+void PuppetMaster::useCredit()
+{
+    if (PuppetMaster::credit > 0)
+    {
+        Serial.println("USE CREDIT");
+
+        // PuppetMaster::credit--;
+        PuppetMaster::credit = 0;
+        PuppetMaster::gotCredit = false;
+
+        launchNextSequence();
+    }
+    else if (!player.isPlaying) // notify error only if not playing
+    {
+#ifdef NUM_STRIPS
+        led.notify(LedStrip::Notification::ERROR);
+#endif
+#ifdef HAS_MUSICMAKER
+        musicmaker.play("cancel.mp3");
+#elif defined(HAS_SERIAL_MP3)
+        serialmp3.playCancelSound();
+#endif
+        Serial.println("no credit !");
+    }
+}
+
+void PuppetMaster::launchNextSequence()
+{
+    if (player.isPlaying)
+    {
+        stopSequence();
     }
 
-#ifdef JUKEBOX
+#ifdef JUKEBOX // REPERTOIRE
     // launchSequence(fileMgr.sequences[trackIndex]);
     launchSequence(REPERTOIRE[trackIndex]);
     trackIndex++;
@@ -557,6 +571,8 @@ void PuppetMaster::launchSequence(int sequenceIndex)
 
 void PuppetMaster::gotWifiEvent(const WifiEvent &e)
 {
+    // Serial.println("wifi event " +String(e.state));
+
     switch (e.state)
     {
     case WifiEvent::ConnectionState::CONNECTING:
@@ -677,21 +693,13 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 
         if (e.behavior.clearOnPressed)
         {
-            player.stopPlaying();
+            stopSequence();
+        }
 
-#ifdef HAS_MUSICMAKER
-            musicmaker.stop();
-#elif defined(HAS_SERIAL_MP3)
-            serialmp3.stop();
-#endif
-
-#ifdef NUM_SERVOS
-            for (int i = 0; i < NUM_SERVOS; i++)
-                servo.servoGoTo(i, 0.0f);
-#endif
-
+        if (e.behavior.playSequencesOnLong)
+        {
 #ifdef NUM_STRIPS
-            led.clear();
+            led.setColor(0, 50, 50); // jukebox hack
 #endif
         }
         break;
@@ -702,12 +710,9 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         if (e.behavior.playSequencesOnShort)
         {
 #ifdef COIN_PIN
-            if (PuppetMaster::credit > 0)
-                useCredit();
-            else
-                Serial.println("no credit !");
-#else
             useCredit();
+#else
+            launchNextSequence();
 #endif
         }
         break;
@@ -724,18 +729,28 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
 #endif
         }
 
+        if (e.behavior.playSequencesOnLong)
+        {
+            stopSequence();
+        }
+
         if (e.behavior.enableHotspotOnLong)
         {
             wifi.initAP();
         }
+
         break;
 
     case ButtonEvent::Type::RELEASED_LONG:
         osc.sendMessage("/button/longrelease");
-#ifdef NUM_STRIPS
-            led.clear();
-#endif
-        useCredit(); // jukebox hack
+        // #ifdef NUM_STRIPS
+        //         led.clear();
+        // #endif
+
+        if (e.behavior.playSequencesOnLong)
+        {
+            launchNextSequence();
+        }
         break;
     }
 }
@@ -886,30 +901,29 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
         if (e.data[dataIndex] < 255) // 255 value means don't update
             motorwing.dcRun(MotorShield2Manager::DCPort::M2, e.data[dataIndex] / 127.0f - 1.0f);
         dataIndex++;
-    }
 #endif
-}
+    }
 
-if (e.type == PlayerEvent::Start)
-{
-    // player.dbg("start playing");
-}
+    if (e.type == PlayerEvent::Start)
+    {
+        // player.dbg("start playing");
+    }
 
-if (e.type == PlayerEvent::Stop)
-{
-    player.dbg("stop playing");
-}
+    if (e.type == PlayerEvent::Stop)
+    {
+        player.dbg("stop playing");
+    }
 
-if (e.type == PlayerEvent::Ended)
-{
-    player.dbg("ended");
+    if (e.type == PlayerEvent::Ended)
+    {
+        player.dbg("ended");
 
 #ifdef NUM_STRIPS
-    led.clear();
+        led.clear();
 #endif
 
-    // TODO turn leds off/on depending on player behavior ?
-}
+        // TODO turn leds off/on depending on player behavior ?
+    }
 }
 
 void PuppetMaster::gotFileEvent(const FileEvent &e)
