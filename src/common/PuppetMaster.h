@@ -111,6 +111,7 @@ protected:
     void stopSequence();
     void launchNextSequence();
     void useCredit();
+    long lastStopMs;
 
     enum State
     {

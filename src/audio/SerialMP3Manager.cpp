@@ -35,7 +35,7 @@ void SerialMP3Manager::initManager()
 void SerialMP3Manager::update()
 {
     // hack for speaker standby :  after 5mn silence play a sound 
-    if (!isPlaying() && millis() - lastStopMs > 300000)
+    if (!isPlaying() && millis() - lastStopMs > 3000000)
     {
         playConfirmSound();
     }

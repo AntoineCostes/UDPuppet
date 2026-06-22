@@ -195,6 +195,7 @@ void PuppetMaster::initManager()
     musicmaker.setVolume(1.0f);
     musicmaker.play("cancel_.mp3");
 #endif
+    lastStopMs = millis();
 }
 
 void PuppetMaster::ReceiveCoin()
@@ -353,6 +354,9 @@ void PuppetMaster::update()
             mgr.get()->update();
     }
 
+    if (!player.isPlaying && millis() - lastStopMs > 300000)
+        launchNextSequence();
+
     if (PuppetMaster::gotCredit)
     {
         Serial.println("got credit ! " + String(PuppetMaster::credit));
@@ -393,6 +397,7 @@ void PuppetMaster::stopSequence()
 #endif
 
     player.stopPlaying();
+    lastStopMs = millis();
 }
 
 void PuppetMaster::useCredit()
@@ -440,6 +445,7 @@ void PuppetMaster::launchNextSequence()
     compDebug(String(serialmp3.getNextTrackIndex()));
     launchSequence(serialmp3.getNextTrackIndex());
 #endif
+lastStopMs = millis();
 }
 
 void PuppetMaster::sendDebugMsg(String componentName, String msg)
@@ -912,6 +918,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
     if (e.type == PlayerEvent::Stop)
     {
         player.dbg("stop playing");
+        lastStopMs = millis();
     }
 
     if (e.type == PlayerEvent::Ended)
