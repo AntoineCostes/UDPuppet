@@ -24,7 +24,8 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
-#include "config/Chantdrier/Chantdrier_Xiao.h"
+// #include "config/Chantdrier/Chantdrier_Xiao.h"
+#include "config/Chantdrier/Chantdrier_Xiao_MIMA.h"
 
 // #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
@@ -88,7 +89,7 @@ const bool OSC_SEND_DEBUG = false;
 const bool WEBSERVER_DEBUG = true;
 
 const bool FILES_DEBUG = true;
-const bool SEQUENCE_DEBUG = true;
+const bool SEQUENCE_DEBUG = false;
 
 const bool LED_DEBUG = false;
 const bool SERVO_DEBUG = false;

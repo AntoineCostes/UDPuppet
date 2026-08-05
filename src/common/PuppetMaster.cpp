@@ -370,6 +370,7 @@ void PuppetMaster::update()
 #ifdef COIN_PIN
 #ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::WORKING);
+        led.setBrightness(1, 0.5f);
 #endif
 #elif
         useCredit();
@@ -382,6 +383,7 @@ void PuppetMaster::stopSequence()
     compDebug("STOP");
 #ifdef NUM_STRIPS
     led.clear();
+    led.setColor(1, 125, 84, 30);
 #endif
 
 #ifdef NUM_SERVOS
@@ -416,6 +418,7 @@ void PuppetMaster::useCredit()
     {
 #ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::ERROR);
+        // led.setColor(1, 40, 30, 10);
 #endif
 #ifdef HAS_MUSICMAKER
         musicmaker.play("cancel.mp3");
@@ -423,7 +426,14 @@ void PuppetMaster::useCredit()
         serialmp3.playCancelSound();
 #endif
         Serial.println("no credit !");
-    }
+    } else
+    {
+#ifdef NUM_STRIPS
+        led.notify(LedStrip::Notification::SHOW);
+        led.setBrightness(1, 1.0f);
+        led.setColor(1, 250, 168, 60);
+#endif
+}
 }
 
 void PuppetMaster::launchNextSequence()
@@ -538,6 +548,8 @@ void PuppetMaster::launchSequence(String sequenceName)
 {
 #ifdef NUM_STRIPS
     led.notify(LedStrip::Notification::SHOW);
+    led.setBrightness(1, 1.0f);
+    led.setColor(1, 250, 168, 60);
 #endif
 
     // TODO get File from fileManager and give it to player ?
@@ -562,6 +574,8 @@ void PuppetMaster::launchSequence(int sequenceIndex)
 
 #ifdef NUM_STRIPS
         led.notify(LedStrip::Notification::SHOW);
+        led.setBrightness(1, 1.0f);
+        led.setColor(1, 250, 168, 60);
 #endif
 
 #ifdef HAS_SERIAL_MP3
@@ -706,6 +720,7 @@ void PuppetMaster::gotButtonEvent(const ButtonEvent &e)
         {
 #ifdef NUM_STRIPS
             led.setColor(0, 50, 50); // jukebox hack
+            led.setColor(1, 40, 30, 10);
 #endif
         }
         break;
@@ -927,6 +942,7 @@ void PuppetMaster::gotPlayerEvent(const PlayerEvent &e)
 
 #ifdef NUM_STRIPS
         led.clear();
+        led.setColor(1, 125, 84, 30);
 #endif
 
         // TODO turn leds off/on depending on player behavior ?
