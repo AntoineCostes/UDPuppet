@@ -3,7 +3,7 @@
 #include "UDPuppetClasses.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::NETGEAR];
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
@@ -24,8 +24,8 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
-// #include "config/Chantdrier/Chantdrier_Xiao.h"
-#include "config/Chantdrier/Chantdrier_Xiao_MIMA.h"
+#include "config/Chantdrier/Chantdrier_Xiao.h"
+// #include "config/Chantdrier/Chantdrier_Xiao_MIMA.h"
 
 // #include "config/Vache/VacheQuiProute.h"
 // #include "config/Vache/VacheQuiProute_Kavan.h"
@@ -47,7 +47,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::LENET];
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
-const bool CONNECT_ON_BOOT = false;
+const bool CONNECT_ON_BOOT = true;
 const unsigned CONNECTION_ATTEMPTS = 3;
 const bool OVERRIDE_WIFI_CREDS = true;
 const int DELAY_BEFORE_RECONNECT_MS = 1000;
