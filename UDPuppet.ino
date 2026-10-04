@@ -1,12 +1,14 @@
 #include "Config.h"
 #include "src/common/PuppetMaster.h"
 
-// RAPPEL après avoir uploadé il faut rebooter la carte manuellement
-
+int batteryLevel;
+float voltage;
+#include <Arduino.h>
 PuppetMaster master;
+#include "BLE.h"
+MyBLEServer ble("Tableau");
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
 
 #ifdef LED_BUILTIN
@@ -16,7 +18,7 @@ void setup()
 
   delay(SETUP_DELAY_MS);
 
-  master.initManager(); // TODO make singleton and rename ?
+  master.initManager();  // TODO make singleton and rename ?
 
 #ifdef NUM_STRIPS
   for (int i = 0; i < NUM_STRIPS; i++)
@@ -33,7 +35,7 @@ void setup()
 #ifdef NUM_BUTTONS
   for (int i = 0; i < NUM_BUTTONS; i++)
     master.button.registerButton(BUTTONS[i].pin, BUTTONS[i].shortPressMs, BUTTONS[i].longPressMs, BUTTONS[i].behavior);
-  #endif
+#endif
 
 #ifdef NUM_HCSR04
   for (int i = 0; i < NUM_HCSR04; i++)
@@ -50,15 +52,35 @@ void setup()
 #endif
 #endif
 
-// master.analog.registerAnalogReader("potar", A0);
+  // master.analog.registerAnalogReader("potar", A0);
   // TODO ADD STEPPERS AND MOTORWING
 
 #ifdef NUM_STRIPS
   master.led.notify(LedStrip::Notification::READY);
 #endif
+  Serial.println("BLE GO");
+  ble.init(); 
 }
 
-void loop()
-{
+void loop() {
   master.update();
+  ble.update();
+
+  // if (master.battery.level != batteryLevel)
+  // {
+  //   Serial.println("battery");
+  //   Serial.println(master.battery.level);
+  //   uint8_t level = (uint8_t)master.battery.level;
+  //   ble.notifyByte(&level);
+  //   batteryLevel = master.battery.level;
+  // }
+  
+  // if (master.battery.voltage != voltage)
+  // {
+  //   Serial.println("battery");
+  //   // ble.notifyFloat(master.battery.voltage);
+  //   uint8_t level = (uint8_t)master.battery.level;
+  //   ble.notifyByte(&level);
+  //   voltage = master.battery.voltage;
+  // }
 }

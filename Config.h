@@ -3,7 +3,7 @@
 #include "UDPuppetClasses.h"
 
 // NETWORK
-const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::NETGEAR];
+const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::SUNSHINE];
 
 ////////////////////////////////////
 // HARDWARE CONFIG - CHOOSE ONE FILE
@@ -11,6 +11,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::NETGEAR];
 // #include "config/Camembert/Camembert.h"
 // #include "config/Camembert/Camembert_S3.h"
 // #include "config/Camembert/Camembert_8266.h"
+#include "config/Camembert/Camembert_Xiao.h"
 // #include "config/Camembert/Camembert_Xiao_lipo.h"
 
 // #include "config/Castafiore/Castafiore.h"
@@ -24,7 +25,7 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::NETGEAR];
 // #include "config/Chantdrier/Chantdrier_8266.h"
 // #include "config/Chantdrier/Chantdrier_Monthelon.h"
 //#include "config/Chantdrier/Chantdrier_Monthelon_S3.h"
-#include "config/Chantdrier/Chantdrier_Xiao.h"
+// #include "config/Chantdrier/Chantdrier_Xiao.h"
 // #include "config/Chantdrier/Chantdrier_Xiao_MIMA.h"
 
 // #include "config/Vache/VacheQuiProute.h"
@@ -41,13 +42,15 @@ const UDPuppetWifiCredentials WIFI_CREDENTIALS = CREDENTIALS[Networks::NETGEAR];
 // #include "config/Test.h"
 // #include "config/CoinAcceptor.h"
 // #include "config/Jumbo_Xiao.h"
+// #include "config/Tableau_Xiao.h"
+// #include "config/Tableau.h"
 // #include "config/Lu7.h"
 
 // GENERAL PARAMETERS
 const int SETUP_DELAY_MS = 2000;
 
 // WIFI PARAMETERS
-const bool CONNECT_ON_BOOT = true;
+const bool CONNECT_ON_BOOT = false;
 const unsigned CONNECTION_ATTEMPTS = 3;
 const bool OVERRIDE_WIFI_CREDS = true;
 const int DELAY_BEFORE_RECONNECT_MS = 1000;
@@ -80,7 +83,7 @@ const int ROOMBA_TEXT_UPDATE_MS = 200; // TODO move to Roomba
 
 // DEBUG PARAMETERS
 const bool MASTER_DEBUG = true;
-const bool BATTERY_DEBUG = true;
+const bool BATTERY_DEBUG = false;
 
 const bool WIFI_DEBUG = true;
 const bool OSC_CONNECTION_DEBUG = false;

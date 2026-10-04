@@ -357,7 +357,7 @@ void PuppetMaster::update()
 #ifdef COIN_PIN
     if (!player.isPlaying && millis() - lastStopMs > 300000)
         launchNextSequence();
-#else
+#endif
 
     if (PuppetMaster::gotCredit)
     {
@@ -550,8 +550,8 @@ void PuppetMaster::launchSequence(String sequenceName)
 {
 #ifdef NUM_STRIPS
     led.notify(LedStrip::Notification::SHOW);
-    led.setBrightness(1, 1.0f);
-    if (NUM_STRIPS>1)  led.setColor(1, 250, 168, 60);
+    if (NUM_STRIPS>1) led.setBrightness(1, 1.0f);
+    if (NUM_STRIPS>1) led.setColor(1, 250, 168, 60);
 #endif
 
     // TODO get File from fileManager and give it to player ?

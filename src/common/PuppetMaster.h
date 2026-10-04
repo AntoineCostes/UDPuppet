@@ -96,7 +96,8 @@ public:
     SensorManager sensorMgr;
 #endif
 
-
+    void launchSequence(String sequenceName);
+    void stopSequence();
 protected:
     std::vector<std::unique_ptr<Manager>> managers; // TODO useful ? set instead of vector
 
@@ -106,9 +107,7 @@ protected:
 
     String firmwareVersion;
 
-    void launchSequence(String sequenceName);
     void launchSequence(int sequenceIndex);
-    void stopSequence();
     void launchNextSequence();
     void useCredit();
     long lastStopMs;
