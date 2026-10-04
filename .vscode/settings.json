@@ -102,6 +102,7 @@
     "cmake.configureOnOpen": true,
     "arduino.useArduinoCli": false,
     "arduino.analyzeOnOpen": false,
-    "arduino.analyzeOnSettingChange": false
+    "arduino.analyzeOnSettingChange": false,
+    "cmake.sourceDirectory": "C:/Users/Antoine/git/UDPuppet/externals/dependencies/ESPAsyncWebServer"
 
 }

@@ -5,8 +5,8 @@ int batteryLevel;
 float voltage;
 #include <Arduino.h>
 PuppetMaster master;
-#include "BLE.h"
-MyBLEServer ble("Tableau");
+// #include "BLE.h"
+// MyBLEServer ble("Camembert");
 
 void setup() {
   Serial.begin(115200);
@@ -58,13 +58,13 @@ void setup() {
 #ifdef NUM_STRIPS
   master.led.notify(LedStrip::Notification::READY);
 #endif
-  Serial.println("BLE GO");
-  ble.init(); 
+  // Serial.println("BLE GO");
+  // ble.init(); 
 }
 
 void loop() {
   master.update();
-  ble.update();
+  // ble.update();
 
   // if (master.battery.level != batteryLevel)
   // {

@@ -454,7 +454,6 @@ void PuppetMaster::launchNextSequence()
         trackIndex = 0;
     compLog("track index :" + String(trackIndex));
 #elif defined(HAS_SERIAL_MP3)
-    compDebug(String(serialmp3.getNextTrackIndex()));
     launchSequence(serialmp3.getNextTrackIndex());
 #endif
 lastStopMs = millis();

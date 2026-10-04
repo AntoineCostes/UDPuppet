@@ -39,6 +39,7 @@ function scriptParameterChanged(param)
 
 function bake()
 {
+	objects = [];
 	var o = getObject(directoryName);
 	var oLayers = o.layerParams;
 	oLayers = [];
