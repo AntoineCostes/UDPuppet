@@ -59,7 +59,8 @@
 
 PuppetMaster::PuppetMaster() : Manager("master"),
                                osc(&wifi),
-                               firmwareVersion("1.4.13")
+                               firmwareVersion("1.4.13"),
+                               trackIndex(0)
 {
 #ifdef BASE
     // Base uses pin 12 and 13
@@ -455,6 +456,10 @@ void PuppetMaster::launchNextSequence()
     compLog("track index :" + String(trackIndex));
 #elif defined(HAS_SERIAL_MP3)
     launchSequence(serialmp3.getNextTrackIndex());
+#else
+    launchSequence(fileMgr.sequences[trackIndex]);
+    trackIndex++;
+    if (trackIndex >= fileMgr.sequences.size()) trackIndex = 0;
 #endif
 lastStopMs = millis();
 }

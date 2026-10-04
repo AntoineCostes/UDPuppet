@@ -1,0 +1,160 @@
+{
+  "name":"Chevalet",
+  "type":"OSC",
+  "path":"UDPuppet",
+
+  "version":"1.4.8",
+  "description":"Contrôle d'un chevalet par OSC",
+
+
+  "hasInput":true,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":false,
+    "OSC Input":
+    {
+      "localPort":12000
+    },
+
+		"OSC Outputs":
+		{
+			"OSC Output":
+      {
+        "local":false,
+        "remoteHost":"chevalet.local",
+        "remotePort":9000
+      }
+    }
+  },
+
+  "parameters":
+  {
+    "Version":
+    {
+      "type":"String",
+      "default":"Oct2026-1.4.8",
+      "readOnly":true
+    },
+    "Invocation":
+    {
+      "type":"Trigger"
+    },
+    "Filter with name":
+    {
+      "type":"Boolean"
+    },
+    "Audio type":
+    {
+      "type":"Enum",
+      "options": {"Music Maker":0, "Serial mp3":1}
+    },
+    "Audio Tracks":
+    {
+      "type":"Enum",
+      "options": {}
+    },
+    "Sequences":
+    {
+      "type":"Enum",
+      "options": {}
+    },
+    "Play Sequence":
+    {
+      "type":"Trigger"
+    },
+    "Delete Sequence":
+    {
+      "type":"Trigger"
+    }
+  },
+
+  "hideDefaultParameters": ["useHierarchy",  "useHierarchy",  "autoFeedback", "autoAdd", "colorSendMode", "pass_through", "oscInput/local", "oscOutputs/oscOutput/local", "oscOutputs/oscOutput/remotePort", "oscOutputs/oscOutput/listenToFeedback", "booleanSendMode"],
+
+  "scripts":
+  [
+    "chevalet.js",
+    "bake.js"
+  ],
+
+  "values":
+  {
+    "Firmware":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "IP":
+    {
+      "type":"String",
+      "default":"",
+      "readOnly":true
+    },
+    "Batterie":
+    {
+      "type":"Float",
+      "min": 0,
+      "max": 100,
+      "readOnly": true
+    },
+    "Carte SD Detectee":
+    {
+      "type":"Boolean",
+      "readOnly":true
+    }
+  },
+
+  "commands":
+  {
+    "Set servo":
+    {
+      "callback":"setServo",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Set volume":
+    {
+      "callback":"setVolume",
+      "parameters":
+      {
+        "Value":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "default":0
+        }
+      }
+    },
+    "Lancer Sequence":
+    {
+      "callback":"playSequence",
+      "parameters":
+      {
+        "Name":
+        {
+          "type":"String"
+        }
+      }
+    },
+      "Arrêter Sequence":
+      {
+        "callback":"stopSequence",
+        "parameters":
+        {
+        }
+      }
+  }
+}

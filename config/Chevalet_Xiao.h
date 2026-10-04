@@ -1,12 +1,11 @@
 #pragma once
 
-const String BOARD_NAME = "Tableau";    // name used for mDNS services 
+const String BOARD_NAME = "Chevalet";    // name used for mDNS services 
 const BoardType BOARD_TYPE = XIAO_S3;
 const int OSC_LISTENING_PORT = 9000;
-const int OSC_TARGET_PORT = 12002;
+const int OSC_TARGET_PORT = 12000;
 
-// #define HAS_SERIAL_MP3 // uses pins 6 and 7
-// #define COIN_PIN 8
+#define HAS_LIPO
 
 #define SEQUENCE_FRAME_SIZE 8 // 8 servos
 
@@ -15,7 +14,7 @@ const float LED_INTENSITY = 1.0f;
 const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] = 
 {
     // pin, num leds, GRB, wifiDebug, useInSequences
-    {10, 20, true, true, false}
+    {9, 20, true, false, false}
 };
 
 #define NUM_SERVOS 8
@@ -30,4 +29,11 @@ const UDPuppetServo SERVOS[NUM_SERVOS] =
     {5, 0, 180, 90, false, true, true},
     {6, 0, 180, 90, false, true, true},
     {7, 0, 180, 90, false, true, true}
+};
+
+#define NUM_BUTTONS 1
+const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
+{
+    // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
+    {8, 5, 1000, UDPuppetButtonBehavior{true, true, false, false}}
 };

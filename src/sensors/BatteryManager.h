@@ -26,6 +26,8 @@ public:
     void initManager() override;
     void update() override;
 
+    float voltage;
+    int level;
 protected:
     // TODO make child class
     Adafruit_MAX17048 lipoSensor;
@@ -35,7 +37,5 @@ protected:
     float smoothing;
     int lastMeasureMs;
 
-    float voltage;
-    int level;
     long lastPingMs;
 };

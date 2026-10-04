@@ -150,7 +150,5 @@ protected:
     void gotRoombaValueEvent(const RoombaValueEvent &e);
 #endif
     
-#if defined(JUKEBOX)
     int trackIndex;
-#endif
 };

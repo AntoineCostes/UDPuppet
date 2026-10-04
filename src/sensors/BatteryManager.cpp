@@ -68,7 +68,8 @@ void BatteryManager::update()
             if (millis() > lastPingMs + BATTERY_TIMEOUT_MS)
             {
                 // estimate percentage from 3.5V (estimated 5%) to 4.1V
-                level = map(int(smoothedValue), 3500, 4100, 5, 100); 
+                // level = map(int(smoothedValue), 3500, 4100, 5, 100); 
+                level = map(int(smoothedValue), 5000, 6000, 0, 100); 
                 level = min(100, max(0, level)); 
                 
                 voltage = (float)smoothedValue/1000.0f;

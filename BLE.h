@@ -15,12 +15,19 @@ class ServerCallbacks : public NimBLEServerCallbacks {
     Serial.printf("Client address: %s\n", connInfo.getAddress().toString().c_str());
     lastWriteTime = millis();
     pServer->updateConnParams(connInfo.getConnHandle(), 24, 48, 0, 180);
+    
+#ifdef NUM_STRIPS
+        if (NUM_STRIPS>0)  master.led.setColor(0, 0, 50, 0);
+#endif
   }
 
   void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override {
     Serial.printf("Client disconnected - start advertising\n");
     NimBLEDevice::getServer()->disconnect(connInfo.getConnHandle());
     NimBLEDevice::startAdvertising();
+#ifdef NUM_STRIPS
+        if (NUM_STRIPS>0)  master.led.setColor(0, 50, 0, 0);
+#endif
   }
 
   void onMTUChange(uint16_t MTU, NimBLEConnInfo& connInfo) override {
