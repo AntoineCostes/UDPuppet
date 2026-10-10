@@ -5,7 +5,7 @@ const BoardType BOARD_TYPE = XIAO_S3;
 const int OSC_LISTENING_PORT = 9000;
 const int OSC_TARGET_PORT = 12000;
 
-#define HAS_LIPO
+// #define HAS_LIPO
 
 #define SEQUENCE_FRAME_SIZE 8 // 8 servos
 
@@ -21,19 +21,20 @@ const UDPuppetLedStrip LED_STRIPS[NUM_STRIPS] =
 const UDPuppetServo SERVOS[NUM_SERVOS] = 
 {
     // pin, min [0,180], max [0,180], start [0,180], inverse, isMultiServo, useInSequences
-    {0, 0, 180, 90, false, true, true},
-    {1, 0, 180, 90, false, true, true},
-    {2, 0, 180, 90, false, true, true},
-    {3, 0, 180, 90, false, true, true},
-    {4, 0, 180, 90, false, true, true},
-    {5, 0, 180, 90, false, true, true},
-    {6, 0, 180, 90, false, true, true},
-    {7, 0, 180, 90, false, true, true}
+    {0, 10, 180, 0, false, true, true},
+    {1, 0, 170, 0, false, true, true},
+    {2, 0, 170, 0, false, true, true},
+    {3, 0, 170, 0, false, true, true},
+    {4, 10, 180, 0, false, true, true},
+    {5, 0, 170, 0, false, true, true},
+    {6, 10, 170, 0, false, true, true},
+    {7, 10, 170, 0, false, true, true}
 };
 
-#define NUM_BUTTONS 1
+#define NUM_BUTTONS 2
 const UDPuppetButton BUTTONS[NUM_BUTTONS] = 
 {
     // pin, shortPressMs, longPressMs, clearOnPressed, playSequencesOnShort, cancelSoundOnLongPress, enableHotspotOnLong
-    {8, 5, 1000, UDPuppetButtonBehavior{true, true, false, false}}
+    {7, 5, 3000, UDPuppetButtonBehavior{false, true, true, false}},
+    {8, 5, 3000, UDPuppetButtonBehavior{true, false, false, true}}
 };

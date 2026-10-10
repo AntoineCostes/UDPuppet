@@ -45,14 +45,19 @@ class CharacteristicCallbacks : public NimBLECharacteristicCallbacks {
   void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override {
    
     std::string value = pCharacteristic->getValue();
-    if (value.length() == 1) {
-
+    if (value.length() == 0) 
+    {
       master.stopSequence();
       return;
     }
-    if (value.length() != 2) {
-
-      master.launchSequence(String(value.c_str()));
+    if (value.length() != 1) 
+    {
+      master.launchSequence(value.length());
+      return;
+    }
+    else if (value.length() > 2) 
+    {
+      Serial.println("ERROR value length should be <= 2");
       return;
     }
     uint8_t sliderId = value[0];   
